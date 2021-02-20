@@ -2,10 +2,10 @@
 
 yet another Repo
 
-Developemental Gen 6 & 7 Discord Sysbot by Santacrab#420, code base from Ledybot - olliz0r and bappsack
+Currently working on Gen6 GTS Bot, not stable rn but usable.
 
 ## About
-Ledybot is a GTS giveaway bot for Gen6 & Gen7 Pokémon Games - UNDER DEVELOPEMENT DISCORD BOT API BASED SYSBOT . Check out LedySync to go along with it, it's really cool: https://github.com/olliz0r/LedySync
+Ledybot is a GTS giveaway bot for Gen6 & Gen7 Pokémon Games . Check out LedySync to go along with it, it's really cool: https://github.com/olliz0r/LedySync
 
 If you are rich and like what you see, feel free to throw me a donation at https://www.paypal.me/olliz0r !
 
