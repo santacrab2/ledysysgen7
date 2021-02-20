@@ -25,8 +25,8 @@ namespace Ledybot
         {
             OpenFileDialog dg = new OpenFileDialog();
             dg.InitialDirectory = @Application.StartupPath;
-            dg.Title = "Select a PK7 file";
-            dg.Filter = "Gen 7 pokémon files|*.pk7";
+            dg.Title = "Select a PK6 or PK7 file";
+            dg.Filter = "Gen 7 pokémon files|*.pk7|Gen 6 pokemon files|*.pk6";
             if (dg.ShowDialog() == DialogResult.OK)
             {
                 tb_Default.Text = dg.FileName;
@@ -124,7 +124,7 @@ namespace Ledybot
             {
                 tb_Specific.Text = input + "\\";
             }
-            else if (Path.GetExtension(input) == ".pk7")
+            else if (Path.GetExtension(input) == ".pk7|.pk6")
             {
                 //byte[] pkmEncrypted = 
                 Program.pkhex.Data = System.IO.File.ReadAllBytes(input);
