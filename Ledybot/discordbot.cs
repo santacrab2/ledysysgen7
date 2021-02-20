@@ -20,6 +20,7 @@ public class discordbot
 
     Ledybot.MainForm mf = new Ledybot.MainForm();
     private DiscordSocketClient _client;
+    private CommandService _commands;
 
 
 
@@ -32,11 +33,14 @@ public class discordbot
     {
         _client = new DiscordSocketClient();
         _client.Log += Log;
-        var token = File.ReadAllText("token.txt");
+        _commands = new CommandService();
+        var token = File.ReadAllText("C:/Users/jordan/source/repos/ledybot/Ledybot/obj/ledybug6/token.txt");
 
 
         await _client.LoginAsync(TokenType.Bot, token);
         await _client.StartAsync();
+        CommandHandler ch = new CommandHandler(_client, _commands);
+        ch.InstallCommandsAsync();
 
         // Block this task until the program is closed.
         await Task.Delay(-1);
