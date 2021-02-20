@@ -25,7 +25,7 @@ namespace Ledybot
         private IPEndPoint serverEndPoint = null;
         private bool useLedySync = false;
 
-        private const int SEARCHDIRECTION_FROMBACK = 0;
+        private const int SEARCHDIRECTION_FROMBACK = -1;
         private const int SEARCHDIRECTION_FROMBACKFIRSTPAGEONLY = 1;
         private const int SEARCHDIRECTION_FROMFRONT = 2;
 
@@ -402,7 +402,7 @@ namespace Ledybot
                                     {
                                         string szNickname = Encoding.Unicode.GetString(block, 0x4, 24).Substring(2).Trim('\0'); //fix to prevent nickname clipping. Count should be 24, 2 bytes per letter, 2x12=24, not 20.
 
-                                        string szFileToFind = details.Item2 + szNickname + ".pk7";
+                                        string szFileToFind = details.Item2 + szNickname + ".pk6";
                                         if (!File.Exists(szFileToFind))
                                         {
                                             continue;
