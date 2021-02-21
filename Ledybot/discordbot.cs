@@ -109,6 +109,8 @@ public class discordbot
         }
 
     }
+
+    //this will download the byte data from a pkm
     public static async Task<byte[]> DownloadFromUrlAsync(string url)
     {
         return await webClient.DownloadDataTaskAsync(url);
@@ -119,13 +121,14 @@ public class discordbot
         [Command("trade")]
         public async Task Trade()
         {
+            //this grabs the file the user uploads to discord even they even do it.
             var pokm = Context.Message.Attachments.FirstOrDefault();
             if (pokm == default)
             {
                 ReplyAsync("no attachment provided");
                 return;
             }
-            
+            //this cleans up the filename the user submitted and checks that its a pk6 or 7
             var att = Format.Sanitize(pokm.Filename);
             if (!att.Contains(".pk7") && !att.Contains(".pk6"))
                 
@@ -133,7 +136,8 @@ public class discordbot
                 ReplyAsync("no pk7 or pk6 provided");
                 return;
             }
-
+            //this grabs the bytes of the file the user submitted and then converts it to a pk6 or 7 locally i think
+            //i pulled it from sysbot and i dont fully understand it....yet....
             var buffer = await DownloadFromUrlAsync(pokm.Url);
             var totrade = PKMConverter.GetPKMfromBytes(buffer, att.Contains("pk6") ? 6 : 7);
         
