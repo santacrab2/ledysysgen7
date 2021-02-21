@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Net.Sockets;
-using System.Threading;
-using System.Net;
-using System.Windows.Forms;
 using Discord;
 using Discord.WebSocket;
 using Discord.Commands;
 using System.Reflection;
+using PKHeX.Core;
+using System.Net;
+
+
 
 public class discordbot
 {
@@ -21,6 +18,9 @@ public class discordbot
     Ledybot.MainForm mf = new Ledybot.MainForm();
     private DiscordSocketClient _client;
     private CommandService _commands;
+    Queue tradequeue = new Queue();
+    private static readonly WebClient webClient = new WebClient();
+
 
 
 
@@ -109,13 +109,38 @@ public class discordbot
         }
 
     }
+    public static async Task<byte[]> DownloadFromUrlAsync(string url)
+    {
+        return await webClient.DownloadDataTaskAsync(url);
+    }
 
     public class trademodule : ModuleBase
     {
         [Command("trade")]
         public async Task Trade()
         {
-            await ReplyAsync("test");
+            var pokm = Context.Message.Attachments.FirstOrDefault();
+            if (pokm == default)
+            {
+                ReplyAsync("no attachment provided");
+                return;
+            }
+            
+            var att = Format.Sanitize(pokm.Filename);
+            if (!att.Contains(".pk7") && !att.Contains(".pk6"))
+                
+            {
+                ReplyAsync("no pk7 or pk6 provided");
+                return;
+            }
+
+            var buffer = await DownloadFromUrlAsync(pokm.Url);
+            var totrade = PKMConverter.GetPKMfromBytes(buffer, att.Contains("pk6") ? 6 : 7);
+        
+            
+
+
         }
     }
 }
+
