@@ -2,17 +2,14 @@
 Working on making this a GTS sysbot done by SantaCrab420 and BewearHugs
 https://www.piplup.net - SantaCrab's discord.
 
-yet another Repo
-
-Currently working on Gen6 GTS Bot, not stable rn but usable.
-
 ## About
-Ledybot is a GTS giveaway bot for Gen6 & Gen7 Pokémon Games . Check out LedySync to go along with it, it's really cool: https://github.com/olliz0r/LedySync
+Ledybot is a GTS giveaway bot for Gen6 & Gen7 Pokémon Games - This fork is meant to function like sysbot through Discord but for Gen 6 + 7 and 2/3DS . 
 
-If you are rich and like what you see, feel free to throw me a donation at https://www.paypal.me/olliz0r !
+If you are rich and like what you see, feel free to throw the original code developer from PKHeX/PPORG a donation at https://www.paypal.me/olliz0r !
 
 ## Credits
-Huge thanks to EzPz/imaboy321 for rewriting, enhancing and maintaining this project for so long!
+Huge thanks olliz0r for the OG build , Bappsack for the Gen6 edits were a huge help too! 
+(From OG repo -> to EzPz/imaboy321 for rewriting, enhancing and maintaining this project for so long!)
 
 ## Usage
 To get this to run you need a hacked 3DS with CFW. You need NTR (mode 3 version for o3ds) as well as Input Redirection (also mode 3 for o3ds)
