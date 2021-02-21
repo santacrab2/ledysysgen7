@@ -15,11 +15,12 @@ using System.Net;
 public class discordbot
 {
 
-    Ledybot.MainForm mf = new Ledybot.MainForm();
+
     private DiscordSocketClient _client;
     private CommandService _commands;
     Queue tradequeue = new Queue();
     private static readonly WebClient webClient = new WebClient();
+    public PKM tradeable;
 
 
 
@@ -131,19 +132,16 @@ public class discordbot
             //this cleans up the filename the user submitted and checks that its a pk6 or 7
             var att = Format.Sanitize(pokm.Filename);
             if (!att.Contains(".pk7") && !att.Contains(".pk6"))
-                
+
             {
                 ReplyAsync("no pk7 or pk6 provided");
                 return;
             }
-            //this grabs the bytes of the file the user submitted and then converts it to a pk6 or 7 locally i think
-            //i pulled it from sysbot and i dont fully understand it....yet....
-            var buffer = await DownloadFromUrlAsync(pokm.Url);
-            var totrade = PKMConverter.GetPKMfromBytes(buffer, att.Contains("pk6") ? 6 : 7);
-        
-            
 
-
+            ReplyAsync("file accepted");
+            var buffer = await DownloadFromUrlAsync(pokm.Url).ConfigureAwait(false);
+            PKM tradeable = PKMConverter.GetPKMfromBytes(buffer, 7);
+            ReplyAsync(tradeable.Species.ToString());
         }
     }
 }
