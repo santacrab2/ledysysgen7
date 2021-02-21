@@ -1,5 +1,5 @@
 # Ledybot
-Working on making this a GTS sysbot done by SantaCrab420 and BewearHugs
+Working on making this a GTS sysbot done by SantaCrab420 and Bewearhugs
 https://www.piplup.net - SantaCrab's discord.
 
 ## About
@@ -8,7 +8,7 @@ Ledybot is a GTS giveaway bot for Gen6 & Gen7 Pokémon Games - This fork is mean
 If you are rich and like what you see, feel free to throw the original code developer from PKHeX/PPORG a donation at https://www.paypal.me/olliz0r !
 
 ## Credits
-Huge thanks olliz0r for the OG build , Bappsack for the Gen6 edits were a huge help too! 
+Huge thanks olliz0r for the OG build , Bappsack for the Gen6 edits! 
 (From OG repo -> to EzPz/imaboy321 for rewriting, enhancing and maintaining this project for so long!)
 
 ## Usage
