@@ -20,7 +20,7 @@ public class discordbot
     private CommandService _commands;
     Queue tradequeue = new Queue();
     private static readonly WebClient webClient = new WebClient();
-    public PKM tradeable;
+    public static PKM tradeable;
 
 
 
@@ -140,8 +140,16 @@ public class discordbot
 
             ReplyAsync("file accepted");
             var buffer = await DownloadFromUrlAsync(pokm.Url).ConfigureAwait(false);
-            PKM tradeable = PKMConverter.GetPKMfromBytes(buffer, 7);
-            ReplyAsync(tradeable.Species.ToString());
+            PKM tradeable = PKMConverter.GetPKMfromBytes(buffer, pokm.Filename.Contains("pk6") ? 6 : 7);
+            var la = new PKHeX.Core.LegalityAnalysis(tradeable);
+            if (!la.Valid)
+            {
+                ReplyAsync("pokemon is illegal try again later");
+            }
+            else
+            {
+                ReplyAsync("yay its legal good job!");
+            }
         }
     }
 }
