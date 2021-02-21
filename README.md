@@ -1,4 +1,6 @@
 # Ledybot
+Working on making this a GTS sysbot done by SantaCrab420 and BewearHugs
+https://www.piplup.net - SantaCrab's discord.
 
 yet another Repo
 
