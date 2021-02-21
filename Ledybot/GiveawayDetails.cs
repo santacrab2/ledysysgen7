@@ -35,7 +35,7 @@ namespace Ledybot
 
             foreach (DataRow row in details.Rows)
             {
-                Program.f1.giveawayDetails.Add((int)row[0], new Tuple<string, string, int, int, int, ArrayList>(row[1].ToString(), row[2].ToString(), (int)row[3], (int)row[4], (int)row[5], new ArrayList()));
+                Ledybot.MainForm.giveawayDetails.Add((int)row[0], new Tuple<string, string, int, int, int, ArrayList>(row[1].ToString(), row[2].ToString(), (int)row[3], (int)row[4], (int)row[5], new ArrayList()));
             }
 
             dgv_Details.DataSource = details;
@@ -54,9 +54,9 @@ namespace Ledybot
             {
                 if (input.def != "" || input.specific != "")
                 {
-                    if (Program.f1.giveawayDetails.ContainsKey(input.dex))
+                    if (Ledybot.MainForm.giveawayDetails.ContainsKey(input.dex))
                     {
-                        Program.f1.giveawayDetails.Remove(input.dex);
+                        Ledybot.MainForm.giveawayDetails.Remove(input.dex);
                         foreach (DataRow row in details.Rows)
                         {
                             if ((int)row[0] == input.dex)
@@ -69,7 +69,7 @@ namespace Ledybot
                     if (input.specific != "")
                         Directory.CreateDirectory(input.specific);
                     details.Rows.Add(input.dex, input.def, input.specific, input.gender + 1, input.level + 1, input.count, 0);
-                    Program.f1.giveawayDetails.Add(input.dex, new Tuple<string, string, int, int, int, ArrayList>(input.def, input.specific, input.gender + 1, input.level + 1, input.count, new ArrayList()));
+                    Ledybot.MainForm.giveawayDetails.Add(input.dex, new Tuple<string, string, int, int, int, ArrayList>(input.def, input.specific, input.gender + 1, input.level + 1, input.count, new ArrayList()));
                 }
             }
             input.Dispose();
@@ -79,7 +79,7 @@ namespace Ledybot
         {
             foreach (DataGridViewRow row in dgv_Details.SelectedRows)
             {
-                Program.f1.giveawayDetails.Remove(int.Parse(row.Cells[0].Value.ToString()));
+                Ledybot.MainForm.giveawayDetails.Remove(int.Parse(row.Cells[0].Value.ToString()));
                 for (int i = details.Rows.Count - 1; i >= 0; i--)
                 {
                     DataRow dr = details.Rows[i];
@@ -190,10 +190,10 @@ namespace Ledybot
             }
             Directory.CreateDirectory(Path.GetDirectoryName(input) + "\\" + Path.GetFileNameWithoutExtension(input) + "\\");
 
-            if(!Program.f1.giveawayDetails.ContainsKey(dexNum))
+            if(!Ledybot.MainForm.giveawayDetails.ContainsKey(dexNum))
             {
                 details.Rows.Add(dexNum, input, Path.GetDirectoryName(input) + "\\" + Path.GetFileNameWithoutExtension(input) + "\\", genderIndex + 1, levelIndex + 1, -1, 0);
-                Program.f1.giveawayDetails.Add(dexNum, new Tuple<string, string, int, int, int, ArrayList>(input, Path.GetDirectoryName(input) + "\\" + Path.GetFileNameWithoutExtension(input) + "\\", genderIndex + 1, levelIndex + 1, -1, new ArrayList()));
+                Ledybot.MainForm.giveawayDetails.Add(dexNum, new Tuple<string, string, int, int, int, ArrayList>(input, Path.GetDirectoryName(input) + "\\" + Path.GetFileNameWithoutExtension(input) + "\\", genderIndex + 1, levelIndex + 1, -1, new ArrayList()));
             }
 
         }

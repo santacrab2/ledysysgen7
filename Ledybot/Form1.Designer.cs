@@ -32,11 +32,11 @@ namespace Ledybot
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.tb_IP = new System.Windows.Forms.TextBox();
-            this.btn_Connect = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.btn_Start = new System.Windows.Forms.Button();
-            this.btn_Stop = new System.Windows.Forms.Button();
+            tb_IP = new System.Windows.Forms.TextBox();
+            btn_Connect = new System.Windows.Forms.Button();
+            label1 = new System.Windows.Forms.Label();
+            btn_Start = new System.Windows.Forms.Button();
+            btn_Stop = new System.Windows.Forms.Button();
             this.lv_log = new System.Windows.Forms.ListView();
             this.Time = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Trainer = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -48,15 +48,15 @@ namespace Ledybot
             this.page = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.index = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btn_Export = new System.Windows.Forms.Button();
-            this.cb_Blacklist = new System.Windows.Forms.CheckBox();
+            cb_Blacklist = new System.Windows.Forms.CheckBox();
             this.tc_Control = new System.Windows.Forms.TabControl();
             this.tp_GTS = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.cb_Reddit = new System.Windows.Forms.CheckBox();
-            this.tb_thread = new System.Windows.Forms.TextBox();
-            this.combo_levelrange = new System.Windows.Forms.ComboBox();
-            this.combo_gender = new System.Windows.Forms.ComboBox();
-            this.combo_pkmnList = new System.Windows.Forms.ComboBox();
+            cb_Reddit = new System.Windows.Forms.CheckBox();
+            tb_thread = new System.Windows.Forms.TextBox();
+            combo_levelrange = new System.Windows.Forms.ComboBox();
+            combo_gender = new System.Windows.Forms.ComboBox();
+            combo_pkmnList = new System.Windows.Forms.ComboBox();
             this.btn_Clear = new System.Windows.Forms.Button();
             this.btn_Import = new System.Windows.Forms.Button();
             this.btn_Banlist = new System.Windows.Forms.Button();
@@ -86,19 +86,19 @@ namespace Ledybot
             this.label11 = new System.Windows.Forms.Label();
             this.btn_EggAvailable = new System.Windows.Forms.Button();
             this.tb_Settings = new System.Windows.Forms.TabPage();
-            this.cb_UseLedySync = new System.Windows.Forms.CheckBox();
+            cb_UseLedySync = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.tb_LedySyncPort = new System.Windows.Forms.TextBox();
-            this.tb_LedySyncIP = new System.Windows.Forms.TextBox();
+            tb_LedySyncPort = new System.Windows.Forms.TextBox();
+            tb_LedySyncIP = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.tb_consoleName = new System.Windows.Forms.TextBox();
+            tb_consoleName = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
-            this.tb_waittime = new System.Windows.Forms.TextBox();
+            tb_waittime = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.rb_frontfpo = new System.Windows.Forms.RadioButton();
-            this.rb_front = new System.Windows.Forms.RadioButton();
+            rb_frontfpo = new System.Windows.Forms.RadioButton();
+            rb_front = new System.Windows.Forms.RadioButton();
             this.rb_back = new System.Windows.Forms.RadioButton();
             this.nud_DefaultCount = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
@@ -132,21 +132,21 @@ namespace Ledybot
             // 
             // tb_IP
             // 
-            this.tb_IP.Location = new System.Drawing.Point(13, 13);
-            this.tb_IP.Name = "tb_IP";
-            this.tb_IP.Size = new System.Drawing.Size(100, 20);
-            this.tb_IP.TabIndex = 0;
-            this.tb_IP.Text = "192.168.1.19";
+            tb_IP.Location = new System.Drawing.Point(13, 13);
+            tb_IP.Name = "tb_IP";
+            tb_IP.Size = new System.Drawing.Size(100, 20);
+            tb_IP.TabIndex = 0;
+            tb_IP.Text = "192.168.1.19";
             // 
             // btn_Connect
             // 
-            this.btn_Connect.Location = new System.Drawing.Point(119, 13);
-            this.btn_Connect.Name = "btn_Connect";
-            this.btn_Connect.Size = new System.Drawing.Size(75, 20);
-            this.btn_Connect.TabIndex = 5;
-            this.btn_Connect.Text = "Connect";
-            this.btn_Connect.UseVisualStyleBackColor = true;
-            this.btn_Connect.Click += new System.EventHandler(this.btn_Connect_Click);
+            btn_Connect.Location = new System.Drawing.Point(119, 13);
+            btn_Connect.Name = "btn_Connect";
+            btn_Connect.Size = new System.Drawing.Size(75, 20);
+            btn_Connect.TabIndex = 5;
+            btn_Connect.Text = "Connect";
+            btn_Connect.UseVisualStyleBackColor = true;
+            btn_Connect.Click += new System.EventHandler(this.btn_Connect_Click);
             // 
             // label1
             // 
@@ -159,25 +159,25 @@ namespace Ledybot
             // 
             // btn_Start
             // 
-            this.btn_Start.Enabled = false;
-            this.btn_Start.Location = new System.Drawing.Point(3, 45);
-            this.btn_Start.Name = "btn_Start";
-            this.btn_Start.Size = new System.Drawing.Size(58, 23);
-            this.btn_Start.TabIndex = 16;
-            this.btn_Start.Text = "Start";
-            this.btn_Start.UseVisualStyleBackColor = true;
-            this.btn_Start.Click += new System.EventHandler(this.btn_Start_Click);
+            btn_Start.Enabled = false;
+            btn_Start.Location = new System.Drawing.Point(3, 45);
+            btn_Start.Name = "btn_Start";
+            btn_Start.Size = new System.Drawing.Size(58, 23);
+            btn_Start.TabIndex = 16;
+            btn_Start.Text = "Start";
+            btn_Start.UseVisualStyleBackColor = true;
+            btn_Start.Click += new System.EventHandler(btn_Start_Click);
             // 
             // btn_Stop
             // 
-            this.btn_Stop.Enabled = false;
-            this.btn_Stop.Location = new System.Drawing.Point(67, 45);
-            this.btn_Stop.Name = "btn_Stop";
-            this.btn_Stop.Size = new System.Drawing.Size(58, 23);
-            this.btn_Stop.TabIndex = 17;
-            this.btn_Stop.Text = "Stop";
-            this.btn_Stop.UseVisualStyleBackColor = true;
-            this.btn_Stop.Click += new System.EventHandler(this.btn_Stop_Click);
+            btn_Stop.Enabled = false;
+            btn_Stop.Location = new System.Drawing.Point(67, 45);
+            btn_Stop.Name = "btn_Stop";
+            btn_Stop.Size = new System.Drawing.Size(58, 23);
+            btn_Stop.TabIndex = 17;
+            btn_Stop.Text = "Stop";
+            btn_Stop.UseVisualStyleBackColor = true;
+            btn_Stop.Click += new System.EventHandler(this.btn_Stop_Click);
             // 
             // lv_log
             // 
@@ -259,13 +259,13 @@ namespace Ledybot
             // 
             // cb_Blacklist
             // 
-            this.cb_Blacklist.AutoSize = true;
-            this.cb_Blacklist.Location = new System.Drawing.Point(276, 22);
-            this.cb_Blacklist.Name = "cb_Blacklist";
-            this.cb_Blacklist.Size = new System.Drawing.Size(72, 17);
-            this.cb_Blacklist.TabIndex = 20;
-            this.cb_Blacklist.Text = "Black List";
-            this.cb_Blacklist.UseVisualStyleBackColor = true;
+            cb_Blacklist.AutoSize = true;
+            cb_Blacklist.Location = new System.Drawing.Point(276, 22);
+            cb_Blacklist.Name = "cb_Blacklist";
+            cb_Blacklist.Size = new System.Drawing.Size(72, 17);
+            cb_Blacklist.TabIndex = 20;
+            cb_Blacklist.Text = "Black List";
+            cb_Blacklist.UseVisualStyleBackColor = true;
             // 
             // tc_Control
             // 
@@ -287,17 +287,17 @@ namespace Ledybot
             // 
             this.tp_GTS.AllowDrop = true;
             this.tp_GTS.Controls.Add(this.groupBox3);
-            this.tp_GTS.Controls.Add(this.combo_levelrange);
-            this.tp_GTS.Controls.Add(this.combo_gender);
-            this.tp_GTS.Controls.Add(this.combo_pkmnList);
+            this.tp_GTS.Controls.Add(combo_levelrange);
+            this.tp_GTS.Controls.Add(combo_gender);
+            this.tp_GTS.Controls.Add(combo_pkmnList);
             this.tp_GTS.Controls.Add(this.btn_Clear);
             this.tp_GTS.Controls.Add(this.btn_Import);
             this.tp_GTS.Controls.Add(this.btn_Banlist);
             this.tp_GTS.Controls.Add(this.btn_ShowPaths);
             this.tp_GTS.Controls.Add(this.label1);
-            this.tp_GTS.Controls.Add(this.btn_Start);
-            this.tp_GTS.Controls.Add(this.cb_Blacklist);
-            this.tp_GTS.Controls.Add(this.btn_Stop);
+            this.tp_GTS.Controls.Add(btn_Start);
+            this.tp_GTS.Controls.Add(cb_Blacklist);
+            this.tp_GTS.Controls.Add(btn_Stop);
             this.tp_GTS.Controls.Add(this.btn_Export);
             this.tp_GTS.Controls.Add(this.lv_log);
             this.tp_GTS.Location = new System.Drawing.Point(4, 22);
@@ -310,7 +310,7 @@ namespace Ledybot
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.cb_Reddit);
+            this.groupBox3.Controls.Add(cb_Reddit);
             this.groupBox3.Controls.Add(this.tb_thread);
             this.groupBox3.Location = new System.Drawing.Point(158, 74);
             this.groupBox3.Name = "groupBox3";
@@ -321,13 +321,13 @@ namespace Ledybot
             // 
             // cb_Reddit
             // 
-            this.cb_Reddit.AutoSize = true;
-            this.cb_Reddit.Location = new System.Drawing.Point(6, 19);
-            this.cb_Reddit.Name = "cb_Reddit";
-            this.cb_Reddit.Size = new System.Drawing.Size(88, 17);
-            this.cb_Reddit.TabIndex = 30;
-            this.cb_Reddit.Text = "Use FC Flairs";
-            this.cb_Reddit.UseVisualStyleBackColor = true;
+            cb_Reddit.AutoSize = true;
+            cb_Reddit.Location = new System.Drawing.Point(6, 19);
+            cb_Reddit.Name = "cb_Reddit";
+            cb_Reddit.Size = new System.Drawing.Size(88, 17);
+            cb_Reddit.TabIndex = 30;
+            cb_Reddit.Text = "Use FC Flairs";
+            cb_Reddit.UseVisualStyleBackColor = true;
             // 
             // tb_thread
             // 
@@ -338,8 +338,8 @@ namespace Ledybot
             // 
             // combo_levelrange
             // 
-            this.combo_levelrange.FormattingEnabled = true;
-            this.combo_levelrange.Items.AddRange(new object[] {
+            combo_levelrange.FormattingEnabled = true;
+            combo_levelrange.Items.AddRange(new object[] {
             "  Any",
             "01 - 10",
             "11 - 20",
@@ -351,32 +351,32 @@ namespace Ledybot
             "71 - 80",
             "81 - 90",
             "91 - 100 "});
-            this.combo_levelrange.Location = new System.Drawing.Point(195, 18);
-            this.combo_levelrange.Name = "combo_levelrange";
-            this.combo_levelrange.Size = new System.Drawing.Size(75, 21);
-            this.combo_levelrange.TabIndex = 35;
+            combo_levelrange.Location = new System.Drawing.Point(195, 18);
+            combo_levelrange.Name = "combo_levelrange";
+            combo_levelrange.Size = new System.Drawing.Size(75, 21);
+            combo_levelrange.TabIndex = 35;
             // 
             // combo_gender
             // 
-            this.combo_gender.FormattingEnabled = true;
-            this.combo_gender.Items.AddRange(new object[] {
+            combo_gender.FormattingEnabled = true;
+            combo_gender.Items.AddRange(new object[] {
             "Any",
             "Male",
             "Female"});
-            this.combo_gender.Location = new System.Drawing.Point(125, 18);
-            this.combo_gender.Name = "combo_gender";
-            this.combo_gender.Size = new System.Drawing.Size(64, 21);
-            this.combo_gender.TabIndex = 34;
+            combo_gender.Location = new System.Drawing.Point(125, 18);
+            combo_gender.Name = "combo_gender";
+            combo_gender.Size = new System.Drawing.Size(64, 21);
+            combo_gender.TabIndex = 34;
             // 
             // combo_pkmnList
             // 
-            this.combo_pkmnList.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.combo_pkmnList.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.combo_pkmnList.FormattingEnabled = true;
-            this.combo_pkmnList.Location = new System.Drawing.Point(5, 19);
-            this.combo_pkmnList.Name = "combo_pkmnList";
-            this.combo_pkmnList.Size = new System.Drawing.Size(113, 21);
-            this.combo_pkmnList.TabIndex = 30;
+            combo_pkmnList.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            combo_pkmnList.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            combo_pkmnList.FormattingEnabled = true;
+            combo_pkmnList.Location = new System.Drawing.Point(5, 19);
+            combo_pkmnList.Name = "combo_pkmnList";
+            combo_pkmnList.Size = new System.Drawing.Size(113, 21);
+            combo_pkmnList.TabIndex = 30;
             // 
             // btn_Clear
             // 
@@ -754,9 +754,9 @@ namespace Ledybot
             // 
             // tb_Settings
             // 
-            this.tb_Settings.Controls.Add(this.cb_UseLedySync);
+            this.tb_Settings.Controls.Add(cb_UseLedySync);
             this.tb_Settings.Controls.Add(this.groupBox2);
-            this.tb_Settings.Controls.Add(this.tb_waittime);
+            this.tb_Settings.Controls.Add(tb_waittime);
             this.tb_Settings.Controls.Add(this.label6);
             this.tb_Settings.Controls.Add(this.groupBox1);
             this.tb_Settings.Controls.Add(this.nud_DefaultCount);
@@ -773,23 +773,23 @@ namespace Ledybot
             // 
             // cb_UseLedySync
             // 
-            this.cb_UseLedySync.AutoSize = true;
-            this.cb_UseLedySync.Location = new System.Drawing.Point(12, 173);
-            this.cb_UseLedySync.Name = "cb_UseLedySync";
-            this.cb_UseLedySync.Size = new System.Drawing.Size(95, 17);
-            this.cb_UseLedySync.TabIndex = 10;
-            this.cb_UseLedySync.Text = "Use LedySync";
-            this.cb_UseLedySync.UseVisualStyleBackColor = true;
+            cb_UseLedySync.AutoSize = true;
+            cb_UseLedySync.Location = new System.Drawing.Point(12, 173);
+            cb_UseLedySync.Name = "cb_UseLedySync";
+            cb_UseLedySync.Size = new System.Drawing.Size(95, 17);
+            cb_UseLedySync.TabIndex = 10;
+            cb_UseLedySync.Text = "Use LedySync";
+            cb_UseLedySync.UseVisualStyleBackColor = true;
             // 
             // groupBox2
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.tb_LedySyncPort);
-            this.groupBox2.Controls.Add(this.tb_LedySyncIP);
+            this.groupBox2.Controls.Add(tb_LedySyncPort);
+            this.groupBox2.Controls.Add(tb_LedySyncIP);
             this.groupBox2.Controls.Add(this.label14);
             this.groupBox2.Controls.Add(this.label8);
-            this.groupBox2.Controls.Add(this.tb_consoleName);
+            this.groupBox2.Controls.Add(tb_consoleName);
             this.groupBox2.Controls.Add(this.label13);
             this.groupBox2.Location = new System.Drawing.Point(10, 196);
             this.groupBox2.Name = "groupBox2";
@@ -800,24 +800,24 @@ namespace Ledybot
             // 
             // tb_LedySyncPort
             // 
-            this.tb_LedySyncPort.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            tb_LedySyncPort.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tb_LedySyncPort.Location = new System.Drawing.Point(92, 43);
-            this.tb_LedySyncPort.Name = "tb_LedySyncPort";
-            this.tb_LedySyncPort.Size = new System.Drawing.Size(252, 20);
-            this.tb_LedySyncPort.TabIndex = 10;
-            this.tb_LedySyncPort.Text = "3000";
+            tb_LedySyncPort.Location = new System.Drawing.Point(92, 43);
+            tb_LedySyncPort.Name = "tb_LedySyncPort";
+            tb_LedySyncPort.Size = new System.Drawing.Size(252, 20);
+            tb_LedySyncPort.TabIndex = 10;
+            tb_LedySyncPort.Text = "3000";
             // 
             // tb_LedySyncIP
             // 
-            this.tb_LedySyncIP.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            tb_LedySyncIP.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tb_LedySyncIP.Location = new System.Drawing.Point(92, 17);
-            this.tb_LedySyncIP.Name = "tb_LedySyncIP";
-            this.tb_LedySyncIP.Size = new System.Drawing.Size(252, 20);
-            this.tb_LedySyncIP.TabIndex = 9;
-            this.tb_LedySyncIP.Text = "127.0.0.1";
-            this.tb_LedySyncIP.TextChanged += new System.EventHandler(this.tb_LedySyncIP_TextChanged);
+            tb_LedySyncIP.Location = new System.Drawing.Point(92, 17);
+            tb_LedySyncIP.Name = "tb_LedySyncIP";
+            tb_LedySyncIP.Size = new System.Drawing.Size(252, 20);
+            tb_LedySyncIP.TabIndex = 9;
+            tb_LedySyncIP.Text = "127.0.0.1";
+            tb_LedySyncIP.TextChanged += new System.EventHandler(this.tb_LedySyncIP_TextChanged);
             // 
             // label14
             // 
@@ -839,13 +839,13 @@ namespace Ledybot
             // 
             // tb_consoleName
             // 
-            this.tb_consoleName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            tb_consoleName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tb_consoleName.Location = new System.Drawing.Point(92, 69);
-            this.tb_consoleName.Name = "tb_consoleName";
-            this.tb_consoleName.Size = new System.Drawing.Size(252, 20);
-            this.tb_consoleName.TabIndex = 8;
-            this.tb_consoleName.Text = "Ledybot";
+            tb_consoleName.Location = new System.Drawing.Point(92, 69);
+            tb_consoleName.Name = "tb_consoleName";
+            tb_consoleName.Size = new System.Drawing.Size(252, 20);
+            tb_consoleName.TabIndex = 8;
+            tb_consoleName.Text = "Ledybot";
             // 
             // label13
             // 
@@ -858,13 +858,13 @@ namespace Ledybot
             // 
             // tb_waittime
             // 
-            this.tb_waittime.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            tb_waittime.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tb_waittime.Location = new System.Drawing.Point(131, 148);
-            this.tb_waittime.Name = "tb_waittime";
-            this.tb_waittime.Size = new System.Drawing.Size(229, 20);
-            this.tb_waittime.TabIndex = 6;
-            this.tb_waittime.Text = "1000";
+            tb_waittime.Location = new System.Drawing.Point(131, 148);
+            tb_waittime.Name = "tb_waittime";
+            tb_waittime.Size = new System.Drawing.Size(229, 20);
+            tb_waittime.TabIndex = 6;
+            tb_waittime.Text = "1000";
             // 
             // label6
             // 
@@ -879,8 +879,8 @@ namespace Ledybot
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.rb_frontfpo);
-            this.groupBox1.Controls.Add(this.rb_front);
+            this.groupBox1.Controls.Add(rb_frontfpo);
+            this.groupBox1.Controls.Add(rb_front);
             this.groupBox1.Controls.Add(this.rb_back);
             this.groupBox1.Location = new System.Drawing.Point(10, 51);
             this.groupBox1.Name = "groupBox1";
@@ -891,24 +891,24 @@ namespace Ledybot
             // 
             // rb_frontfpo
             // 
-            this.rb_frontfpo.AutoSize = true;
-            this.rb_frontfpo.Location = new System.Drawing.Point(6, 43);
-            this.rb_frontfpo.Name = "rb_frontfpo";
-            this.rb_frontfpo.Size = new System.Drawing.Size(164, 17);
-            this.rb_frontfpo.TabIndex = 2;
-            this.rb_frontfpo.TabStop = true;
-            this.rb_frontfpo.Text = "from the back (first page only)";
-            this.rb_frontfpo.UseVisualStyleBackColor = true;
+            rb_frontfpo.AutoSize = true;
+            rb_frontfpo.Location = new System.Drawing.Point(6, 43);
+            rb_frontfpo.Name = "rb_frontfpo";
+            rb_frontfpo.Size = new System.Drawing.Size(164, 17);
+            rb_frontfpo.TabIndex = 2;
+            rb_frontfpo.TabStop = true;
+            rb_frontfpo.Text = "from the back (first page only)";
+            rb_frontfpo.UseVisualStyleBackColor = true;
             // 
             // rb_front
             // 
-            this.rb_front.AutoSize = true;
-            this.rb_front.Location = new System.Drawing.Point(6, 66);
-            this.rb_front.Name = "rb_front";
-            this.rb_front.Size = new System.Drawing.Size(87, 17);
-            this.rb_front.TabIndex = 1;
-            this.rb_front.Text = "from the front";
-            this.rb_front.UseVisualStyleBackColor = true;
+            rb_front.AutoSize = true;
+            rb_front.Location = new System.Drawing.Point(6, 66);
+            rb_front.Name = "rb_front";
+            rb_front.Size = new System.Drawing.Size(87, 17);
+            rb_front.TabIndex = 1;
+            rb_front.Text = "from the front";
+            rb_front.UseVisualStyleBackColor = true;
             // 
             // rb_back
             // 
@@ -1061,8 +1061,8 @@ namespace Ledybot
             this.Controls.Add(this.rt_status);
             this.Controls.Add(this.btn_Disconnect);
             this.Controls.Add(this.tc_Control);
-            this.Controls.Add(this.btn_Connect);
-            this.Controls.Add(this.tb_IP);
+            this.Controls.Add(btn_Connect);
+            this.Controls.Add(tb_IP);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
@@ -1099,17 +1099,17 @@ namespace Ledybot
 
         #endregion
 
-        private System.Windows.Forms.TextBox tb_IP;
-        private System.Windows.Forms.Button btn_Connect;
+        public static System.Windows.Forms.TextBox tb_IP;
+        public static System.Windows.Forms.Button btn_Connect;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button btn_Start;
-        private System.Windows.Forms.Button btn_Stop;
+        public static System.Windows.Forms.Button btn_Start;
+        public static System.Windows.Forms.Button btn_Stop;
         private System.Windows.Forms.ListView lv_log;
         private System.Windows.Forms.ColumnHeader Time;
         private System.Windows.Forms.ColumnHeader Trainer;
         private System.Windows.Forms.ColumnHeader NickName;
         private System.Windows.Forms.Button btn_Export;
-        private System.Windows.Forms.CheckBox cb_Blacklist;
+       public static System.Windows.Forms.CheckBox cb_Blacklist;
         private System.Windows.Forms.TabControl tc_Control;
         private System.Windows.Forms.TabPage tp_GTS;
         private System.Windows.Forms.TabPage tp_Injection;
@@ -1137,7 +1137,7 @@ namespace Ledybot
         private System.Windows.Forms.ColumnHeader FC;
         private System.Windows.Forms.Button btn_ShowPaths;
         private System.Windows.Forms.Button btn_Banlist;
-        private System.Windows.Forms.CheckBox cb_Reddit;
+        public static System.Windows.Forms.CheckBox cb_Reddit;
         private System.Windows.Forms.TextBox tb_thread;
         private System.Windows.Forms.ColumnHeader pkmnSent;
         private System.Windows.Forms.TabPage tb_Settings;
@@ -1158,26 +1158,26 @@ namespace Ledybot
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.OpenFileDialog ofd_WCInjection;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.RadioButton rb_front;
+        public static System.Windows.Forms.RadioButton rb_front;
         private System.Windows.Forms.RadioButton rb_back;
-        private System.Windows.Forms.TextBox tb_waittime;
+        public static System.Windows.Forms.TextBox tb_waittime;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox tb_consoleName;
-        private System.Windows.Forms.CheckBox cb_UseLedySync;
+        public static System.Windows.Forms.TextBox tb_consoleName;
+        public static System.Windows.Forms.CheckBox cb_UseLedySync;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.TextBox tb_LedySyncPort;
-        private System.Windows.Forms.TextBox tb_LedySyncIP;
+        public static System.Windows.Forms.TextBox tb_LedySyncPort;
+        public static System.Windows.Forms.TextBox tb_LedySyncIP;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.RadioButton rb_frontfpo;
-        private System.Windows.Forms.ComboBox combo_pkmnList;
+       public static System.Windows.Forms.RadioButton rb_frontfpo;
+        public static System.Windows.Forms.ComboBox combo_pkmnList;
         private System.Windows.Forms.RichTextBox rt_status;
         private System.Windows.Forms.ColumnHeader page;
         private System.Windows.Forms.ColumnHeader index;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.ComboBox combo_levelrange;
-        private System.Windows.Forms.ComboBox combo_gender;
+        public static  System.Windows.Forms.ComboBox combo_levelrange;
+        public static System.Windows.Forms.ComboBox combo_gender;
         private System.Windows.Forms.TabPage discord;
         public System.Windows.Forms.TextBox token;
         public System.Windows.Forms.Button cordconnect;

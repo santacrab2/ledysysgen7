@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Ledybot
 {
-    class RemoteControl
+    public class RemoteControl
     {
         // Class variables
         private int timeout = 10; // Max timeout in seconds

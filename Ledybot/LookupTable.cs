@@ -2,7 +2,7 @@
 
 namespace Ledybot
 {
-    class LookupTable
+    public class LookupTable
     {
         #region Empty poke
 

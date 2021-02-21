@@ -19,8 +19,8 @@ namespace Ledybot
         public delegate void LogDelegate(string l);
         public LogDelegate delLastLog;
         public string lastlog = "";
-        public int pid = 0;
-        public int game = 0;
+        public static int pid = 0;
+        public static int game = 0;
         public PKHeX dumpedPKHeX = new PKHeX();
         public string oath = "";
 
@@ -30,18 +30,18 @@ namespace Ledybot
         public uint partyOff;
         private uint eggOff;
 
-        private bool botWorking = false;
-        private bool botStop = false;
-        private int botNumber = -1;
+        public static bool botWorking = false;
+       public static bool botStop = false;
+        public static int botNumber = -1;
 
-        private GTSBot7 GTSBot7;
-        private GTSBot6 GTSBot6;
-        public EggBot eggbot;
+        public static GTSBot7 GTSBot7;
+        public static GTSBot6 GTSBot6;
+        public static EggBot eggbot;
 
         public ArrayList banlist = new ArrayList();
         static Dictionary<uint, DataReadyWaiting> waitingForData = new Dictionary<uint, DataReadyWaiting>();
         public ArrayList commented = new ArrayList();
-        public Dictionary<int, Tuple<string, string, int, int, int, ArrayList>> giveawayDetails = new Dictionary<int, Tuple<string, string, int, int, int, ArrayList>>();
+        public static Dictionary<int, Tuple<string, string, int, int, int, ArrayList>> giveawayDetails = new Dictionary<int, Tuple<string, string, int, int, int, ArrayList>>();
         public Dictionary<int, string> countries = new Dictionary<int, string>();
         public Dictionary<int, string> regions = new Dictionary<int, string>();
 
@@ -61,7 +61,7 @@ namespace Ledybot
             ofd_WCInjection.InitialDirectory = path;
             getCountries();
             btn_Disconnect.Enabled = false;
-            this.combo_pkmnList.Items.AddRange(Program.PKTable.Species7);
+            combo_pkmnList.Items.AddRange(Program.PKTable.Species7);
         }
 
         public void startAutoDisconnect()
@@ -254,7 +254,7 @@ namespace Ledybot
 
         EggBot workerObject = null;
 
-        private async void btn_Start_Click(object sender, EventArgs e)
+        public static async void btn_Start_Click(object sender, EventArgs e)
         {
             if (giveawayDetails.Count() == 0)
             {

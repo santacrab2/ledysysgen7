@@ -15,12 +15,13 @@ using System.Net;
 public class discordbot
 {
 
-
+    
     private DiscordSocketClient _client;
     private CommandService _commands;
     Queue tradequeue = new Queue();
     private static readonly WebClient webClient = new WebClient();
-    public static PKM tradeable;
+    
+    
 
 
 
@@ -119,9 +120,14 @@ public class discordbot
 
     public class trademodule : ModuleBase
     {
+
+        public static PKM tradeable;
+        
+        
         [Command("trade")]
         public async Task Trade()
         {
+    
             //this grabs the file the user uploads to discord even they even do it.
             var pokm = Context.Message.Attachments.FirstOrDefault();
             if (pokm == default)
@@ -140,7 +146,7 @@ public class discordbot
 
             ReplyAsync("file accepted");
             var buffer = await DownloadFromUrlAsync(pokm.Url).ConfigureAwait(false);
-            PKM tradeable = PKMConverter.GetPKMfromBytes(buffer, pokm.Filename.Contains("pk6") ? 6 : 7);
+            tradeable = PKMConverter.GetPKMfromBytes(buffer, pokm.Filename.Contains("pk6") ? 6 : 7);
             var la = new PKHeX.Core.LegalityAnalysis(tradeable);
             if (!la.Valid)
             {
@@ -149,6 +155,7 @@ public class discordbot
             else
             {
                 ReplyAsync("yay its legal good job!");
+                Ledybot.MainForm.btn_Start_Click(null, EventArgs.Empty);
             }
         }
     }

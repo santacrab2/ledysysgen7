@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace Ledybot
 {
 
-    class readMemRequest
+    public class readMemRequest
     {
         public string fileName;
         public bool isCallback;
@@ -49,7 +49,7 @@ namespace Ledybot
         }
     }
 
-    class NTR
+    public class NTR
     {
         public String host;
         public int port;

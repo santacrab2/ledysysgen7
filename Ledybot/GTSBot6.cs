@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 namespace Ledybot
 {
-    class GTSBot6
+   public class GTSBot6
     {
 
         //private System.IO.StreamWriter file = new StreamWriter(@"C:\Temp\ledylog.txt");
@@ -394,9 +394,9 @@ namespace Ledybot
                                 //Collect Data
                                 dex = BitConverter.ToInt16(block, 0x0);
 
-                                if (Program.f1.giveawayDetails.ContainsKey(dex))
+                                if (Ledybot.MainForm.giveawayDetails.ContainsKey(dex))
                                 {
-                                    Program.f1.giveawayDetails.TryGetValue(dex, out details);
+                                   Ledybot.MainForm.giveawayDetails.TryGetValue(dex, out details);
 
                                     if (details.Item1 == "")
                                     {
@@ -558,7 +558,7 @@ namespace Ledybot
 
                                 if (details.Item5 > 0)
                                 {
-                                    Program.f1.giveawayDetails[dex] = new Tuple<string, string, int, int, int, ArrayList>(details.Item1, details.Item2, details.Item3, details.Item4, details.Item5 - 1, details.Item6);
+                                    Ledybot.MainForm.giveawayDetails[dex] = new Tuple<string, string, int, int, int, ArrayList>(details.Item1, details.Item2, details.Item3, details.Item4, details.Item5 - 1, details.Item6);
                                     foreach (System.Data.DataRow row in Program.gd.details.Rows)
                                     {
                                         if (row[0].ToString() == dex.ToString())
@@ -589,7 +589,7 @@ namespace Ledybot
                                 await Task.Delay(35000);
                                 bool cont = false;
 
-                                foreach (KeyValuePair<int, Tuple<string, string, int, int, int, ArrayList>> pair in Program.f1.giveawayDetails)
+                                foreach (KeyValuePair<int, Tuple<string, string, int, int, int, ArrayList>> pair in Ledybot.MainForm.giveawayDetails)
                                 {
                                     if (pair.Value.Item5 != 0)
                                     {

@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace Ledybot
 {
-    static class Program
+    public static class Program
     {
         public static NTR ntrClient;
         public static ScriptHelper scriptHelper;
