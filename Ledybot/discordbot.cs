@@ -3,6 +3,7 @@ using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Threading;
 using Discord;
 using Discord.WebSocket;
 using Discord.Commands;
@@ -19,7 +20,7 @@ public class discordbot
     private DiscordSocketClient _client;
     private CommandService _commands;
     Queue tradequeue = new Queue();
-    private static readonly WebClient webClient = new WebClient();
+    public static readonly WebClient webClient = new WebClient();
     
     
 
@@ -42,7 +43,7 @@ public class discordbot
         await _client.LoginAsync(TokenType.Bot, token);
         await _client.StartAsync();
         CommandHandler ch = new CommandHandler(_client, _commands);
-        ch.InstallCommandsAsync();
+        await ch.InstallCommandsAsync();
 
         // Block this task until the program is closed.
         await Task.Delay(-1);
@@ -122,40 +123,49 @@ public class discordbot
     {
 
         public static PKM tradeable;
-        
-        
+        public static byte[] buffer;
+        public static IAttachment pokm;
+        public static string att;
+        public static string temppoke = Path.GetTempFileName();
+
+
+
         [Command("trade")]
         public async Task Trade()
         {
     
             //this grabs the file the user uploads to discord even they even do it.
-            var pokm = Context.Message.Attachments.FirstOrDefault();
+            pokm = Context.Message.Attachments.FirstOrDefault();
             if (pokm == default)
             {
-                ReplyAsync("no attachment provided");
+                await ReplyAsync("no attachment provided wtf are you doing?");
                 return;
             }
             //this cleans up the filename the user submitted and checks that its a pk6 or 7
-            var att = Format.Sanitize(pokm.Filename);
+            att = Format.Sanitize(pokm.Filename);
             if (!att.Contains(".pk7") && !att.Contains(".pk6"))
 
             {
-                ReplyAsync("no pk7 or pk6 provided");
+                await ReplyAsync("no pk7 or pk6 provided");
                 return;
             }
 
-            ReplyAsync("file accepted");
-            var buffer = await DownloadFromUrlAsync(pokm.Url).ConfigureAwait(false);
+            await ReplyAsync("file accepted..now to check if you know what you are doing with pkhex");
+            
+            buffer = await DownloadFromUrlAsync(pokm.Url);
+            await webClient.DownloadFileTaskAsync(pokm.Url, temppoke);
             tradeable = PKMConverter.GetPKMfromBytes(buffer, pokm.Filename.Contains("pk6") ? 6 : 7);
             var la = new PKHeX.Core.LegalityAnalysis(tradeable);
             if (!la.Valid)
             {
-                ReplyAsync("pokemon is illegal try again later");
+                await ReplyAsync("pokemon is illegal dumbass");
             }
             else
             {
-                ReplyAsync("yay its legal good job!");
-                Ledybot.MainForm.btn_Start_Click(null, EventArgs.Empty);
+                await ReplyAsync("yay its legal good job! pokedex number" + tradeable.Species);
+
+                //Ledybot.MainForm.btn_Start_Click(null, EventArgs.Empty);
+               
             }
         }
     }

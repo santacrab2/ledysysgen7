@@ -256,17 +256,14 @@ namespace Ledybot
 
         public static async void btn_Start_Click(object sender, EventArgs e)
         {
-            if (giveawayDetails.Count() == 0)
-            {
-                MessageBox.Show("No details are set!", "GTS Bot", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
             btn_Stop.Enabled = true;
             btn_Start.Enabled = false;
             Program.gd.disableButtons();
             botWorking = true;
             botStop = false;
             botNumber = 3;
+            
+  
 
             int tradeDirection = 0;
             if (rb_frontfpo.Checked)
@@ -355,7 +352,7 @@ namespace Ledybot
             this.rt_status.Text = "Bot Status: " + szNewStatus;
         }
 
-        private void btn_Stop_Click(object sender, EventArgs e)
+        public static void btn_Stop_Click(object sender, EventArgs e)
         {
             if (game == 1 || game == 2) // SUMO + USUM
             {

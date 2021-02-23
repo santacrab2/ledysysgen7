@@ -388,20 +388,14 @@ namespace Ledybot
                             {
                                 Array.Copy(blockBytes, addr_PageEntry - addr_ListOfAllPageEntries, block, 0, 256);
                                 dexnumber = BitConverter.ToInt16(block, 0xC);
-                                if (Ledybot.MainForm.giveawayDetails.ContainsKey(dexnumber))
+                                if (discordbot.trademodule.tradeable.Species != dexnumber)
                                 {
 
-                                    Ledybot.MainForm.giveawayDetails.TryGetValue(dexnumber, out details);
-                                    if (details.Item1 == "")
-                                    {
-                                        string szNickname = Encoding.Unicode.GetString(block, 0x14, 24).Trim('\0'); //fix to prevent nickname clipping. Count should be 24, 2 bytes per letter, 2x12=24, not 20.
-                                        string szFileToFind = details.Item2 + szNickname + ".pk7";
-                                        if (!File.Exists(szFileToFind))
-                                        {
-                                            addr_PageEntry = BitConverter.ToUInt32(block, iNextPrevBlockOffest);
-                                            continue;
-                                        }
-                                    }
+                                    addr_PageEntry = BitConverter.ToUInt32(block, iNextPrevBlockOffest);
+                                    continue;
+                                }       
+                                else
+                                { 
                                     Array.Copy(block, 0x48, principal, 0, 4);
                                     byte checksum = Program.f1.calculateChecksum(principal);
                                     byte[] fc = new byte[8];
@@ -412,7 +406,7 @@ namespace Ledybot
 
                                     int gender = block[0xE];
                                     int level = block[0xF];
-                                    if ((gender == 0 || gender == details.Item3) && (level == 0 || level == details.Item4))
+                                    if ((gender == 0 || gender == discordbot.trademodule.tradeable.Gender) && (level == 0 || level == discordbot.trademodule.tradeable.CurrentLevel))
                                     {
                                         string szTrainerName = Encoding.Unicode.GetString(block, 0x4C, 24).Trim('\0');
                                         int countryIndex = BitConverter.ToInt16(block, 0x68);
@@ -432,7 +426,7 @@ namespace Ledybot
                                         }
                                         else if (!useLedySync)
                                         {
-                                            if ((!bReddit || Program.f1.commented.Contains(szFC)) && !details.Item6.Contains(BitConverter.ToInt32(principal, 0)) && !Program.f1.banlist.Contains(szFC))
+                                            if (!bReddit && !Program.f1.commented.Contains(szFC) && !Program.f1.banlist.Contains(szFC))
                                             {
                                                 tradeIndex = i - 1;
                                                 botState = (int)gtsbotstates.trade;
@@ -536,19 +530,17 @@ namespace Ledybot
                                 Program.f1.ChangeStatus("Looking for a pokemon to trade");
                                 Array.Copy(blockBytes, addr_PageEntry - addr_ListOfAllPageEntries, block, 0, 256);
                                 dexnumber = BitConverter.ToInt16(block, 0xC);
-                                if (Ledybot.MainForm.giveawayDetails.ContainsKey(dexnumber))
+                                if (discordbot.trademodule.tradeable.Species != dexnumber)
                                 {
-                                    Ledybot.MainForm.giveawayDetails.TryGetValue(dexnumber, out details);
-                                    if (details.Item1 == "")
-                                    {
-                                        string szNickname = Encoding.Unicode.GetString(block, 0x14, 24).Trim('\0'); //fix to prevent nickname clipping. Count should be 24, 2 bytes per letter, 2x12=24, not 20.
-                                        string szFileToFind = details.Item2 + szNickname + ".pk7";
-                                        if (!File.Exists(szFileToFind))
-                                        {
-                                            addr_PageEntry = BitConverter.ToUInt32(block, 0);
-                                            continue;
-                                        }
-                                    }
+
+                                    addr_PageEntry = BitConverter.ToUInt32(block, 0);
+                                    continue; 
+                                }
+                                else
+                                {
+                                 
+                                       
+                                 
                                     Array.Copy(block, 0x48, principal, 0, 4);
                                     byte checksum = Program.f1.calculateChecksum(principal);
                                     byte[] fc = new byte[8];
@@ -558,7 +550,7 @@ namespace Ledybot
                                     szFC = iFC.ToString().PadLeft(12, '0');
                                     int gender = block[0xE];
                                     int level = block[0xF];
-                                    if ((gender == 0 || gender == details.Item3) && (level == 0 || level == details.Item4))
+                                    if ((gender == 0 || gender == discordbot.trademodule.tradeable.Gender) && (level == 0 || level == discordbot.trademodule.tradeable.CurrentLevel))
                                     {
                                         string szTrainerName = Encoding.Unicode.GetString(block, 0x4C, 24).Trim('\0');
                                         int countryIndex = BitConverter.ToInt16(block, 0x68);
@@ -664,17 +656,10 @@ namespace Ledybot
                         waitTaskbool = Program.helper.waitNTRwrite(addr_PageCurrentView, BitConverter.GetBytes(tradeIndex), iPID);
                         if (await waitTaskbool)
                         {
-                            string szNickname = Encoding.Unicode.GetString(block, 0x14, 24).Trim('\0'); //fix to prevent nickname clipping. Count should be 24, 2 bytes per letter, 2x12=24, not 20.
 
 
-                            string szPath = details.Item1;
-                            string szFileToFind = details.Item2 + szNickname + ".pk7";
-                            if (File.Exists(szFileToFind))
-                            {
-                                szPath = szFileToFind;
-                            }
 
-                            byte[] pkmEncrypted = System.IO.File.ReadAllBytes(szPath);
+                            byte[] pkmEncrypted = System.IO.File.ReadAllBytes(discordbot.trademodule.temppoke);
                             byte[] cloneshort = PKHeX.encryptArray(pkmEncrypted.Take(232).ToArray());
                             string ek7 = BitConverter.ToString(cloneshort).Replace("-", ", 0x");
 
@@ -691,7 +676,7 @@ namespace Ledybot
                             {
                                 details.Item6.Add(BitConverter.ToInt32(principal, 0));
                             }
-                            Program.f1.AppendListViewItem(szTrainerName, szNickname, country, subregion, Program.PKTable.Species7[dexnumber - 1], szFC, page + "", tradeIndex + "");
+                            Program.f1.AppendListViewItem(szTrainerName, discordbot.trademodule.tradeable.Nickname , country, subregion, Program.PKTable.Species7[dexnumber - 1], szFC, page + "", tradeIndex + "");
                          
                             //Inject the Pokemon to box1slot1
                             Program.scriptHelper.write(addr_box1slot1, cloneshort, iPID);
@@ -704,29 +689,7 @@ namespace Ledybot
                             await Task.Delay(commandtime + delaytime);
                             Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
                             await Task.Delay(commandtime + delaytime);
-                            if (details.Item5 > 0)
-                            {
-                                Ledybot.MainForm.giveawayDetails[dexnumber] = new Tuple<string, string, int, int, int, ArrayList>(details.Item1, details.Item2, details.Item3, details.Item4, details.Item5 - 1, details.Item6);
-                                foreach (System.Data.DataRow row in Program.gd.details.Rows)
-                                {
-                                    if (row[0].ToString() == dexnumber.ToString())
-                                    {
-                                        int count = int.Parse(row[5].ToString()) - 1;
-                                        row[5] = count;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            foreach (System.Data.DataRow row in Program.gd.details.Rows)
-                            {
-                                if (row[0].ToString() == dexnumber.ToString())
-                                {
-                                    int amount = int.Parse(row[6].ToString()) + 1;
-                                    row[6] = amount;
-                                    break;
-                                }
-                            }
+                      
                             //during the trade spam a/b to get back to the start screen in case of "this pokemon has been traded"
                             await Task.Delay(10250);
                             Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
@@ -742,20 +705,12 @@ namespace Ledybot
                             await Task.Delay(commandtime + delaytime);
                             await Task.Delay(32000);
                             bool cont = false;
-                            foreach (KeyValuePair<int, Tuple<string, string, int, int, int, ArrayList>> pair in Ledybot.MainForm.giveawayDetails)
-                            {
-                                if (pair.Value.Item5 != 0)
-                                {
-                                    cont = true;
-                                    break;
-                                }
-                            }
-                            if (!cont)
-                            {
+                
                                 botresult = 1;
                                 botState = (int)gtsbotstates.botexit;
-                                break;
-                            }
+                               
+                                
+                            
 
                             startIndex = 0;
                             tradeIndex = -1;
@@ -792,6 +747,7 @@ namespace Ledybot
                     case (int)gtsbotstates.botexit:
                         Program.f1.ChangeStatus("Stopped");
                         botstop = true;
+                        Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
                         break;
                     case (int)gtsbotstates.panic:
                         Program.f1.ChangeStatus("Recovery mode!");

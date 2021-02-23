@@ -177,7 +177,7 @@ namespace Ledybot
             btn_Stop.TabIndex = 17;
             btn_Stop.Text = "Stop";
             btn_Stop.UseVisualStyleBackColor = true;
-            btn_Stop.Click += new System.EventHandler(this.btn_Stop_Click);
+            btn_Stop.Click += new System.EventHandler(btn_Stop_Click);
             // 
             // lv_log
             // 
