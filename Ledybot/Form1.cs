@@ -312,9 +312,7 @@ namespace Ledybot
                     case 1:
                         MessageBox.Show("All Pokemon Traded.", "GTS Bot", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         break;
-                    case 8:
-                        MessageBox.Show("Bot stopped by user.", "GTS Bot", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        break;
+                    
                     default:
                         await GTSBot6.RunBot();
                         break;
