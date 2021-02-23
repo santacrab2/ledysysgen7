@@ -31,10 +31,10 @@ namespace Ledybot
         private uint eggOff;
 
         public static bool botWorking = false;
-       public static bool botStop = false;
+        public static bool botStop = false;
         public static int botNumber = -1;
 
-        public static GTSBot7 GTSBot7;
+        public static GTSBot7 GTsBot7;
         public static GTSBot6 GTSBot6;
         public static EggBot eggbot;
 
@@ -256,6 +256,7 @@ namespace Ledybot
 
         public static async void btn_Start_Click(object sender, EventArgs e)
         {
+            GTSBot7.botstop = false;
             btn_Stop.Enabled = true;
             btn_Start.Enabled = false;
             Program.gd.disableButtons();
@@ -277,7 +278,7 @@ namespace Ledybot
 
             if (game == 1 || game == 2) // SUMO + USUM
             {
-                GTSBot7 = new GTSBot7(pid, combo_pkmnList.SelectedIndex + 1, combo_gender.SelectedIndex, combo_levelrange.SelectedIndex, cb_Blacklist.Checked, cb_Reddit.Checked, tradeDirection, tb_waittime.Text, tb_consoleName.Text, cb_UseLedySync.Checked, tb_LedySyncIP.Text, tb_LedySyncPort.Text, game);
+                GTsBot7 = new GTSBot7(pid, combo_pkmnList.SelectedIndex + 1, combo_gender.SelectedIndex, combo_levelrange.SelectedIndex, cb_Blacklist.Checked, cb_Reddit.Checked, tradeDirection, tb_waittime.Text, tb_consoleName.Text, cb_UseLedySync.Checked, tb_LedySyncIP.Text, tb_LedySyncPort.Text, game);
                 Task<int> Bot = GTSBot7.RunBot();
                 int result = await Bot;
                 if (botStop)
@@ -285,20 +286,22 @@ namespace Ledybot
                 switch (result)
                 {
                     case 1:
-                        MessageBox.Show("All Pokemon Traded.", "GTS Bot", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        
                         break;
                     case 8:
-                        MessageBox.Show("Bot stopped by user.", "GTS Bot", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        Program.f1.ChangeStatus("bot stopped");
                         break;
                     default:
-                        MessageBox.Show("An error has occurred.", "GTS Bot", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Program.f1.ChangeStatus("its broken and idk why");
                         break;
                 }
+
                 Program.gd.enableButtons();
                 btn_Stop.Enabled = false;
                 btn_Start.Enabled = true;
                 botWorking = false;
                 botNumber = -1;
+                
             }
             else if (game == 3 || game == 4) // XY + ORAS
             {
@@ -306,7 +309,7 @@ namespace Ledybot
                 Task<int> Bot = GTSBot6.RunBot();
                 int result = await Bot;
                 if (botStop)
-                    result = 8;
+                    
                 switch (result)
                 {
                     case 1:
@@ -358,6 +361,7 @@ namespace Ledybot
                 btn_Start.Enabled = true;
                 btn_Stop.Enabled = false;
                 botStop = true;
+                
             }
             else if (game == 3 || game == 4) // XY + ORAS
             {
@@ -516,9 +520,9 @@ namespace Ledybot
 
                 if (game == 1 || game == 2) // SUMO + USUM
                 {
-                    if (GTSBot7 != null)
+                    if (GTsBot7 != null)
                     {
-                        GTSBot7.RequestStop();
+                        GTsBot7.RequestStop();
                     }
                 }
 

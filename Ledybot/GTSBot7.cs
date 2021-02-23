@@ -704,28 +704,30 @@ namespace Ledybot
                             Program.helper.quickbuton(Program.PKTable.keyB, commandtime);
                             await Task.Delay(commandtime + delaytime);
                             await Task.Delay(32000);
+                            discordbot.trademodule.pokequeue.Dequeue();
+                            discordbot.trademodule.username.Dequeue();
                             bool cont = false;
-                
+                         
+                                if (discordbot.trademodule.pokequeue.Count != 0)
+                                {
+                                    cont = true;
+                                    break;
+                                }
+                            
+                            if (!cont)
+                            {
                                 botresult = 1;
                                 botState = (int)gtsbotstates.botexit;
-                            
-                                
-                            
+                                break;
+                            }
 
                             startIndex = 0;
                             tradeIndex = -1;
                             listlength = 0;
                             addr_PageEntry = 0;
                             foundLastPage = false;
-                            break;
-                            if (bReddit)
-                            {
-                                botState = (int)gtsbotstates.updatecomments;
-                            }
-                            else
-                            {
-                                botState = (int)gtsbotstates.research;
-                            }
+                            botState = (int)gtsbotstates.botexit;
+                   
                         }
                         break;
                     case (int)gtsbotstates.quicksearch:
@@ -746,10 +748,10 @@ namespace Ledybot
                         break;
                     case (int)gtsbotstates.botexit:
                         Program.f1.ChangeStatus("Stopped");
-                        botstop = true;
                         File.Delete(discordbot.trademodule.temppoke);
-                        Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
-                        break;
+                        botstop = true;
+                        return botresult;
+                        
                     case (int)gtsbotstates.panic:
                         Program.f1.ChangeStatus("Recovery mode!");
                         //recover from weird state here
@@ -849,8 +851,11 @@ namespace Ledybot
                         botresult = -1;
                         botstop = true;
                         break;
+
                 }
             }
+            return botresult;
+
             if (serverEndPointSync != null)
             {
                 syncClient.Close();
@@ -859,7 +864,7 @@ namespace Ledybot
             {
                 tvClient.Close();
             }
-            return botresult;
+          
         }
 
         public void RequestStop()

@@ -49,7 +49,7 @@ public class discordbot
         await Task.Delay(-1);
 
     }
-    private Task Log(LogMessage msg)
+    public static Task Log(LogMessage msg)
     {
         Console.WriteLine(msg.ToString());
         return Task.CompletedTask;
@@ -169,30 +169,66 @@ public class discordbot
             {
                 await ReplyAsync("yay its legal good job!");
                 pokequeue.Enqueue(pokm.Url);
-                username.Enqueue(Context.User);
-                await ReplyAsync("added " + Context.User +" to queue");
-                await ReplyAsync(username.Peek().ToString()+" is first in line");
-                await starttrades();
-             
-
-                }
+                username.Enqueue(Context.User.Id);
+                await ReplyAsync("added " + Context.User + " to queue");
+                await checkstarttrade();
+            }
+                
+              
+                  
+                
+                
+                
 
                
             }
+   
+
+        public async Task checkstarttrade()
+        {
+            if(!Ledybot.MainForm.botWorking && pokequeue.Count != 0)
+            {
+                starttrades();
+            }
+            else
+            {
+                await ReplyAsync("There are " + pokequeue.Count + " trainers in the queue");
+            }
+        }
 
         public async Task starttrades()
         {
 
-            if (pokequeue.Count == 0)
+            while (pokequeue.Count != 0)
             {
-                return;
-            }
-            else
+                if (!Ledybot.MainForm.botWorking)
+                {
+                    await ReplyAsync("<@" + username.Peek() + ">" + " deposit your pokemon now");
+                    await webClient.DownloadFileTaskAsync(pokequeue.Peek().ToString(), temppoke);
+                    Ledybot.MainForm.btn_Start_Click(null, EventArgs.Empty);
+                    
+                }
+                else
+                {
+                    continue;
+                }
+            
             {
-                ReplyAsync("@"+username.Peek()+" deposit your pokemon now");
-                await webClient.DownloadFileTaskAsync(pokequeue.Peek().ToString(), temppoke);
-                Ledybot.MainForm.btn_Start_Click(null, EventArgs.Empty);
+                
             }
+
+                  }
+                
+                
+                 
+                
+                
+
+                
+
+
+            
+            
 
             }
         }
