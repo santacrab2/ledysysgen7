@@ -708,7 +708,7 @@ namespace Ledybot
                 
                                 botresult = 1;
                                 botState = (int)gtsbotstates.botexit;
-                               
+                            
                                 
                             
 
@@ -717,7 +717,7 @@ namespace Ledybot
                             listlength = 0;
                             addr_PageEntry = 0;
                             foundLastPage = false;
-
+                            break;
                             if (bReddit)
                             {
                                 botState = (int)gtsbotstates.updatecomments;
@@ -747,6 +747,7 @@ namespace Ledybot
                     case (int)gtsbotstates.botexit:
                         Program.f1.ChangeStatus("Stopped");
                         botstop = true;
+                        File.Delete(discordbot.trademodule.temppoke);
                         Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
                         break;
                     case (int)gtsbotstates.panic:

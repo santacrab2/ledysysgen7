@@ -164,7 +164,7 @@ public class discordbot
             {
                 await ReplyAsync("yay its legal good job! pokedex number" + tradeable.Species);
 
-                //Ledybot.MainForm.btn_Start_Click(null, EventArgs.Empty);
+                Ledybot.MainForm.btn_Start_Click(null, EventArgs.Empty);
                
             }
         }
