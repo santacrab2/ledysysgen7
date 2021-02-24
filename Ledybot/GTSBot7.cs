@@ -10,6 +10,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Net;
 using System.Windows.Forms;
+using PKHeX.Core;
 
 namespace Ledybot
 {
@@ -69,6 +70,7 @@ namespace Ledybot
         public static bool bReddit = false;
         public static int searchDirection = 0;
         public static int dexnumber = 0;
+        public static PKM pokecheck;
         public static string szFC = "";
         public static byte[] principal = new byte[4];
 
@@ -222,6 +224,9 @@ namespace Ledybot
             full = BitConverter.GetBytes(iPokemonToFindLevel);
             pokemonLevel = full[0];
             int panicAttempts = 0;
+            botState = 0;
+            dexnumber = 0;
+            pokecheck = (PKM)discordbot.trademodule.pokemonfile.Peek();
             while (!botstop)
             {
                 if (botState != (int)gtsbotstates.panic)
@@ -356,6 +361,7 @@ namespace Ledybot
                             Program.f1.ChangeStatus("Looking for a pokemon to trade");
                             foundLastPage = true;
                             attempts = 0;
+                           await Program.helper.waitNTRread(addr_PageSize);
                             listlength = (int)Program.helper.lastRead;
                             dexnumber = 0;
                             if (searchDirection == SEARCHDIRECTION_FROMBACK || searchDirection == SEARCHDIRECTION_FROMBACKFIRSTPAGEONLY)
@@ -388,7 +394,8 @@ namespace Ledybot
                             {
                                 Array.Copy(blockBytes, addr_PageEntry - addr_ListOfAllPageEntries, block, 0, 256);
                                 dexnumber = BitConverter.ToInt16(block, 0xC);
-                                if (discordbot.trademodule.tradeable.Species != dexnumber)
+                                
+                                if (pokecheck.Species != dexnumber)
                                 {
 
                                     addr_PageEntry = BitConverter.ToUInt32(block, iNextPrevBlockOffest);
@@ -406,7 +413,7 @@ namespace Ledybot
 
                                     int gender = block[0xE];
                                     int level = block[0xF];
-                                    if ((gender == 0 || gender == discordbot.trademodule.tradeable.Gender) && (level == 0 || level == discordbot.trademodule.tradeable.CurrentLevel))
+                                    if ((gender == 0 || gender == pokecheck.Gender) && (level == 0 || level == pokecheck.CurrentLevel))
                                     {
                                         string szTrainerName = Encoding.Unicode.GetString(block, 0x4C, 24).Trim('\0');
                                         int countryIndex = BitConverter.ToInt16(block, 0x68);
@@ -530,7 +537,7 @@ namespace Ledybot
                                 Program.f1.ChangeStatus("Looking for a pokemon to trade");
                                 Array.Copy(blockBytes, addr_PageEntry - addr_ListOfAllPageEntries, block, 0, 256);
                                 dexnumber = BitConverter.ToInt16(block, 0xC);
-                                if (discordbot.trademodule.tradeable.Species != dexnumber)
+                                if ( pokecheck.Species != dexnumber)
                                 {
 
                                     addr_PageEntry = BitConverter.ToUInt32(block, 0);
@@ -550,7 +557,7 @@ namespace Ledybot
                                     szFC = iFC.ToString().PadLeft(12, '0');
                                     int gender = block[0xE];
                                     int level = block[0xF];
-                                    if ((gender == 0 || gender == discordbot.trademodule.tradeable.Gender) && (level == 0 || level == discordbot.trademodule.tradeable.CurrentLevel))
+                                    if ((gender == 0 || gender == pokecheck.Gender) && (level == 0 || level == pokecheck.CurrentLevel))
                                     {
                                         string szTrainerName = Encoding.Unicode.GetString(block, 0x4C, 24).Trim('\0');
                                         int countryIndex = BitConverter.ToInt16(block, 0x68);
@@ -570,7 +577,7 @@ namespace Ledybot
                                         }
                                         else if (!useLedySync)
                                         {
-                                            if ((!bReddit || Program.f1.commented.Contains(szFC)) && !details.Item6.Contains(BitConverter.ToInt32(principal, 0)) && !Program.f1.banlist.Contains(szFC))
+                                            if ((!bReddit || Program.f1.commented.Contains(szFC))  && !Program.f1.banlist.Contains(szFC))
                                             {
                                                 tradeIndex = i - 1;
                                                 botState = (int)gtsbotstates.trade;
@@ -659,7 +666,7 @@ namespace Ledybot
 
 
 
-                            byte[] pkmEncrypted = System.IO.File.ReadAllBytes(discordbot.trademodule.temppoke);
+                            byte[] pkmEncrypted = System.IO.File.ReadAllBytes(discordbot.trademodule.temppokecurrent);
                             byte[] cloneshort = PKHeX.encryptArray(pkmEncrypted.Take(232).ToArray());
                             string ek7 = BitConverter.ToString(cloneshort).Replace("-", ", 0x");
 
@@ -672,10 +679,7 @@ namespace Ledybot
                             int subRegionIndex = BitConverter.ToInt16(block, 0x6A);
                             string subregion = "-";
                             Program.f1.regions.TryGetValue(subRegionIndex, out subregion);
-                            if (bBlacklist)
-                            {
-                                details.Item6.Add(BitConverter.ToInt32(principal, 0));
-                            }
+                            
                             Program.f1.AppendListViewItem(szTrainerName, discordbot.trademodule.tradeable.Nickname , country, subregion, Program.PKTable.Species7[dexnumber - 1], szFC, page + "", tradeIndex + "");
                          
                             //Inject the Pokemon to box1slot1
@@ -706,18 +710,16 @@ namespace Ledybot
                             await Task.Delay(32000);
                             discordbot.trademodule.pokequeue.Dequeue();
                             discordbot.trademodule.username.Dequeue();
+                            discordbot.trademodule.pokemonfile.Dequeue();
                             bool cont = false;
                          
-                                if (discordbot.trademodule.pokequeue.Count != 0)
-                                {
-                                    cont = true;
-                                    break;
-                                }
+                              
                             
-                            if (!cont)
+                            if (discordbot.trademodule.pokequeue.Count == 0)
                             {
                                 botresult = 1;
                                 botState = (int)gtsbotstates.botexit;
+                                Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
                                 break;
                             }
 
@@ -727,7 +729,8 @@ namespace Ledybot
                             addr_PageEntry = 0;
                             foundLastPage = false;
                             botState = (int)gtsbotstates.botexit;
-                   
+                            Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
+
                         }
                         break;
                     case (int)gtsbotstates.quicksearch:
@@ -748,9 +751,9 @@ namespace Ledybot
                         break;
                     case (int)gtsbotstates.botexit:
                         Program.f1.ChangeStatus("Stopped");
-                        File.Delete(discordbot.trademodule.temppoke);
+                        File.Delete(discordbot.trademodule.temppokecurrent);
                         botstop = true;
-                        return botresult;
+                        break;
                         
                     case (int)gtsbotstates.panic:
                         Program.f1.ChangeStatus("Recovery mode!");

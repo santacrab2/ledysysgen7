@@ -282,7 +282,9 @@ namespace Ledybot
                 Task<int> Bot = GTSBot7.RunBot();
                 int result = await Bot;
                 if (botStop)
+                {
                     result = 8;
+                }
                 switch (result)
                 {
                     case 1:

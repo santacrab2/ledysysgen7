@@ -126,9 +126,10 @@ public class discordbot
         public static byte[] buffer;
         public static IAttachment pokm;
         public static string att;
-        public static string temppoke = Path.GetTempFileName();
+        public static string temppokecurrent = Path.GetTempFileName();
         public static Queue pokequeue = new Queue();
         public static Queue username = new Queue();
+        public static Queue pokemonfile = new Queue();
         public static IUser dmer;
 
         
@@ -139,6 +140,7 @@ public class discordbot
         [Command("trade")]
         public async Task Trade()
         {
+            string temppokewait = Path.GetTempFileName();
     
             //this grabs the file the user uploads to discord if they even do it.
             pokm = Context.Message.Attachments.FirstOrDefault();
@@ -167,9 +169,11 @@ public class discordbot
             }
             else
             {
+               await webClient.DownloadFileTaskAsync(pokm.Url, temppokewait);
                 await ReplyAsync("yay its legal good job!");
-                pokequeue.Enqueue(pokm.Url);
+                pokequeue.Enqueue(temppokewait);
                 username.Enqueue(Context.User.Id);
+                pokemonfile.Enqueue(tradeable);
                 await ReplyAsync("added " + Context.User + " to queue");
                 await checkstarttrade();
             }
@@ -203,9 +207,11 @@ public class discordbot
             {
                 if (!Ledybot.MainForm.botWorking)
                 {
+                    temppokecurrent = (string)pokequeue.Peek();
                     await ReplyAsync("<@" + username.Peek() + ">" + " deposit your pokemon now");
-                    await webClient.DownloadFileTaskAsync(pokequeue.Peek().ToString(), temppoke);
+                   // webClient.DownloadFileTaskAsync(pokequeue.Peek().ToString(), temppoke);
                     Ledybot.MainForm.btn_Start_Click(null, EventArgs.Empty);
+                    
                     
                 }
                 else
