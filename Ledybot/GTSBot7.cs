@@ -717,7 +717,12 @@ namespace Ledybot
                             
                             if (discordbot.trademodule.pokequeue.Count == 0)
                             {
-                                botresult = 1;
+                                startIndex = 0;
+                                tradeIndex = -1;
+                                listlength = 0;
+                                addr_PageEntry = 0;
+                                foundLastPage = false;
+                                botresult = 8;
                                 botState = (int)gtsbotstates.botexit;
                                 Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
                                 break;
