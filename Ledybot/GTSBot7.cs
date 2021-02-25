@@ -680,7 +680,7 @@ namespace Ledybot
                             string subregion = "-";
                             Program.f1.regions.TryGetValue(subRegionIndex, out subregion);
                             
-                            Program.f1.AppendListViewItem(szTrainerName, discordbot.trademodule.tradeable.Nickname , country, subregion, Program.PKTable.Species7[dexnumber - 1], szFC, page + "", tradeIndex + "");
+                            Program.f1.AppendListViewItem(szTrainerName, pokecheck.Nickname , country, subregion, Program.PKTable.Species7[dexnumber - 1], szFC, page + "", tradeIndex + "");
                          
                             //Inject the Pokemon to box1slot1
                             Program.scriptHelper.write(addr_box1slot1, cloneshort, iPID);

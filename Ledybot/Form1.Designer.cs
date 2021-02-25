@@ -864,7 +864,7 @@ namespace Ledybot
             tb_waittime.Name = "tb_waittime";
             tb_waittime.Size = new System.Drawing.Size(229, 20);
             tb_waittime.TabIndex = 6;
-            tb_waittime.Text = "1000";
+            tb_waittime.Text = "2000";
             // 
             // label6
             // 

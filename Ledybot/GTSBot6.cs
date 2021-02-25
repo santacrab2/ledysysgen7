@@ -10,6 +10,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Net;
 using System.Windows.Forms;
+using PKHeX.Core;
 
 namespace Ledybot
 {
@@ -20,89 +21,89 @@ namespace Ledybot
 
         public enum gtsbotstates { botstart, startsearch, pressSeek, presssearch, findPokemon, trade, research, botexit, updatecomments, panic };
 
-        private TcpClient client = new TcpClient();
-        private string consoleName = "Ledybot";
-        private IPEndPoint serverEndPoint = null;
-        private bool useLedySync = false;
+        public static TcpClient client = new TcpClient();
+        public static string consoleName = "Ledybot";
+        public static IPEndPoint serverEndPoint = null;
+        public static bool useLedySync = false;
 
-        private const int SEARCHDIRECTION_FROMBACK = -1;
-        private const int SEARCHDIRECTION_FROMBACKFIRSTPAGEONLY = 1;
-        private const int SEARCHDIRECTION_FROMFRONT = 2;
+        public const int SEARCHDIRECTION_FROMBACK = -1;
+        public const int SEARCHDIRECTION_FROMBACKFIRSTPAGEONLY = 1;
+        public const int SEARCHDIRECTION_FROMFRONT = 2;
 
-        private bool correctScreen;
+        public static bool correctScreen;
 
-        uint PSSMenuOFF;
-        uint PSSMenuIN;
-        uint PSSMenuOUT;
+        public static uint PSSMenuOFF;
+        public static uint PSSMenuIN;
+        public static uint PSSMenuOUT;
 
-        uint BoxScreenOFF;
-        uint BoxScreenIN;
-        uint BoxScreenOUT;
+        public static uint BoxScreenOFF;
+        public static uint BoxScreenIN;
+        public static uint BoxScreenOUT;
 
-        uint IsConnected;
+        public static uint IsConnected;
 
-        uint currentScreen;
+        public static uint currentScreen;
 
-        int SeekDepositScreen;
-        int SearchScreen;
-        int GTSScreen;
-        int BoxScreen;
+        public static int SeekDepositScreen;
+        public static int SearchScreen;
+        public static int GTSScreen;
+        public static int BoxScreen;
 
-        uint GTSPageSize;
-        uint GTSPageIndex;
-        uint GTSCurrentView;
+        public static uint GTSPageSize;
+        public static uint GTSPageIndex;
+        public static uint GTSCurrentView;
 
-        uint GTSListBlock;
+        public static uint GTSListBlock;
 
-        uint GTSBlockEntrySize;
+        public static uint GTSBlockEntrySize;
 
-        uint BoxInject;
+        public static uint BoxInject;
 
-        uint PokemonToFind;
-        uint PokemonToFindGender;
-        uint PokemonToFindLevel;
+        public static uint PokemonToFind;
+        public static uint PokemonToFindGender;
+        public static uint PokemonToFindLevel;
 
-        private int iPokemonToFind = 0;
-        private int iPokemonToFindGender = 0;
-        private int iPokemonToFindLevel = 0;
-        private int iPID = 0;
-        private string szIP;
-        private bool bBlacklist = false;
-        private bool bReddit = false;
-        private int searchDirection = 0;
-        private string szFC = "";
-        private byte[] principal = new byte[4];
-
+        public static int iPokemonToFind = 0;
+        public static int iPokemonToFindGender = 0;
+        public static int iPokemonToFindLevel = 0;
+        public static int iPID = 0;
+        public static string szIP;
+        public static bool bBlacklist = false;
+        public static bool bReddit = false;
+        public static int searchDirection = 0;
+        public static string szFC = "";
+        public static byte[] principal = new byte[4];
+        public static PKM pokecheck;
         public bool botstop = false;
 
         public bool PokemonFound { get; private set; }
         public uint CurrentView { get; private set; }
         public uint PageIndex { get; private set; }
 
-        private int botState = 0;
+        public static int botState = 0;
         public int botresult = 0;
         Task<bool> waitTaskbool;
-        private int commandtime = 250;
-        private int delaytime = 150;
-        private int o3dswaittime = 1000;
+        public static int commandtime = 250;
+        public static int delaytime = 150;
+        public static int o3dswaittime = 1000;
 
-        private int startIndex = 100;
-        private byte[] blockbytes = new byte[256];
-        private byte[] block = new byte[256];
+        public static int startIndex = 100;
+        public static byte[] blockbytes = new byte[256];
+        public static byte[] block = new byte[256];
 
-        private bool foundLastPage = false;
+        public static bool foundLastPage = false;
 
-        private Tuple<string, string, int, int, int, ArrayList> details;
-        private short dex;
+        public static Tuple<string, string, int, int, int, ArrayList> details;
+        public static short dex;
 
-        private int iStartIndex;
-        private int iEndIndex;
-        private int iDirection;
+        public static int iStartIndex;
+        public static int iEndIndex;
+        public static int iDirection;
 
-        public string szTrainerName { get; private set; }
-        public string Phrase { get; private set; }
-        public string Message { get; private set; }
-        public int LastPageIndex = 0;
+        public static string szTrainerName { get; private set; }
+        public static string Phrase { get; private set; }
+        public static string Message { get; private set; }
+        public static int LastPageIndex = 0;
 
         private async Task<bool> isCorrectWindow(int expectedScreen)
         {
@@ -146,23 +147,23 @@ namespace Ledybot
 
         public GTSBot6(int iP, int iPtF, int iPtFGender, int iPtFLevel, bool bBlacklist, bool bReddit, int iSearchDirection, string waittime, string consoleName, bool useLedySync, string ledySyncIp, string ledySyncPort, int game, string szIP)
         {
-            this.iPokemonToFind = iPtF;
-            this.iPokemonToFindGender = iPtFGender;
-            this.iPokemonToFindLevel = iPtFLevel;
-            this.iPID = iP;
-            this.szIP = szIP;
-            this.bBlacklist = bBlacklist;
-            this.bReddit = bReddit;
-            this.searchDirection = iSearchDirection;
-            this.o3dswaittime = Int32.Parse(waittime);
+            iPokemonToFind = iPtF;
+            iPokemonToFindGender = iPtFGender;
+            iPokemonToFindLevel = iPtFLevel;
+            iPID = iP;
+            szIP = szIP;
+            bBlacklist = bBlacklist;
+            bReddit = bReddit;
+            searchDirection = iSearchDirection;
+            o3dswaittime = Int32.Parse(waittime);
             if (useLedySync)
             {
-                this.useLedySync = useLedySync;
+                useLedySync = useLedySync;
                 int iPort = Int32.Parse(ledySyncPort);
-                this.serverEndPoint = new IPEndPoint(IPAddress.Parse(ledySyncIp), iPort);
+                serverEndPoint = new IPEndPoint(IPAddress.Parse(ledySyncIp), iPort);
                 client.Connect(serverEndPoint);
             }
-            this.consoleName = consoleName;
+            consoleName = consoleName;
 
             if (game == 3) // Omega Rubin and Alpha Sapphire
             {
@@ -233,6 +234,7 @@ namespace Ledybot
 
         public async Task<int> RunBot()
         {
+            new discordbot.trademodule();
             byte[] pokemonIndex = new byte[2];
             byte pokemonGender = 0x0;
             byte pokemonLevel = 0x0;
@@ -243,6 +245,10 @@ namespace Ledybot
             pokemonGender = full[0];
             full = BitConverter.GetBytes(iPokemonToFindLevel);
             pokemonLevel = full[0];
+            botState = 0;
+            botresult = 0;
+            dex = 0;
+            pokecheck = (PKM)discordbot.trademodule.pokemonfile.Peek();
 
             try
             {
@@ -394,20 +400,14 @@ namespace Ledybot
                                 //Collect Data
                                 dex = BitConverter.ToInt16(block, 0x0);
 
-                                if (Ledybot.MainForm.giveawayDetails.ContainsKey(dex))
+                                if (pokecheck.Species != dex)
                                 {
-                                   Ledybot.MainForm.giveawayDetails.TryGetValue(dex, out details);
+                                    continue;
 
-                                    if (details.Item1 == "")
-                                    {
-                                        string szNickname = Encoding.Unicode.GetString(block, 0x4, 24).Substring(2).Trim('\0'); //fix to prevent nickname clipping. Count should be 24, 2 bytes per letter, 2x12=24, not 20.
 
-                                        string szFileToFind = details.Item2 + szNickname + ".pk6";
-                                        if (!File.Exists(szFileToFind))
-                                        {
-                                            continue;
-                                        }
-                                    }
+                                }
+                                else
+                                { 
                                     Array.Copy(block, 0x3C, principal, 0, 4);
                                     byte check = Program.f1.calculateChecksum(principal);
                                     byte[] friendcode = new byte[8];
@@ -418,7 +418,7 @@ namespace Ledybot
 
                                     int gender = block[0x2];
                                     int level = block[0x3];
-                                    if ((gender == 0 || gender == details.Item3) && (level == 0 || level == details.Item4))
+                                    if ((gender == 0 || gender == pokecheck.Gender) && (level == 0 || level == pokecheck.CurrentLevel))
                                     {
 
                                         szTrainerName = Encoding.Unicode.GetString(block, 0x40, 24).Trim('\0');
@@ -442,7 +442,7 @@ namespace Ledybot
                                         }
                                         else if (!useLedySync)
                                         {
-                                            if ((!bReddit || Program.f1.commented.Contains(szFC)) && !details.Item6.Contains(BitConverter.ToInt32(principal, 0)) && !Program.f1.banlist.Contains(szFC))
+                                            if ((!bReddit || Program.f1.commented.Contains(szFC)) && !Program.f1.banlist.Contains(szFC))
                                             {
                                                 PokemonFound = true;
                                                 CurrentView = (uint)i;
@@ -496,14 +496,7 @@ namespace Ledybot
                             if (await waitTaskbool)
                             {
 
-                                string szNickname = Encoding.Unicode.GetString(block, 0x4, 24).Substring(2).Trim('\0'); //fix to prevent nickname clipping. Count should be 24, 2 bytes per letter, 2x12=24, not 20.
-
-                                string szPath = details.Item1;
-                                string szFileToFind = details.Item2 + szNickname + ".pk6";
-                                if (File.Exists(szFileToFind))
-                                {
-                                    szPath = szFileToFind;
-                                }
+                                
 
                                 string szTrainerName = Encoding.Unicode.GetString(block, 0x40, 24).Trim('\0');
                                 //Phrase = Encoding.Unicode.GetString(block, 0x5A, 30).Trim('\0');
@@ -515,13 +508,10 @@ namespace Ledybot
                                 string subregion = "-";
                                 Program.f1.regions.TryGetValue(subRegionIndex, out subregion);
 
-                                if (bBlacklist)
-                                {
-                                    details.Item6.Add(BitConverter.ToInt32(principal, 0));
-                                }
+                               
 
                                 //Inject Pokemon to Box1 Slot1
-                                byte[] pkmEncrypted = System.IO.File.ReadAllBytes(szPath);
+                                byte[] pkmEncrypted = System.IO.File.ReadAllBytes(discordbot.trademodule.temppokecurrent);
                                 byte[] cloneshort = PKHeX.encryptArray(pkmEncrypted.Take(232).ToArray());
                                 string ek7 = BitConverter.ToString(cloneshort).Replace("-", ", 0x");
                                 Program.scriptHelper.write(BoxInject, cloneshort, iPID);
@@ -530,7 +520,7 @@ namespace Ledybot
                                 PageIndex = (Program.helper.lastRead + 1);
 
 
-                                Program.f1.AppendListViewItem(szTrainerName, szNickname, country, subregion, Program.PKTable.Species6[dex - 1], szFC, (PageIndex / 100).ToString(), CurrentView.ToString());
+                                Program.f1.AppendListViewItem(szTrainerName, pokecheck.Nickname, country, subregion, Program.PKTable.Species6[dex - 1], szFC, (PageIndex / 100).ToString(), CurrentView.ToString());
 
                                 // Open Settings, write CurrentView Index to wanted, return.
                                 Program.helper.quickbuton(Program.PKTable.keyY, 200);
@@ -553,32 +543,14 @@ namespace Ledybot
                                 Program.helper.quickbuton(Program.PKTable.keyA, 200);
                                 await Task.Delay(1000);
                                 Program.helper.quickbuton(Program.PKTable.keyA, 200);
+                                await Task.Delay(1000);
+                                Program.helper.quickbuton(Program.PKTable.keyA, 200);
                                 Program.f1.ChangeStatus("Trading pokemon on page " + (PageIndex / 100).ToString() + " index " + CurrentView.ToString() + "");
                                 await Task.Delay(10000);
 
-                                if (details.Item5 > 0)
-                                {
-                                    Ledybot.MainForm.giveawayDetails[dex] = new Tuple<string, string, int, int, int, ArrayList>(details.Item1, details.Item2, details.Item3, details.Item4, details.Item5 - 1, details.Item6);
-                                    foreach (System.Data.DataRow row in Program.gd.details.Rows)
-                                    {
-                                        if (row[0].ToString() == dex.ToString())
-                                        {
-                                            int count = int.Parse(row[5].ToString()) - 1;
-                                            row[5] = count;
-                                            break;
-                                        }
-                                    }
-                                }
+                              
 
-                                foreach (System.Data.DataRow row in Program.gd.details.Rows)
-                                {
-                                    if (row[0].ToString() == dex.ToString())
-                                    {
-                                        int amount = int.Parse(row[6].ToString()) + 1;
-                                        row[6] = amount;
-                                        break;
-                                    }
-                                }
+                            
 
                                 //In Case the Pokemon is already traded, go back to Seek/Deposit Screen
                                 Program.helper.quickbuton(Program.PKTable.keyB, 250);
@@ -587,20 +559,23 @@ namespace Ledybot
                                 await Task.Delay(1000);
                                 // wait if trade is finished
                                 await Task.Delay(35000);
+                                discordbot.trademodule.pokequeue.Dequeue();
+                                discordbot.trademodule.username.Dequeue();
+                                discordbot.trademodule.pokemonfile.Dequeue();
                                 bool cont = false;
 
-                                foreach (KeyValuePair<int, Tuple<string, string, int, int, int, ArrayList>> pair in Ledybot.MainForm.giveawayDetails)
+                                if (discordbot.trademodule.pokequeue.Count == 0)
                                 {
-                                    if (pair.Value.Item5 != 0)
-                                    {
-                                        cont = true;
-                                        break;
-                                    }
-                                }
-                                if (!cont)
-                                {
-                                    botresult = 1;
+                                    startIndex = 0;
+                                    CurrentView = 0;
+                                    LastPageIndex = 0;
+
+                                    
+                                    PokemonFound = false;
+                                    foundLastPage = false;
+                                    botresult = 8;
                                     botState = (int)gtsbotstates.botexit;
+                                    Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
                                     break;
                                 }
 
@@ -608,18 +583,13 @@ namespace Ledybot
                                 CurrentView = 0;
                                 LastPageIndex = 0;
 
-                                foundLastPage = false;
+                                
                                 PokemonFound = false;
+                                foundLastPage = false;
+                                botState = (int)gtsbotstates.botexit;
+                                Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
 
-                                if (bReddit)
-                                {
-                                    botState = (int)gtsbotstates.updatecomments;
-                                }
-                                else
-                                {
-                                    botState = (int)gtsbotstates.pressSeek;
-                                    break;
-                                }
+                            
                             }
                             break;
 
@@ -633,6 +603,7 @@ namespace Ledybot
 
                         case (int)gtsbotstates.botexit:
                             Program.f1.ChangeStatus("Stopped");
+                            File.Delete(discordbot.trademodule.temppokecurrent);
                             botstop = true;
                             break;
                         case (int)gtsbotstates.panic:
@@ -761,7 +732,7 @@ namespace Ledybot
             {            
                 botState = (int)gtsbotstates.panic;
             }
-            if (this.serverEndPoint != null)
+            if (serverEndPoint != null)
             {
                 client.Close();
             }

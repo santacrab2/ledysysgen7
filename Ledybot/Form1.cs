@@ -311,13 +311,20 @@ namespace Ledybot
                 Task<int> Bot = GTSBot6.RunBot();
                 int result = await Bot;
                 if (botStop)
+                {
+                    result = 8;
+                }
                     
                 switch (result)
                 {
                     case 1:
-                        MessageBox.Show("All Pokemon Traded.", "GTS Bot", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                       
                         break;
-                    
+                    case 8:
+                   
+                        Program.f1.ChangeStatus("bot stopped");
+                        break;
+
                     default:
                         await GTSBot6.RunBot();
                         break;

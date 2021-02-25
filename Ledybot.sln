@@ -11,6 +11,7 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		ledybug6|Any CPU = ledybug6|Any CPU
+		ledysys|Any CPU = ledysys|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
@@ -18,6 +19,8 @@ Global
 		{3A95B46E-CD57-4F68-AB2E-29ED7BF9F8A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A95B46E-CD57-4F68-AB2E-29ED7BF9F8A6}.ledybug6|Any CPU.ActiveCfg = ledybug6|Any CPU
 		{3A95B46E-CD57-4F68-AB2E-29ED7BF9F8A6}.ledybug6|Any CPU.Build.0 = ledybug6|Any CPU
+		{3A95B46E-CD57-4F68-AB2E-29ED7BF9F8A6}.ledysys|Any CPU.ActiveCfg = ledysys|Any CPU
+		{3A95B46E-CD57-4F68-AB2E-29ED7BF9F8A6}.ledysys|Any CPU.Build.0 = ledysys|Any CPU
 		{3A95B46E-CD57-4F68-AB2E-29ED7BF9F8A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A95B46E-CD57-4F68-AB2E-29ED7BF9F8A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection

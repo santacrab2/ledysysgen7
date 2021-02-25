@@ -37,7 +37,7 @@ public class discordbot
         _client = new DiscordSocketClient();
         _client.Log += Log;
         _commands = new CommandService();
-        var token = File.ReadAllText("C:/Users/jordan/source/repos/ledybot/Ledybot/obj/ledybug6/token.txt");
+        var token = File.ReadAllText("token.txt");
 
 
         await _client.LoginAsync(TokenType.Bot, token);
