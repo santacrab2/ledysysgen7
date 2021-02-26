@@ -257,6 +257,7 @@ namespace Ledybot
         public static async void btn_Start_Click(object sender, EventArgs e)
         {
             GTSBot7.botstop = false;
+            Ledybot.GTSBot6.botstop = false;
             btn_Stop.Enabled = true;
             btn_Start.Enabled = false;
             Program.gd.disableButtons();

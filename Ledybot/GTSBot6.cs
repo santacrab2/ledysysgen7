@@ -234,6 +234,7 @@ namespace Ledybot
 
         public async Task<int> RunBot()
         {
+            
             new discordbot.trademodule();
             byte[] pokemonIndex = new byte[2];
             byte pokemonGender = 0x0;
@@ -246,11 +247,11 @@ namespace Ledybot
             full = BitConverter.GetBytes(iPokemonToFindLevel);
             pokemonLevel = full[0];
             botState = 0;
+            dex = 0;
             
-            pokecheck = (PKM)discordbot.trademodule.pokemonfile.Peek();
 
-            try
-            {
+            
+            
                 while (!botstop)
                 {
                     switch (botState)
@@ -369,7 +370,8 @@ namespace Ledybot
                            
 
                             Program.f1.ChangeStatus("Looking for a Pokemon to Trade");
-
+                            pokecheck = (PKM)discordbot.trademodule.pokemonfile.Peek();
+                            dex = 0;
                             if (Entries > 100) { Entries = 0; } // Workaroung for only 1 Entry on List
 
                             // Check the Trade Direction Back to Front or Front to Back
@@ -397,17 +399,14 @@ namespace Ledybot
                                 Array.Copy(blockBytes, (GTSBlockEntrySize * i) - Program.helper.lastRead, block, 0, 256);
 
                                 //Collect Data
-                                pokecheck = (PKM)discordbot.trademodule.pokemonfile.Peek();
-                                dex = BitConverter.ToInt16(block, 0x0);
                                
-                                if (pokecheck.Species != dex)
+                                dex = BitConverter.ToInt16(block, 0x0);
+
+                                if (pokecheck.Species == dex)
                                 {
-                                    continue;
+                                    
 
-
-                                }
-                                else
-                                { 
+                                   
                                     Array.Copy(block, 0x3C, principal, 0, 4);
                                     byte check = Program.f1.calculateChecksum(principal);
                                     byte[] friendcode = new byte[8];
@@ -478,6 +477,7 @@ namespace Ledybot
                                 }
                                 PokemonFound = false;
                             }
+
 
 
                             // No Pokemon found, return to Seek/Deposit Screen
@@ -573,7 +573,7 @@ namespace Ledybot
                                     
                                     PokemonFound = false;
                                     foundLastPage = false;
-                                  
+                                    botresult = 8;
                                     botState = (int)gtsbotstates.botexit;
                                     Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
                                     break;
@@ -582,7 +582,7 @@ namespace Ledybot
                                 startIndex = 0;
                                 CurrentView = 0;
                                 LastPageIndex = 0;
-                                
+                                botresult = 8;
                                 
                                 PokemonFound = false;
                                 foundLastPage = false;
@@ -728,8 +728,8 @@ namespace Ledybot
                             break;
                     }
                 }
-            }
-            catch
+            
+            
             {            
                 botState = (int)gtsbotstates.panic;
             }
