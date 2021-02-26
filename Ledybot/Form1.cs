@@ -374,7 +374,7 @@ namespace Ledybot
             }
             else if (game == 3 || game == 4) // XY + ORAS
             {
-                GTSBot6.botstop = true;
+                Ledybot.GTSBot6.botstop = true;
                 btn_Start.Enabled = true;
                 btn_Stop.Enabled = false;
                 botStop = true;

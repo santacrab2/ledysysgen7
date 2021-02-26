@@ -74,7 +74,7 @@ namespace Ledybot
         public static string szFC = "";
         public static byte[] principal = new byte[4];
         public static PKM pokecheck;
-        public bool botstop = false;
+        public static bool botstop = false;
 
         public bool PokemonFound { get; private set; }
         public uint CurrentView { get; private set; }
@@ -621,21 +621,21 @@ namespace Ledybot
                             await Task.Delay(250);
 
                             //Check if Connected
-                            //waitTaskbool = Program.helper.waitNTRread(IsConnected);
-                            //if (await waitTaskbool)
-                            //{
-                             //   if (Program.helper.lastRead == 0)
-                             //   {
-                              //      Program.f1.ChangeStatus("Recovery Mode - lost connected, trying to reconnect...");
-                             //       Program.helper.quicktouch(235, 5, commandtime);
-                            //        await Task.Delay(2000);
-                            //        Program.helper.quicktouch(150, 140, commandtime);
-                            //        await Task.Delay(3000);
-                            //        Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
-                            //        await Task.Delay(30000);
+                            waitTaskbool = Program.helper.waitNTRread(IsConnected);
+                            if (await waitTaskbool)
+                            {
+                               if (Program.helper.lastRead == 0)
+                               {
+                                   Program.f1.ChangeStatus("Recovery Mode - lost connected, trying to reconnect...");
+                                   Program.helper.quicktouch(235, 5, commandtime);
+                                   await Task.Delay(2000);
+                                  Program.helper.quicktouch(150, 140, commandtime);
+                                   await Task.Delay(3000);
+                                  Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
+                                   await Task.Delay(30000);
                                     //Disconnected
-                             //   }
-                         //   }
+                                }
+                           }
 
                             await Program.helper.waitNTRread(PSSMenuOFF);
 
