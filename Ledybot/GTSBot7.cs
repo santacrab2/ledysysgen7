@@ -226,7 +226,7 @@ namespace Ledybot
             int panicAttempts = 0;
             botState = 0;
             dexnumber = 0;
-            pokecheck = (PKM)discordbot.trademodule.pokemonfile.Peek();
+            
             while (!botstop)
             {
                 if (botState != (int)gtsbotstates.panic)
@@ -363,6 +363,7 @@ namespace Ledybot
                             attempts = 0;
                            await Program.helper.waitNTRread(addr_PageSize);
                             listlength = (int)Program.helper.lastRead;
+                            pokecheck = (PKM)discordbot.trademodule.pokemonfile.Peek();
                             dexnumber = 0;
                             if (searchDirection == SEARCHDIRECTION_FROMBACK || searchDirection == SEARCHDIRECTION_FROMBACKFIRSTPAGEONLY)
                             {

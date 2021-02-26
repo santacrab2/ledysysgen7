@@ -209,7 +209,7 @@ public class discordbot
                 {
                     temppokecurrent = (string)pokequeue.Peek();
                     await ReplyAsync("<@" + username.Peek() + ">" + " deposit your pokemon now");
-                   // webClient.DownloadFileTaskAsync(pokequeue.Peek().ToString(), temppoke);
+                  
                     Ledybot.MainForm.btn_Start_Click(null, EventArgs.Empty);
                     
                     

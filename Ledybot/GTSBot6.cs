@@ -246,8 +246,7 @@ namespace Ledybot
             full = BitConverter.GetBytes(iPokemonToFindLevel);
             pokemonLevel = full[0];
             botState = 0;
-            botresult = 0;
-            dex = 0;
+            
             pokecheck = (PKM)discordbot.trademodule.pokemonfile.Peek();
 
             try
@@ -279,7 +278,7 @@ namespace Ledybot
 
                             Program.f1.ChangeStatus("Pressing seek button");
                             await Program.helper.waitbutton(Program.PKTable.keyA);
-                            await Task.Delay(1000);
+                            await Task.Delay(1500);
                             botState = (int)gtsbotstates.startsearch;
                             break;
 
@@ -304,7 +303,7 @@ namespace Ledybot
                             Program.f1.ChangeStatus("Pressing Search button");
                             Program.helper.quicktouch(200, 180, commandtime);
 
-                            await Task.Delay(4000);
+                            await Task.Delay(4500);
                             botState = (int)gtsbotstates.findPokemon;
                             break;
 
@@ -398,8 +397,9 @@ namespace Ledybot
                                 Array.Copy(blockBytes, (GTSBlockEntrySize * i) - Program.helper.lastRead, block, 0, 256);
 
                                 //Collect Data
+                                pokecheck = (PKM)discordbot.trademodule.pokemonfile.Peek();
                                 dex = BitConverter.ToInt16(block, 0x0);
-
+                               
                                 if (pokecheck.Species != dex)
                                 {
                                     continue;
@@ -569,11 +569,11 @@ namespace Ledybot
                                     startIndex = 0;
                                     CurrentView = 0;
                                     LastPageIndex = 0;
-
+                                    
                                     
                                     PokemonFound = false;
                                     foundLastPage = false;
-                                    botresult = 8;
+                                  
                                     botState = (int)gtsbotstates.botexit;
                                     Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
                                     break;
@@ -582,10 +582,11 @@ namespace Ledybot
                                 startIndex = 0;
                                 CurrentView = 0;
                                 LastPageIndex = 0;
-
+                                
                                 
                                 PokemonFound = false;
                                 foundLastPage = false;
+                                
                                 botState = (int)gtsbotstates.botexit;
                                 Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
 
@@ -620,21 +621,21 @@ namespace Ledybot
                             await Task.Delay(250);
 
                             //Check if Connected
-                            waitTaskbool = Program.helper.waitNTRread(IsConnected);
-                            if (await waitTaskbool)
-                            {
-                                if (Program.helper.lastRead == 0)
-                                {
-                                    Program.f1.ChangeStatus("Recovery Mode - lost connected, trying to reconnect...");
-                                    Program.helper.quicktouch(235, 5, commandtime);
-                                    await Task.Delay(2000);
-                                    Program.helper.quicktouch(150, 140, commandtime);
-                                    await Task.Delay(3000);
-                                    Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
-                                    await Task.Delay(30000);
+                            //waitTaskbool = Program.helper.waitNTRread(IsConnected);
+                            //if (await waitTaskbool)
+                            //{
+                             //   if (Program.helper.lastRead == 0)
+                             //   {
+                              //      Program.f1.ChangeStatus("Recovery Mode - lost connected, trying to reconnect...");
+                             //       Program.helper.quicktouch(235, 5, commandtime);
+                            //        await Task.Delay(2000);
+                            //        Program.helper.quicktouch(150, 140, commandtime);
+                            //        await Task.Delay(3000);
+                            //        Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
+                            //        await Task.Delay(30000);
                                     //Disconnected
-                                }
-                            }
+                             //   }
+                         //   }
 
                             await Program.helper.waitNTRread(PSSMenuOFF);
 
