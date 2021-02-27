@@ -414,8 +414,7 @@ namespace Ledybot
 
                                     int gender = block[0xE];
                                     int level = block[0xF];
-                                    if ((gender == 0 || gender == pokecheck.Gender) && (level == 0 || level == pokecheck.CurrentLevel))
-                                    {
+                                    
                                         string szTrainerName = Encoding.Unicode.GetString(block, 0x4C, 24).Trim('\0');
                                         int countryIndex = BitConverter.ToInt16(block, 0x68);
                                         string country = "-";
@@ -441,7 +440,7 @@ namespace Ledybot
                                                 break;
                                             }
                                         }
-                                    }
+                                    
                                 }
                                 addr_PageEntry = BitConverter.ToUInt32(block, iNextPrevBlockOffest);
                             }
