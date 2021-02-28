@@ -247,7 +247,7 @@ namespace Ledybot
             full = BitConverter.GetBytes(iPokemonToFindLevel);
             pokemonLevel = full[0];
             botState = 0;
-            dex = 0;
+            
             
 
             
@@ -279,7 +279,7 @@ namespace Ledybot
 
                             Program.f1.ChangeStatus("Pressing seek button");
                             await Program.helper.waitbutton(Program.PKTable.keyA);
-                            await Task.Delay(1500);
+                            await Task.Delay(1000);
                             botState = (int)gtsbotstates.startsearch;
                             break;
 
@@ -304,7 +304,7 @@ namespace Ledybot
                             Program.f1.ChangeStatus("Pressing Search button");
                             Program.helper.quicktouch(200, 180, commandtime);
 
-                            await Task.Delay(4500);
+                            await Task.Delay(4000);
                             botState = (int)gtsbotstates.findPokemon;
                             break;
 
@@ -417,8 +417,7 @@ namespace Ledybot
 
                                     int gender = block[0x2];
                                     int level = block[0x3];
-                                    if ((gender == 0 || gender == pokecheck.Gender) && (level == 0 || level == pokecheck.CurrentLevel))
-                                    {
+                                   
 
                                         szTrainerName = Encoding.Unicode.GetString(block, 0x40, 24).Trim('\0');
                                         //Phrase = Encoding.Unicode.GetString(block, 0x5A, 30).Trim('\0');
@@ -450,7 +449,7 @@ namespace Ledybot
                                                 break;
                                             }
                                         }
-                                    }
+                                    
                                 }
 
 
@@ -573,7 +572,7 @@ namespace Ledybot
                                     
                                     PokemonFound = false;
                                     foundLastPage = false;
-                                    botresult = 8;
+                                    botresult = 1;
                                     botState = (int)gtsbotstates.botexit;
                                     Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
                                     break;
@@ -582,7 +581,7 @@ namespace Ledybot
                                 startIndex = 0;
                                 CurrentView = 0;
                                 LastPageIndex = 0;
-                                botresult = 8;
+                                botresult = 1;
                                 
                                 PokemonFound = false;
                                 foundLastPage = false;
