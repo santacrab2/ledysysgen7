@@ -244,6 +244,7 @@ public class discordbot
             pokequeue.Dequeue();
             username.Dequeue();
             pokemonfile.Dequeue();
+            await ReplyAsync("the first person in line has been removed");
             Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
 
         }
@@ -254,6 +255,7 @@ public class discordbot
             pokequeue.Clear();
             username.Clear();
             pokemonfile.Clear();
+            await ReplyAsync("the entire queue has been cleared");
             Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
 
         }
