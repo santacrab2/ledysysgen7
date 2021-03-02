@@ -237,6 +237,26 @@ public class discordbot
             
 
             }
+        [Command("queueclear")]
+        [Alias("qc")]
+        public async Task queueclear()
+        {
+            pokequeue.Dequeue();
+            username.Dequeue();
+            pokemonfile.Dequeue();
+            Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
+
+        }
+
+        [Command("clear")]
+        public async Task clqueue()
+        {
+            pokequeue.Clear();
+            username.Clear();
+            pokemonfile.Clear();
+            Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
+
+        }
         }
             
 
