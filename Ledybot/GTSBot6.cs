@@ -613,30 +613,30 @@ namespace Ledybot
                           //  {
                         //        Program.scriptHelper.connect(szIP, 8000);
                        //     }
-                            Program.f1.ChangeStatus("Recovery Mode");
+                       //     Program.f1.ChangeStatus("Recovery Mode");
 
                             //In case of a Communication Error
-                      //     Program.helper.quicktouch(50, 0, commandtime);
-                      //      await Task.Delay(250);
+                       //     Program.helper.quicktouch(50, 0, commandtime);
+                        //    await Task.Delay(250);
                         //    Program.helper.quickbuton(Program.PKTable.keySELECT, commandtime);
-                    //        await Task.Delay(250);
+                       //     await Task.Delay(250);
 
                             //Check if Connected
-                       //     waitTaskbool = Program.helper.waitNTRread(IsConnected);
-                     //       if (await waitTaskbool)
-                    //     {
-                     //          if (Program.helper.lastRead == 0)
-                       //       {
+                        //    waitTaskbool = Program.helper.waitNTRread(IsConnected);
+                        //    if (await waitTaskbool)
+                       //  {
+                      //         if (Program.helper.lastRead == 0)
+                     //          {
                        //            Program.f1.ChangeStatus("Recovery Mode - lost connected, trying to reconnect...");
-                       //           Program.helper.quicktouch(235, 5, commandtime);
-                      //           await Task.Delay(2000);
-                      //            Program.helper.quicktouch(150, 140, commandtime);
-                        //           await Task.Delay(3000);
-                      //            Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
-                       //            await Task.Delay(30000);
+                       //            Program.helper.quicktouch(235, 5, commandtime);
+                      //             await Task.Delay(2000);
+                       //           Program.helper.quicktouch(150, 140, commandtime);
+                     //              await Task.Delay(3000);
+                     //             Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
+                  //                 await Task.Delay(30000);
                                     //Disconnected
-                       //         }
-                      //     }
+               //                 }
+               //            }
 
                             await Program.helper.waitNTRread(PSSMenuOFF);
 

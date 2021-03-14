@@ -130,9 +130,7 @@ public class discordbot
         public static Queue pokequeue = new Queue();
         public static Queue username = new Queue();
         public static Queue pokemonfile = new Queue();
-        public static Queue trainername = new Queue();
         public static IUser dmer;
-        public static string trainer;
 
         
 
@@ -176,7 +174,6 @@ public class discordbot
                 pokequeue.Enqueue(temppokewait);
                 username.Enqueue(Context.User.Id);
                 pokemonfile.Enqueue(tradeable);
-                trainername.Enqueue("");
                 await ReplyAsync("added " + Context.User + " to queue");
                 await checkstarttrade();
             }
@@ -240,51 +237,6 @@ public class discordbot
             
 
             }
-
-        [Command("trainertrade")]
-        [Alias("Ttrade")]
-        public async Task trainertrade([Remainder]string trainer)
-        {
-            
-            string temppokewait = Path.GetTempFileName();
-
-            //this grabs the file the user uploads to discord if they even do it.
-            pokm = Context.Message.Attachments.FirstOrDefault();
-            if (pokm == default)
-            {
-                await ReplyAsync("no attachment provided wtf are you doing?");
-                return;
-            }
-            //this cleans up the filename the user submitted and checks that its a pk6 or 7
-            att = Format.Sanitize(pokm.Filename);
-            if (!att.Contains(".pk7") && !att.Contains(".pk6"))
-
-            {
-                await ReplyAsync("no pk7 or pk6 provided");
-                return;
-            }
-
-            await ReplyAsync("file accepted..now to check if you know what you are doing with pkhex");
-
-            buffer = await DownloadFromUrlAsync(pokm.Url);
-            tradeable = PKMConverter.GetPKMfromBytes(buffer, pokm.Filename.Contains("pk6") ? 6 : 7);
-            var la = new PKHeX.Core.LegalityAnalysis(tradeable);
-            if (!la.Valid)
-            {
-                await ReplyAsync("pokemon is illegal dumbass");
-            }
-            else
-            {
-                await webClient.DownloadFileTaskAsync(pokm.Url, temppokewait);
-                await ReplyAsync("yay its legal good job!");
-                pokequeue.Enqueue(temppokewait);
-                username.Enqueue(Context.User.Id);
-                trainername.Enqueue(trainer);
-                pokemonfile.Enqueue(tradeable);
-                await ReplyAsync("added " + Context.User + " to queue");
-                await checkstarttrade();
-            }
-        }
         [Command("queueclear")]
         [Alias("qc")]
         public async Task queueclear()
@@ -306,12 +258,6 @@ public class discordbot
             await ReplyAsync("the entire queue has been cleared");
             Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
 
-        }
-
-        [Command("help")]
-        public async Task help()
-        {
-            await ReplyAsync("read the pins");
         }
         }
             

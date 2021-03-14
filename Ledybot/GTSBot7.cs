@@ -89,7 +89,6 @@ namespace Ledybot
         public static int tradeIndex = -1;
         public static uint addr_PageEntry = 0;
         public static bool foundLastPage = false;
-        public static string szTrainerName;
 
         public static Tuple<string, string, int, int, int, ArrayList> details;
 
@@ -396,10 +395,7 @@ namespace Ledybot
                             {
                                 Array.Copy(blockBytes, addr_PageEntry - addr_ListOfAllPageEntries, block, 0, 256);
                                 dexnumber = BitConverter.ToInt16(block, 0xC);
-                                szTrainerName = Encoding.Unicode.GetString(block, 0x4C, 24).Trim('\0');
-                               
-                                        
-                                if(szTrainerName == (string)discordbot.trademodule.trainername.Peek() || (string)discordbot.trademodule.trainername.Peek() == "")
+                                
                                 if (pokecheck.Species != dexnumber)
                                 {
 
@@ -419,7 +415,7 @@ namespace Ledybot
                                     int gender = block[0xE];
                                     int level = block[0xF];
                                     
-                                        szTrainerName = Encoding.Unicode.GetString(block, 0x4C, 24).Trim('\0');
+                                        string szTrainerName = Encoding.Unicode.GetString(block, 0x4C, 24).Trim('\0');
                                         int countryIndex = BitConverter.ToInt16(block, 0x68);
                                         string country = "-";
                                         Program.f1.countries.TryGetValue(countryIndex, out country);
@@ -715,7 +711,6 @@ namespace Ledybot
                             discordbot.trademodule.pokequeue.Dequeue();
                             discordbot.trademodule.username.Dequeue();
                             discordbot.trademodule.pokemonfile.Dequeue();
-                            discordbot.trademodule.trainername.Dequeue();
                             bool cont = false;
                          
                               
