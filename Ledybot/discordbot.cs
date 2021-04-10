@@ -149,48 +149,63 @@ public class discordbot
             var sav = SaveUtil.GetBlankSAV(GameVersion.UM, "piplup");
 
             PKM pk = new PK7();
+            pk.ClearNickname();
             pk.ApplySetDetails(pokeset);
             sav.ApplyTo(pk);
-            pk.SetEggMetData(GameVersion.US, GameVersion.US);
-
-            pk.Met_Location = 78;
-            pk.Met_Level = 1;
             pk.TrainerID7 = tid;
             pk.TrainerSID7 = sid;
+            var met = EncounterSuggestion.GetSuggestedMetInfo(pk);
+            pk.Met_Location = met.Location;
+            pk.Met_Level = met.LevelMin;
+            var leg = new LegalityAnalysis(pk);
+            if (LegalityFormatting.GetLegalityReport(leg).Contains("Nickname does not match species name"))
+            {
+                pk.ClearNickname();
+            }
+
+
             pk.OT_Name = trainer;
+
+            
             pk.Move1_PPUps = 0;
             pk.Move2_PPUps = 0;
             pk.Move3_PPUps = 0;
             pk.Move4_PPUps = 0;
-            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move1));
-            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move2));
-            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move3));
-            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move4));
+            pk.Move1_PP = 5;
+            pk.Move2_PP = 5;
+            pk.Move3_PP = 5;
+            pk.Move4_PP = 5;
 
-            pk.ClearNickname();
 
+
+            pk.Ball = 4;
             var la = new LegalityAnalysis(pk);
             if (!la.Valid && !LegalityFormatting.GetLegalityReport(la).Contains("assuming illegal"))
             {
+
                 var move = la.GetSuggestedCurrentMoves();
                 pk.Moves = move;
-                pk.SetAbilityIndex(0);
-                pk.Ball = 4;
+                
+
             }
-
-
-
-            var relearn = MoveSetApplicator.GetSuggestedRelearnMoves(la);
-
-            pk.SetRelearnMoves(relearn);
+            if(!new LegalityAnalysis(pk).Valid && !LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("assuming illegal"))
+            {
+                pk.SetAbilityIndex(0);
+            }
             if (!new LegalityAnalysis(pk).Valid && !LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("assuming illegal"))
             {
-                await ReplyAsync("pokemon is illegal dumbass");
-                File.Delete(temppokewait);
-                return;
+                pk.SetEggMetData(GameVersion.US, GameVersion.US);
+                pk.Met_Location = 78;
+                pk.Met_Level = 1;
             }
 
-            byte[] pkb = pk.EncryptedBoxData;
+            var relearn = MoveSetApplicator.GetSuggestedRelearnMoves(new LegalityAnalysis(pk));
+
+            pk.SetRelearnMoves(relearn);
+
+
+         
+            byte[] pkb = pk.DecryptedBoxData;
             System.IO.File.WriteAllBytes(temppokewait, pkb);
             var l = Legal.ZCrystalDictionary;
             if (l.ContainsValue(pk.HeldItem) || Enumerable.Range(656, 115).Contains(pk.HeldItem))
@@ -210,11 +225,19 @@ public class discordbot
                 pk.SetIV(4, 0);
                 pk.SetIV(5, 0);
 
-                byte[] y = pk.EncryptedBoxData;
+                byte[] y = pk.DecryptedBoxData;
                 System.IO.File.WriteAllBytes(temppokewait, y);
 
             }
+            if (!new LegalityAnalysis(pk).Valid && !LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("assuming illegal"))
+            {
+                await ReplyAsync("pokemon is illegal dumbass");
+                File.Delete(temppokewait);
+                return;
+            }
+
             await ReplyAsync("yay its legal good job!");
+
             pokequeue.Enqueue(temppokewait);
             username.Enqueue(Context.User.Id);
             trainername.Enqueue(trainer);
@@ -236,48 +259,63 @@ public class discordbot
             var sav = SaveUtil.GetBlankSAV(GameVersion.UM, "piplup");
 
             PKM pk = new PK7();
+            pk.ClearNickname();
             pk.ApplySetDetails(pokeset);
             sav.ApplyTo(pk);
-            pk.SetEggMetData(GameVersion.US, GameVersion.US);
-
-            pk.Met_Location = 78;
-            pk.Met_Level = 1;
             pk.TrainerID7 = tid;
             pk.TrainerSID7 = sid;
+            var met = EncounterSuggestion.GetSuggestedMetInfo(pk);
+            pk.Met_Location = met.Location;
+            pk.Met_Level = met.LevelMin;
+            var leg = new LegalityAnalysis(pk);
+            if (LegalityFormatting.GetLegalityReport(leg).Contains("Nickname does not match species name"))
+            {
+                pk.ClearNickname();
+            }
+
+
             pk.OT_Name = trainer;
+
+
             pk.Move1_PPUps = 0;
             pk.Move2_PPUps = 0;
             pk.Move3_PPUps = 0;
             pk.Move4_PPUps = 0;
-            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move1));
-            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move2));
-            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move3));
-            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move4));
-            
-            pk.ClearNickname();
-         
+            pk.Move1_PP = 5;
+            pk.Move2_PP = 5;
+            pk.Move3_PP = 5;
+            pk.Move4_PP = 5;
+
+
+
+            pk.Ball = 4;
             var la = new LegalityAnalysis(pk);
             if (!la.Valid && !LegalityFormatting.GetLegalityReport(la).Contains("assuming illegal"))
             {
-               var move = la.GetSuggestedCurrentMoves();
-                pk.Moves = move;
-                pk.SetAbilityIndex(0);
-                pk.Ball = 4;
-            }
-            
-            
 
-            var relearn = MoveSetApplicator.GetSuggestedRelearnMoves(la);
+                var move = la.GetSuggestedCurrentMoves();
+                pk.Moves = move;
+
+
+            }
+            if (!new LegalityAnalysis(pk).Valid && !LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("assuming illegal"))
+            {
+                pk.SetAbilityIndex(0);
+            }
+            if (!new LegalityAnalysis(pk).Valid && !LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("assuming illegal"))
+            {
+                pk.SetEggMetData(GameVersion.US, GameVersion.US);
+                pk.Met_Location = 78;
+                pk.Met_Level = 1;
+            }
+
+            var relearn = MoveSetApplicator.GetSuggestedRelearnMoves(new LegalityAnalysis(pk));
 
             pk.SetRelearnMoves(relearn);
-            if(!new LegalityAnalysis(pk).Valid && !LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("assuming illegal"))
-            {
-                await ReplyAsync("pokemon is illegal dumbass");
-                File.Delete(temppokewait);
-                return;
-            }
-            
-            byte[] pkb = pk.EncryptedBoxData;
+
+
+
+            byte[] pkb = pk.DecryptedBoxData;
             System.IO.File.WriteAllBytes(temppokewait, pkb);
             var l = Legal.ZCrystalDictionary;
             if (l.ContainsValue(pk.HeldItem) || Enumerable.Range(656, 115).Contains(pk.HeldItem))
@@ -297,11 +335,19 @@ public class discordbot
                 pk.SetIV(4, 0);
                 pk.SetIV(5, 0);
 
-                byte[] y = pk.EncryptedBoxData;
+                byte[] y = pk.DecryptedBoxData;
                 System.IO.File.WriteAllBytes(temppokewait, y);
 
             }
+            if (!new LegalityAnalysis(pk).Valid && !LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("assuming illegal"))
+            {
+                await ReplyAsync("pokemon is illegal dumbass");
+                File.Delete(temppokewait);
+                return;
+            }
+
             await ReplyAsync("yay its legal good job!");
+
             pokequeue.Enqueue(temppokewait);
             username.Enqueue(Context.User.Id);
             trainername.Enqueue(trainer);
@@ -322,47 +368,62 @@ public class discordbot
             var sav = SaveUtil.GetBlankSAV(GameVersion.UM, "piplup");
 
             PKM pk = new PK7();
+            pk.ClearNickname();
             pk.ApplySetDetails(pokeset);
             sav.ApplyTo(pk);
-            pk.SetEggMetData(GameVersion.US, GameVersion.US);
+           
+            var met = EncounterSuggestion.GetSuggestedMetInfo(pk);
+            pk.Met_Location = met.Location;
+            pk.Met_Level = met.LevelMin;
+            var leg = new LegalityAnalysis(pk);
+            if (LegalityFormatting.GetLegalityReport(leg).Contains("Nickname does not match species name"))
+            {
+                pk.ClearNickname();
+            }
 
-            pk.Met_Location = 78;
-            pk.Met_Level = 1;
-         
+
             pk.OT_Name = trainer;
+
+
             pk.Move1_PPUps = 0;
             pk.Move2_PPUps = 0;
             pk.Move3_PPUps = 0;
             pk.Move4_PPUps = 0;
-            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move1));
-            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move2));
-            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move3));
-            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move4));
+            pk.Move1_PP = 5;
+            pk.Move2_PP = 5;
+            pk.Move3_PP = 5;
+            pk.Move4_PP = 5;
 
-            pk.ClearNickname();
 
+
+            pk.Ball = 4;
             var la = new LegalityAnalysis(pk);
             if (!la.Valid && !LegalityFormatting.GetLegalityReport(la).Contains("assuming illegal"))
             {
+
                 var move = la.GetSuggestedCurrentMoves();
                 pk.Moves = move;
-                pk.SetAbilityIndex(0);
-                pk.Ball = 4;
+
+
             }
-
-
-
-            var relearn = MoveSetApplicator.GetSuggestedRelearnMoves(la);
-
-            pk.SetRelearnMoves(relearn);
             if (!new LegalityAnalysis(pk).Valid && !LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("assuming illegal"))
             {
-                await ReplyAsync("pokemon is illegal dumbass");
-                File.Delete(temppokewait);
-                return;
+                pk.SetAbilityIndex(0);
+            }
+            if (!new LegalityAnalysis(pk).Valid && !LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("assuming illegal"))
+            {
+                pk.SetEggMetData(GameVersion.US, GameVersion.US);
+                pk.Met_Location = 78;
+                pk.Met_Level = 1;
             }
 
-            byte[] pkb = pk.EncryptedBoxData;
+            var relearn = MoveSetApplicator.GetSuggestedRelearnMoves(new LegalityAnalysis(pk));
+
+            pk.SetRelearnMoves(relearn);
+
+
+
+            byte[] pkb = pk.DecryptedBoxData;
             System.IO.File.WriteAllBytes(temppokewait, pkb);
             var l = Legal.ZCrystalDictionary;
             if (l.ContainsValue(pk.HeldItem) || Enumerable.Range(656, 115).Contains(pk.HeldItem))
@@ -382,11 +443,19 @@ public class discordbot
                 pk.SetIV(4, 0);
                 pk.SetIV(5, 0);
 
-                byte[] y = pk.EncryptedBoxData;
+                byte[] y = pk.DecryptedBoxData;
                 System.IO.File.WriteAllBytes(temppokewait, y);
 
             }
+            if (!new LegalityAnalysis(pk).Valid && !LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("assuming illegal"))
+            {
+                await ReplyAsync("pokemon is illegal dumbass");
+                File.Delete(temppokewait);
+                return;
+            }
+
             await ReplyAsync("yay its legal good job!");
+
             pokequeue.Enqueue(temppokewait);
             username.Enqueue(Context.User.Id);
             trainername.Enqueue(trainer);
@@ -407,47 +476,62 @@ public class discordbot
             var sav = SaveUtil.GetBlankSAV(GameVersion.UM, "piplup");
 
             PKM pk = new PK7();
+            
             pk.ApplySetDetails(pokeset);
             sav.ApplyTo(pk);
-            pk.SetEggMetData(GameVersion.US, GameVersion.US);
+         
+            var met = EncounterSuggestion.GetSuggestedMetInfo(pk);
+            pk.Met_Location = met.Location;
+            pk.Met_Level = met.LevelMin;
+            var leg = new LegalityAnalysis(pk);
+            if (LegalityFormatting.GetLegalityReport(leg).Contains("Nickname does not match species name"))
+            {
+                pk.ClearNickname();
+            }
 
-            pk.Met_Location = 78;
-            pk.Met_Level = 1;
-          
+
             pk.OT_Name = trainer;
+
+
             pk.Move1_PPUps = 0;
             pk.Move2_PPUps = 0;
             pk.Move3_PPUps = 0;
             pk.Move4_PPUps = 0;
-            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move1));
-            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move2));
-            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move3));
-            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move4));
+            pk.Move1_PP = 5;
+            pk.Move2_PP = 5;
+            pk.Move3_PP = 5;
+            pk.Move4_PP = 5;
 
-            pk.ClearNickname();
 
+
+            pk.Ball = 4;
             var la = new LegalityAnalysis(pk);
             if (!la.Valid && !LegalityFormatting.GetLegalityReport(la).Contains("assuming illegal"))
             {
+
                 var move = la.GetSuggestedCurrentMoves();
                 pk.Moves = move;
-                pk.SetAbilityIndex(0);
-                pk.Ball = 4;
+
+
             }
-
-
-
-            var relearn = MoveSetApplicator.GetSuggestedRelearnMoves(la);
-
-            pk.SetRelearnMoves(relearn);
             if (!new LegalityAnalysis(pk).Valid && !LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("assuming illegal"))
             {
-                await ReplyAsync("pokemon is illegal dumbass");
-                File.Delete(temppokewait);
-                return;
+                pk.SetAbilityIndex(0);
+            }
+            if (!new LegalityAnalysis(pk).Valid && !LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("assuming illegal"))
+            {
+                pk.SetEggMetData(GameVersion.US, GameVersion.US);
+                pk.Met_Location = 78;
+                pk.Met_Level = 1;
             }
 
-            byte[] pkb = pk.EncryptedBoxData;
+            var relearn = MoveSetApplicator.GetSuggestedRelearnMoves(new LegalityAnalysis(pk));
+
+            pk.SetRelearnMoves(relearn);
+
+
+
+            byte[] pkb = pk.DecryptedBoxData;
             System.IO.File.WriteAllBytes(temppokewait, pkb);
             var l = Legal.ZCrystalDictionary;
             if (l.ContainsValue(pk.HeldItem) || Enumerable.Range(656, 115).Contains(pk.HeldItem))
@@ -467,11 +551,22 @@ public class discordbot
                 pk.SetIV(4, 0);
                 pk.SetIV(5, 0);
 
-                byte[] y = pk.EncryptedBoxData;
+                byte[] y = pk.DecryptedBoxData;
                 System.IO.File.WriteAllBytes(temppokewait, y);
 
             }
+            if (!new LegalityAnalysis(pk).Valid && !LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("assuming illegal"))
+            {
+                await ReplyAsync("pokemon is illegal dumbass");
+                byte[] g = pk.DecryptedBoxData;
+                System.IO.File.WriteAllBytes(temppokewait, g);
+                await Context.Channel.SendFileAsync(temppokewait);
+                File.Delete(temppokewait);
+                return;
+            }
+
             await ReplyAsync("yay its legal good job!");
+
             pokequeue.Enqueue(temppokewait);
             username.Enqueue(Context.User.Id);
             trainername.Enqueue(trainer);
@@ -520,7 +615,7 @@ public class discordbot
                 await ReplyAsync("pokemon is illegal...checking/fixing egg moves");
                 var egg = MoveSetApplicator.GetSuggestedRelearnMoves(la);
                 tradeable.SetRelearnMoves(egg);
-                byte[] y = tradeable.EncryptedBoxData;
+                byte[] y = tradeable.DecryptedBoxData;
                 System.IO.File.WriteAllBytes(temppokewait, y);
 
 
@@ -549,7 +644,7 @@ public class discordbot
                 tradeable.SetIV(4, 0);
                 tradeable.SetIV(5, 0);
 
-                byte[] y = tradeable.EncryptedBoxData;
+                byte[] y = tradeable.DecryptedBoxData;
                 System.IO.File.WriteAllBytes(temppokewait, y);
 
             }
@@ -614,7 +709,7 @@ public class discordbot
                 await ReplyAsync("pokemon is illegal...checking/fixing egg moves");
                 var egg = MoveSetApplicator.GetSuggestedRelearnMoves(la);
                 tradeable.SetRelearnMoves(egg);
-                byte[] y = tradeable.EncryptedBoxData;
+                byte[] y = tradeable.DecryptedBoxData;
                 System.IO.File.WriteAllBytes(temppokewait, y);
 
 
@@ -644,7 +739,7 @@ public class discordbot
                 tradeable.SetIV(4, 0);
                 tradeable.SetIV(5, 0);
 
-                byte[] y = tradeable.EncryptedBoxData;
+                byte[] y = tradeable.DecryptedBoxData;
                 System.IO.File.WriteAllBytes(temppokewait, y);
 
             }
