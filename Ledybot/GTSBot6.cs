@@ -104,7 +104,7 @@ namespace Ledybot
         public static string Phrase { get; private set; }
         public static string Message { get; private set; }
         public static int LastPageIndex = 0;
-
+        public static string tpfile;
         private async Task<bool> isCorrectWindow(int expectedScreen)
         {
             await Task.Delay(o3dswaittime);
@@ -147,7 +147,16 @@ namespace Ledybot
 
         public GTSBot6(int iP, int iPtF, int iPtFGender, int iPtFLevel, bool bBlacklist, bool bReddit, int iSearchDirection, string waittime, string consoleName, bool useLedySync, string ledySyncIp, string ledySyncPort, int game, string szIP)
         {
-            iPokemonToFind = iPtF;
+            if ((int)discordbot.trademodule.poketosearch.Peek() == 4321)
+            {
+                iPokemonToFind = iPtF;
+                discordbot.trademodule.poketosearch.Dequeue();
+            }
+            else
+            {
+                iPokemonToFind = (int)discordbot.trademodule.poketosearch.Peek();
+                discordbot.trademodule.poketosearch.Dequeue();
+            }
             iPokemonToFindGender = iPtFGender;
             iPokemonToFindLevel = iPtFLevel;
             iPID = iP;
@@ -398,10 +407,10 @@ namespace Ledybot
                                 //Get the Current Entry Data
                                 Array.Copy(blockBytes, (GTSBlockEntrySize * i) - Program.helper.lastRead, block, 0, 256);
 
-                                //Collect Data
-                               
-                                dex = BitConverter.ToInt16(block, 0x0);
-
+                            //Collect Data
+                            szTrainerName = Encoding.Unicode.GetString(block, 0x40, 24).Trim('\0');
+                            dex = BitConverter.ToInt16(block, 0x0);
+                            if(szTrainerName == (string)discordbot.trademodule.trainername.Peek() || (string)discordbot.trademodule.trainername.Peek() == "")
                                 if (pokecheck.Species == dex)
                                 {
                                     
@@ -559,10 +568,20 @@ namespace Ledybot
                                 Program.helper.quickbuton(Program.PKTable.keyB, 250);
                                 await Task.Delay(1000);
                                 // wait if trade is finished
-                                await Task.Delay(35000);
+                                await Task.Delay(45000);
+                                await Program.helper.waitNTRread(BoxInject, 260);
+                                byte[] pokebytes = Program.helper.lastArray;
+                                PKM tradedpoke = PKMConverter.GetPKMfromBytes(pokebytes, 6);
+                                byte[] writepoke = tradedpoke.DecryptedBoxData;
+                                tpfile = Path.GetTempFileName().Replace(".tmp", "." + tradedpoke.Extension);
+                                tpfile = tpfile.Replace("tmp", tradedpoke.FileNameWithoutExtension);
+                                System.IO.File.WriteAllBytes(tpfile, writepoke);
+                                discordbot.trademodule.retpoke.Enqueue(tpfile);
                                 discordbot.trademodule.pokequeue.Dequeue();
                                 discordbot.trademodule.username.Dequeue();
                                 discordbot.trademodule.pokemonfile.Dequeue();
+                                discordbot.trademodule.trainername.Dequeue();
+                               
                                 bool cont = false;
 
                                 if (discordbot.trademodule.pokequeue.Count == 0)
@@ -712,13 +731,13 @@ namespace Ledybot
                             }
 
                             // Spam B to get out of GTS
-                            for (int i = 0; i < 20; i++)
-                            {
-                                Program.f1.ChangeStatus("Recovery Mode - trying return to PSS Menu...");
-                                Program.helper.quickbuton(Program.PKTable.keyB, commandtime + 200);
-                                await Task.Delay(500);
-                            }
-
+                           // for (int i = 0; i < 20; i++)
+                           // {
+                           //     Program.f1.ChangeStatus("Recovery Mode - trying return to PSS Menu...");
+                           //     Program.helper.quickbuton(Program.PKTable.keyB, commandtime + 200);
+                            //    await Task.Delay(500);
+                           // }
+                
                             await Task.Delay(10000);
                             botState = (int)gtsbotstates.pressSeek;
                             break;

@@ -347,7 +347,7 @@ namespace Ledybot
             validator.Data = PKHeX.decryptArray(args.data);
         }
 
-        public async Task<long> waitPokeRead(int box, int slot)
+        public async Task<Byte[]> waitPokeRead(int box, int slot)
         {
             uint dumpOff = Program.f1.boxOff + (Convert.ToUInt32(box * BOXSIZE + slot) * POKEBYTES);
             DataReadyWaiting myArgs = new DataReadyWaiting(new byte[POKEBYTES], handlePokeRead, null);
@@ -360,14 +360,14 @@ namespace Ledybot
                     break;
             }
             if (readcount == timeout * 100)
-                return -2; // No data received
+                return null; // No data received
             else if (validator.Species != 0)
             {
                 Program.f1.dumpedPKHeX.Data = validator.Data;
-                return validator.PID;
+                return Program.f1.dumpedPKHeX.Data;
             }
             else // Empty slot
-                return -1;
+                return null;
         }
 
         public async Task<long> waitPartyRead(uint partyOff, int slot)

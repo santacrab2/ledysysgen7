@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Runtime.CompilerServices;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using Discord.WebSocket;
 using Discord.Commands;
 using System.Reflection;
 using PKHeX.Core;
+
 using System.Net;
 
 
@@ -16,13 +18,13 @@ using System.Net;
 public class discordbot
 {
 
-    
+
     private DiscordSocketClient _client;
     private CommandService _commands;
     Queue tradequeue = new Queue();
     public static readonly WebClient webClient = new WebClient();
-    
-    
+
+
 
 
 
@@ -130,67 +132,545 @@ public class discordbot
         public static Queue pokequeue = new Queue();
         public static Queue username = new Queue();
         public static Queue pokemonfile = new Queue();
+        public static Queue trainername = new Queue();
+        public static Queue channel = new Queue();
+        public static Queue retpoke = new Queue();
+        public static Queue poketosearch = new Queue();
+        public static Queue discordname = new Queue();
         public static IUser dmer;
-
-        
-
-
-
+        public static string trainer;
 
         [Command("trade")]
-        public async Task Trade()
+        public async Task stradepts(int tid, int sid, string trainer,int pts, string set)
         {
             string temppokewait = Path.GetTempFileName();
-    
+
+            ShowdownSet pokeset = new ShowdownSet(set);
+            var sav = SaveUtil.GetBlankSAV(GameVersion.UM, "piplup");
+
+            PKM pk = new PK7();
+            pk.ApplySetDetails(pokeset);
+            sav.ApplyTo(pk);
+            pk.SetEggMetData(GameVersion.US, GameVersion.US);
+
+            pk.Met_Location = 78;
+            pk.Met_Level = 1;
+            pk.TrainerID7 = tid;
+            pk.TrainerSID7 = sid;
+            pk.OT_Name = trainer;
+            pk.Move1_PPUps = 0;
+            pk.Move2_PPUps = 0;
+            pk.Move3_PPUps = 0;
+            pk.Move4_PPUps = 0;
+            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move1));
+            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move2));
+            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move3));
+            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move4));
+
+            pk.ClearNickname();
+
+            var la = new LegalityAnalysis(pk);
+            if (!la.Valid && !LegalityFormatting.GetLegalityReport(la).Contains("assuming illegal"))
+            {
+                var move = la.GetSuggestedCurrentMoves();
+                pk.Moves = move;
+                pk.SetAbilityIndex(0);
+                pk.Ball = 4;
+            }
+
+
+
+            var relearn = MoveSetApplicator.GetSuggestedRelearnMoves(la);
+
+            pk.SetRelearnMoves(relearn);
+            if (!new LegalityAnalysis(pk).Valid && !LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("assuming illegal"))
+            {
+                await ReplyAsync("pokemon is illegal dumbass");
+                File.Delete(temppokewait);
+                return;
+            }
+
+            byte[] pkb = pk.EncryptedBoxData;
+            System.IO.File.WriteAllBytes(temppokewait, pkb);
+            var l = Legal.ZCrystalDictionary;
+            if (l.ContainsValue(pk.HeldItem) || Enumerable.Range(656, 115).Contains(pk.HeldItem))
+            {
+                await ReplyAsync("no megastones or z-crystals...fixing pokemon");
+                pk.ApplyHeldItem(571, pk.Format);
+                pk.SetEV(0, 0);
+                pk.SetEV(1, 0);
+                pk.SetEV(2, 0);
+                pk.SetEV(3, 0);
+                pk.SetEV(4, 0);
+                pk.SetEV(5, 0);
+                pk.SetIV(0, 0);
+                pk.SetIV(1, 0);
+                pk.SetIV(2, 0);
+                pk.SetIV(3, 0);
+                pk.SetIV(4, 0);
+                pk.SetIV(5, 0);
+
+                byte[] y = pk.EncryptedBoxData;
+                System.IO.File.WriteAllBytes(temppokewait, y);
+
+            }
+            await ReplyAsync("yay its legal good job!");
+            pokequeue.Enqueue(temppokewait);
+            username.Enqueue(Context.User.Id);
+            trainername.Enqueue(trainer);
+            pokemonfile.Enqueue(pk);
+            channel.Enqueue(Context.Channel);
+            poketosearch.Enqueue(pts);
+            discordname.Enqueue(Context.User);
+            await ReplyAsync("added " + Context.User + " to queue");
+            await checkstarttrade();
+
+        }
+
+        [Command("trade")]
+        public async Task strade(int tid, int sid, string trainer, string set)
+        {
+            string temppokewait = Path.GetTempFileName();
+
+            ShowdownSet pokeset = new ShowdownSet(set);
+            var sav = SaveUtil.GetBlankSAV(GameVersion.UM, "piplup");
+
+            PKM pk = new PK7();
+            pk.ApplySetDetails(pokeset);
+            sav.ApplyTo(pk);
+            pk.SetEggMetData(GameVersion.US, GameVersion.US);
+
+            pk.Met_Location = 78;
+            pk.Met_Level = 1;
+            pk.TrainerID7 = tid;
+            pk.TrainerSID7 = sid;
+            pk.OT_Name = trainer;
+            pk.Move1_PPUps = 0;
+            pk.Move2_PPUps = 0;
+            pk.Move3_PPUps = 0;
+            pk.Move4_PPUps = 0;
+            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move1));
+            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move2));
+            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move3));
+            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move4));
+            
+            pk.ClearNickname();
+         
+            var la = new LegalityAnalysis(pk);
+            if (!la.Valid && !LegalityFormatting.GetLegalityReport(la).Contains("assuming illegal"))
+            {
+               var move = la.GetSuggestedCurrentMoves();
+                pk.Moves = move;
+                pk.SetAbilityIndex(0);
+                pk.Ball = 4;
+            }
+            
+            
+
+            var relearn = MoveSetApplicator.GetSuggestedRelearnMoves(la);
+
+            pk.SetRelearnMoves(relearn);
+            if(!new LegalityAnalysis(pk).Valid && !LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("assuming illegal"))
+            {
+                await ReplyAsync("pokemon is illegal dumbass");
+                File.Delete(temppokewait);
+                return;
+            }
+            
+            byte[] pkb = pk.EncryptedBoxData;
+            System.IO.File.WriteAllBytes(temppokewait, pkb);
+            var l = Legal.ZCrystalDictionary;
+            if (l.ContainsValue(pk.HeldItem) || Enumerable.Range(656, 115).Contains(pk.HeldItem))
+            {
+                await ReplyAsync("no megastones or z-crystals...fixing pokemon");
+                pk.ApplyHeldItem(571, pk.Format);
+                pk.SetEV(0, 0);
+                pk.SetEV(1, 0);
+                pk.SetEV(2, 0);
+                pk.SetEV(3, 0);
+                pk.SetEV(4, 0);
+                pk.SetEV(5, 0);
+                pk.SetIV(0, 0);
+                pk.SetIV(1, 0);
+                pk.SetIV(2, 0);
+                pk.SetIV(3, 0);
+                pk.SetIV(4, 0);
+                pk.SetIV(5, 0);
+
+                byte[] y = pk.EncryptedBoxData;
+                System.IO.File.WriteAllBytes(temppokewait, y);
+
+            }
+            await ReplyAsync("yay its legal good job!");
+            pokequeue.Enqueue(temppokewait);
+            username.Enqueue(Context.User.Id);
+            trainername.Enqueue(trainer);
+            pokemonfile.Enqueue(pk);
+            channel.Enqueue(Context.Channel);
+            poketosearch.Enqueue(4321);
+            discordname.Enqueue(Context.User);
+            await ReplyAsync("added " + Context.User + " to queue");
+            await checkstarttrade();
+
+        }
+        [Command("trade")]
+        public async Task stradenotidpts(string trainer, int pts, string set)
+        {
+            string temppokewait = Path.GetTempFileName();
+
+            ShowdownSet pokeset = new ShowdownSet(set);
+            var sav = SaveUtil.GetBlankSAV(GameVersion.UM, "piplup");
+
+            PKM pk = new PK7();
+            pk.ApplySetDetails(pokeset);
+            sav.ApplyTo(pk);
+            pk.SetEggMetData(GameVersion.US, GameVersion.US);
+
+            pk.Met_Location = 78;
+            pk.Met_Level = 1;
+         
+            pk.OT_Name = trainer;
+            pk.Move1_PPUps = 0;
+            pk.Move2_PPUps = 0;
+            pk.Move3_PPUps = 0;
+            pk.Move4_PPUps = 0;
+            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move1));
+            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move2));
+            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move3));
+            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move4));
+
+            pk.ClearNickname();
+
+            var la = new LegalityAnalysis(pk);
+            if (!la.Valid && !LegalityFormatting.GetLegalityReport(la).Contains("assuming illegal"))
+            {
+                var move = la.GetSuggestedCurrentMoves();
+                pk.Moves = move;
+                pk.SetAbilityIndex(0);
+                pk.Ball = 4;
+            }
+
+
+
+            var relearn = MoveSetApplicator.GetSuggestedRelearnMoves(la);
+
+            pk.SetRelearnMoves(relearn);
+            if (!new LegalityAnalysis(pk).Valid && !LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("assuming illegal"))
+            {
+                await ReplyAsync("pokemon is illegal dumbass");
+                File.Delete(temppokewait);
+                return;
+            }
+
+            byte[] pkb = pk.EncryptedBoxData;
+            System.IO.File.WriteAllBytes(temppokewait, pkb);
+            var l = Legal.ZCrystalDictionary;
+            if (l.ContainsValue(pk.HeldItem) || Enumerable.Range(656, 115).Contains(pk.HeldItem))
+            {
+                await ReplyAsync("no megastones or z-crystals...fixing pokemon");
+                pk.ApplyHeldItem(571, pk.Format);
+                pk.SetEV(0, 0);
+                pk.SetEV(1, 0);
+                pk.SetEV(2, 0);
+                pk.SetEV(3, 0);
+                pk.SetEV(4, 0);
+                pk.SetEV(5, 0);
+                pk.SetIV(0, 0);
+                pk.SetIV(1, 0);
+                pk.SetIV(2, 0);
+                pk.SetIV(3, 0);
+                pk.SetIV(4, 0);
+                pk.SetIV(5, 0);
+
+                byte[] y = pk.EncryptedBoxData;
+                System.IO.File.WriteAllBytes(temppokewait, y);
+
+            }
+            await ReplyAsync("yay its legal good job!");
+            pokequeue.Enqueue(temppokewait);
+            username.Enqueue(Context.User.Id);
+            trainername.Enqueue(trainer);
+            pokemonfile.Enqueue(pk);
+            channel.Enqueue(Context.Channel);
+            poketosearch.Enqueue(pts);
+            discordname.Enqueue(Context.User);
+            await ReplyAsync("added " + Context.User + " to queue");
+            await checkstarttrade();
+
+        }
+        [Command("trade")]
+        public async Task stradenotid(string trainer, string set)
+        {
+            string temppokewait = Path.GetTempFileName();
+
+            ShowdownSet pokeset = new ShowdownSet(set);
+            var sav = SaveUtil.GetBlankSAV(GameVersion.UM, "piplup");
+
+            PKM pk = new PK7();
+            pk.ApplySetDetails(pokeset);
+            sav.ApplyTo(pk);
+            pk.SetEggMetData(GameVersion.US, GameVersion.US);
+
+            pk.Met_Location = 78;
+            pk.Met_Level = 1;
+          
+            pk.OT_Name = trainer;
+            pk.Move1_PPUps = 0;
+            pk.Move2_PPUps = 0;
+            pk.Move3_PPUps = 0;
+            pk.Move4_PPUps = 0;
+            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move1));
+            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move2));
+            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move3));
+            pk.SetSuggestedMovePP(pk.GetMoveIndex(pk.Move4));
+
+            pk.ClearNickname();
+
+            var la = new LegalityAnalysis(pk);
+            if (!la.Valid && !LegalityFormatting.GetLegalityReport(la).Contains("assuming illegal"))
+            {
+                var move = la.GetSuggestedCurrentMoves();
+                pk.Moves = move;
+                pk.SetAbilityIndex(0);
+                pk.Ball = 4;
+            }
+
+
+
+            var relearn = MoveSetApplicator.GetSuggestedRelearnMoves(la);
+
+            pk.SetRelearnMoves(relearn);
+            if (!new LegalityAnalysis(pk).Valid && !LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("assuming illegal"))
+            {
+                await ReplyAsync("pokemon is illegal dumbass");
+                File.Delete(temppokewait);
+                return;
+            }
+
+            byte[] pkb = pk.EncryptedBoxData;
+            System.IO.File.WriteAllBytes(temppokewait, pkb);
+            var l = Legal.ZCrystalDictionary;
+            if (l.ContainsValue(pk.HeldItem) || Enumerable.Range(656, 115).Contains(pk.HeldItem))
+            {
+                await ReplyAsync("no megastones or z-crystals...fixing pokemon");
+                pk.ApplyHeldItem(571, pk.Format);
+                pk.SetEV(0, 0);
+                pk.SetEV(1, 0);
+                pk.SetEV(2, 0);
+                pk.SetEV(3, 0);
+                pk.SetEV(4, 0);
+                pk.SetEV(5, 0);
+                pk.SetIV(0, 0);
+                pk.SetIV(1, 0);
+                pk.SetIV(2, 0);
+                pk.SetIV(3, 0);
+                pk.SetIV(4, 0);
+                pk.SetIV(5, 0);
+
+                byte[] y = pk.EncryptedBoxData;
+                System.IO.File.WriteAllBytes(temppokewait, y);
+
+            }
+            await ReplyAsync("yay its legal good job!");
+            pokequeue.Enqueue(temppokewait);
+            username.Enqueue(Context.User.Id);
+            trainername.Enqueue(trainer);
+            pokemonfile.Enqueue(pk);
+            channel.Enqueue(Context.Channel);
+            poketosearch.Enqueue(4321);
+            discordname.Enqueue(Context.User);
+            await ReplyAsync("added " + Context.User + " to queue");
+            await checkstarttrade();
+
+        }
+
+        [Command("trade")]
+        public async Task ptrade([Summary("poke to search")] int pts, [Remainder] string trainer)
+        {
+            string temppokewait = Path.GetTempFileName();
+
             //this grabs the file the user uploads to discord if they even do it.
             pokm = Context.Message.Attachments.FirstOrDefault();
             if (pokm == default)
             {
                 await ReplyAsync("no attachment provided wtf are you doing?");
+                File.Delete(temppokewait);
                 return;
             }
             //this cleans up the filename the user submitted and checks that its a pk6 or 7
             att = Format.Sanitize(pokm.Filename);
-            if (!att.Contains(".pk7") && !att.Contains(".pk6"))
-
+            if (!att.Contains(".pk7"))
             {
-                await ReplyAsync("no pk7 or pk6 provided");
+                await ReplyAsync("no pk7 provided");
+                File.Delete(temppokewait);
                 return;
             }
 
             await ReplyAsync("file accepted..now to check if you know what you are doing with pkhex");
-            
+            await webClient.DownloadFileTaskAsync(pokm.Url, temppokewait);
+
             buffer = await DownloadFromUrlAsync(pokm.Url);
-            tradeable = PKMConverter.GetPKMfromBytes(buffer, pokm.Filename.Contains("pk6") ? 6 : 7);
+            tradeable = PKMConverter.GetPKMfromBytes(buffer, 7);
+
             var la = new PKHeX.Core.LegalityAnalysis(tradeable);
+
+            var l = Legal.ZCrystalDictionary;
             if (!la.Valid)
             {
-                await ReplyAsync("pokemon is illegal dumbass");
+                await ReplyAsync("pokemon is illegal...checking/fixing egg moves");
+                var egg = MoveSetApplicator.GetSuggestedRelearnMoves(la);
+                tradeable.SetRelearnMoves(egg);
+                byte[] y = tradeable.EncryptedBoxData;
+                System.IO.File.WriteAllBytes(temppokewait, y);
+
+
+            }
+            var la2 = new LegalityAnalysis(tradeable);
+            if (!la2.Valid)
+            {
+                await ReplyAsync("pokemon is illegal and its not egg moves");
+                File.Delete(temppokewait);
+                return;
+            }
+            if (l.ContainsValue(tradeable.HeldItem) || Enumerable.Range(656, 115).Contains(tradeable.HeldItem))
+            {
+                await ReplyAsync("no megastones or z-crystals...fixing pokemon");
+                tradeable.ApplyHeldItem(571, tradeable.Format);
+                tradeable.SetEV(0, 0);
+                tradeable.SetEV(1, 0);
+                tradeable.SetEV(2, 0);
+                tradeable.SetEV(3, 0);
+                tradeable.SetEV(4, 0);
+                tradeable.SetEV(5, 0);
+                tradeable.SetIV(0, 0);
+                tradeable.SetIV(1, 0);
+                tradeable.SetIV(2, 0);
+                tradeable.SetIV(3, 0);
+                tradeable.SetIV(4, 0);
+                tradeable.SetIV(5, 0);
+
+                byte[] y = tradeable.EncryptedBoxData;
+                System.IO.File.WriteAllBytes(temppokewait, y);
+
             }
             else
             {
-               await webClient.DownloadFileTaskAsync(pokm.Url, temppokewait);
+
+
+
+
                 await ReplyAsync("yay its legal good job!");
                 pokequeue.Enqueue(temppokewait);
                 username.Enqueue(Context.User.Id);
+                trainername.Enqueue(trainer);
                 pokemonfile.Enqueue(tradeable);
+                poketosearch.Enqueue(pts);
+                channel.Enqueue(Context.Channel);
+                discordname.Enqueue(Context.User);
                 await ReplyAsync("added " + Context.User + " to queue");
                 await checkstarttrade();
-            }
-                
-              
-                  
-                
-                
-                
 
-               
             }
-   
+
+        }
+
+
+
+        [Command("trade")]
+        public async Task trainertrade([Remainder] string trainer)
+        {
+
+            string temppokewait = Path.GetTempFileName();
+
+            //this grabs the file the user uploads to discord if they even do it.
+            pokm = Context.Message.Attachments.FirstOrDefault();
+            if (pokm == default)
+            {
+                await ReplyAsync("no attachment provided wtf are you doing?");
+                File.Delete(temppokewait);
+                return;
+            }
+            //this cleans up the filename the user submitted and checks that its a pk6 or 7
+            att = Format.Sanitize(pokm.Filename);
+            if (!att.Contains(".pk7"))
+
+            {
+                await ReplyAsync("no pk7 provided");
+                File.Delete(temppokewait);
+                return;
+            }
+
+            await ReplyAsync("file accepted..now to check if you know what you are doing with pkhex");
+            await webClient.DownloadFileTaskAsync(pokm.Url, temppokewait);
+
+            buffer = System.IO.File.ReadAllBytes(temppokewait);
+            tradeable = PKMConverter.GetPKMfromBytes(buffer, 7);
+            var la = new LegalityAnalysis(tradeable);
+            var l = Legal.ZCrystalDictionary;
+
+
+            if (!la.Valid)
+            {
+                await ReplyAsync("pokemon is illegal...checking/fixing egg moves");
+                var egg = MoveSetApplicator.GetSuggestedRelearnMoves(la);
+                tradeable.SetRelearnMoves(egg);
+                byte[] y = tradeable.EncryptedBoxData;
+                System.IO.File.WriteAllBytes(temppokewait, y);
+
+
+            }
+            var la2 = new LegalityAnalysis(tradeable);
+            if (!la2.Valid)
+            {
+                await ReplyAsync("pokemon is illegal and its not egg moves");
+                File.Delete(temppokewait);
+                return;
+            }
+
+            if (l.ContainsValue(tradeable.HeldItem) || Enumerable.Range(656, 115).Contains(tradeable.HeldItem))
+            {
+                await ReplyAsync("no megastones or z-crystals...fixing pokemon");
+                tradeable.ApplyHeldItem(571, tradeable.Format);
+                tradeable.SetEV(0, 0);
+                tradeable.SetEV(1, 0);
+                tradeable.SetEV(2, 0);
+                tradeable.SetEV(3, 0);
+                tradeable.SetEV(4, 0);
+                tradeable.SetEV(5, 0);
+                tradeable.SetIV(0, 0);
+                tradeable.SetIV(1, 0);
+                tradeable.SetIV(2, 0);
+                tradeable.SetIV(3, 0);
+                tradeable.SetIV(4, 0);
+                tradeable.SetIV(5, 0);
+
+                byte[] y = tradeable.EncryptedBoxData;
+                System.IO.File.WriteAllBytes(temppokewait, y);
+
+            }
+
+
+
+
+            await ReplyAsync("yay its legal good job!");
+            pokequeue.Enqueue(temppokewait);
+            username.Enqueue(Context.User.Id);
+            trainername.Enqueue(trainer);
+            pokemonfile.Enqueue(tradeable);
+            channel.Enqueue(Context.Channel);
+            poketosearch.Enqueue(4321);
+            discordname.Enqueue(Context.User);
+            await ReplyAsync("added " + Context.User + " to queue");
+            await checkstarttrade();
+
+        }
+
+
+
 
         public async Task checkstarttrade()
         {
-            if(!Ledybot.MainForm.botWorking && pokequeue.Count != 0)
+            if (!Ledybot.MainForm.botWorking && pokequeue.Count != 0)
             {
                 starttrades();
             }
@@ -205,45 +685,66 @@ public class discordbot
 
             while (pokequeue.Count != 0)
             {
+                if (retpoke.Count != 0)
+                {
+
+                    IMessageChannel t = (IMessageChannel)channel.Peek();
+                    await t.SendFileAsync((string)retpoke.Peek(), discordname.Peek() + " here is the pokemon you traded me ");
+                    channel.Dequeue();
+                    retpoke.Dequeue();
+                    discordname.Dequeue();
+                    if (Ledybot.MainForm.game == 0 || Ledybot.MainForm.game == 1)
+                        File.Delete(Ledybot.GTSBot7.tpfile);
+                    else
+                        File.Delete(Ledybot.GTSBot6.tpfile);
+                }
                 if (!Ledybot.MainForm.botWorking)
                 {
+                    IMessageChannel chan = (IMessageChannel)channel.Peek();
                     temppokecurrent = (string)pokequeue.Peek();
-                    await ReplyAsync("<@" + username.Peek() + ">" + " deposit your pokemon now");
-                  
+                    await chan.SendMessageAsync("<@" + username.Peek() + ">" + " deposit your pokemon now");
+
                     Ledybot.MainForm.btn_Start_Click(null, EventArgs.Empty);
-                    
-                    
+
+
                 }
                 else
                 {
                     continue;
                 }
-            
+
+
+
+            }
+
+            if (retpoke.Count != 0)
             {
-                
+
+                IMessageChannel t = (IMessageChannel)channel.Peek();
+                await t.SendFileAsync((string)retpoke.Peek(), discordname.Peek() + " here is the pokemon you traded me ");
+                channel.Dequeue();
+                retpoke.Dequeue();
+                discordname.Dequeue();
+                if (Ledybot.MainForm.game == 0 || Ledybot.MainForm.game == 1)
+                    File.Delete(Ledybot.GTSBot7.tpfile);
+                else
+                    File.Delete(Ledybot.GTSBot6.tpfile);
             }
 
-                  }
-                
-                
-                 
-                
-                
 
-                
+        }
 
 
-            
-            
-
-            }
         [Command("queueclear")]
-        [Alias("qc")]
+        [Alias("rq")]
         public async Task queueclear()
         {
             pokequeue.Dequeue();
             username.Dequeue();
             pokemonfile.Dequeue();
+            trainername.Dequeue();
+            channel.Dequeue();
+            discordname.Dequeue();
             await ReplyAsync("the first person in line has been removed");
             Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
 
@@ -255,16 +756,45 @@ public class discordbot
             pokequeue.Clear();
             username.Clear();
             pokemonfile.Clear();
+            trainername.Clear();
+            channel.Clear();
+            discordname.Clear();
             await ReplyAsync("the entire queue has been cleared");
             Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
 
         }
+
+        [Command("help")]
+        public async Task help()
+        {
+            await ReplyAsync("read the pins");
         }
-            
 
-  }
+        [Command("hi")]
+        public async Task hi()
+        {
+            await ReplyAsync(":middle_finger:");
+        }
+
+        public static async Task ban()
+        {
+            IMessageChannel chan = (IMessageChannel)channel.Peek();
+            await chan.SendMessageAsync(discordname.Peek() + " youve been temporarily or permanently banned from the bot");
+            channel.Dequeue();
+            discordname.Dequeue();
+            pokequeue.Dequeue();
+            username.Dequeue();
+            pokemonfile.Dequeue();
+            trainername.Dequeue();
+        }
         
+        
+    }
 
-    
+
+}
+
+
+
 
 

@@ -372,6 +372,7 @@ namespace Ledybot
                 btn_Stop.Enabled = false;
                 botStop = true;
                 
+                
             }
             else if (game == 3 || game == 4) // XY + ORAS
             {
@@ -379,6 +380,7 @@ namespace Ledybot
                 btn_Start.Enabled = true;
                 btn_Stop.Enabled = false;
                 botStop = true;
+                
             }
         }
 
