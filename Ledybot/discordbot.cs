@@ -149,16 +149,19 @@ public class discordbot
             var sav = SaveUtil.GetBlankSAV(GameVersion.UM, "piplup");
 
             PKM pk = new PK7();
-            pk.ClearNickname();
+
             pk.ApplySetDetails(pokeset);
             sav.ApplyTo(pk);
+            pk.HT_Name = "piplup";
+            pk.HT_Gender = 0;
             pk.TrainerID7 = tid;
             pk.TrainerSID7 = sid;
+
             var met = EncounterSuggestion.GetSuggestedMetInfo(pk);
             pk.Met_Location = met.Location;
             pk.Met_Level = met.LevelMin;
             var leg = new LegalityAnalysis(pk);
-            if (LegalityFormatting.GetLegalityReport(leg).Contains("Nickname does not match species name"))
+            if (LegalityFormatting.GetLegalityReport(leg).Contains("Nickname does not match species name") || pk.IsNicknamed == false)
             {
                 pk.ClearNickname();
             }
@@ -166,7 +169,7 @@ public class discordbot
 
             pk.OT_Name = trainer;
 
-            
+
             pk.Move1_PPUps = 0;
             pk.Move2_PPUps = 0;
             pk.Move3_PPUps = 0;
@@ -175,36 +178,47 @@ public class discordbot
             pk.Move2_PP = 5;
             pk.Move3_PP = 5;
             pk.Move4_PP = 5;
+            var relearn = MoveSetApplicator.GetSuggestedRelearnMoves(new LegalityAnalysis(pk));
 
+            pk.SetRelearnMoves(relearn);
 
 
             pk.Ball = 4;
-            var la = new LegalityAnalysis(pk);
-            if (!la.Valid && !LegalityFormatting.GetLegalityReport(la).Contains("assuming illegal"))
-            {
+     
 
-                var move = la.GetSuggestedCurrentMoves();
-                pk.Moves = move;
-                
-
-            }
-            if(!new LegalityAnalysis(pk).Valid && !LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("assuming illegal"))
-            {
-                pk.SetAbilityIndex(0);
-            }
-            if (!new LegalityAnalysis(pk).Valid && !LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("assuming illegal"))
+            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Unable to match an encounter from origin game"))
             {
                 pk.SetEggMetData(GameVersion.US, GameVersion.US);
                 pk.Met_Location = 78;
                 pk.Met_Level = 1;
             }
 
-            var relearn = MoveSetApplicator.GetSuggestedRelearnMoves(new LegalityAnalysis(pk));
+            var relearn2 = MoveSetApplicator.GetSuggestedRelearnMoves(new LegalityAnalysis(pk));
 
-            pk.SetRelearnMoves(relearn);
+            pk.SetRelearnMoves(relearn2);
+            pk.SetAbility(pk.Ability);
+            if (set.Contains("Shiny: Yes"))
+            {
+                pk.SetIsShiny(true);
+            }
+      
+            var la = new LegalityAnalysis(pk);
+            if (LegalityFormatting.GetLegalityReport(la).Contains("Invalid Move"))
+            {
+
+                var move = la.GetSuggestedCurrentMoves();
+                pk.Moves = move;
 
 
-         
+            }
+            if (pk.Move1 == 0)
+            { pk.Move1_PP = 0; }
+            if (pk.Move2 == 0)
+            { pk.Move2_PP = 0; }
+            if (pk.Move3 == 0)
+            { pk.Move3_PP = 0; }
+            if (pk.Move4 == 0)
+            { pk.Move4_PP = 0; }
             byte[] pkb = pk.DecryptedBoxData;
             System.IO.File.WriteAllBytes(temppokewait, pkb);
             var l = Legal.ZCrystalDictionary;
@@ -232,12 +246,16 @@ public class discordbot
             if (!new LegalityAnalysis(pk).Valid && !LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("assuming illegal"))
             {
                 await ReplyAsync("pokemon is illegal dumbass");
+                byte[] g = pk.DecryptedBoxData;
+                System.IO.File.WriteAllBytes(temppokewait, g);
+                await Context.Channel.SendFileAsync(temppokewait);
                 File.Delete(temppokewait);
                 return;
             }
 
             await ReplyAsync("yay its legal good job!");
 
+           
             pokequeue.Enqueue(temppokewait);
             username.Enqueue(Context.User.Id);
             trainername.Enqueue(trainer);
@@ -259,16 +277,19 @@ public class discordbot
             var sav = SaveUtil.GetBlankSAV(GameVersion.UM, "piplup");
 
             PKM pk = new PK7();
-            pk.ClearNickname();
+            
             pk.ApplySetDetails(pokeset);
             sav.ApplyTo(pk);
+            pk.HT_Name = "piplup";
+            pk.HT_Gender = 0;
             pk.TrainerID7 = tid;
             pk.TrainerSID7 = sid;
+         
             var met = EncounterSuggestion.GetSuggestedMetInfo(pk);
             pk.Met_Location = met.Location;
             pk.Met_Level = met.LevelMin;
             var leg = new LegalityAnalysis(pk);
-            if (LegalityFormatting.GetLegalityReport(leg).Contains("Nickname does not match species name"))
+            if (LegalityFormatting.GetLegalityReport(leg).Contains("Nickname does not match species name") || pk.IsNicknamed == false)
             {
                 pk.ClearNickname();
             }
@@ -289,20 +310,9 @@ public class discordbot
 
 
             pk.Ball = 4;
-            var la = new LegalityAnalysis(pk);
-            if (!la.Valid && !LegalityFormatting.GetLegalityReport(la).Contains("assuming illegal"))
-            {
-
-                var move = la.GetSuggestedCurrentMoves();
-                pk.Moves = move;
-
-
-            }
-            if (!new LegalityAnalysis(pk).Valid && !LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("assuming illegal"))
-            {
-                pk.SetAbilityIndex(0);
-            }
-            if (!new LegalityAnalysis(pk).Valid && !LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("assuming illegal"))
+       
+           
+            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Unable to match an encounter from origin game"))
             {
                 pk.SetEggMetData(GameVersion.US, GameVersion.US);
                 pk.Met_Location = 78;
@@ -312,8 +322,29 @@ public class discordbot
             var relearn = MoveSetApplicator.GetSuggestedRelearnMoves(new LegalityAnalysis(pk));
 
             pk.SetRelearnMoves(relearn);
+            pk.SetAbility(pk.Ability);
+            if(set.Contains("Shiny: Yes"))
+            {
+                pk.SetIsShiny(true);
+            }
+     
+            var la = new LegalityAnalysis(pk);
+            if (LegalityFormatting.GetLegalityReport(la).Contains("Invalid Move"))
+            {
+
+                var move = la.GetSuggestedCurrentMoves();
+                pk.Moves = move;
 
 
+            }
+            if (pk.Move1 == 0)
+            { pk.Move1_PP = 0; }
+            if (pk.Move2 == 0)
+            { pk.Move2_PP = 0; }
+            if (pk.Move3 == 0)
+            { pk.Move3_PP = 0; }
+            if (pk.Move4 == 0)
+            { pk.Move4_PP = 0; }
 
             byte[] pkb = pk.DecryptedBoxData;
             System.IO.File.WriteAllBytes(temppokewait, pkb);
@@ -342,12 +373,16 @@ public class discordbot
             if (!new LegalityAnalysis(pk).Valid && !LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("assuming illegal"))
             {
                 await ReplyAsync("pokemon is illegal dumbass");
+                byte[] g = pk.DecryptedBoxData;
+                System.IO.File.WriteAllBytes(temppokewait, g);
+                await Context.Channel.SendFileAsync(temppokewait);
                 File.Delete(temppokewait);
                 return;
             }
 
             await ReplyAsync("yay its legal good job!");
-
+         
+            
             pokequeue.Enqueue(temppokewait);
             username.Enqueue(Context.User.Id);
             trainername.Enqueue(trainer);
@@ -357,6 +392,7 @@ public class discordbot
             discordname.Enqueue(Context.User);
             await ReplyAsync("added " + Context.User + " to queue");
             await checkstarttrade();
+
 
         }
         [Command("trade")]
@@ -368,15 +404,16 @@ public class discordbot
             var sav = SaveUtil.GetBlankSAV(GameVersion.UM, "piplup");
 
             PKM pk = new PK7();
-            pk.ClearNickname();
+
             pk.ApplySetDetails(pokeset);
             sav.ApplyTo(pk);
-           
+            pk.HT_Name = "piplup";
+            pk.HT_Gender = 0;
             var met = EncounterSuggestion.GetSuggestedMetInfo(pk);
             pk.Met_Location = met.Location;
             pk.Met_Level = met.LevelMin;
             var leg = new LegalityAnalysis(pk);
-            if (LegalityFormatting.GetLegalityReport(leg).Contains("Nickname does not match species name"))
+            if (LegalityFormatting.GetLegalityReport(leg).Contains("Nickname does not match species name") || pk.IsNicknamed == false)
             {
                 pk.ClearNickname();
             }
@@ -397,20 +434,9 @@ public class discordbot
 
 
             pk.Ball = 4;
-            var la = new LegalityAnalysis(pk);
-            if (!la.Valid && !LegalityFormatting.GetLegalityReport(la).Contains("assuming illegal"))
-            {
+      
 
-                var move = la.GetSuggestedCurrentMoves();
-                pk.Moves = move;
-
-
-            }
-            if (!new LegalityAnalysis(pk).Valid && !LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("assuming illegal"))
-            {
-                pk.SetAbilityIndex(0);
-            }
-            if (!new LegalityAnalysis(pk).Valid && !LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("assuming illegal"))
+            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Unable to match an encounter from origin game"))
             {
                 pk.SetEggMetData(GameVersion.US, GameVersion.US);
                 pk.Met_Location = 78;
@@ -420,93 +446,14 @@ public class discordbot
             var relearn = MoveSetApplicator.GetSuggestedRelearnMoves(new LegalityAnalysis(pk));
 
             pk.SetRelearnMoves(relearn);
-
-
-
-            byte[] pkb = pk.DecryptedBoxData;
-            System.IO.File.WriteAllBytes(temppokewait, pkb);
-            var l = Legal.ZCrystalDictionary;
-            if (l.ContainsValue(pk.HeldItem) || Enumerable.Range(656, 115).Contains(pk.HeldItem))
+            pk.SetAbility(pk.Ability);
+            if (set.Contains("Shiny: Yes"))
             {
-                await ReplyAsync("no megastones or z-crystals...fixing pokemon");
-                pk.ApplyHeldItem(571, pk.Format);
-                pk.SetEV(0, 0);
-                pk.SetEV(1, 0);
-                pk.SetEV(2, 0);
-                pk.SetEV(3, 0);
-                pk.SetEV(4, 0);
-                pk.SetEV(5, 0);
-                pk.SetIV(0, 0);
-                pk.SetIV(1, 0);
-                pk.SetIV(2, 0);
-                pk.SetIV(3, 0);
-                pk.SetIV(4, 0);
-                pk.SetIV(5, 0);
-
-                byte[] y = pk.DecryptedBoxData;
-                System.IO.File.WriteAllBytes(temppokewait, y);
-
+                pk.SetIsShiny(true);
             }
-            if (!new LegalityAnalysis(pk).Valid && !LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("assuming illegal"))
-            {
-                await ReplyAsync("pokemon is illegal dumbass");
-                File.Delete(temppokewait);
-                return;
-            }
-
-            await ReplyAsync("yay its legal good job!");
-
-            pokequeue.Enqueue(temppokewait);
-            username.Enqueue(Context.User.Id);
-            trainername.Enqueue(trainer);
-            pokemonfile.Enqueue(pk);
-            channel.Enqueue(Context.Channel);
-            poketosearch.Enqueue(pts);
-            discordname.Enqueue(Context.User);
-            await ReplyAsync("added " + Context.User + " to queue");
-            await checkstarttrade();
-
-        }
-        [Command("trade")]
-        public async Task stradenotid(string trainer, string set)
-        {
-            string temppokewait = Path.GetTempFileName();
-
-            ShowdownSet pokeset = new ShowdownSet(set);
-            var sav = SaveUtil.GetBlankSAV(GameVersion.UM, "piplup");
-
-            PKM pk = new PK7();
-            
-            pk.ApplySetDetails(pokeset);
-            sav.ApplyTo(pk);
-         
-            var met = EncounterSuggestion.GetSuggestedMetInfo(pk);
-            pk.Met_Location = met.Location;
-            pk.Met_Level = met.LevelMin;
-            var leg = new LegalityAnalysis(pk);
-            if (LegalityFormatting.GetLegalityReport(leg).Contains("Nickname does not match species name"))
-            {
-                pk.ClearNickname();
-            }
-
-
-            pk.OT_Name = trainer;
-
-
-            pk.Move1_PPUps = 0;
-            pk.Move2_PPUps = 0;
-            pk.Move3_PPUps = 0;
-            pk.Move4_PPUps = 0;
-            pk.Move1_PP = 5;
-            pk.Move2_PP = 5;
-            pk.Move3_PP = 5;
-            pk.Move4_PP = 5;
-
-
-
-            pk.Ball = 4;
+      
             var la = new LegalityAnalysis(pk);
-            if (!la.Valid && !LegalityFormatting.GetLegalityReport(la).Contains("assuming illegal"))
+            if (LegalityFormatting.GetLegalityReport(la).Contains("Invalid Move"))
             {
 
                 var move = la.GetSuggestedCurrentMoves();
@@ -514,22 +461,14 @@ public class discordbot
 
 
             }
-            if (!new LegalityAnalysis(pk).Valid && !LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("assuming illegal"))
-            {
-                pk.SetAbilityIndex(0);
-            }
-            if (!new LegalityAnalysis(pk).Valid && !LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("assuming illegal"))
-            {
-                pk.SetEggMetData(GameVersion.US, GameVersion.US);
-                pk.Met_Location = 78;
-                pk.Met_Level = 1;
-            }
-
-            var relearn = MoveSetApplicator.GetSuggestedRelearnMoves(new LegalityAnalysis(pk));
-
-            pk.SetRelearnMoves(relearn);
-
-
+            if (pk.Move1 == 0)
+            { pk.Move1_PP = 0; }
+            if (pk.Move2 == 0)
+            { pk.Move2_PP = 0; }
+            if (pk.Move3 == 0)
+            { pk.Move3_PP = 0; }
+            if (pk.Move4 == 0)
+            { pk.Move4_PP = 0; }
 
             byte[] pkb = pk.DecryptedBoxData;
             System.IO.File.WriteAllBytes(temppokewait, pkb);
@@ -567,6 +506,133 @@ public class discordbot
 
             await ReplyAsync("yay its legal good job!");
 
+           
+            pokequeue.Enqueue(temppokewait);
+            username.Enqueue(Context.User.Id);
+            trainername.Enqueue(trainer);
+            pokemonfile.Enqueue(pk);
+            channel.Enqueue(Context.Channel);
+            poketosearch.Enqueue(pts);
+            discordname.Enqueue(Context.User);
+            await ReplyAsync("added " + Context.User + " to queue");
+            await checkstarttrade();
+
+
+        }
+        [Command("trade")]
+        public async Task stradenotid(string trainer, string set)
+        {
+            string temppokewait = Path.GetTempFileName();
+
+            ShowdownSet pokeset = new ShowdownSet(set);
+            var sav = SaveUtil.GetBlankSAV(GameVersion.UM, "piplup");
+
+            PKM pk = new PK7();
+          
+            pk.ApplySetDetails(pokeset);
+            sav.ApplyTo(pk);
+            pk.HT_Name = "piplup";
+            pk.HT_Gender = 0;
+            var met = EncounterSuggestion.GetSuggestedMetInfo(pk);
+            pk.Met_Location = met.Location;
+            pk.Met_Level = met.LevelMin;
+            var leg = new LegalityAnalysis(pk);
+            if (LegalityFormatting.GetLegalityReport(leg).Contains("Nickname does not match species name") || pk.IsNicknamed == false)
+            {
+                pk.ClearNickname();
+            }
+
+
+            pk.OT_Name = trainer;
+
+
+            pk.Move1_PPUps = 0;
+            pk.Move2_PPUps = 0;
+            pk.Move3_PPUps = 0;
+            pk.Move4_PPUps = 0;
+            pk.Move1_PP = 5;
+            pk.Move2_PP = 5;
+            pk.Move3_PP = 5;
+            pk.Move4_PP = 5;
+
+
+
+            pk.Ball = 4;
+      
+           
+            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Unable to match an encounter from origin game"))
+            {
+                pk.SetEggMetData(GameVersion.US, GameVersion.US);
+                pk.Met_Location = 78;
+                pk.Met_Level = 1;
+            }
+
+            var relearn = MoveSetApplicator.GetSuggestedRelearnMoves(new LegalityAnalysis(pk));
+
+            pk.SetRelearnMoves(relearn);
+            pk.SetAbility(pk.Ability);
+            if (set.Contains("Shiny: Yes"))
+            {
+                pk.SetIsShiny(true);
+            }
+            
+         
+            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move"))
+            {
+
+                var move = new LegalityAnalysis(pk).GetSuggestedCurrentMoves();
+                pk.Moves = move;
+
+
+            }
+            if(pk.Move1 == 0)
+            { pk.Move1_PP = 0; }
+            if (pk.Move2 == 0)
+            { pk.Move2_PP = 0; }
+            if (pk.Move3 == 0)
+            { pk.Move3_PP = 0; }
+            if (pk.Move4 == 0)
+            { pk.Move4_PP = 0; }
+
+
+            byte[] pkb = pk.DecryptedBoxData;
+            System.IO.File.WriteAllBytes(temppokewait, pkb);
+            var l = Legal.ZCrystalDictionary;
+            if (l.ContainsValue(pk.HeldItem) || Enumerable.Range(656, 115).Contains(pk.HeldItem))
+            {
+                await ReplyAsync("no megastones or z-crystals...fixing pokemon");
+                pk.ApplyHeldItem(571, pk.Format);
+                pk.SetEV(0, 0);
+                pk.SetEV(1, 0);
+                pk.SetEV(2, 0);
+                pk.SetEV(3, 0);
+                pk.SetEV(4, 0);
+                pk.SetEV(5, 0);
+                pk.SetIV(0, 0);
+                pk.SetIV(1, 0);
+                pk.SetIV(2, 0);
+                pk.SetIV(3, 0);
+                pk.SetIV(4, 0);
+                pk.SetIV(5, 0);
+
+                byte[] y = pk.DecryptedBoxData;
+                System.IO.File.WriteAllBytes(temppokewait, y);
+
+            }
+            if (!new LegalityAnalysis(pk).Valid && !LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("assuming illegal"))
+            {
+                await ReplyAsync("pokemon is illegal dumbass");
+                byte[] g = pk.DecryptedBoxData;
+                System.IO.File.WriteAllBytes(temppokewait, g);
+                await Context.Channel.SendFileAsync(temppokewait);
+                File.Delete(temppokewait);
+                return;
+            }
+           
+            await ReplyAsync("yay its legal good job!");
+            byte[] gt = pk.DecryptedBoxData;
+            System.IO.File.WriteAllBytes(temppokewait, gt);
+            await Context.Channel.SendFileAsync(temppokewait);
             pokequeue.Enqueue(temppokewait);
             username.Enqueue(Context.User.Id);
             trainername.Enqueue(trainer);
@@ -648,8 +714,8 @@ public class discordbot
                 System.IO.File.WriteAllBytes(temppokewait, y);
 
             }
-            else
-            {
+            
+            
 
 
 
@@ -665,7 +731,7 @@ public class discordbot
                 await ReplyAsync("added " + Context.User + " to queue");
                 await checkstarttrade();
 
-            }
+            
 
         }
 
@@ -834,29 +900,42 @@ public class discordbot
         [Alias("rq")]
         public async Task queueclear()
         {
-            pokequeue.Dequeue();
-            username.Dequeue();
-            pokemonfile.Dequeue();
-            trainername.Dequeue();
-            channel.Dequeue();
-            discordname.Dequeue();
-            await ReplyAsync("the first person in line has been removed");
-            Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
+            if (Context.User.Id == 763073084676374578)
+            {
+                pokequeue.Dequeue();
+                username.Dequeue();
+                pokemonfile.Dequeue();
+                trainername.Dequeue();
+                channel.Dequeue();
+                discordname.Dequeue();
+                await ReplyAsync("the first person in line has been removed");
+                Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
+            }
+            else
+            {
+                await ReplyAsync("only santacrab can use this command");
+            }
 
         }
 
         [Command("clear")]
         public async Task clqueue()
         {
-            pokequeue.Clear();
-            username.Clear();
-            pokemonfile.Clear();
-            trainername.Clear();
-            channel.Clear();
-            discordname.Clear();
-            await ReplyAsync("the entire queue has been cleared");
-            Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
-
+            if (Context.User.Id == 763073084676374578)
+            {
+                pokequeue.Clear();
+                username.Clear();
+                pokemonfile.Clear();
+                trainername.Clear();
+                channel.Clear();
+                discordname.Clear();
+                await ReplyAsync("the entire queue has been cleared");
+                Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
+            }
+            else
+            {
+                await ReplyAsync("only santacrab can use this command");
+            }
         }
 
         [Command("help")]
@@ -869,6 +948,11 @@ public class discordbot
         public async Task hi()
         {
             await ReplyAsync(":middle_finger:");
+        }
+        [Command("fuckyou")]
+        public async Task fuckyou()
+        {
+            await ReplyAsync(":kissing_heart:");
         }
 
         public static async Task ban()
