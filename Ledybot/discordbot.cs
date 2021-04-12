@@ -152,8 +152,9 @@ public class discordbot
 
             pk.ApplySetDetails(pokeset);
             sav.ApplyTo(pk);
-            if (!pk.Valid)
+            if(pk.Valid)
             {
+                
                 var sav2 = SaveUtil.GetBlankSAV(GameVersion.US, "piplup");
                 pk.ApplySetDetails(pokeset);
                 sav2.ApplyTo(pk);
@@ -621,16 +622,16 @@ public class discordbot
             pk.ApplySetDetails(pokeset);
             
             sav.ApplyTo(pk);
-            if(!pk.Valid)
+    
+
+            pk.HT_Name = "piplup";
+            pk.HT_Gender = 0;
+            if(EncounterSuggestion.GetSuggestedMetInfo(pk) == null)
             {
                 var sav2 = SaveUtil.GetBlankSAV(GameVersion.US, "piplup");
                 pk.ApplySetDetails(pokeset);
                 sav2.ApplyTo(pk);
             }
-
-            pk.HT_Name = "piplup";
-            pk.HT_Gender = 0;
-          
             var met = EncounterSuggestion.GetSuggestedMetInfo(pk);
             
             pk.Met_Location = met.Location;
@@ -672,6 +673,10 @@ public class discordbot
 
             pk.SetRelearnMoves(relearn);
             pk.SetAbility(pk.Ability);
+            if(LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Ability mismatch for encounter"))
+            {
+                pk.SetAbilityIndex(1);
+            }
             if (set.Contains("Shiny: Yes"))
             {
                 pk.SetIsShiny(true);
