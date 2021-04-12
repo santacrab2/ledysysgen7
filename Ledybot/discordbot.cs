@@ -201,13 +201,36 @@ public class discordbot
             {
                 pk.SetIsShiny(true);
             }
-      
-            var la = new LegalityAnalysis(pk);
-            if (LegalityFormatting.GetLegalityReport(la).Contains("Invalid Move"))
+
+            if (pk.Move1 == 0 && pk.Move2 == 0 && pk.Move3 == 0 && pk.Move4 == 0)
+            {
+                var move = new LegalityAnalysis(pk).GetSuggestedCurrentMoves();
+                pk.Moves = move;
+            }
+
+            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move"))
             {
 
-                var move = la.GetSuggestedCurrentMoves();
-                pk.Moves = move;
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 1: Invalid Move"))
+                {
+                    pk.Move1 = 0;
+                    pk.FixMoves();
+                }
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 2: Invalid Move"))
+                {
+                    pk.Move2 = 0;
+                    pk.FixMoves();
+                }
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 3: Invalid Move"))
+                {
+                    pk.Move3 = 0;
+                    pk.FixMoves();
+                }
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 4: Invalid Move"))
+                {
+                    pk.Move4 = 0;
+                    pk.FixMoves();
+                }
 
 
             }
@@ -327,13 +350,36 @@ public class discordbot
             {
                 pk.SetIsShiny(true);
             }
-     
-            var la = new LegalityAnalysis(pk);
-            if (LegalityFormatting.GetLegalityReport(la).Contains("Invalid Move"))
+
+            if (pk.Move1 == 0 && pk.Move2 == 0 && pk.Move3 == 0 && pk.Move4 == 0)
+            {
+                var move = new LegalityAnalysis(pk).GetSuggestedCurrentMoves();
+                pk.Moves = move;
+            }
+
+            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move"))
             {
 
-                var move = la.GetSuggestedCurrentMoves();
-                pk.Moves = move;
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 1: Invalid Move"))
+                {
+                    pk.Move1 = 0;
+                    pk.FixMoves();
+                }
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 2: Invalid Move"))
+                {
+                    pk.Move2 = 0;
+                    pk.FixMoves();
+                }
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 3: Invalid Move"))
+                {
+                    pk.Move3 = 0;
+                    pk.FixMoves();
+                }
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 4: Invalid Move"))
+                {
+                    pk.Move4 = 0;
+                    pk.FixMoves();
+                }
 
 
             }
@@ -451,13 +497,35 @@ public class discordbot
             {
                 pk.SetIsShiny(true);
             }
-      
-            var la = new LegalityAnalysis(pk);
-            if (LegalityFormatting.GetLegalityReport(la).Contains("Invalid Move"))
+            if (pk.Move1 == 0 && pk.Move2 == 0 && pk.Move3 == 0 && pk.Move4 == 0)
+            {
+                var move = new LegalityAnalysis(pk).GetSuggestedCurrentMoves();
+                pk.Moves = move;
+            }
+
+            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move"))
             {
 
-                var move = la.GetSuggestedCurrentMoves();
-                pk.Moves = move;
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 1: Invalid Move"))
+                {
+                    pk.Move1 = 0;
+                    pk.FixMoves();
+                }
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 2: Invalid Move"))
+                {
+                    pk.Move2 = 0;
+                    pk.FixMoves();
+                }
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 3: Invalid Move"))
+                {
+                    pk.Move3 = 0;
+                    pk.FixMoves();
+                }
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 4: Invalid Move"))
+                {
+                    pk.Move4 = 0;
+                    pk.FixMoves();
+                }
 
 
             }
@@ -575,13 +643,35 @@ public class discordbot
             {
                 pk.SetIsShiny(true);
             }
-            
+            if(pk.Move1 == 0 && pk.Move2 == 0 && pk.Move3 == 0 && pk.Move4 == 0)
+            {
+                var move = new LegalityAnalysis(pk).GetSuggestedCurrentMoves();
+                pk.Moves = move;
+            }
          
             if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move"))
             {
 
-                var move = new LegalityAnalysis(pk).GetSuggestedCurrentMoves();
-                pk.Moves = move;
+                if(LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 1: Invalid Move"))
+                {
+                    pk.Move1 = 0;
+                    pk.FixMoves();
+                }
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 2: Invalid Move"))
+                {
+                    pk.Move2 = 0;
+                    pk.FixMoves();
+                }
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 3: Invalid Move"))
+                {
+                    pk.Move3 = 0;
+                    pk.FixMoves();
+                }
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 4: Invalid Move"))
+                {
+                    pk.Move4 = 0;
+                    pk.FixMoves();
+                }
 
 
             }
@@ -630,9 +720,7 @@ public class discordbot
             }
            
             await ReplyAsync("yay its legal good job!");
-            byte[] gt = pk.DecryptedBoxData;
-            System.IO.File.WriteAllBytes(temppokewait, gt);
-            await Context.Channel.SendFileAsync(temppokewait);
+           
             pokequeue.Enqueue(temppokewait);
             username.Enqueue(Context.User.Id);
             trainername.Enqueue(trainer);

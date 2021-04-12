@@ -102,7 +102,7 @@ namespace Ledybot
                 Program.helper.pid = pid;
                 Program.scriptHelper.write(0x3E14C0, BitConverter.GetBytes(0xE3A01000), pid);
                 game = 0;
-                MessageBox.Show("Connection Successful!");
+                ChangeStatus("Connection Successful!");
 
                 boxOff = 0x330D9838;
                 wcOff = 0x331397E4;
@@ -118,7 +118,7 @@ namespace Ledybot
                 Program.scriptHelper.write(0x3F3424, BitConverter.GetBytes(0xE3A01000), pid); // Ultra Sun  // NFC ON: E3A01001 NFC OFF: E3A01000
                 Program.scriptHelper.write(0x3F3428, BitConverter.GetBytes(0xE3A01000), pid); // Ultra Moon // NFC ON: E3A01001 NFC OFF: E3A01000
                 game = 1;
-                MessageBox.Show("Connection Successful!");
+                ChangeStatus("Connection Successful!");
 
                 boxOff = 0x33015AB0;
                 wcOff = 0x33075BF4;
@@ -812,6 +812,7 @@ namespace Ledybot
         {
             discordbot piplup = new discordbot();
             piplup.MainAsync();
+            ChangeStatus("connected to discord");
          }
     }
 
