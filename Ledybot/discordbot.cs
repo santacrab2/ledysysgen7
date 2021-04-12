@@ -152,6 +152,12 @@ public class discordbot
 
             pk.ApplySetDetails(pokeset);
             sav.ApplyTo(pk);
+            if (!pk.Valid)
+            {
+                var sav2 = SaveUtil.GetBlankSAV(GameVersion.US, "piplup");
+                pk.ApplySetDetails(pokeset);
+                sav2.ApplyTo(pk);
+            }
             pk.HT_Name = "piplup";
             pk.HT_Gender = 0;
             pk.TrainerID7 = tid;
@@ -303,6 +309,12 @@ public class discordbot
             
             pk.ApplySetDetails(pokeset);
             sav.ApplyTo(pk);
+            if (!pk.Valid)
+            {
+                var sav2 = SaveUtil.GetBlankSAV(GameVersion.US, "piplup");
+                pk.ApplySetDetails(pokeset);
+                sav2.ApplyTo(pk);
+            }
             pk.HT_Name = "piplup";
             pk.HT_Gender = 0;
             pk.TrainerID7 = tid;
@@ -333,8 +345,9 @@ public class discordbot
 
 
             pk.Ball = 4;
-       
-           
+            var relearn2 = MoveSetApplicator.GetSuggestedRelearnMoves(new LegalityAnalysis(pk));
+            pk.SetRelearnMoves(relearn2);
+
             if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Unable to match an encounter from origin game"))
             {
                 pk.SetEggMetData(GameVersion.US, GameVersion.US);
@@ -453,6 +466,13 @@ public class discordbot
 
             pk.ApplySetDetails(pokeset);
             sav.ApplyTo(pk);
+            if (!pk.Valid)
+            {
+                var sav2 = SaveUtil.GetBlankSAV(GameVersion.US, "piplup");
+                pk.ApplySetDetails(pokeset);
+                sav2.ApplyTo(pk);
+            }
+
             pk.HT_Name = "piplup";
             pk.HT_Gender = 0;
             var met = EncounterSuggestion.GetSuggestedMetInfo(pk);
@@ -480,7 +500,8 @@ public class discordbot
 
 
             pk.Ball = 4;
-      
+            var relearn2 = MoveSetApplicator.GetSuggestedRelearnMoves(new LegalityAnalysis(pk));
+            pk.SetRelearnMoves(relearn2);
 
             if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Unable to match an encounter from origin game"))
             {
@@ -594,16 +615,27 @@ public class discordbot
 
             ShowdownSet pokeset = new ShowdownSet(set);
             var sav = SaveUtil.GetBlankSAV(GameVersion.UM, "piplup");
-
+           
             PKM pk = new PK7();
-          
+            
             pk.ApplySetDetails(pokeset);
+            
             sav.ApplyTo(pk);
+            if(!pk.Valid)
+            {
+                var sav2 = SaveUtil.GetBlankSAV(GameVersion.US, "piplup");
+                pk.ApplySetDetails(pokeset);
+                sav2.ApplyTo(pk);
+            }
+
             pk.HT_Name = "piplup";
             pk.HT_Gender = 0;
+          
             var met = EncounterSuggestion.GetSuggestedMetInfo(pk);
+            
             pk.Met_Location = met.Location;
             pk.Met_Level = met.LevelMin;
+            
             var leg = new LegalityAnalysis(pk);
             if (LegalityFormatting.GetLegalityReport(leg).Contains("Nickname does not match species name") || pk.IsNicknamed == false)
             {
@@ -626,8 +658,9 @@ public class discordbot
 
 
             pk.Ball = 4;
-      
-           
+            var relearn2 = MoveSetApplicator.GetSuggestedRelearnMoves(new LegalityAnalysis(pk));
+            pk.SetRelearnMoves(relearn2);
+
             if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Unable to match an encounter from origin game"))
             {
                 pk.SetEggMetData(GameVersion.US, GameVersion.US);
