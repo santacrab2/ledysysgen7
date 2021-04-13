@@ -152,27 +152,45 @@ public class discordbot
 
             pk.ApplySetDetails(pokeset);
             sav.ApplyTo(pk);
-            if(pk.Valid)
+            if (EncounterSuggestion.GetSuggestedMetInfo(pk) == null)
             {
-                
                 var sav2 = SaveUtil.GetBlankSAV(GameVersion.US, "piplup");
                 pk.ApplySetDetails(pokeset);
                 sav2.ApplyTo(pk);
+            }
+            
+            if (EncounterSuggestion.GetSuggestedMetInfo(pk) == null)
+            {
+                var sav2 = SaveUtil.GetBlankSAV(GameVersion.US, "piplup");
+                pk.ApplySetDetails(pokeset);
+                sav2.ApplyTo(pk);
+            }
+            if (EncounterSuggestion.GetSuggestedMetInfo(pk) == null)
+            {
+                pk.SetEggMetData(GameVersion.US, GameVersion.US);
+                pk.Met_Location = 78;
+                pk.Met_Level = 1;
+            }
+            else
+            {
+                var met = EncounterSuggestion.GetSuggestedMetInfo(pk);
+
+                pk.Met_Location = met.Location;
+                pk.Met_Level = met.LevelMin;
             }
             pk.HT_Name = "piplup";
             pk.HT_Gender = 0;
             pk.TrainerID7 = tid;
             pk.TrainerSID7 = sid;
-
-            var met = EncounterSuggestion.GetSuggestedMetInfo(pk);
-            pk.Met_Location = met.Location;
-            pk.Met_Level = met.LevelMin;
             var leg = new LegalityAnalysis(pk);
             if (LegalityFormatting.GetLegalityReport(leg).Contains("Nickname does not match species name") || pk.IsNicknamed == false)
             {
                 pk.ClearNickname();
             }
-
+            if (set.ToLower().Contains("otgender: female"))
+            {
+                pk.OT_Gender = 1;
+            }
 
             pk.OT_Name = trainer;
 
@@ -204,7 +222,11 @@ public class discordbot
 
             pk.SetRelearnMoves(relearn2);
             pk.SetAbility(pk.Ability);
-            if (set.Contains("Shiny: Yes"))
+            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Ability mismatch for encounter"))
+            {
+                pk.SetAbilityIndex(1);
+            }
+            if (set.ToLower().Contains("shiny: yes"))
             {
                 pk.SetIsShiny(true);
             }
@@ -310,26 +332,46 @@ public class discordbot
             
             pk.ApplySetDetails(pokeset);
             sav.ApplyTo(pk);
-            if (!pk.Valid)
+            if (EncounterSuggestion.GetSuggestedMetInfo(pk) == null)
             {
                 var sav2 = SaveUtil.GetBlankSAV(GameVersion.US, "piplup");
                 pk.ApplySetDetails(pokeset);
                 sav2.ApplyTo(pk);
             }
+        
+
+            if (EncounterSuggestion.GetSuggestedMetInfo(pk) == null)
+            {
+                var sav2 = SaveUtil.GetBlankSAV(GameVersion.US, "piplup");
+                pk.ApplySetDetails(pokeset);
+                sav2.ApplyTo(pk);
+            }
+            if (EncounterSuggestion.GetSuggestedMetInfo(pk) == null)
+            {
+                pk.SetEggMetData(GameVersion.US, GameVersion.US);
+                pk.Met_Location = 78;
+                pk.Met_Level = 1;
+            }
+            else
+            {
+                var met = EncounterSuggestion.GetSuggestedMetInfo(pk);
+
+                pk.Met_Location = met.Location;
+                pk.Met_Level = met.LevelMin;
+            }
             pk.HT_Name = "piplup";
             pk.HT_Gender = 0;
             pk.TrainerID7 = tid;
             pk.TrainerSID7 = sid;
-         
-            var met = EncounterSuggestion.GetSuggestedMetInfo(pk);
-            pk.Met_Location = met.Location;
-            pk.Met_Level = met.LevelMin;
             var leg = new LegalityAnalysis(pk);
             if (LegalityFormatting.GetLegalityReport(leg).Contains("Nickname does not match species name") || pk.IsNicknamed == false)
             {
                 pk.ClearNickname();
             }
-
+            if (set.ToLower().Contains("otgender: female"))
+            {
+                pk.OT_Gender = 1;
+            }
 
             pk.OT_Name = trainer;
 
@@ -360,7 +402,11 @@ public class discordbot
 
             pk.SetRelearnMoves(relearn);
             pk.SetAbility(pk.Ability);
-            if(set.Contains("Shiny: Yes"))
+            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Ability mismatch for encounter"))
+            {
+                pk.SetAbilityIndex(1);
+            }
+            if (set.ToLower().Contains("shiny: yes"))
             {
                 pk.SetIsShiny(true);
             }
@@ -467,24 +513,39 @@ public class discordbot
 
             pk.ApplySetDetails(pokeset);
             sav.ApplyTo(pk);
-            if (!pk.Valid)
+        
+          
+
+            pk.HT_Name = "piplup";
+            pk.HT_Gender = 0;
+            if (EncounterSuggestion.GetSuggestedMetInfo(pk) == null)
             {
                 var sav2 = SaveUtil.GetBlankSAV(GameVersion.US, "piplup");
                 pk.ApplySetDetails(pokeset);
                 sav2.ApplyTo(pk);
             }
+            if (EncounterSuggestion.GetSuggestedMetInfo(pk) == null)
+            {
+                pk.SetEggMetData(GameVersion.US, GameVersion.US);
+                pk.Met_Location = 78;
+                pk.Met_Level = 1;
+            }
+            else
+            {
+                var met = EncounterSuggestion.GetSuggestedMetInfo(pk);
 
-            pk.HT_Name = "piplup";
-            pk.HT_Gender = 0;
-            var met = EncounterSuggestion.GetSuggestedMetInfo(pk);
-            pk.Met_Location = met.Location;
-            pk.Met_Level = met.LevelMin;
+                pk.Met_Location = met.Location;
+                pk.Met_Level = met.LevelMin;
+            }
             var leg = new LegalityAnalysis(pk);
             if (LegalityFormatting.GetLegalityReport(leg).Contains("Nickname does not match species name") || pk.IsNicknamed == false)
             {
                 pk.ClearNickname();
             }
-
+            if (set.ToLower().Contains("otgender: female"))
+            {
+                pk.OT_Gender = 1;
+            }
 
             pk.OT_Name = trainer;
 
@@ -515,7 +576,11 @@ public class discordbot
 
             pk.SetRelearnMoves(relearn);
             pk.SetAbility(pk.Ability);
-            if (set.Contains("Shiny: Yes"))
+            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Ability mismatch for encounter"))
+            {
+                pk.SetAbilityIndex(1);
+            }
+            if (set.ToLower().Contains("shiny: yes"))
             {
                 pk.SetIsShiny(true);
             }
@@ -616,33 +681,43 @@ public class discordbot
 
             ShowdownSet pokeset = new ShowdownSet(set);
             var sav = SaveUtil.GetBlankSAV(GameVersion.UM, "piplup");
-           
+
             PKM pk = new PK7();
-            
+
             pk.ApplySetDetails(pokeset);
-            
+
             sav.ApplyTo(pk);
-    
+
 
             pk.HT_Name = "piplup";
             pk.HT_Gender = 0;
-            if(EncounterSuggestion.GetSuggestedMetInfo(pk) == null)
+            if (EncounterSuggestion.GetSuggestedMetInfo(pk) == null)
             {
                 var sav2 = SaveUtil.GetBlankSAV(GameVersion.US, "piplup");
                 pk.ApplySetDetails(pokeset);
                 sav2.ApplyTo(pk);
             }
-            var met = EncounterSuggestion.GetSuggestedMetInfo(pk);
-            
-            pk.Met_Location = met.Location;
-            pk.Met_Level = met.LevelMin;
-            
+            if (EncounterSuggestion.GetSuggestedMetInfo(pk) == null)
+            {
+                pk.SetEggMetData(GameVersion.US, GameVersion.US);
+                pk.Met_Location = 78;
+                pk.Met_Level = 1;
+            }
+            else {
+                var met = EncounterSuggestion.GetSuggestedMetInfo(pk);
+
+                pk.Met_Location = met.Location;
+                pk.Met_Level = met.LevelMin;
+            }
             var leg = new LegalityAnalysis(pk);
             if (LegalityFormatting.GetLegalityReport(leg).Contains("Nickname does not match species name") || pk.IsNicknamed == false)
             {
                 pk.ClearNickname();
             }
-
+            if(set.ToLower().Contains("otgender: female"))
+            {
+                pk.OT_Gender = 1;
+            }
 
             pk.OT_Name = trainer;
 
@@ -677,7 +752,7 @@ public class discordbot
             {
                 pk.SetAbilityIndex(1);
             }
-            if (set.Contains("Shiny: Yes"))
+            if (set.ToLower().Contains("shiny: yes"))
             {
                 pk.SetIsShiny(true);
             }
@@ -1080,6 +1155,35 @@ public class discordbot
         {
             await ReplyAsync(":kissing_heart:");
         }
+        [Command("Queue")]
+        [Alias("q")]
+        public async Task que()
+        {
+            Object[] arr = discordname.ToArray();
+            var sb = new System.Text.StringBuilder();
+            var embed = new EmbedBuilder();
+            if(arr.Length ==0)
+            {
+              await  ReplyAsync("queue is empty");
+            }
+            foreach (object i in arr)
+            {
+                int r = 0;
+                sb.AppendLine((r+1).ToString() +". " + arr[r].ToString());
+                r++;
+            }
+            embed.AddField(x =>
+            {
+                int r = 0;
+                x.Name = "Queue:";
+                x.Value = sb.ToString();
+                x.IsInline = false;
+                r++;
+                
+            });
+            await ReplyAsync( embed: embed.Build());
+        }
+        
 
         public static async Task ban()
         {
