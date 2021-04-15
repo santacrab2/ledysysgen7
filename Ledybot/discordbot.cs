@@ -230,7 +230,14 @@ public class discordbot
             {
                 pk.SetIsShiny(true);
             }
-
+            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: static encounter shiny mismatch"))
+            {
+                pk.SetEggMetData(GameVersion.US, GameVersion.US);
+                pk.Met_Location = 78;
+                pk.Met_Level = 1;
+                var relearn3 = MoveSetApplicator.GetSuggestedRelearnMoves(pk);
+                pk.SetRelearnMoves(relearn3);
+            }
             if (pk.Move1 == 0 && pk.Move2 == 0 && pk.Move3 == 0 && pk.Move4 == 0)
             {
                 var move = new LegalityAnalysis(pk).GetSuggestedCurrentMoves();
@@ -410,6 +417,14 @@ public class discordbot
             {
                 pk.SetIsShiny(true);
             }
+            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: static encounter shiny mismatch"))
+            {
+                pk.SetEggMetData(GameVersion.US, GameVersion.US);
+                pk.Met_Location = 78;
+                pk.Met_Level = 1;
+                var relearn3 = MoveSetApplicator.GetSuggestedRelearnMoves(pk);
+                pk.SetRelearnMoves(relearn3);
+            }
 
             if (pk.Move1 == 0 && pk.Move2 == 0 && pk.Move3 == 0 && pk.Move4 == 0)
             {
@@ -584,6 +599,14 @@ public class discordbot
             {
                 pk.SetIsShiny(true);
             }
+            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: static encounter shiny mismatch"))
+            {
+                pk.SetEggMetData(GameVersion.US, GameVersion.US);
+                pk.Met_Location = 78;
+                pk.Met_Level = 1;
+                var relearn3 = MoveSetApplicator.GetSuggestedRelearnMoves(pk);
+                pk.SetRelearnMoves(relearn3);
+            }
             if (pk.Move1 == 0 && pk.Move2 == 0 && pk.Move3 == 0 && pk.Move4 == 0)
             {
                 var move = new LegalityAnalysis(pk).GetSuggestedCurrentMoves();
@@ -689,8 +712,7 @@ public class discordbot
             sav.ApplyTo(pk);
 
 
-            pk.HT_Name = "piplup";
-            pk.HT_Gender = 0;
+         
             if (EncounterSuggestion.GetSuggestedMetInfo(pk) == null)
             {
                 var sav2 = SaveUtil.GetBlankSAV(GameVersion.US, "piplup");
@@ -720,6 +742,8 @@ public class discordbot
             }
 
             pk.OT_Name = trainer;
+            pk.HT_Name = "piplup";
+            pk.HT_Gender = 0;
 
 
             pk.Move1_PPUps = 0;
@@ -755,6 +779,14 @@ public class discordbot
             if (set.ToLower().Contains("shiny: yes"))
             {
                 pk.SetIsShiny(true);
+            }
+            if(LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: static encounter shiny mismatch"))
+            {
+                pk.SetEggMetData(GameVersion.US, GameVersion.US);
+                pk.Met_Location = 78;
+                pk.Met_Level = 1;
+                var relearn3 = MoveSetApplicator.GetSuggestedRelearnMoves(pk);
+                pk.SetRelearnMoves(relearn3);
             }
             if(pk.Move1 == 0 && pk.Move2 == 0 && pk.Move3 == 0 && pk.Move4 == 0)
             {
@@ -1166,19 +1198,20 @@ public class discordbot
             {
               await  ReplyAsync("queue is empty");
             }
+            int r = 0;
             foreach (object i in arr)
             {
-                int r = 0;
+                
                 sb.AppendLine((r+1).ToString() +". " + arr[r].ToString());
                 r++;
             }
             embed.AddField(x =>
             {
-                int r = 0;
+                
                 x.Name = "Queue:";
                 x.Value = sb.ToString();
                 x.IsInline = false;
-                r++;
+                
                 
             });
             await ReplyAsync( embed: embed.Build());
