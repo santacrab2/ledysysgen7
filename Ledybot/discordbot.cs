@@ -188,6 +188,20 @@ public class discordbot
             }
             if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: current level is below met level") || LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: unable to match an encounter from origin game") || LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: evolution not valid"))
             {
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: unable to match an encounter from origin game"))
+                {
+                    pk.SetEggMetData(GameVersion.US, GameVersion.US);
+                    pk.Met_Location = 78;
+                    pk.Met_Level = 1;
+                }
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: unable to match an encounter from origin game"))
+                {
+                    pk.Egg_Location = 0;
+                    var met = EncounterSuggestion.GetSuggestedMetInfo(pk);
+
+                    pk.Met_Location = met.Location;
+                    pk.Met_Level = met.LevelMin;
+                }
                 await ReplyAsync("checking level requirements");
                 int i = 0;
                 while (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: unable to match an encounter from origin game") || LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: evolution not valid"))
@@ -423,6 +437,20 @@ public class discordbot
             }
             if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: current level is below met level") || LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: unable to match an encounter from origin game") || LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: evolution not valid"))
             {
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: unable to match an encounter from origin game"))
+                {
+                    pk.SetEggMetData(GameVersion.US, GameVersion.US);
+                    pk.Met_Location = 78;
+                    pk.Met_Level = 1;
+                }
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: unable to match an encounter from origin game"))
+                {
+                    pk.Egg_Location = 0;
+                    var met = EncounterSuggestion.GetSuggestedMetInfo(pk);
+
+                    pk.Met_Location = met.Location;
+                    pk.Met_Level = met.LevelMin;
+                }
                 await ReplyAsync("checking level requirements");
                 int i = 0;
                 while (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: unable to match an encounter from origin game") || LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: evolution not valid"))
@@ -653,6 +681,20 @@ public class discordbot
             }
             if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: current level is below met level") || LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: unable to match an encounter from origin game") || LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: evolution not valid"))
             {
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: unable to match an encounter from origin game"))
+                {
+                    pk.SetEggMetData(GameVersion.US, GameVersion.US);
+                    pk.Met_Location = 78;
+                    pk.Met_Level = 1;
+                }
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: unable to match an encounter from origin game"))
+                {
+                    pk.Egg_Location = 0;
+                    var met = EncounterSuggestion.GetSuggestedMetInfo(pk);
+
+                    pk.Met_Location = met.Location;
+                    pk.Met_Level = met.LevelMin;
+                }
                 await ReplyAsync("checking level requirements");
                 int i = 0;
                 while (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: unable to match an encounter from origin game") || LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: evolution not valid"))
@@ -880,7 +922,21 @@ public class discordbot
             }
             if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: current level is below met level") || LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: unable to match an encounter from origin game") || LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: evolution not valid"))
             {
-                await ReplyAsync("checking level requirements");
+                if(LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: unable to match an encounter from origin game"))
+                {
+                    pk.SetEggMetData(GameVersion.US, GameVersion.US);
+                    pk.Met_Location = 78;
+                    pk.Met_Level = 1;
+                }
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: unable to match an encounter from origin game"))
+                {
+                    pk.Egg_Location = 0;
+                    var met = EncounterSuggestion.GetSuggestedMetInfo(pk);
+
+                    pk.Met_Location = met.Location;
+                    pk.Met_Level = met.LevelMin;
+                }
+                    await ReplyAsync("checking level requirements");
                 int i = 0;
                 while (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: unable to match an encounter from origin game") || LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: evolution not valid"))
                 {
