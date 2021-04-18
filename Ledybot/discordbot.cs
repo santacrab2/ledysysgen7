@@ -1106,7 +1106,7 @@ public class discordbot
             }
            
             await ReplyAsync("yay its legal good job!");
-            await Context.Channel.SendFileAsync(temppokewait);
+            
             pokequeue.Enqueue(temppokewait);
             username.Enqueue(Context.User.Id);
             trainername.Enqueue(trainer);
