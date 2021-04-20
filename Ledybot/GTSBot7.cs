@@ -728,10 +728,13 @@ namespace Ledybot
                             //spam a to trade pokemon
                             Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
                             await Task.Delay(commandtime + delaytime + 2500 + o3dswaittime);
+                            await Task.Delay(1000);
                             Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
                             await Task.Delay(commandtime + delaytime);
+                            await Task.Delay(1000);
                             Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
                             await Task.Delay(commandtime + delaytime);
+                            await Task.Delay(1000);
                             Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
                             await Task.Delay(commandtime + delaytime);
 

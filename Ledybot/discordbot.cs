@@ -211,7 +211,8 @@ public class discordbot
                 }
             }
             pk.OT_Name = trainer;
-
+            pk.HT_Name = "piplup";
+            pk.HT_Gender = 0;
 
             pk.Move1_PPUps = 0;
             pk.Move2_PPUps = 0;
@@ -239,9 +240,7 @@ public class discordbot
             }
 
 
-            var relearn2 = MoveSetApplicator.GetSuggestedRelearnMoves(new LegalityAnalysis(pk));
-
-            pk.SetRelearnMoves(relearn2);
+        
        
             if (set.ToLower().Contains("shiny: yes"))
             {
@@ -287,27 +286,33 @@ public class discordbot
                 {
                     await ReplyAsync("invalid move 1, removing move");
                     pk.Move1 = 0;
-                    pk.FixMoves();
+
                 }
                 if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 2: Invalid Move"))
                 {
+
+
                     await ReplyAsync("invalid move 2, removing move");
                     pk.Move2 = 0;
-                    pk.FixMoves();
+
+
                 }
                 if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 3: Invalid Move"))
                 {
+
                     await ReplyAsync("invalid move 3, removing move");
                     pk.Move3 = 0;
-                    pk.FixMoves();
+
+
                 }
                 if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 4: Invalid Move"))
                 {
                     await ReplyAsync("invalid move 4, removing move");
                     pk.Move4 = 0;
-                    pk.FixMoves();
                 }
-
+                pk.FixMoves();
+                pk.FixMoves();
+                pk.FixMoves();
 
             }
             if (pk.Move1 == 0 && pk.Move2 == 0 && pk.Move3 == 0 && pk.Move4 == 0)
@@ -451,6 +456,7 @@ public class discordbot
                     pk.Met_Location = met.Location;
                     pk.Met_Level = met.LevelMin;
                 }
+
                 await ReplyAsync("checking level requirements");
                 int i = 0;
                 while (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: unable to match an encounter from origin game") || LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: evolution not valid"))
@@ -458,9 +464,12 @@ public class discordbot
                     pk.CurrentLevel = pk.Met_Level + i;
                     i++;
                 }
+                byte[] te = pk.DecryptedBoxData;
+
             }
             pk.OT_Name = trainer;
-
+            pk.HT_Name = "piplup";
+            pk.HT_Gender = 0;
 
             pk.Move1_PPUps = 0;
             pk.Move2_PPUps = 0;
@@ -537,27 +546,33 @@ public class discordbot
                 {
                     await ReplyAsync("invalid move 1, removing move");
                     pk.Move1 = 0;
-                    pk.FixMoves();
+
                 }
                 if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 2: Invalid Move"))
                 {
+
+
                     await ReplyAsync("invalid move 2, removing move");
                     pk.Move2 = 0;
-                    pk.FixMoves();
+
+
                 }
                 if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 3: Invalid Move"))
                 {
+
                     await ReplyAsync("invalid move 3, removing move");
                     pk.Move3 = 0;
-                    pk.FixMoves();
+
+
                 }
                 if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 4: Invalid Move"))
                 {
                     await ReplyAsync("invalid move 4, removing move");
                     pk.Move4 = 0;
-                    pk.FixMoves();
                 }
-
+                pk.FixMoves();
+                pk.FixMoves();
+                pk.FixMoves();
 
             }
             if (pk.Move1 == 0 && pk.Move2 == 0 && pk.Move3 == 0 && pk.Move4 == 0)
@@ -679,6 +694,8 @@ public class discordbot
             {
                 pk.OT_Gender = 1;
             }
+            pk.HT_Name = "piplup";
+            pk.HT_Gender = 0;
             if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: current level is below met level") || LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: unable to match an encounter from origin game") || LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: evolution not valid"))
             {
                 if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: unable to match an encounter from origin game"))
@@ -780,29 +797,37 @@ public class discordbot
                 {
                     await ReplyAsync("invalid move 1, removing move");
                     pk.Move1 = 0;
-                    pk.FixMoves();
+
                 }
                 if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 2: Invalid Move"))
                 {
+
+
                     await ReplyAsync("invalid move 2, removing move");
                     pk.Move2 = 0;
-                    pk.FixMoves();
+
+
                 }
                 if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 3: Invalid Move"))
                 {
+
                     await ReplyAsync("invalid move 3, removing move");
                     pk.Move3 = 0;
-                    pk.FixMoves();
+
+
                 }
                 if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 4: Invalid Move"))
                 {
                     await ReplyAsync("invalid move 4, removing move");
                     pk.Move4 = 0;
-                    pk.FixMoves();
                 }
-
+                pk.FixMoves();
+                pk.FixMoves();
+                pk.FixMoves();
+                
 
             }
+            
             if (pk.Move1 == 0 && pk.Move2 == 0 && pk.Move3 == 0 && pk.Move4 == 0)
             {
                 await ReplyAsync("all moves removed, giving new moves");
@@ -920,6 +945,9 @@ public class discordbot
             {
                 pk.OT_Gender = 1;
             }
+            pk.HT_Name = "piplup";
+            pk.HT_Gender = 0;
+          
             if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: current level is below met level") || LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: unable to match an encounter from origin game") || LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: evolution not valid"))
             {
                 if(LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: unable to match an encounter from origin game"))
@@ -1020,31 +1048,37 @@ public class discordbot
             if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move"))
             {
 
-                if(LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 1: Invalid Move"))
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 1: Invalid Move"))
                 {
                     await ReplyAsync("invalid move 1, removing move");
                     pk.Move1 = 0;
-                    pk.FixMoves();
+                  
                 }
                 if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 2: Invalid Move"))
                 {
-                    await ReplyAsync("invalid move 2, removing move");
-                    pk.Move2 = 0;
-                    pk.FixMoves();
+                 
+                    
+                        await ReplyAsync("invalid move 2, removing move");
+                        pk.Move2 = 0;
+                      
+                    
                 }
-                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 3: Invalid Move"))
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 3: Invalid Move")) 
                 {
-                    await ReplyAsync("invalid move 3, removing move");
-                    pk.Move3 = 0;
-                    pk.FixMoves();
+                
+                        await ReplyAsync("invalid move 3, removing move");
+                        pk.Move3 = 0;
+                       
+                    
                 }
-                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 4: Invalid Move"))
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move 4: Invalid Move")) 
                 {
-                    await ReplyAsync("invalid move 4, removing move");
-                    pk.Move4 = 0;
-                    pk.FixMoves();
+                        await ReplyAsync("invalid move 4, removing move");
+                        pk.Move4 = 0;
                 }
-
+                pk.FixMoves();
+                pk.FixMoves();
+                pk.FixMoves();
 
             }
             if (pk.Move1 == 0 && pk.Move2 == 0 && pk.Move3 == 0 && pk.Move4 == 0)
@@ -1169,27 +1203,33 @@ public class discordbot
                 {
                     await ReplyAsync("invalid move 1, removing move");
                     tradeable.Move1 = 0;
-                    tradeable.FixMoves();
+
                 }
                 if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(tradeable)).Contains("Invalid Move 2: Invalid Move"))
                 {
+
+
                     await ReplyAsync("invalid move 2, removing move");
                     tradeable.Move2 = 0;
-                    tradeable.FixMoves();
+
+
                 }
                 if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(tradeable)).Contains("Invalid Move 3: Invalid Move"))
                 {
+
                     await ReplyAsync("invalid move 3, removing move");
                     tradeable.Move3 = 0;
-                    tradeable.FixMoves();
+
+
                 }
                 if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(tradeable)).Contains("Invalid Move 4: Invalid Move"))
                 {
                     await ReplyAsync("invalid move 4, removing move");
                     tradeable.Move4 = 0;
-                    tradeable.FixMoves();
                 }
-
+                tradeable.FixMoves();
+                tradeable.FixMoves();
+                tradeable.FixMoves();
 
             }
             if (tradeable.Move1 == 0 && tradeable.Move2 == 0 && tradeable.Move3 == 0 && tradeable.Move4 == 0)
@@ -1314,35 +1354,41 @@ public class discordbot
             }
 
 
-            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(tradeable)).Contains("Invalid Move"))
+       if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(tradeable)).Contains("Invalid Move"))
             {
 
                 if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(tradeable)).Contains("Invalid Move 1: Invalid Move"))
                 {
                     await ReplyAsync("invalid move 1, removing move");
                     tradeable.Move1 = 0;
-                    tradeable.FixMoves();
+                  
                 }
                 if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(tradeable)).Contains("Invalid Move 2: Invalid Move"))
                 {
-                    await ReplyAsync("invalid move 2, removing move");
-                    tradeable.Move2 = 0;
-                    tradeable.FixMoves();
+                 
+                    
+                        await ReplyAsync("invalid move 2, removing move");
+                        tradeable.Move2 = 0;
+                      
+                    
                 }
-                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(tradeable)).Contains("Invalid Move 3: Invalid Move"))
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(tradeable)).Contains("Invalid Move 3: Invalid Move")) 
                 {
-                    await ReplyAsync("invalid move 3, removing move");
-                    tradeable.Move3 = 0;
-                    tradeable.FixMoves();
+                
+                        await ReplyAsync("invalid move 3, removing move");
+                        tradeable.Move3 = 0;
+                       
+                    
                 }
-                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(tradeable)).Contains("Invalid Move 4: Invalid Move"))
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(tradeable)).Contains("Invalid Move 4: Invalid Move")) 
                 {
-                    await ReplyAsync("invalid move 4, removing move");
-                    tradeable.Move4 = 0;
-                    tradeable.FixMoves();
+                        await ReplyAsync("invalid move 4, removing move");
+                        tradeable.Move4 = 0;
                 }
-
-
+                tradeable.FixMoves();
+                tradeable.FixMoves();
+                tradeable.FixMoves();
+                
             }
             if (tradeable.Move1 == 0 && tradeable.Move2 == 0 && tradeable.Move3 == 0 && tradeable.Move4 == 0)
             {
