@@ -229,6 +229,7 @@
     </Compile>
     <Compile Include="GTSBot6.cs" />
     <Compile Include="GTSBot7.cs" />
+    <Compile Include="GTSCharacterSprites.cs" />
     <Compile Include="LookupTable.cs" />
     <Compile Include="NTRClient.cs" />
     <Compile Include="PKHeX.cs" />

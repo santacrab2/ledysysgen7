@@ -259,6 +259,25 @@ public class discordbot
                 var move = new LegalityAnalysis(pk).GetSuggestedCurrentMoves();
                 pk.Moves = move;
             }
+            if(LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move"))
+            {
+                pk.SetEggMetData(GameVersion.US, GameVersion.US);
+                pk.Met_Location = 78;
+                pk.Met_Level = 1;
+                var relearn3 = MoveSetApplicator.GetSuggestedRelearnMoves(pk);
+                pk.SetRelearnMoves(relearn3);
+
+            }
+            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: unable to match an encounter from origin game"))
+            {
+                pk.Egg_Location = 0;
+                var met = EncounterSuggestion.GetSuggestedMetInfo(pk);
+
+                pk.Met_Location = met.Location;
+                pk.Met_Level = met.LevelMin;
+                var relearn3 = MoveSetApplicator.GetSuggestedRelearnMoves(pk);
+                pk.SetRelearnMoves(relearn3);
+            }
             if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid relearn move 1:"))
             {
                 pk.RelearnMove1 = 0;
@@ -519,6 +538,25 @@ public class discordbot
                 var move = new LegalityAnalysis(pk).GetSuggestedCurrentMoves();
                 pk.Moves = move;
             }
+            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move"))
+            {
+                pk.SetEggMetData(GameVersion.US, GameVersion.US);
+                pk.Met_Location = 78;
+                pk.Met_Level = 1;
+                var relearn3 = MoveSetApplicator.GetSuggestedRelearnMoves(pk);
+                pk.SetRelearnMoves(relearn3);
+
+            }
+            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: unable to match an encounter from origin game"))
+            {
+                pk.Egg_Location = 0;
+                var met = EncounterSuggestion.GetSuggestedMetInfo(pk);
+
+                pk.Met_Location = met.Location;
+                pk.Met_Level = met.LevelMin;
+                var relearn3 = MoveSetApplicator.GetSuggestedRelearnMoves(pk);
+                pk.SetRelearnMoves(relearn3);
+            }
             if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid relearn move 1:"))
             {
                 pk.RelearnMove1 = 0;
@@ -769,6 +807,25 @@ public class discordbot
             {
                 var move = new LegalityAnalysis(pk).GetSuggestedCurrentMoves();
                 pk.Moves = move;
+            }
+            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move"))
+            {
+                pk.SetEggMetData(GameVersion.US, GameVersion.US);
+                pk.Met_Location = 78;
+                pk.Met_Level = 1;
+                var relearn3 = MoveSetApplicator.GetSuggestedRelearnMoves(pk);
+                pk.SetRelearnMoves(relearn3);
+
+            }
+            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: unable to match an encounter from origin game"))
+            {
+                pk.Egg_Location = 0;
+                var met = EncounterSuggestion.GetSuggestedMetInfo(pk);
+
+                pk.Met_Location = met.Location;
+                pk.Met_Level = met.LevelMin;
+                var relearn3 = MoveSetApplicator.GetSuggestedRelearnMoves(pk);
+                pk.SetRelearnMoves(relearn3);
             }
             if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid relearn move 1:"))
             {
@@ -1024,7 +1081,26 @@ public class discordbot
                 var move = new LegalityAnalysis(pk).GetSuggestedCurrentMoves();
                 pk.Moves = move;
             }
-            if(LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid relearn move 1:"))
+            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).Contains("Invalid Move"))
+            {
+                pk.SetEggMetData(GameVersion.US, GameVersion.US);
+                pk.Met_Location = 78;
+                pk.Met_Level = 1;
+                var relearn3 = MoveSetApplicator.GetSuggestedRelearnMoves(pk);
+                pk.SetRelearnMoves(relearn3);
+
+            }
+            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid: unable to match an encounter from origin game"))
+            {
+                pk.Egg_Location = 0;
+                var met = EncounterSuggestion.GetSuggestedMetInfo(pk);
+
+                pk.Met_Location = met.Location;
+                pk.Met_Level = met.LevelMin;
+                var relearn3 = MoveSetApplicator.GetSuggestedRelearnMoves(pk);
+                pk.SetRelearnMoves(relearn3);
+            }
+            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("invalid relearn move 1:"))
             {
                 pk.RelearnMove1 = 0;
                 
@@ -1566,6 +1642,7 @@ public class discordbot
                 trainername.Clear();
                 channel.Clear();
                 discordname.Clear();
+                poketosearch.Clear();
                 await ReplyAsync("the entire queue has been cleared");
                 Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
             }
@@ -1626,6 +1703,17 @@ public class discordbot
         {
             IMessageChannel chan = (IMessageChannel)channel.Peek();
             await chan.SendMessageAsync(discordname.Peek() + " youve been temporarily or permanently banned from the bot");
+            channel.Dequeue();
+            discordname.Dequeue();
+            pokequeue.Dequeue();
+            username.Dequeue();
+            pokemonfile.Dequeue();
+            trainername.Dequeue();
+        }
+        public static async Task slow()
+        {
+            IMessageChannel chan = (IMessageChannel)channel.Peek();
+            await chan.SendMessageAsync(discordname.Peek() + " you were too slow or too stupid, one of those, so the trades been cancelled");
             channel.Dequeue();
             discordname.Dequeue();
             pokequeue.Dequeue();

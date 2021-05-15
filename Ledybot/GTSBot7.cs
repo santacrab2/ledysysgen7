@@ -79,7 +79,7 @@ namespace Ledybot
         public static int botresult = 0;
         public static int attempts = 0;
         public static Task<bool> waitTaskbool;
-        public static int commandtime = 250;
+        public static int commandtime = 100;
         public static int delaytime = 150;
         public static int o3dswaittime = 1000;
 
@@ -91,7 +91,7 @@ namespace Ledybot
         public static bool foundLastPage = false;
         public static string szTrainerName;
         public static string tpfile;
-
+        public static int stupid = 0;
         public static Tuple<string, string, int, int, int, ArrayList> details;
 
         public static async Task<bool> isCorrectWindow(int expectedScreen)
@@ -238,7 +238,7 @@ namespace Ledybot
             int panicAttempts = 0;
             botState = 0;
             dexnumber = 0;
-
+            stupid = 0;
             while (!botstop)
             {
                 if (botState != (int)gtsbotstates.panic)
@@ -264,6 +264,19 @@ namespace Ledybot
                         botState = (int)gtsbotstates.pressSeek;
                         break;
                     case (int)gtsbotstates.pressSeek:
+                        if (stupid == 15)
+                        {
+                            startIndex = 0;
+                            tradeIndex = -1;
+                            listlength = 0;
+                            addr_PageEntry = 0;
+                            foundLastPage = false;
+                            botresult = 8;
+                            botState = (int)gtsbotstates.botexit;
+                            Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
+                            await discordbot.trademodule.slow();
+                            break;
+                        }
                         Program.f1.ChangeStatus("Pressing seek button");
                         //Seek/Deposite pokemon screen
                         correctScreen = await isCorrectWindow(val_Quit_SeekScreen);
@@ -286,7 +299,10 @@ namespace Ledybot
                         }
                         //Pokemon wanted screen again, this time with filled out information
                         await Task.Delay(2000);
+                        
                         waitTaskbool = Program.helper.waittouch(160, 185);
+                    
+                        
                         if (await waitTaskbool)
                         {
                             botState = (int)gtsbotstates.findfromstart;
@@ -300,6 +316,7 @@ namespace Ledybot
                         }
                         break;
                     case (int)gtsbotstates.findfromstart:
+                    
                         correctScreen = await isCorrectWindow(val_GTSListScreen);
                         if (!correctScreen)
                         {
@@ -450,6 +467,7 @@ namespace Ledybot
                                         {
                                             if (!bReddit && !Program.f1.commented.Contains(szFC) && !Program.f1.banlist.Contains(szFC))
                                             {
+                                                Program.f1.ChangeStatus("Found a pokemon to trade");
                                                 tradeIndex = i - 1;
                                                 botState = (int)gtsbotstates.trade;
                                                 break;
@@ -487,7 +505,8 @@ namespace Ledybot
                                     }
                                     else
                                     {
-                                        botState = (int)gtsbotstates.research;
+                                        botState = (int)gtsbotstates.pressSeek;
+                                        stupid++;
                                     }
                                 }
                                 else
@@ -607,6 +626,7 @@ namespace Ledybot
                                         {
                                             if ((!bReddit || Program.f1.commented.Contains(szFC)) && !Program.f1.banlist.Contains(szFC))
                                             {
+                                                Program.f1.ChangeStatus("Found a pokemon to trade");
                                                 tradeIndex = i - 1;
                                                 botState = (int)gtsbotstates.trade;
                                                 break;
@@ -677,19 +697,21 @@ namespace Ledybot
                                     await Task.Delay(commandtime + delaytime + 500);
                                     Program.helper.quickbuton(Program.PKTable.keyB, commandtime);
                                     await Task.Delay(commandtime + delaytime + 500);
+                                    Program.helper.quickbuton(Program.PKTable.keyB, commandtime);
+                                    await Task.Delay(commandtime + delaytime + 500);
                                     if (bReddit)
                                     {
                                         botState = (int)gtsbotstates.updatecomments;
                                     }
                                     else
                                     {
-                                        botState = (int)gtsbotstates.research;
+                                        botState = (int)gtsbotstates.pressSeek;
                                     }
                                 }
                                 else if (startIndex < 200)
                                 {
                                     Program.f1.ChangeStatus("No pokemon to trade found");
-                                    botState = (int)gtsbotstates.quicksearch;
+                                    botState = (int)gtsbotstates.pressSeek;
                                 }
                             }
                         }
