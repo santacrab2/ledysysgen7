@@ -763,17 +763,17 @@ namespace Ledybot
                             //during the trade spam a/b to get back to the start screen in case of "this pokemon has been traded"
                             await Task.Delay(10250);
                             Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
-                            await Task.Delay(commandtime + delaytime);
-                            await Task.Delay(1000);
-                            Program.helper.quickbuton(Program.PKTable.keyB, commandtime);
-                            await Task.Delay(commandtime + delaytime);
-                            await Task.Delay(1000);
-                            Program.helper.quickbuton(Program.PKTable.keyB, commandtime);
-                            await Task.Delay(commandtime + delaytime);
-                            await Task.Delay(1000);
-                            Program.helper.quickbuton(Program.PKTable.keyB, commandtime);
-                            await Task.Delay(commandtime + delaytime);
-                            await Task.Delay(45000);
+                       //     await Task.Delay(commandtime + delaytime);
+                       //     await Task.Delay(1000);
+                       //     Program.helper.quickbuton(Program.PKTable.keyB, commandtime);
+                       //     await Task.Delay(commandtime + delaytime);
+                       //     await Task.Delay(1000);
+                      //      Program.helper.quickbuton(Program.PKTable.keyB, commandtime);
+                        //    await Task.Delay(commandtime + delaytime);
+                       //     await Task.Delay(1000);
+                       //     Program.helper.quickbuton(Program.PKTable.keyB, commandtime);
+                      //      await Task.Delay(commandtime + delaytime);
+                            await Task.Delay(50000);
                             await Program.helper.waitNTRread(addr_box1slot1, 260);
                             byte[] pokebytes = Program.helper.lastArray;
                             PKM tradedpoke = PKMConverter.GetPKMfromBytes(pokebytes, 7);
