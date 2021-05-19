@@ -151,7 +151,7 @@ public class discordbot
             PKM pk = BuildPokemon(set, 7);
             if (pk == null)
             {
-                await ReplyAsync("pokemon is illegal dumbass");
+                await Context.Channel.SendFileAsync("C:/Users/jordan/source/repos/ledysys - gen7/182185874_3008766146023402_980987956132747709_n.mp4", "Pokemon is illegal dumbass");
 
                 File.Delete(temppokewait);
                 return;
@@ -185,24 +185,24 @@ public class discordbot
             string temppokewait = Path.GetTempFileName();
 
             PKM pk = BuildPokemon(set, 7);
-            if (pk == null)
+            if (pk==null)
             {
-                await ReplyAsync("pokemon is illegal dumbass");
-            
+                await Context.Channel.SendFileAsync("C:/Users/jordan/source/repos/ledysys - gen7/182185874_3008766146023402_980987956132747709_n.mp4", "Pokemon is illegal dumbass");
+        
                 File.Delete(temppokewait);
                 return;
 
             }
-            if(set.ToLower().Contains("shiny: yes"))
-            {
-                pk.SetShiny();
-            }
+         //   if(set.ToLower().Contains("shiny: yes"))
+        //    {
+       //         pk.SetShiny();
+      //      }
             if (pk.OT_Name.ToLower() == "pkhex")
                 pk.OT_Name = trainer;
             await ReplyAsync("yay its legal good job!");
             byte[] g = pk.DecryptedBoxData;
             System.IO.File.WriteAllBytes(temppokewait, g);
-           
+            await Context.Channel.SendFileAsync(temppokewait);
             pokequeue.Enqueue(temppokewait);
             username.Enqueue(Context.User.Id);
             trainername.Enqueue(trainer);
@@ -721,7 +721,7 @@ public class discordbot
                 APILegality.UseTrainerData = false;
                 APILegality.AllowTrainerOverride = true;
                 APILegality.AllowBatchCommands = true;
-               
+                
                 // Reload Database & Ribbon Index
                 if (Directory.Exists(Directory.GetCurrentDirectory() + "\\mgdb"))
                     EncounterEvent.RefreshMGDB(Directory.GetCurrentDirectory() + "\\mgdb");
@@ -730,12 +730,14 @@ public class discordbot
 
                 // Convert the given Text into a Showdown Set
                 ShowdownSet set = new ShowdownSet(Set);
-
+                IBattleTemplate re = new RegenTemplate(set, 7);
+               
+                
                 // Generate a Blank Savefile
                 var sav = SaveUtil.GetBlankSAV(Generation is 6 ? GameVersion.OR : GameVersion.US, "Chris");
-
+                
                 // Generates a PKM from Showdown Set
-                var pk = sav.GetLegalFromSet(set, out _);
+                var pk = sav.GetLegalFromSet(re, out _);
 
                 if (!new LegalityAnalysis(pk).Valid)
                     pk.Legalize();
