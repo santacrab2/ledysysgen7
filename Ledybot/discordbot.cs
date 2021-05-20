@@ -146,6 +146,7 @@ public class discordbot
         [Command("trade")]
         public async Task stradenotidpts(string trainer, int pts, string set)
         {
+            var l = Legal.ZCrystalDictionary;
             string temppokewait = Path.GetTempFileName();
 
             PKM pk = BuildPokemon(set, 7);
@@ -163,6 +164,29 @@ public class discordbot
             }
             if (pk.OT_Name.ToLower() == "pkhex")
                 pk.OT_Name = trainer;
+
+            if (l.ContainsValue(pk.HeldItem) || Enumerable.Range(656, 115).Contains(pk.HeldItem))
+            {
+                if (pk.HeldItem != 686)
+                {
+                    await ReplyAsync("no megastones or z-crystals...fixing pokemon");
+                    pk.ApplyHeldItem(571, pk.Format);
+                    pk.SetEV(0, 0);
+                    pk.SetEV(1, 0);
+                    pk.SetEV(2, 0);
+                    pk.SetEV(3, 0);
+                    pk.SetEV(4, 0);
+                    pk.SetEV(5, 0);
+                    pk.SetIV(0, 0);
+                    pk.SetIV(1, 0);
+                    pk.SetIV(2, 0);
+                    pk.SetIV(3, 0);
+                    pk.SetIV(4, 0);
+                    pk.SetIV(5, 0);
+
+           
+                }
+            }
             await ReplyAsync("yay its legal good job!");
 
             byte[] g = pk.DecryptedBoxData;
@@ -182,6 +206,7 @@ public class discordbot
         [Command("trade")]
         public async Task stradenotid(string trainer, string set)
         {
+            var l = Legal.ZCrystalDictionary;
             string temppokewait = Path.GetTempFileName();
 
             PKM pk = BuildPokemon(set, 7);
@@ -193,12 +218,35 @@ public class discordbot
                 return;
 
             }
-         //   if(set.ToLower().Contains("shiny: yes"))
-        //    {
-       //         pk.SetShiny();
-      //      }
+            //   if(set.ToLower().Contains("shiny: yes"))
+            //    {
+            //         pk.SetShiny();
+            //      }
             if (pk.OT_Name.ToLower() == "pkhex")
                 pk.OT_Name = trainer;
+
+            if (l.ContainsValue(pk.HeldItem) || Enumerable.Range(656, 115).Contains(pk.HeldItem))
+            {
+                if (pk.HeldItem != 686)
+                {
+                    await ReplyAsync("no megastones or z-crystals...fixing pokemon");
+                    pk.ApplyHeldItem(571, pk.Format);
+                    pk.SetEV(0, 0);
+                    pk.SetEV(1, 0);
+                    pk.SetEV(2, 0);
+                    pk.SetEV(3, 0);
+                    pk.SetEV(4, 0);
+                    pk.SetEV(5, 0);
+                    pk.SetIV(0, 0);
+                    pk.SetIV(1, 0);
+                    pk.SetIV(2, 0);
+                    pk.SetIV(3, 0);
+                    pk.SetIV(4, 0);
+                    pk.SetIV(5, 0);
+
+                    
+                }
+            }
             await ReplyAsync("yay its legal good job!");
             byte[] g = pk.DecryptedBoxData;
             System.IO.File.WriteAllBytes(temppokewait, g);
