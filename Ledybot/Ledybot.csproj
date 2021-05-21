@@ -102,12 +102,11 @@
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PKHeX.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\PKHeX.Core.21.5.19\lib\net46\PKHeX.Core.dll</HintPath>
+      <HintPath>..\packages\PKHeX.Core.21.5.21\lib\net46\PKHeX.Core.dll</HintPath>
     </Reference>
-    <Reference Include="PKHeX.Core.AutoMod">
-      <HintPath>..\..\PKHeX-Plugins051921\PKHeX.Core.AutoMod\bin\Release\net46\PKHeX.Core.AutoMod.dll</HintPath>
-      <Private>True</Private>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
+    <Reference Include="PKHeX.Core.AutoMod, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\PKHeX-Plugins052121\PKHeX.Core.AutoMod\bin\Release\net46\PKHeX.Core.AutoMod.dll</HintPath>
     </Reference>
     <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
       <HintPath>..\packages\Serilog.2.10.0\lib\net46\Serilog.dll</HintPath>
