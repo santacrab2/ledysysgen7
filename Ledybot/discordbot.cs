@@ -150,18 +150,18 @@ public class discordbot
             string temppokewait = Path.GetTempFileName();
 
             PKM pk = BuildPokemon(set, 7);
-            if (pk == null)
+            if (!new LegalityAnalysis(pk).Valid)
             {
                 await Context.Channel.SendFileAsync("C:/Users/jordan/source/repos/ledysys - gen7/182185874_3008766146023402_980987956132747709_n.mp4", "Pokemon is illegal dumbass");
-
+                await ReplyAsync(LegalityFormatting.Report(new LegalityAnalysis(pk)));
                 File.Delete(temppokewait);
                 return;
 
             }
-            if (set.ToLower().Contains("shiny: yes"))
-            {
-                pk.SetShiny();
-            }
+        //    if (set.ToLower().Contains("shiny: yes"))
+       //     {
+       //         pk.SetShiny();
+      //      }
             if (pk.OT_Name.ToLower() == "pkhex")
                 pk.OT_Name = trainer;
 
@@ -210,10 +210,10 @@ public class discordbot
             string temppokewait = Path.GetTempFileName();
 
             PKM pk = BuildPokemon(set, 7);
-            if (pk==null)
+            if (!new LegalityAnalysis(pk).Valid)
             {
                 await Context.Channel.SendFileAsync("C:/Users/jordan/source/repos/ledysys - gen7/182185874_3008766146023402_980987956132747709_n.mp4", "Pokemon is illegal dumbass");
-        
+                await ReplyAsync(LegalityFormatting.Report(new LegalityAnalysis(pk)));
                 File.Delete(temppokewait);
                 return;
 
@@ -250,7 +250,7 @@ public class discordbot
             await ReplyAsync("yay its legal good job!");
             byte[] g = pk.DecryptedBoxData;
             System.IO.File.WriteAllBytes(temppokewait, g);
-            await Context.Channel.SendFileAsync(temppokewait);
+         
             pokequeue.Enqueue(temppokewait);
             username.Enqueue(Context.User.Id);
             trainername.Enqueue(trainer);
@@ -782,17 +782,15 @@ public class discordbot
                
                 
                 // Generate a Blank Savefile
-                var sav = SaveUtil.GetBlankSAV(Generation is 6 ? GameVersion.OR : GameVersion.US, "Chris");
+                var sav = SaveUtil.GetBlankSAV(GameVersion.US, "Chris");
                 
                 // Generates a PKM from Showdown Set
                 var pk = sav.GetLegalFromSet(re, out _);
 
-                if (!new LegalityAnalysis(pk).Valid)
-                    pk.Legalize();
+               
                     
                 // In case its illegal, return null
-                if (!new LegalityAnalysis(pk).Valid)
-                    return null;
+                
                     
 
                 // Return PKM

@@ -427,7 +427,7 @@ namespace Ledybot
                                 szTrainerName = Encoding.Unicode.GetString(block, 0x4C, 24).Trim('\0');
 
 
-                                if (szTrainerName == (string)discordbot.trademodule.trainername.Peek() || (string)discordbot.trademodule.trainername.Peek() == "")
+                                if (szTrainerName.ToLower() == discordbot.trademodule.trainername.Peek().ToString().ToLower() || (string)discordbot.trademodule.trainername.Peek() == "")
                                     if (pokecheck.Species != dexnumber)
                                     {
 
