@@ -139,13 +139,18 @@ public class discordbot
         public static Queue discordname = new Queue();
         public static IUser dmer;
         public static string trainer;
-
+        public static int[] tradevolvs = { 525, 75, 533, 93, 64, 67, 708, 710 };
 
 
         
         [Command("trade")]
         public async Task stradenotidpts(string trainer, int pts, string set)
         {
+            if (tradevolvs.Contains(pts))
+            {
+                await ReplyAsync("you almost just broke the bot by depositing a trade evolution, you are a fucking asshole :)");
+                return;
+            }
             var l = Legal.ZCrystalDictionary;
             string temppokewait = Path.GetTempFileName();
 
@@ -267,7 +272,11 @@ public class discordbot
         public async Task ptrade([Summary("poke to search")] int pts, [Remainder] string trainer)
         {
             string temppokewait = Path.GetTempFileName();
-
+            if (tradevolvs.Contains(pts))
+            {
+                await ReplyAsync("you almost just broke the bot by depositing a trade evolution, you are a fucking asshole :)");
+                return;
+            }
             //this grabs the file the user uploads to discord if they even do it.
             pokm = Context.Message.Attachments.FirstOrDefault();
             if (pokm == default)
@@ -748,6 +757,17 @@ public class discordbot
         {
             IMessageChannel chan = (IMessageChannel)channel.Peek();
             await chan.SendMessageAsync(discordname.Peek() + " you were too slow or too stupid, one of those, so the trades been cancelled");
+            channel.Dequeue();
+            discordname.Dequeue();
+            pokequeue.Dequeue();
+            username.Dequeue();
+            pokemonfile.Dequeue();
+            trainername.Dequeue();
+        }
+        public static async Task notrade()
+        {
+            IMessageChannel chan = (IMessageChannel)channel.Peek();
+            await chan.SendMessageAsync(discordname.Peek() + " something went wrong with your trade, please try again. if you get this message two times in a row, please ping Santacrab420");
             channel.Dequeue();
             discordname.Dequeue();
             pokequeue.Dequeue();

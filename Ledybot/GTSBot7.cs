@@ -759,24 +759,55 @@ namespace Ledybot
                             await Task.Delay(1000);
                             Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
                             await Task.Delay(commandtime + delaytime);
-
-                            //during the trade spam a/b to get back to the start screen in case of "this pokemon has been traded"
                             await Task.Delay(10250);
-                            Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
-                       //     await Task.Delay(commandtime + delaytime);
-                       //     await Task.Delay(1000);
-                       //     Program.helper.quickbuton(Program.PKTable.keyB, commandtime);
-                       //     await Task.Delay(commandtime + delaytime);
-                       //     await Task.Delay(1000);
-                      //      Program.helper.quickbuton(Program.PKTable.keyB, commandtime);
-                        //    await Task.Delay(commandtime + delaytime);
-                       //     await Task.Delay(1000);
-                       //     Program.helper.quickbuton(Program.PKTable.keyB, commandtime);
-                      //      await Task.Delay(commandtime + delaytime);
-                            await Task.Delay(50000);
+                            if (await isCorrectWindow(val_duringTrade) || await isCorrectWindow(val_system))
+                            {
+                                while (await isCorrectWindow(val_duringTrade) || await isCorrectWindow(val_system))
+                                {
+                                    continue;
+                                }
+                            }
+                            if (await isCorrectWindow(val_BoxScreen))
+                            {
+                                Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
+                                await Task.Delay(commandtime + delaytime);
+                                await Task.Delay(1000);
+                            }
+                            if (await isCorrectWindow(val_duringTrade) || await isCorrectWindow(val_system))
+                            {
+                                while (await isCorrectWindow(val_duringTrade) || await isCorrectWindow(val_system))
+                                {
+                                    continue;
+                                }
+                            }
+                            //during the trade spam a/b to get back to the start screen in case of "this pokemon has been traded"
+                            while (!await isCorrectWindow(val_Quit_SeekScreen))
+                            {
+
+                                Program.helper.quickbuton(Program.PKTable.keyB, commandtime);
+                                await Task.Delay(commandtime + delaytime);
+                                await Task.Delay(1000);
+                                continue;
+                            }
+
                             await Program.helper.waitNTRread(addr_box1slot1, 260);
+                            
                             byte[] pokebytes = Program.helper.lastArray;
                             PKM tradedpoke = PKMConverter.GetPKMfromBytes(pokebytes, 7);
+                            PKM checker = (PKM)discordbot.trademodule.pokemonfile.Peek();
+                            if(tradedpoke.PID == checker.PID)
+                            {
+                                startIndex = 0;
+                                tradeIndex = -1;
+                                listlength = 0;
+                                addr_PageEntry = 0;
+                                foundLastPage = false;
+                                botresult = 8;
+                                botState = (int)gtsbotstates.botexit;
+                                Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
+                                await discordbot.trademodule.notrade();
+                                break;
+                            }
                             byte[] writepoke = tradedpoke.DecryptedBoxData;
                             tpfile = Path.GetTempFileName().Replace(".tmp","."+tradedpoke.Extension);
                             tpfile = tpfile.Replace("tmp", tradedpoke.FileNameWithoutExtension);
