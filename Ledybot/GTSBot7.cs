@@ -759,7 +759,7 @@ namespace Ledybot
                             await Task.Delay(1000);
                             Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
                             await Task.Delay(commandtime + delaytime);
-                            await Task.Delay(10250);
+                            await Task.Delay(1000);
                             if (await isCorrectWindow(val_duringTrade) || await isCorrectWindow(val_system))
                             {
                                 while (await isCorrectWindow(val_duringTrade) || await isCorrectWindow(val_system))
