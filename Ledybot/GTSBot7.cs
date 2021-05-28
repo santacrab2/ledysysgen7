@@ -759,7 +759,7 @@ namespace Ledybot
                             await Task.Delay(1000);
                             Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
                             await Task.Delay(commandtime + delaytime);
-                            await Task.Delay(1000);
+                            await Task.Delay(5000);
                             if (await isCorrectWindow(val_duringTrade) || await isCorrectWindow(val_system))
                             {
                                 while (await isCorrectWindow(val_duringTrade) || await isCorrectWindow(val_system))
@@ -767,11 +767,12 @@ namespace Ledybot
                                     continue;
                                 }
                             }
-                            if (await isCorrectWindow(val_BoxScreen))
+                            if (await isCorrectWindow(val_BoxScreen) || await isCorrectWindow(val_SearchScreen))
                             {
                                 Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
                                 await Task.Delay(commandtime + delaytime);
                                 await Task.Delay(1000);
+                           
                             }
                             if (await isCorrectWindow(val_duringTrade) || await isCorrectWindow(val_system))
                             {
