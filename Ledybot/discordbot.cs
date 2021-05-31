@@ -39,8 +39,8 @@ public class discordbot
         _client = new DiscordSocketClient();
         _client.Log += Log;
         _commands = new CommandService();
-        var token = File.ReadAllText("token.txt");
-
+        var token = Ledybot.Program.f1.token.Text;
+        //var token = File.ReadAllText("token.txt");
 
         await _client.LoginAsync(TokenType.Bot, token);
         await _client.StartAsync();
@@ -673,6 +673,7 @@ public class discordbot
             else
             {
                 await ReplyAsync("only santacrab can use this command");
+                
             }
 
         }
@@ -743,8 +744,20 @@ public class discordbot
             });
             await ReplyAsync( embed: embed.Build());
         }
-        
+        [Command("dex")]
+        public async Task dex(string pokemon)
+        {
+            int i = 0;
+            i = Array.IndexOf(Ledybot.Program.PKTable.Species7, pokemon);
+            i = i + 1;
+            await ReplyAsync(i.ToString());
 
+        }
+        [Command("dex")]
+        public async Task dex2(int national)
+        {
+            await ReplyAsync(Ledybot.Program.PKTable.Species7[national - 1]);
+        }
         public static async Task ban()
         {
             IMessageChannel chan = (IMessageChannel)channel.Peek();
@@ -778,7 +791,7 @@ public class discordbot
             pokemonfile.Dequeue();
             trainername.Dequeue();
         }
-
+       
         private static PKM BuildPokemon(string Set, int Generation)
         {
             try

@@ -988,6 +988,7 @@ namespace Ledybot
             // 
             // token
             // 
+            this.discord.Controls.Add(token);
             this.token.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.token.Location = new System.Drawing.Point(132, 23);
@@ -995,8 +996,8 @@ namespace Ledybot
             this.token.Size = new System.Drawing.Size(229, 20);
             this.token.TabIndex = 6;
             this.token.TextChanged += new System.EventHandler(this.token_TextChanged_1);
-            string text = this.token.Text;
-            oath = text;
+            this.token.Text = "Discord Token";
+            
             
             // 
             // cordconnect
@@ -1066,7 +1067,7 @@ namespace Ledybot
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Text = "Ledybot";
+            this.Text = "Piplup bot 7";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);

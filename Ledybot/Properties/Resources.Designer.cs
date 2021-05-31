@@ -19,7 +19,7 @@ namespace Ledybot.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
@@ -87,8 +87,7 @@ namespace Ledybot.Properties {
         ///006,宮城県,Miyagi,Miyagi,Miyagi,Miyagi,Miyagi,宫城县,미야기 현,
         ///007,秋田県,Akita,Akita,Akita,Akita,Akita,秋田县,아키타 현,
         ///008,山形県,Yamagata,Yamagata,Yamagata,Yamagata,Yamagata,山形县,야마가타 현,
-        ///009,福島県,Fukushima,Fukushima,Fukushima,Fukushima,Fukushima,福岛县,후쿠시마 현,
-        ///010 [rest of string was truncated]&quot;;.
+        ///009,福島県,Fukushima,Fukushima,Fukushima,Fukushima,Fukushima,福岛县,후쿠 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_001 {
             get {
@@ -115,7 +114,7 @@ namespace Ledybot.Properties {
         ///004,セント・ジョージ,Saint George,Saint-Georges,Saint George,Saint George,Saint George,圣乔治区,세인트조지,
         ///005,セント・メアリー,Saint Mary,Sainte-Marie,Saint Mary,Saint Mary,Saint Mary,圣玛丽区,세인트메리,
         ///006,セント・ポール,Saint Paul,Saint-Paul,Saint Paul,Saint Paul,Saint Paul,圣保罗区,세인트폴,
-        ///007,セント・ピーター,Saint Peter,Saint-Pierre,Saint Peter,Saint Peter,S [rest of string was truncated]&quot;;.
+        ///007,セント・ピーター,Saint Peter,Saint-Pierre,Saint Peter,Saint  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_009 {
             get {
@@ -131,7 +130,7 @@ namespace Ledybot.Properties {
         ///004,カタマルカ州,Catamarca,Catamarca,Catamarca,Catamarca,Catamarca,卡塔马卡省,카타마르카 주,
         ///005,チャコ州,Chaco,Chaco,Chaco,Chaco,Chaco,查科省,차코 주,
         ///006,チュブト州,Chubut,Chubut,Chubut,Chubut,Chubut,丘布特省,추부트 주,
-        ///007,コルドバ州,Córdoba,Córdoba,Córdob [rest of string was truncated]&quot;;.
+        ///007,コルドバ州,Córdoba,Córdoba [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_010 {
             get {
@@ -198,7 +197,7 @@ namespace Ledybot.Properties {
         ///006,オルロ県,Oruro,Oruro,Oruro,Oruro,Oruro,奥鲁罗省,오루로 주,
         ///007,パンド県,Pando,Pando,Pando,Pando,Pando,潘多省,판도 주,
         ///008,ポトシ県,Potosí,Potosí,Potosí,Potosí,Potosí,波托西省,포토시 주,
-        ///009,サンタ・クルス県,Santa Cruz,Santa Cr [rest of string was truncated]&quot;;.
+        ///009,サンタ・クルス県,Santa Cruz [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_015 {
             get {
@@ -215,8 +214,7 @@ namespace Ledybot.Properties {
         ///005,アマパー州,Amapá,Amapá,Amapá,Amapá,Amapá,阿马帕州,아마파 주,
         ///006,アマゾナス州,Amazonas,Amazonas,Amazonas,Amazonas,Amazonas,亚马孙州,아마조나스 주,
         ///007,バイア州,Bahia,Bahia,Bahia,Bahia,Bahía,巴伊亚州,바이아 주,
-        ///008,セアラ州,Ceará,Ceará,Ceará,Ceará,Ceará,塞阿拉州,세아라 주,
-        ///0 [rest of string was truncated]&quot;;.
+        ///008,セアラ州,Ceará,Ceará,Ceará,Ceará,Ceará,塞阿拉州, [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_016 {
             get {
@@ -243,7 +241,7 @@ namespace Ledybot.Properties {
         ///004,ブリティッシュ・コロンビア州,British Columbia,Colombie-Britannique,Britisch-Kolumbien,Columbia Britannica,Columbia Británica,不列颠哥伦比亚省,브리티시컬럼비아 주,
         ///005,マニトバ州,Manitoba,Manitoba,Manitoba,Manitoba,Manitoba,马尼托巴省,매니토바 주,
         ///006,ニュー・ブランズウィック州,New Brunswick,Nouveau-Brunswick,Neubraunschweig,Nuovo Brunswick,Nuevo Brunswick,新不伦瑞克省,뉴브런즈윅 주,
-        ///007,ニューファ [rest of string was truncated]&quot;;.
+        ///00 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_018 {
             get {
@@ -267,7 +265,7 @@ namespace Ledybot.Properties {
         ///000,—,—,—,—,—,—,—,—
         ///002,レジョン・メトロポリタナ州,Región Metropolitana,Région Métropolitaine de Santiago,Región Metropolitana,Regione Metropolitana di Santiago,Región Metropolitana,圣地亚哥首都区,산티아고 수도주,
         ///003,バルパライソ州,Valparaíso,Valparaiso,Valparaíso (Region V),Valparaíso,Valparaíso,瓦尔帕莱索大区,발파라이소 주,
-        ///004,アイセン・デル・Ｇ・カルロス・イバニェス・デル・カンポ州,Aisén del General Carlos Ibáñez del Campo,Aisén del General Carlos Ibáñez del Campo,Aisén (Region XI),Aisén del General Carlos Ibáñez del Campo,Aisén del Genera [rest of string was truncated]&quot;;.
+        ///004,アイセン・デル・Ｇ・カルロス・イバニェス・デル・カンポ州,Aisén del General Carlos Ibáñez del Campo,Aisén del General Carlos Ibáñez del Campo,Aisén (Region XI),Aisén del General Carlos Ibáñez del Campo,Aisén del Ge [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_020 {
             get {
@@ -283,7 +281,7 @@ namespace Ledybot.Properties {
         ///004,アマソナス県,Amazonas,Amazone,Amazonas,Amazonas,Amazonas,亚马孙省,아마소나스 주,
         ///005,アンティオキア県,Antioquia,Antioquia,Antioquia,Antioquia,Antioquia,安提奥基亚省,안티오키아 주,
         ///006,アラウカ県,Arauca,Arauca,Arauca,Arauca,Arauca,阿劳卡省,아라우카 주,
-        ///007,アトランティコ県,At [rest of string was truncated]&quot;;.
+        ///007,アトラン [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_021 {
             get {
@@ -300,7 +298,7 @@ namespace Ledybot.Properties {
         ///005,グアナカステ州,Guanacaste,Guanacaste,Guanacaste,Guanacaste,Guanacaste,瓜纳卡斯特省,과나카스테 주,
         ///006,エレディア州,Heredia,Heredia,Heredia,Heredia,Heredia,埃雷迪亚省,에레디아 주,
         ///007,リモン州,Limón,Limón,Limón,Limón,Limón,利蒙省,리몬 주,
-        ///008,プンタレナス州,Puntarenas,Puntarenas,Puntarenas,Puntarenas [rest of string was truncated]&quot;;.
+        ///008,プンタレナス州,Puntarenas,Puntarenas,Puntarenas,Pu [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_022 {
             get {
@@ -328,7 +326,7 @@ namespace Ledybot.Properties {
         ///005,バラオナ,Barahona,Barahona,Barahona,Barahona,Barahona,巴拉奥纳省,바라오나,
         ///006,ダハボン,Dajabón,Dajabón,Dajabón,Dajabón,Dajabón,达哈朋省,다하본,
         ///007,ドゥアルテ,Duarte,Duarte,Duarte,Duarte,Duarte,杜华德省,두아르테,
-        ///008,エスパイジャト,Espaillat,Espaillat,Espaillat,Es [rest of string was truncated]&quot;;.
+        ///008,エスパイジャト,Espaillat,Espaillat,Espa [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_024 {
             get {
@@ -346,7 +344,7 @@ namespace Ledybot.Properties {
         ///006,カニャル,Cañar,Cañar,Cañar,Cañar,Cañar,卡尼亚尔省,카냐르,
         ///007,カルチ,Carchi,Carchi,Carchi,Carchi,Carchi,卡尔奇省,카르치,
         ///008,チンボラソ,Chimborazo,Chimborazo,Chimborazo,Chimborazo,Chimborazo,钦博拉索省,침보라소,
-        ///009,コトパクシ,Cot [rest of string was truncated]&quot;;.
+        ///009, [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_025 {
             get {
@@ -362,7 +360,7 @@ namespace Ledybot.Properties {
         ///004,カバニャス県,Cabañas,Cabañas,Cabañas,Cabañas,Cabañas,卡瓦尼亚斯省,카바냐스 주,
         ///005,チャラテナンゴ県,Chalatenango,Chalatenango,Chalatenango,Chalatenango,Chalatenango,查拉特南戈省,찰라테낭고 주,
         ///006,クスカトラン県,Cuscatlán,Cuscatlán,Cuscatlán,Cuscatlán,Cuscatlán,库斯卡特兰省,쿠스카틀란 주,
-        ///007,ラ・リベルター県,La Libertad,La Libertad,La  [rest of string was truncated]&quot;;.
+        ///007,ラ・リベルター県,La Libertad,La Liber [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_026 {
             get {
@@ -411,7 +409,7 @@ namespace Ledybot.Properties {
         ///004,バハ・べラパス県,Baja Verapaz,Baja Verapaz,Baja Verapaz,Baja Verapaz,Baja Verapaz,下韦拉帕斯省,바하베라파스 주,
         ///005,チマルテナンゴ県,Chimaltenango,Chimaltenango,Chimaltenango,Chimaltenango,Chimaltenango,奇马尔特南戈省,치말테낭고 주,
         ///006,チキムラ県,Chiquimula,Chiquimula,Chiquimula,Chiquimula,Chiquimula,奇基穆拉省,치키물라 주,
-        ///007,エル・プログ [rest of string was truncated]&quot;;.
+        ///007 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_030 {
             get {
@@ -425,7 +423,7 @@ namespace Ledybot.Properties {
         ///002,デメララ・マハイカ州,Demerara-Mahaica,Demerara-Mahaica,Demerara-Mahaica,Demerara-Mahaica,Demerara-Mahaica,德梅拉拉-马海卡区,데메라라-마하이카 주,
         ///003,バリマ・ワイニ州,Barima-Waini,Barima-Waini,Barima-Waini,Barima-Waini,Barima-Waini,巴里马-瓦伊尼区,바리마-와이니 주,
         ///004,クユニ・マザルニ州,Cuyuni-Mazaruni,Cuyuni-Mazaruni,Cuyuni-Mazaruni,Cuyuni-Mazaruni,Cuyuni-Mazaruni,库尤尼-马扎鲁尼区,쿠유니-마자루니 주,
-        ///005,東ベルビセ・コレンティネ州,East Berbice-Corentyne,Berbice Oriental-Courantyne,East Berbice-Corentyne,Berbice Orientale-Corentyn [rest of string was truncated]&quot;;.
+        ///005,東ベルビセ・コレンティネ州,East Berbice-Corentyne,Berbice Oriental-Courantyne,East Berbice-Corentyne,Berbice Orientale-Cor [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_031 {
             get {
@@ -443,7 +441,7 @@ namespace Ledybot.Properties {
         ///006,湾岸県,Grand&apos;Anse,Grande-Anse,Grand&apos;Anse,Grande Anse,Grand&apos;Anse,大湾省,그랑당스,
         ///007,北県,Nord,Nord,Nord,Nord,Norte,北部省,북부,
         ///008,北東県,Nord-Est,Nord-Est,Nord-Est,Nord-Est,Noreste,东北省,북동부,
-        ///009,南県,Sud,Sud,Sud,Sud,Sur, [rest of string was truncated]&quot;;.
+        ///009,南県,Sud,Sud,Sud [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_032 {
             get {
@@ -460,7 +458,7 @@ namespace Ledybot.Properties {
         ///005,コロン,Colón,Colón,Colón,Colón,Colón,科隆省,콜론,
         ///006,コマヤグア,Comayagua,Comayagua,Comayagua,Comayagua,Comayagua,科马亚瓜省,코마야과,
         ///007,コパン,Copán,Copán,Copán,Copán,Copán,科潘省,코판,
-        ///008,コルテス,Cortés, [rest of string was truncated]&quot;;.
+        ///008,コルテス [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_033 {
             get {
@@ -476,7 +474,7 @@ namespace Ledybot.Properties {
         ///004,ハノーバー,Hanover,Hanover,Hanover,Hanover,Hanover,汉诺威区,해노버,
         ///005,マンチェスター,Manchester,Manchester,Manchester,Manchester,Manchester,曼彻斯特区,맨체스터,
         ///006,ポートランド,Portland,Portland,Portland,Portland,Portland,波特兰区,포틀랜드,
-        ///007,セント・アンドリュー,Saint Andrew,Saint Andrew,Saint Andrew,Saint Andrew,Saint Andrew,圣安德鲁 [rest of string was truncated]&quot;;.
+        ///007,セント・アンドリュー,Saint Andrew,Saint Andrew,Saint Andrew,Saint Andrew,Saint Andr [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_034 {
             get {
@@ -501,7 +499,7 @@ namespace Ledybot.Properties {
         ///002,ディストリト・フェデラル連邦区,Distrito Federal,District Fédéral,México D.F.,Distretto Federale,Distrito Federal,联邦区,멕시코 연방구,
         ///003,アグアスカリエンテス州,Aguascalientes,Aguascalientes,Aguascalientes,Aguascalientes,Aguascalientes,阿瓜斯卡连特斯州,아과스칼리엔테스 주,
         ///004,バハ・カリフォルニア州,Baja California,Basse-Californie,Niederkalifornien,Bassa California,Baja California,下加里福尼亚州,바하칼리포르니아 주,
-        ///005,バハ・カリフォルニア・スル州,Baja California Sur,Basse-Californie du Sud,Süd-Niederkalifornien,Bassa California del Su [rest of string was truncated]&quot;;.
+        ///005,バハ・カリフォルニア・スル州,Baja California Sur,Basse-Californie du Sud,Süd-Niederkalifornien,Bassa California d [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_036 {
             get {
@@ -541,7 +539,7 @@ namespace Ledybot.Properties {
         ///006,チョンタレス,Chontales,Chontales,Chontales,Chontales,Chontales,琼塔莱斯省,촌탈레스,
         ///007,エステリ,Estelí,Estelí,Estelí,Estelí,Estelí,埃斯特利省,에스텔리,
         ///008,グラナダ,Granada,Granada,Granada,Granada,Granada,格拉纳达省,그라나다,
-        ///009,ヒノテガ,Jinotega,Jinotega,J [rest of string was truncated]&quot;;.
+        ///009,ヒノテガ,Jinotega,J [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_039 {
             get {
@@ -559,7 +557,7 @@ namespace Ledybot.Properties {
         ///006,コロン,Colón,Colón,Colón,Colón,Colón,科隆省,콜론,
         ///007,ダリエン,Darién,Darién,Darién,Darién,Darién,达连省,다리엔,
         ///008,エレーラ,Herrera,Herrera,Herrera,Herrera,Herrera,埃雷拉省,에레라,
-        ///009,ロス・サントス,Los Santos,Lo [rest of string was truncated]&quot;;.
+        ///009,ロス・サントス,Los  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_040 {
             get {
@@ -576,7 +574,7 @@ namespace Ledybot.Properties {
         ///005,カアグアスー県,Caaguazú,Caaguazú,Caaguazú,Caaguazú,Caaguazú,卡瓜苏省,카아과수 주,
         ///006,カアサパ県,Caazapá,Caazapá,Caazapá,Caazapá,Caazapá,卡萨帕省,카아사파 주,
         ///007,コンセプシオン県,Concepción,Concepción,Concepción,Concepción,Concepción,康塞普西翁省,콘셉시온 주,
-        ///008,コルディリェラ県,Cordillera,C [rest of string was truncated]&quot;;.
+        ///008,コルディリェラ県,Cord [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_041 {
             get {
@@ -593,7 +591,7 @@ namespace Ledybot.Properties {
         ///005,アプリマック,Apurímac,Apurímac,Apurímac,Apurímac,Apurímac,阿普里马克省,아푸리막,
         ///006,アレキパ,Arequipa,Arequipa,Arequipa,Arequipa,Arequipa,阿雷基帕省,아레키파,
         ///007,アヤクーチョ,Ayacucho,Ayacucho,Ayacucho,Ayacucho,Ayacucho,阿亚库乔省,아야쿠초,
-        ///008,カハマルカ,Cajamarca,Cajamarca,Cajamarca,Cajamarca,Cajamarca,卡哈马卡 [rest of string was truncated]&quot;;.
+        ///008,カハマルカ,Cajamarca,Cajamarca,Cajamarca,Cajamarca,Cajama [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_042 {
             get {
@@ -606,7 +604,7 @@ namespace Ledybot.Properties {
         ///000,—,—,—,—,—,—,—,—
         ///002,セント・ジョージ・バセテール,Saint George Basseterre,Saint George Basseterre,Saint George Basseterre,Saint George Basseterre,Saint George Basseterre,圣乔治巴斯特尔区,세인트조지바스테르,
         ///003,クライスト・チャーチ・ニコラタウン,Christ Church Nichola Town,Christ Church Nichola Town,Christ Church Nichola Town,Christ Church Nichola Town,Christ Church Nichola Town,克赖斯特彻奇尼古拉镇区,크라이스트처치니콜라타운,
-        ///004,セント・アン・サンディ・ポイント,Saint Anne Sandy Point,Saint Anne Sandy Point,Saint Anne Sandy Point,Saint Anne Sandy Point, [rest of string was truncated]&quot;;.
+        ///004,セント・アン・サンディ・ポイント,Saint Anne Sandy Point,Saint Anne Sandy Point,Saint Anne Sandy Point,Saint Anne Sandy Po [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_043 {
             get {
@@ -645,7 +643,7 @@ namespace Ledybot.Properties {
         ///005,コロニー,Coronie,Coronie,Coronie,Coronie,Coronie,科罗尼区,코로니,
         ///006,マロウィネ,Marowijne,Marowijne,Marowijne,Marowijne,Marowijne,马罗韦讷区,마로베이너,
         ///007,ニッケリー,Nickerie,Nickerie,Nickerie,Nickerie,Nickerie,尼克里区,니케리,
-        ///008,パラ,Para,Para,Para [rest of string was truncated]&quot;;.
+        ///008,パラ,Para,P [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_046 {
             get {
@@ -662,7 +660,7 @@ namespace Ledybot.Properties {
         ///005,マジャロ州,Mayaro,Mayaro,Mayaro,Mayaro,Mayaro,马亚罗郡,마야로 주,
         ///006,ナリバ州,Nariva,Nariva,Nariva,Nariva,Nariva,纳里瓦郡,나리바 주,
         ///007,セント・アンドリュー州,Saint Andrew,Saint Andrew,Saint Andrew,Saint Andrew,Saint Andrew,圣安德鲁郡,세인트앤드루 주,
-        ///008,セント・デビッド州,Saint David,Saint David,S [rest of string was truncated]&quot;;.
+        ///008,セント・デビッド州,Saint David,Saint [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_047 {
             get {
@@ -689,7 +687,7 @@ namespace Ledybot.Properties {
         ///004,アラバマ州,Alabama,Alabama,Alabama,Alabama,Alabama,亚拉巴马州,앨라배마 주,
         ///005,アーカンソー州,Arkansas,Arkansas,Arkansas,Arkansas,Arkansas,阿肯色州,아칸소 주,
         ///006,アリゾナ州,Arizona,Arizona,Arizona,Arizona,Arizona,亚利桑那州,애리조나 주,
-        ///007,カリフォルニア州,California,Californie,Kalifornien,Cal [rest of string was truncated]&quot;;.
+        ///007,カリフォルニア州,California,Californie,Kaliforn [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_049 {
             get {
@@ -706,7 +704,7 @@ namespace Ledybot.Properties {
         ///005,セロ・ラルゴ,Cerro Largo,Cerro Largo,Cerro Largo,Cerro Largo,Cerro Largo,塞罗拉尔戈省,세로라르고,
         ///006,コロニア,Colonia,Colonia,Colonia,Colonia,Colonia,科洛尼亚省,콜로니아,
         ///007,ドゥラスノ,Durazno,Durazno,Durazno,Durazno,Durazno,杜拉斯诺省,두라스노,
-        ///008,フロレス,Flores,Flores,Flores [rest of string was truncated]&quot;;.
+        ///008,フロレス,Flores,Flore [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_050 {
             get {
@@ -734,7 +732,7 @@ namespace Ledybot.Properties {
         ///005,アプレ,Apure,Apure,Apure,Apure,Apure,阿普雷州,아푸레,
         ///006,アラグア,Aragua,Aragua,Aragua,Aragua,Aragua,阿拉瓜州,아라과,
         ///007,バリナス,Barinas,Barinas,Barinas,Barinas,Barinas,巴里纳斯州,바리나스,
-        ///008,ボリーバル,Bolívar,Bolívar,Bolív [rest of string was truncated]&quot;;.
+        ///008,ボリーバル,Bolívar,Bolív [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_052 {
             get {
@@ -752,7 +750,7 @@ namespace Ledybot.Properties {
         ///006,エルバサン州,Elbasan,Elbasan,Elbasan,Elbasan,Elbasan,爱尔巴桑州,엘바산 주,
         ///007,フィエル州,Fier,Fier,Fier,Fier,Fier,费里州,피에르 주,
         ///008,ギロカストラ州,Gjirokastër,Gjirokastër,Gjirokastra,Argirocastro,Gjirokastra,吉诺卡斯特州,지로카스터르 주,
-        ///009,コルチャ州,Korçë,Korçë,Korça,Coriza,Ko [rest of string was truncated]&quot;;.
+        ///009,コルチャ州,Korçë,Korçë,Korça, [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_064 {
             get {
@@ -765,7 +763,7 @@ namespace Ledybot.Properties {
         ///000,—,—,—,—,—,—,—,—
         ///002,オーストラリア首都特別地域,Australian Capital Territory,Territoire de la capitale australienne,Australisches Hauptstadtterritorium,Territorio della Capitale Australiana,Territorio de la Capital Australiana,澳大利亚首都直辖区,오스트레일리아캐피털테리토리,
         ///003,ニューサウスウェールズ州,New South Wales,Nouvelle-Galles du Sud,Neusüdwales,Nuovo Galles del Sud,Nueva Gales del Sur,新南威尔士州,뉴사우스웨일스 주,
-        ///004,ノーザンテリトリー,Northern Territory,Territoire du Nord,Nördliches Territorium,Territorio del Nord,Territorio [rest of string was truncated]&quot;;.
+        ///004,ノーザンテリトリー,Northern Territory,Territoire du Nord,Nördliches Territorium,Territorio del Nord,Territ [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_065 {
             get {
@@ -781,7 +779,7 @@ namespace Ledybot.Properties {
         ///004,ケルンテン州,Carinthia,Carinthie,Kärnten,Carinzia,Carintia,克恩顿州,케른텐 주,
         ///005,ニーダー・エスターライヒ州,Lower Austria,Basse-Autriche,Niederösterreich,Bassa Austria,Baja Austria,下奥地利州,니더외스터라이히 주,
         ///006,オーバー・エスターライヒ州,Upper Austria,Haute-Autriche,Oberösterreich,Alta Austria,Alta Austria,上奥地利州,오버외스터라이히 주,
-        ///007,ザルツブルク州,Salzburg,Salzbourg,Salzburg [rest of string was truncated]&quot;;.
+        ///007,ザルツブルク州,Salzburg,Salzbourg,S [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_066 {
             get {
@@ -807,7 +805,7 @@ namespace Ledybot.Properties {
         ///000,—,—,—,—,—,—,—,—
         ///002,ボスニア・ヘルツェゴビナ連邦,Federation of Bosnia and Herzegovina,Fédération de Bosnie-Herzégovine,Föderation Bosnien und Herzegowina,Federazione di Bosnia-Erzegovina,Federación de Bosnia-Herzegovina,波黑联邦,보스니아헤르체고비나 연방,
         ///003,セルビア人共和国,Republika Srpska,République serbe de Bosnie,Serbische Republik,Repubblica Serba di Bosnia-Erzegovina,República Srpska,塞族共和国,스릅스카 공화국,
-        ///004,ブルチュコ,Brčko District,Brčko (district),Brčko-Distrikt,Distretto di Brčko,Distrito de Brčko,布尔奇科 [rest of string was truncated]&quot;;.
+        ///004,ブルチュコ,Brčko District,Brčko (district),Brčko-Distrikt,Distretto di Brčko,Distrito de Brčko, [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_068 {
             get {
@@ -835,7 +833,7 @@ namespace Ledybot.Properties {
         ///005,プレベン州,Pleven,Pleven,Plewen,Pleven,Pleven,普列文州,플레벤 주,
         ///006,ビディン州,Vidin,Vidin,Widin,Vidin,Vidin,维丁州,비딘 주,
         ///007,バルナ州,Varna,Varna,Warna,Varna,Varna,瓦尔纳州,바르나 주,
-        ///008,ブルガス州,Burgas,B [rest of string was truncated]&quot;;.
+        ///008,ブルガス州, [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_070 {
             get {
@@ -849,7 +847,7 @@ namespace Ledybot.Properties {
         ///006,ザグレブ直轄市,Zagreb,Zagreb (ville),Zagreb (Stadt),Zagabria,Ciudad de Zagreb,萨格勒布市,자그레브,
         ///007,ビェロヴァル＝ビロゴラ郡,Bjelovar-Bilogora County,Bjelovar-Bilogora,Bjelovar-Bilogora,Regione di Bjelovar e della Bilogora,Condado de Bjelovar-Bilogora,别洛瓦尔-比洛戈拉县,벨로바르-빌로고라 군,
         ///008,ブロド＝ポサヴィナ郡,Brod-Posavina County,Brod-Posavina,Brod-Posavina,Regione di Brod e della Posavina,Condado de Brod-Posavina,布罗德-波萨维纳县,브로드-포사비나 군,
-        ///009,ドゥブロヴニク＝ネレトヴァ郡,Dubrovnik-Neretva County,Dubrovnik-Ne [rest of string was truncated]&quot;;.
+        ///009,ドゥブロヴニク＝ネレトヴァ郡,Dubrovnik-Neretva County,Dubrovn [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_071 {
             get {
@@ -875,7 +873,7 @@ namespace Ledybot.Properties {
         ///003,中部ボヘミア地方,Central Bohemian Region,Bohême centrale,Mittelböhmische Region,Boemia Centrale,Región de Bohemia Central,中捷克州,스트르제도체스키 지방,
         ///004,南ボヘミア地方,South Bohemian Region,Bohême du Sud,Südböhmische Region,Boemia Meridionale,Región de Bohemia Meridional,南捷克州,이호체스키 지방,
         ///005,プルゼニ地方,Plzeň Region,Région de Pilsen,Region Pilsen,Regione di Plseň,Región de Pilsen,比尔森州,플젠 지방,
-        ///006,カールスバート地方,Karlovy Vary Region,Régi [rest of string was truncated]&quot;;.
+        ///006,カールスバート地方,Karlovy Vary Regio [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_073 {
             get {
@@ -890,7 +888,7 @@ namespace Ledybot.Properties {
         ///019,デンマーク首都地域,Capital Region of Denmark,Hovedstaden,Hauptstadtregion,Hovedstaden,Hovedstaden,首都大区,덴마크 수도권 지역,
         ///020,中央ユラン地域,Central Denmark Region,Jutland-Central,Mitteljütland,Jutland Centrale,Jutlandia Central,中日德兰大区,중부 덴마크 지역,
         ///021,北ユラン地域,North Denmark Region,Jutland-du-Nord,Nordjütland,Jutland Settentrionale,Jutlandia Septentrional,北日德兰大区,북부 덴마크 지역,
-        ///022,シェラン地域,Region Zealand,Z [rest of string was truncated]&quot;;.
+        ///022,シェラン地域,Region Zea [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_074 {
             get {
@@ -916,7 +914,7 @@ namespace Ledybot.Properties {
         ///009,ラッピ州,Lappi / Lapland,Laponie,Lappland,Lapponia,Laponia finlandesa,拉普兰省,라피 주,
         ///010,北ポフヤンマー県,Pohjois-Pohjanmaa / Norra Österbotten,Ostrobotnie du Nord,Nordösterbotten,Ostrobotnia Settentrionale,Ostrobothnia del Norte,北博滕区,북오스트로보트니아 주,
         ///011,カイヌー県,Kainuu / Kajanaland,Kainuu,Kainuu,Kainuu,Kainuu,凯努区,카이누 주,
-        ///012,北カレリア県,Pohjois-Karjala / Norra Karelen,Carélie du Nord,Nordkarelien,Carelia [rest of string was truncated]&quot;;.
+        ///012,北カレリア県,Pohjois-Karjala / Norra Karelen,Carélie du Nord,Nordkarelien,C [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_076 {
             get {
@@ -932,7 +930,7 @@ namespace Ledybot.Properties {
         ///004,アキテーヌ,Aquitaine,Aquitaine,Aquitanien,Aquitania,Aquitania,阿基坦大区,아키텐,
         ///005,オーベルニュ,Auvergne,Auvergne,Auvergne,Alvernia,Auvernia,奥弗涅大区,오베르뉴,
         ///006,バス・ノルマンディ,Lower Normandy,Basse-Normandie,Basse-Normandie,Bassa Normandia,Baja Normandía,下诺曼底大区,바스노르망디,
-        ///007,ブルゴーニュ,Burgundy,Bourgogne,Burgund,Borgogna,Bo [rest of string was truncated]&quot;;.
+        ///007,ブルゴーニュ,Burgundy,Bourgogne,Burgund,Borg [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_077 {
             get {
@@ -949,7 +947,7 @@ namespace Ledybot.Properties {
         ///005,バイエルン州,Bavaria,Bavière,Bayern,Baviera,Baviera,巴伐利亚州,바이에른 주,
         ///006,ブランデンブルク州,Brandenburg,Brandebourg,Brandenburg,Brandeburgo,Brandeburgo,勃兰登堡州,브란덴부르크 주,
         ///007,ブレーメン,Bremen,Brême,Bremen,Brema,Bremen,不来梅市,브레멘 주,
-        ///008,ハンブルク,Hambu [rest of string was truncated]&quot;;.
+        ///008,ハンブ [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_078 {
             get {
@@ -964,7 +962,7 @@ namespace Ledybot.Properties {
         ///003,中央ギリシャ,Central Greece,Grèce-Centrale,Mittelgriechenland,Grecia Centrale,Grecia Central,中希腊大区,중부 그리스,
         ///004,中央マケドニア,Central Macedonia,Macédoine-Centrale,Zentralmakedonien,Macedonia Centrale,Macedonia Central,中马其顿大区,중부 마케도니아,
         ///005,クレタ,Crete,Crète,Kreta,Creta,Creta,克里特大区,크레타,
-        ///006,東マケドニア・トラキア,East Macedonia and Thrace,Macédoine-Orientale-et-Thrace,Ostmakedonien und Thrakien,Macedonia Orientale e Tra [rest of string was truncated]&quot;;.
+        ///006,東マケドニア・トラキア,East Macedonia and Thrace,Macédoine-Orientale-et-Thrace,Ostmakedonien und Thrakien,Macedonia Orientale [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_079 {
             get {
@@ -979,7 +977,7 @@ namespace Ledybot.Properties {
         ///003,バーチ・キシュクン州,Bács-Kiskun County,Bács-Kiskun,Bács-Kiskun,Bács-Kiskun,Bács-Kiskun,巴奇-基什孔州,바치키슈쿤 주,
         ///004,バラニャ州,Baranya County,Baranya,Baranya,Baranya,Baranya,巴兰尼亚州,버러녀 주,
         ///005,ベーケーシュ州,Békés County,Békés,Békés,Békés,Békés,贝凯什州,베케시 주,
-        ///006,ボルショド・アバウーイ・ゼンプレーン州,Borsod-Abaúj-Zemplén County,Borsod-Abaúj-Zemplén,Borsod-Abaúj-Zemplén,Borsod-Abaúj-Zemplén,Borsod-Abaúj-Zemplén,包尔绍德-奥包乌伊-曾普伦州,보르쇼드어버 [rest of string was truncated]&quot;;.
+        ///006,ボルショド・アバウーイ・ゼンプレーン州,Borsod-Abaúj-Zemplén County,Borsod-Abaúj-Zemplén,Borsod-Abaúj-Zemplén,Borsod-Abaúj-Zemplén,Borsod-Abaúj-Zemplén,包尔绍德-奥包乌伊-曾普伦州, [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_080 {
             get {
@@ -1008,7 +1006,7 @@ namespace Ledybot.Properties {
         ///013,コーク州,County Cork,Cork,Cork,Cork,Cork,科克郡,코크 주,
         ///014,ドニゴール州,County Donegal,Donegal,Donegal,Donegal,Donegal,多内加尔郡,도니골 주,
         ///015,ゴールウェイ州,County Galway,Galway,Galway,Galway,Galway,戈尔韦郡,골웨이 주,
-        ///016,ケリー州,County Kerry,Kerry,Kerr [rest of string was truncated]&quot;;.
+        ///016,ケリー州,County Kerry,K [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_082 {
             get {
@@ -1024,7 +1022,7 @@ namespace Ledybot.Properties {
         ///004,ピエモンテ州,Piedmont,Piémont,Piemont,Piemonte,Piamonte,皮埃蒙特大区,피에몬테 주,
         ///005,リグリア州,Liguria,Ligurie,Ligurien,Liguria,Liguria,利古里亚大区,리구리아 주,
         ///006,ロンバルディア州,Lombardy,Lombardie,Lombardei,Lombardia,Lombardía,伦巴第大区,롬바르디아 주,
-        ///007,トレンティノ・アルト・アディジェ州,Trentino-Alto Adige,Trentin-Haut-Adige,Trentino-Südtirol,Trentino- [rest of string was truncated]&quot;;.
+        ///007,トレンティノ・アルト・アディジェ州,Trentino-Alto Adige,Trentin-Haut-Adige,Trentino-Südtirol,Tr [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_083 {
             get {
@@ -1052,7 +1050,7 @@ namespace Ledybot.Properties {
         ///005,レリベ県,Leribe,Leribe,Leribe,Leribe,Leribe,莱里贝区,레리베 주,
         ///006,マフェテング県,Mafeteng,Mafeteng,Mafeteng,Mafeteng,Mafeteng,马费滕区,마페텡 주,
         ///007,モハーレスフーク県,Mohale&apos;s Hoek,Mohale&apos;s Hoek,Mohale&apos;s Hoek,Mohale&apos;s Hoek,Mohale&apos;s Hoek,莫哈莱斯胡克区,모할레스후크 주,
-        ///008,モコトロング県,Mokhotlong,Mokhotlong, [rest of string was truncated]&quot;;.
+        ///008,モコトロング県,Mokhotlong,Mok [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_085 {
             get {
@@ -1079,7 +1077,7 @@ namespace Ledybot.Properties {
         ///004,カウナス州,Kaunas,Kaunas,Kaunas,Kaunas,Condado de Kaunas,考纳斯县,카우나스 주,
         ///005,クライペダ州,Klaipėda,Klaipėda,Klaipėda,Klaipėda,Condado de Klaipėda,克莱佩达县,클라이페다 주,
         ///006,マリヤンポレ州,Marijampolė,Marijampolė,Marijampolė,Marijampolė,Condado de Marijampolė,马里扬泊列县,마리얌폴레 주,
-        ///007,パネベジス州,Panevėžys,Panevėžys,Panevėžys,Panevėžys,Condado  [rest of string was truncated]&quot;;.
+        ///007,パネベジス州,Panevėžys,Panevėžys,Panevėžys,Panevėžys,C [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_087 {
             get {
@@ -1161,7 +1159,7 @@ namespace Ledybot.Properties {
         ///004,フレボラント州,Flevoland,Flevoland,Flevoland,Flevoland,Flevoland,弗莱福兰省,플레볼란트 주,
         ///005,フリースラント州,Friesland,Frise,Friesland,Frisia,Frisia,弗里斯兰省,프리슬란트 주,
         ///006,ヘルデンラント州,Gelderland,Gueldre,Gelderland,Gheldria,Güeldres,海尔德兰省,헬데를란트 주,
-        ///007,フローニンゲン州,Groningen,Groningue,Groningen,Gronin [rest of string was truncated]&quot;;.
+        ///007,フローニンゲン州,Groningen,Groningue,Groningen [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_094 {
             get {
@@ -1177,7 +1175,7 @@ namespace Ledybot.Properties {
         ///004,ベイ・オブ・プレンティ,Bay of Plenty,Bay of Plenty,Bay of Plenty,Bay of Plenty,Bahía de Plenty,普伦蒂湾大区,베이오브플렌티,
         ///005,カンタベリー,Canterbury,Canterbury,Canterbury,Canterbury,Canterbury,坎特伯雷大区,캔터베리,
         ///006,ダニーデン,Otago,Otago,Otago,Otago,Otago,奥塔戈大区,오타고,
-        ///007,ホークスベイ,Hawke&apos;s Bay,Hawke&apos;s Bay,Hawke&apos;s Bay,Hawke&apos;s B [rest of string was truncated]&quot;;.
+        ///007,ホークスベイ,Hawke&apos;s Bay,Hawke&apos;s Bay,Hawke&apos;s Bay,Ha [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_095 {
             get {
@@ -1194,7 +1192,7 @@ namespace Ledybot.Properties {
         ///010,ブスケルー県,Buskerud,Buskerud,Buskerud,Buskerud,Buskerud,布斯克吕郡,부스케루 주,
         ///011,フィンマルク県,Finnmark,Finnmark,Finnmark,Finnmark,Finnmark,芬马克郡,핀마르크 주,
         ///012,ヘードマルク県,Hedmark,Hedmark,Hedmark,Hedmark,Hedmark,海德马克郡,헤드마르크 주,
-        ///013,ホルダラン県,Hordaland,Hordaland,Hordaland, [rest of string was truncated]&quot;;.
+        ///013,ホルダラン県,Hordaland,Hordaland,Ho [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_096 {
             get {
@@ -1210,8 +1208,7 @@ namespace Ledybot.Properties {
         ///004,クヤヴィ・ポモージェ,Kuyavian-Pomeranian Voivodeship,Cujavie-Poméranie,Kujawien-Pommern,Cuiavia-Pomerania,Cuyavia y Pomerania,库亚瓦滨海省,쿠야비아포메라니아,
         ///005,ウッジ,Lodz,Łódź,Lodsch,Łódź,Lodz,罗兹省,우치,
         ///006,ルブリン,Lublin,Lublin,Lublin,Lublino,Lublin,卢布林省,루블린,
-        ///007,ルブシュ,Lubusz,Lubusz,Lebus,Lebus,Lubus,鲁布斯卡省,루부쉬,
-        ///008,マ [rest of string was truncated]&quot;;.
+        ///007,ルブシュ,Lubusz,Lubusz,Lebus,Lebus,Lubus,鲁布斯卡省,루부쉬 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_097 {
             get {
@@ -1228,7 +1225,7 @@ namespace Ledybot.Properties {
         ///009,アヴェイロ県,Aveiro,Aveiro,Aveiro,Aveiro,Distrito de Aveiro,阿威罗区,아베이루 주,
         ///010,ベージャ県,Beja,Beja,Beja,Beja,Distrito de Beja,贝雅区,베자 주,
         ///011,ブラガ県,Braga,Braga,Braga,Braga,Distrito de Braga,布拉加区,브라가 주,
-        ///012,ブラガンサ県,Bragança,Bragança,Bragança,Bragança,Distrito de Br [rest of string was truncated]&quot;;.
+        ///012,ブラガンサ県,Bragança,Bragança,Bragança,Bragança,Distri [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_098 {
             get {
@@ -1246,7 +1243,7 @@ namespace Ledybot.Properties {
         ///006,バカウ州,Bacau,Bacău,Bacău,Bacău,Bacău,巴克乌县,바커우 주,
         ///007,ビホル州,Bihor,Bihor,Bihor,Bihor,Bihor,比霍尔县,비호르 주,
         ///008,ビストリツァ・ナサウド州,Bistrita-Nasaud,Bistrita-Năsăud,Bistrita-Năsăud,Bistrita-Năsăud,Bistrita-Năsăud,比斯特里察-讷瑟乌德县,비스트리차너서우드 주,
-        ///009,ボトシャニ州, [rest of string was truncated]&quot;;.
+        ///00 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_099 {
             get {
@@ -1261,7 +1258,7 @@ namespace Ledybot.Properties {
         ///010,アディゲ共和国,Adygey,Adyguée,Republik Adygeja,Repubblica di Adigezia,República de Adigueya,阿迪格共和国,아디게야 공화국,
         ///011,アルタイ共和国,Gorno-Altay,Altaï (république),Republik Altai,Repubblica dell&apos;Altaj,República de Altái,阿尔泰共和国,고르노알타이 공화국,
         ///012,アルタイ地方,Altay,Altaï (kraï),Region Altai,Territorio dell&apos;Altaj,Territorio de Altái,阿尔泰边疆区,알타이 지방,
-        ///013,アムール州,Amur,Amour,Oblast Amur,Regione dell&apos; [rest of string was truncated]&quot;;.
+        ///013,アムール州,Amur,Amour,Oblast Amur,Regione [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_100 {
             get {
@@ -1289,7 +1286,7 @@ namespace Ledybot.Properties {
         ///005,二トラ,Nitra,Nitra,Nitra,Nitra,Nitra,尼特拉州,니트라,
         ///006,プレショフ,Prešov,Prešov,Prešov,Prešov,Prešov,普雷绍夫州,프레쇼프,
         ///007,トレンチーン,Trencín,Trenčín,Trenčín,Trenčín,Trenčín,特伦钦州,트렌친,
-        ///008,トルナバ,Trnava,Trnava,Trnava,Trnav [rest of string was truncated]&quot;;.
+        ///008,トルナバ,Trnava,Trnava,Trna [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_102 {
             get {
@@ -1315,7 +1312,7 @@ namespace Ledybot.Properties {
         ///003,ウェスタン・ケープ州,Western Cape,Cap-Occidental,Westkap,Capo Occidentale,Cabo Occidental,西开普省,웨스턴케이프 주,
         ///004,ノーザン・ケープ州,Northern Cape,Cap-du-Nord,Nordkap,Capo Settentrionale,Cabo Septentrional,北开普省,노던케이프 주,
         ///005,イースタン・ケープ州,Eastern Cape,Cap-Oriental,Ostkap,Capo Orientale,Cabo Oriental,东开普省,이스턴케이프 주,
-        ///006,クワズールー・ナタール州,KwaZulu-Natal,KwaZulu-Natal,KwaZulu-Natal,KwaZulu-Natal,KwaZulu-Natal,夸祖鲁-纳塔尔省,콰줄루나탈  [rest of string was truncated]&quot;;.
+        ///006,クワズールー・ナタール州,KwaZulu-Natal,KwaZulu-Natal,KwaZulu-Natal,KwaZulu-Natal,KwaZulu-Natal,夸祖鲁-纳塔尔省, [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_104 {
             get {
@@ -1331,7 +1328,7 @@ namespace Ledybot.Properties {
         ///004,アラゴン州,Aragon,Aragon,Aragonien,Aragona,Aragón,阿拉贡自治区,아라곤 주,
         ///005,アストゥーリアス州,Principality of Asturias,Asturies,Asturien,Principato delle Asturie,Asturias,阿斯图利亚斯自治区,아스투리아스 주,
         ///006,バレアーレス諸島,Balearic Islands,Îles Baléares,Balearische Inseln,Baleari,Illes Balears,巴利阿里自治区,발레아레스 제도,
-        ///007,カナリア諸島,Canary Islands,Îles Can [rest of string was truncated]&quot;;.
+        ///007,カナリア諸島,Canary Islands,Î [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_105 {
             get {
@@ -1360,7 +1357,7 @@ namespace Ledybot.Properties {
         ///003,スコーネ州,Skåne County,Skåne,Skåne län,Scania,Escania,斯科耐省,스코네 주,
         ///004,ヴェストラ・イェータランド州,Västra Götaland County,Västra Götaland,Västra Götalands län,Västra Götaland,Västra Götaland,西约特兰省,베스트라예탈란드 주,
         ///005,エステルイェトランド州,Östergötland County,Östergötland,Östergötlands län,Östergötland,Östergötland,东约特兰省,외스테르예틀란드 주,
-        ///006,セーデルマンランド州,Södermanland County,Södermanland,Södermanlan [rest of string was truncated]&quot;;.
+        ///006,セーデルマンランド州,Södermanland County,Södermanland,Söder [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_107 {
             get {
@@ -1377,7 +1374,7 @@ namespace Ledybot.Properties {
         ///006,フリブール州,Fribourg,Fribourg,Freiburg,Friburgo,Friburgo,弗里堡州,프리부르 주,
         ///007,ジュネーヴ州,Geneva,Genève,Genf,Ginevra,Ginebra,日内瓦州,제네바 주,
         ///008,グラールス州,Glarus,Glaris,Glarus,Glarona,Glaris,格拉鲁斯州,글라루스 주,
-        ///009,グラウビュンデン州,Graubünden,Grisons,Graubünden,Grigioni,Grisones,格劳宾 [rest of string was truncated]&quot;;.
+        ///009,グラウビュンデン州,Graubünden,Grisons,Graubünden,Grigioni,Gris [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_108 {
             get {
@@ -1395,7 +1392,7 @@ namespace Ledybot.Properties {
         ///006,アダナ県,Adana,Adana,Adana,Adana,Adana,阿达纳省,아다나 주,
         ///007,ガジアンテプ県,Gaziantep,Gaziantep,Gaziantep,Gaziantep,Gaziantep,加济安泰普省,가지안테프 주,
         ///008,コニヤ県,Konya,Konya,Konya,Konya,Konya,科尼亚省,코니아 주,
-        ///009,アンタリヤ県,Antalya,Antalya,Antalya,Adali [rest of string was truncated]&quot;;.
+        ///009,アンタリヤ県,Antalya,Antalya,Anta [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_109 {
             get {
@@ -1614,7 +1611,7 @@ namespace Ledybot.Properties {
         ///006,台中市,Taichung City,Taichung,Taichung,Taichung,Taichung,-,타이중,
         ///007,嘉義市,Chiayi City,Chiayi,Chiayi,Chiayi,Chiayi,-,자이,
         ///008,台南市,Tainan City,Tainan,Tainan,Tainan,Tainan,-,타이난,
-        ///009,新北市,New Taipei City,No [rest of string was truncated]&quot;;.
+        ///009,新北市,New Taipe [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_128 {
             get {
@@ -1631,7 +1628,7 @@ namespace Ledybot.Properties {
         ///005,インチョン広域市,Incheon-gwangyeoksi,Incheon,Incheon,Incheon,Incheon,仁川广域市,인천광역시,
         ///006,クァンジュ広域市,Gwangju-gwangyeoksi,Gwangju,Gwangju,Gwangju,Gwangju,光州广域市,광주광역시,
         ///007,テジョン広域市,Daejeon-gwangyeoksi,Daejeon,Daejeon,Daejeon,Daejeon,大田广域市,대전광역시,
-        ///008,ウルサン広域市,Ulsan-gwangyeo [rest of string was truncated]&quot;;.
+        ///008,ウルサン広域市,Ulsan- [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_136 {
             get {
@@ -1670,7 +1667,7 @@ namespace Ledybot.Properties {
         ///005,ケランタン州,Kelantan,Kelantan,Kelantan,Kelantan,Kelantan,吉兰丹州,켈란탄 주,
         ///006,マラッカ州,Melaka,Malacca,Malakka,Malacca,Melaka,马六甲州,믈라카 주,
         ///007,ヌグリ・センビラン州,Negeri Sembilan,Negeri Sembilan,Negeri Sembilan,Negeri Sembilan,Negeri Sembilan,森美兰州,느그리슴빌란 주,
-        ///008,パハン州,Pahang,Pahan [rest of string was truncated]&quot;;.
+        ///008,パハン州,Paha [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_156 {
             get {
@@ -1688,8 +1685,7 @@ namespace Ledybot.Properties {
         ///006,安徽省,Anhui,Anhui,Anhui,Anhui,Anhui,安徽省,안후이 성,
         ///007,福建省,Fujian,Fujian,Fujian,Fujian,Fujian,福建省,푸젠 성,
         ///008,甘粛省,Gansu,Gansu,Gansu,Gansu,Gansu,甘肃省,간쑤 성,
-        ///009,広東省,Guangdong,Guangdong,Guangdong,Guangdong,Cantón,广东省,광둥 성,
-        ///010 [rest of string was truncated]&quot;;.
+        ///009,広東省,Guangdong,Guangdong,Guangdong,Guangdong,Cantón,广东省, [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_160 {
             get {
@@ -1706,7 +1702,7 @@ namespace Ledybot.Properties {
         ///005,ラアス・アル・カイマー,Ras al-Khaimah,Ras al-Khaïmah,Ras al-Chaima,Ras al-Khaimah,Ras el Jaima,哈伊马角,라스알카이마,
         ///006,ドゥバイ,Dubai,Dubaï,Dubai,Dubai,Dubái,迪拜,두바이,
         ///007,フジャイラー,Al Fujayrah,Fujaïrah,Fudschaira,Fujayrah,Fujaira,富查伊拉,알푸자이라,
-        ///008,ウム・アル・カイワイン,Umm al Qaywayn,Umm al-Qaiwain,Umm  [rest of string was truncated]&quot;;.
+        ///008,ウム・アル・カイワイン,Umm al Qaywayn,Umm al-Qaiw [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_168 {
             get {
@@ -1721,7 +1717,7 @@ namespace Ledybot.Properties {
         ///003,アンダマン・ニコバル諸島,Andaman and Nicobar Islands,Îles Andaman-et-Nicobar,Andamanen und Nikobaren,Andamane e Nicobare,Islas Andamán y Nicobar,安达曼和尼科巴群岛中央直辖区,안다만 니코바르 제도,
         ///004,アーンドラ・プラデーシュ州,Andhra Pradesh,Andhra Pradesh,Andhra Pradesh,Andhra Pradesh,Andhra Pradesh,安得拉邦,안드라프라데시 주,
         ///005,アッサム州,Assam,Assam,Assam,Assam,Assam,阿萨姆邦,아삼 주,
-        ///006,チャンディーガル州,Chandīgarh,Chandigarh,Chandigarh,Chandigarh,Chandigarh,昌迪加尔中央直辖区,찬 [rest of string was truncated]&quot;;.
+        ///006,チャンディーガル州,Chandīgarh,Chandigarh,Chandigarh,Chandigarh,Chandigarh,昌迪加尔中 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_169 {
             get {
@@ -1739,7 +1735,7 @@ namespace Ledybot.Properties {
         ///006,カスィーム州,Al Qasim,Al Qasim,Qasim,Al-Qasim,Al Qasim,卡西姆地区,카심 주,
         ///007,アシール州,&apos;Asir,Assir,Asir,&apos;Asir,Asir,阿西尔地区,아시르 주,
         ///008,ハーイル州,Ha&apos;il,Haïl,Hail,Ha&apos;il,Hail,哈伊勒地区,하일 주,
-        ///009,メッカ州,Makkah, [rest of string was truncated]&quot;;.
+        ///009,メッカ [rest of string was truncated]&quot;;.
         /// </summary>
         public static string sr_174 {
             get {

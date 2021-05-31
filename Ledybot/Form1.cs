@@ -806,7 +806,7 @@ namespace Ledybot
 
         public void token_TextChanged_1(object sender, EventArgs e)
         {
-            
+            token.Text = token.Text;
         }
         private void cordconnect_ClickAsync(object sender, EventArgs e)
         {
