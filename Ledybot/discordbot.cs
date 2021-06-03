@@ -702,7 +702,15 @@ public class discordbot
         [Command("help")]
         public async Task help()
         {
-            await ReplyAsync("read the pins");
+            var embed = new EmbedBuilder();
+            embed.Color = new Color(36, 97, 143);
+            embed.Title = "Piplup Gen 7 Bot Help";
+            embed.ThumbnailUrl = "https://www.shinyhunters.com/images/shiny/393.gif";
+            embed.AddField("Piplup is a Gen 7 GTS Sysbot for" + "\n" + "Sun / Moon / Ultra Sun / Ultra Moon" + "\n", "\n" + "***Do not deposit or request the following - they will not trade over GTS and may break the bot:***" + "\n" + "*Mythical Pokemon*" + "\n" + "*Event Pokemon*" + "\n" + "*Special Pokemon*" + "\n" + "*Fusions*" + "\n" + "*Un-Tradeable Forms*" + "\n" + "*Un-Tradeable Ribbons*" + "\n" + "*Un-Tradeable Moves*" + "\n" + "*Special Items (Megastones/Z-crystals)*" + "\n" + "\n", true);
+            embed.ImageUrl = "https://cdn.discordapp.com/attachments/733454651227373579/848772777641377832/piplup.gif";
+            embed.AddField("__Deposit any pokemon into the Gen 7 GTS__" + "\n" + "__Then use one of these 2 Commands to make the trade:__" + "\n", "\n" + ":large_blue_diamond:attached .pk7 file" + "\n" + "```" + "\n" + "!trade NationalDexNumberofDeposit trainerName (and attach the file and hit send)```" + "\n" + "\n" + ":large_blue_diamond:showdown set" + "\n" + "```" + "\n" + "!trade trainername NationalDexNumberofDeposit \"showdownset\" (and hit send)```" + "```" + "\n" + "\n" + "*showdown sets now accept batch commands*", false);
+            embed.AddField("To find out the national dex number for your deposit pokemon use: !dex Pokemon" + "\n", "example: !dex pidgey");
+            await ReplyAsync(embed: embed.Build());
         }
 
         [Command("hi")]
@@ -746,17 +754,269 @@ public class discordbot
         }
         [Command("dex")]
         public async Task dex(string pokemon)
-        {
-            int i = 0;
-            i = Array.IndexOf(Ledybot.Program.PKTable.Species7, pokemon);
-            i = i + 1;
-            await ReplyAsync(i.ToString());
 
+        {
+            
+           var baseLink = "https://raw.githubusercontent.com/BakaKaito/HomeImages/main/homeimg/128x128/poke_capture_0001_000_mf_n_00000000_f_n.png".Split('_');
+            var MyArrayLower = Ledybot.Program.PKTable.Species7.Select(s => s.ToLower()).ToArray();
+            
+            if (Array.IndexOf(MyArrayLower, pokemon.ToLower()) == -1 || Array.IndexOf(MyArrayLower, pokemon.ToLower()) > 807)
+            {
+                var embed = new EmbedBuilder();
+                embed.Color = new Color(147, 191, 230);
+                embed.Title = "This bot only supports Generation 1-7, dex# 1-807 ";
+                await ReplyAsync(embed: embed.Build());
+                return;
+            }
+
+            else
+
+            {
+                
+                int i = 0;
+                i = Array.IndexOf(MyArrayLower, pokemon.ToLower());
+                i = i + 1;
+                baseLink[2] = i < 10 ? $"000{i}" : i < 100 && i > 9 ? $"00{i}" : $"0{i}";
+                baseLink[8] = "r.png";
+                var link = string.Join("_", baseLink);
+                var embed = new EmbedBuilder();
+                embed.Color = new Color(147, 191, 230);
+                embed.Title = "National Pokedex #" + i + " " + pokemon;
+               
+                embed.ImageUrl = link;
+                using (WebClient cl = new WebClient())
+                {
+                    
+                    
+                    
+                    try
+                    {
+                       
+                        Stream mystream = cl.OpenRead(link);
+                        mystream.Close();
+                    }
+                    catch (WebException wex)
+                    {
+                        if (((HttpWebResponse)wex.Response).StatusCode == HttpStatusCode.NotFound)
+                        {
+                            
+                            baseLink[4] = "fo";
+                            link = string.Join("_", baseLink);
+                            embed.ImageUrl = link;
+                        }
+                    }
+                    try
+                    {
+                        Stream mystream = cl.OpenRead(link);
+                        mystream.Close();
+                    }
+                    catch (WebException wex)
+                    {
+                        if (((HttpWebResponse)wex.Response).StatusCode == HttpStatusCode.NotFound)
+                        {
+
+                            baseLink[4] = "mo";
+                            link = string.Join("_", baseLink);
+                            embed.ImageUrl = link;
+                        }
+                    }
+                    try
+                    {
+                        Stream mystream = cl.OpenRead(link);
+                        mystream.Close();
+                    }
+                    catch (WebException wex)
+                    {
+                        if (((HttpWebResponse)wex.Response).StatusCode == HttpStatusCode.NotFound)
+                        {
+
+                            baseLink[4] = "uk";
+                            link = string.Join("_", baseLink);
+                            embed.ImageUrl = link;
+                        }
+                    }
+                    try
+                    {
+                        Stream mystream = cl.OpenRead(link);
+                        mystream.Close();
+                    }
+                    catch (WebException wex)
+                    {
+                        if (((HttpWebResponse)wex.Response).StatusCode == HttpStatusCode.NotFound)
+                        {
+                            
+                            baseLink[4] = "fd";
+                            link = string.Join("_", baseLink);
+                            embed.ImageUrl = link;
+                        }
+                    }
+                    try
+                    {
+                        Stream mystream = cl.OpenRead(link);
+                        mystream.Close();
+                    }
+                    catch (WebException wex)
+                    {
+                        if (((HttpWebResponse)wex.Response).StatusCode == HttpStatusCode.NotFound)
+                        {
+
+                            baseLink[4] = "md";
+                            link = string.Join("_", baseLink);
+                            embed.ImageUrl = link;
+                        }
+                    }
+                    try
+                    {
+                        Stream mystream = cl.OpenRead(link);
+                        mystream.Close();
+                    }
+                    catch (WebException wex)
+                    {
+                        if (((HttpWebResponse)wex.Response).StatusCode == HttpStatusCode.NotFound)
+                        {
+                            
+                            baseLink[4] = "mf";
+                            link = string.Join("_", baseLink);
+                            embed.ImageUrl = link;
+                            
+                        }
+                    }
+                    finally
+                    {
+                        await ReplyAsync(embed: embed.Build());
+                        
+                    }
+                }
+            }
         }
+
         [Command("dex")]
         public async Task dex2(int national)
+
         {
-            await ReplyAsync(Ledybot.Program.PKTable.Species7[national - 1]);
+            var baseLink = "https://raw.githubusercontent.com/BakaKaito/HomeImages/main/homeimg/128x128/poke_capture_0001_000_mf_n_00000000_f_n.png".Split('_');
+            if (national > 807)
+            {
+                var embed = new EmbedBuilder();
+                embed.Color = new Color(147, 191, 230);
+                embed.Title = "This bot only supports Generation 1-7, dex# 1-807 ";
+                await ReplyAsync(embed: embed.Build());
+                return;
+            }
+
+            else
+            {
+                baseLink[2] = national < 10 ? $"000{national}" : national < 100 && national > 9 ? $"00{national}" : $"0{national}";
+                baseLink[8] = "r.png";
+                var link = string.Join("_", baseLink);
+                var embed = new EmbedBuilder();
+                embed.Color = new Color(147, 191, 230);
+                embed.Title = "National Pokedex #" + (national) + " " + Ledybot.Program.PKTable.Species7[national - 1];
+                
+                embed.ImageUrl = link;
+                using (WebClient cl = new WebClient())
+                {
+
+
+
+                    try
+                    {
+
+                        Stream mystream = cl.OpenRead(link);
+                        mystream.Close();
+                    }
+                    catch (WebException wex)
+                    {
+                        if (((HttpWebResponse)wex.Response).StatusCode == HttpStatusCode.NotFound)
+                        {
+
+                            baseLink[4] = "fo";
+                            link = string.Join("_", baseLink);
+                            embed.ImageUrl = link;
+                        }
+                    }
+                    try
+                    {
+                        Stream mystream = cl.OpenRead(link);
+                        mystream.Close();
+                    }
+                    catch (WebException wex)
+                    {
+                        if (((HttpWebResponse)wex.Response).StatusCode == HttpStatusCode.NotFound)
+                        {
+
+                            baseLink[4] = "mo";
+                            link = string.Join("_", baseLink);
+                            embed.ImageUrl = link;
+                        }
+                    }
+                    try
+                    {
+                        Stream mystream = cl.OpenRead(link);
+                        mystream.Close();
+                    }
+                    catch (WebException wex)
+                    {
+                        if (((HttpWebResponse)wex.Response).StatusCode == HttpStatusCode.NotFound)
+                        {
+
+                            baseLink[4] = "uk";
+                            link = string.Join("_", baseLink);
+                            embed.ImageUrl = link;
+                        }
+                    }
+                    try
+                    {
+                        Stream mystream = cl.OpenRead(link);
+                        mystream.Close();
+                    }
+                    catch (WebException wex)
+                    {
+                        if (((HttpWebResponse)wex.Response).StatusCode == HttpStatusCode.NotFound)
+                        {
+
+                            baseLink[4] = "fd";
+                            link = string.Join("_", baseLink);
+                            embed.ImageUrl = link;
+                        }
+                    }
+                    try
+                    {
+                        Stream mystream = cl.OpenRead(link);
+                        mystream.Close();
+                    }
+                    catch (WebException wex)
+                    {
+                        if (((HttpWebResponse)wex.Response).StatusCode == HttpStatusCode.NotFound)
+                        {
+
+                            baseLink[4] = "md";
+                            link = string.Join("_", baseLink);
+                            embed.ImageUrl = link;
+                        }
+                    }
+                    try
+                    {
+                        Stream mystream = cl.OpenRead(link);
+                        mystream.Close();
+                    }
+                    catch (WebException wex)
+                    {
+                        if (((HttpWebResponse)wex.Response).StatusCode == HttpStatusCode.NotFound)
+                        {
+
+                            baseLink[4] = "mf";
+                            link = string.Join("_", baseLink);
+                            embed.ImageUrl = link;
+
+                        }
+                    }
+                    finally
+                    {
+                        await ReplyAsync(embed: embed.Build());
+
+                    }
+                }  }
         }
         public static async Task ban()
         {
@@ -805,9 +1065,9 @@ public class discordbot
                 APILegality.UseTrainerData = true;
                 APILegality.AllowTrainerOverride = true;
                 APILegality.AllowBatchCommands = true;
-                APILegality.PrioritizeGame = false;
+                APILegality.PrioritizeGame = true;
                 APILegality.Timeout = 30;
-                APILegality.PrioritizeGameVersion = GameVersion.Any;
+                APILegality.PrioritizeGameVersion = GameVersion.USUM;
                 // Reload Database & Ribbon Index
                 if (Directory.Exists(Directory.GetCurrentDirectory() + "\\mgdb"))
                     EncounterEvent.RefreshMGDB(Directory.GetCurrentDirectory() + "\\mgdb");
