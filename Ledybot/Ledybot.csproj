@@ -25,7 +25,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>22</ApplicationRevision>
+    <ApplicationRevision>36</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -265,7 +265,6 @@
     </Compile>
     <Compile Include="GTSBot6.cs" />
     <Compile Include="GTSBot7.cs" />
-    <Compile Include="GTSCharacterSprites.cs" />
     <Compile Include="LookupTable.cs" />
     <Compile Include="NTRClient.cs" />
     <Compile Include="PKHeX.cs" />
@@ -299,7 +298,6 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Ledybot_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -319,6 +317,9 @@
   <ItemGroup>
     <None Include="locale\countries.txt" />
     <Content Include="165Ledyba.ico" />
+    <EmbeddedResource Include="DexFlavor.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Content Include="locale\countryMap.txt" />
     <Content Include="locale\languages.txt" />
     <Content Include="locale\regions3ds.txt" />

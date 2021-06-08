@@ -144,7 +144,8 @@ public class discordbot
 
         
         [Command("trade")]
-        public async Task stradenotidpts(string trainer, int pts, string set)
+        
+        public async Task stradenotidpts(string trainer, int pts,[Remainder] string set)
         {
             if (tradevolvs.Contains(pts))
             {
@@ -209,7 +210,8 @@ public class discordbot
 
         }
         [Command("trade")]
-        public async Task stradenotid(string trainer, string set)
+        
+        public async Task stradenotid(string trainer,[Remainder] string set)
         {
             var l = Legal.ZCrystalDictionary;
             string temppokewait = Path.GetTempFileName();
@@ -272,6 +274,7 @@ public class discordbot
         }
 
         [Command("trade")]
+       
         public async Task ptrade([Summary("poke to search")] int pts, [Remainder] string trainer)
         {
             string temppokewait = Path.GetTempFileName();
@@ -432,6 +435,7 @@ public class discordbot
 
 
         [Command("trade")]
+        
         public async Task trainertrade([Remainder] string trainer)
         {
 
@@ -708,7 +712,7 @@ public class discordbot
             embed.ThumbnailUrl = "https://www.shinyhunters.com/images/shiny/393.gif";
             embed.AddField("Piplup is a Gen 7 GTS Sysbot for" + "\n" + "Sun / Moon / Ultra Sun / Ultra Moon" + "\n", "\n" + "***Do not deposit or request the following - they will not trade over GTS and may break the bot:***" + "\n" + "*Mythical Pokemon*" + "\n" + "*Event Pokemon*" + "\n" + "*Special Pokemon*" + "\n" + "*Fusions*" + "\n" + "*Un-Tradeable Forms*" + "\n" + "*Un-Tradeable Ribbons*" + "\n" + "*Un-Tradeable Moves*" + "\n" + "*Special Items (Megastones/Z-crystals)*" + "\n" + "\n", true);
             embed.ImageUrl = "https://cdn.discordapp.com/attachments/733454651227373579/848772777641377832/piplup.gif";
-            embed.AddField("__Deposit any pokemon into the Gen 7 GTS__" + "\n" + "__Then use one of these 2 Commands to make the trade:__" + "\n", "\n" + ":large_blue_diamond:attached .pk7 file" + "\n" + "```" + "\n" + "!trade NationalDexNumberofDeposit trainerName (and attach the file and hit send)```" + "\n" + "\n" + ":large_blue_diamond:showdown set" + "\n" + "```" + "\n" + "!trade trainername NationalDexNumberofDeposit \"showdownset\" (and hit send)```" + "```" + "\n" + "\n" + "*showdown sets now accept batch commands*", false);
+            embed.AddField("__Deposit any pokemon into the Gen 7 GTS__" + "\n" + "__Then use one of these 2 Commands to make the trade:__" + "\n", "\n" + ":large_blue_diamond:attached .pk7 file" + "\n" + "```" + "\n" + "!trade NationalDexNumberofDeposit trainerName (and attach the file and hit send)```" + "\n" + "\n" + ":large_blue_diamond:showdown set" + "\n" + "```" + "\n" + "!trade trainername NationalDexNumberofDeposit showdownset (and hit send)```" + "```" + "\n" + "\n" + "*showdown sets now accept batch commands*" + "\n" + "*Please use quotes around your trainer name, if your trainer name has a space in it*", false);
             embed.AddField("To find out the national dex number for your deposit pokemon use: !dex Pokemon" + "\n", "example: !dex pidgey");
             await ReplyAsync(embed: embed.Build());
         }
@@ -753,11 +757,11 @@ public class discordbot
             await ReplyAsync( embed: embed.Build());
         }
         [Command("dex")]
-        public async Task dex(string pokemon)
+        public async Task dex([Remainder]string pokemon)
 
         {
-            
-           var baseLink = "https://raw.githubusercontent.com/BakaKaito/HomeImages/main/homeimg/128x128/poke_capture_0001_000_mf_n_00000000_f_n.png".Split('_');
+            EmbedFooterBuilder x = new EmbedFooterBuilder();
+            var baseLink = "https://raw.githubusercontent.com/BakaKaito/HomeImages/main/homeimg/128x128/poke_capture_0001_000_mf_n_00000000_f_n.png".Split('_');
             var MyArrayLower = Ledybot.Program.PKTable.Species7.Select(s => s.ToLower()).ToArray();
             
             if (Array.IndexOf(MyArrayLower, pokemon.ToLower()) == -1 || Array.IndexOf(MyArrayLower, pokemon.ToLower()) > 807)
@@ -779,15 +783,38 @@ public class discordbot
                 baseLink[2] = i < 10 ? $"000{i}" : i < 100 && i > 9 ? $"00{i}" : $"0{i}";
                 baseLink[8] = "r.png";
                 var link = string.Join("_", baseLink);
-                var embed = new EmbedBuilder();
+                var embed = new EmbedBuilder().WithFooter(x);
                 embed.Color = new Color(147, 191, 230);
                 embed.Title = "National Pokedex #" + i + " " + pokemon;
-               
+
+                System.Text.StringBuilder abil = new System.Text.StringBuilder();
+              
+                foreach (int d in Ledybot.Program.PKTable.getAbilities7(i, default))
+                {
+
+                    string bab = Ledybot.Program.PKTable.Ability7[d - 1];
+                    abil.AppendLine(bab);
+                }
+                
+                embed.AddField("Abilities:", abil);
+
+                var quickpk = BuildPokemon(pokemon, 7);
+                int[] sugmov = MoveSetApplicator.GetMoveSet(quickpk);
+                System.Text.StringBuilder smov = new System.Text.StringBuilder();
+                foreach (int j in sugmov)
+                {
+                    string bmov = Ledybot.Program.PKTable.Moves7[j];
+                    smov.AppendLine(bmov);
+                }
+                embed.AddField("Suggested Moves:", smov);
+                Stream stre = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.DexFlavor.txt");
+                StreamReader reader = new StreamReader(stre);
+                var entry = reader.ReadToEnd().Split('\n')[i];
+                reader.Close();
+                stre.Close();
                 embed.ImageUrl = link;
                 using (WebClient cl = new WebClient())
-                {
-                    
-                    
+                { 
                     
                     try
                     {
@@ -883,6 +910,7 @@ public class discordbot
                     }
                     finally
                     {
+                        x.Text = "Dex entry: " + entry;
                         await ReplyAsync(embed: embed.Build());
                         
                     }
@@ -894,9 +922,11 @@ public class discordbot
         public async Task dex2(int national)
 
         {
+            EmbedFooterBuilder x = new EmbedFooterBuilder();
             var baseLink = "https://raw.githubusercontent.com/BakaKaito/HomeImages/main/homeimg/128x128/poke_capture_0001_000_mf_n_00000000_f_n.png".Split('_');
             if (national > 807)
             {
+                
                 var embed = new EmbedBuilder();
                 embed.Color = new Color(147, 191, 230);
                 embed.Title = "This bot only supports Generation 1-7, dex# 1-807 ";
@@ -909,10 +939,33 @@ public class discordbot
                 baseLink[2] = national < 10 ? $"000{national}" : national < 100 && national > 9 ? $"00{national}" : $"0{national}";
                 baseLink[8] = "r.png";
                 var link = string.Join("_", baseLink);
-                var embed = new EmbedBuilder();
+                var embed = new EmbedBuilder().WithFooter(x);
                 embed.Color = new Color(147, 191, 230);
                 embed.Title = "National Pokedex #" + (national) + " " + Ledybot.Program.PKTable.Species7[national - 1];
-                
+
+                System.Text.StringBuilder abil = new System.Text.StringBuilder();
+                foreach (int d in Ledybot.Program.PKTable.getAbilities7(national, default))
+                {
+
+                    string bab = Ledybot.Program.PKTable.Ability7[d - 1];
+                    abil.AppendLine(bab);
+                }
+                embed.AddField("Abilities:", abil);
+
+                var quickpk = BuildPokemon(Ledybot.Program.PKTable.Species7[national-1], 7);
+                int[] sugmov = MoveSetApplicator.GetMoveSet(quickpk);
+                System.Text.StringBuilder smov = new System.Text.StringBuilder();
+                foreach (int j in sugmov)
+                {
+                    string bmov = Ledybot.Program.PKTable.Moves7[j];
+                    smov.AppendLine(bmov);
+                }
+                embed.AddField("Suggested Moves:", smov);
+                Stream stre = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.DexFlavor.txt");
+                StreamReader reader = new StreamReader(stre);
+                var entry = reader.ReadToEnd().Split('\n')[national];
+                reader.Close();
+                stre.Close();
                 embed.ImageUrl = link;
                 using (WebClient cl = new WebClient())
                 {
@@ -1013,6 +1066,7 @@ public class discordbot
                     }
                     finally
                     {
+                        x.Text = "Dex entry: " + entry;
                         await ReplyAsync(embed: embed.Build());
 
                     }

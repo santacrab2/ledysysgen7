@@ -264,7 +264,7 @@ namespace Ledybot
                         botState = (int)gtsbotstates.pressSeek;
                         break;
                     case (int)gtsbotstates.pressSeek:
-                        if (stupid == 15)
+                        if (stupid == 10)
                         {
                             startIndex = 0;
                             tradeIndex = -1;
