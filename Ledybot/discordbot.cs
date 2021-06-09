@@ -152,24 +152,58 @@ public class discordbot
                 await ReplyAsync("you almost just broke the bot by depositing a trade evolution, you are a fucking asshole :)");
                 return;
             }
+            string[] pset = set.Split('\n');
             var l = Legal.ZCrystalDictionary;
             string temppokewait = Path.GetTempFileName();
 
             PKM pk = BuildPokemon(set, 7);
-            if (!new LegalityAnalysis(pk).Valid)
-            {
-                await ReplyAsync("Pokemon is illegal dumbass");
-                await ReplyAsync(LegalityFormatting.Report(new LegalityAnalysis(pk)));
-                File.Delete(temppokewait);
-                return;
+        
 
-            }
-        //    if (set.ToLower().Contains("shiny: yes"))
-       //     {
-       //         pk.SetShiny();
-      //      }
             if (pk.OT_Name.ToLower() == "pkhex")
                 pk.OT_Name = trainer;
+            if (set.Contains("OT:"))
+            {
+                int q = 0;
+                foreach (string b in pset)
+                {
+                    if (pset[q].Contains("OT:"))
+                        pk.OT_Name = pset[q].Replace("OT: ", "");
+                    q++;
+                }
+            }
+            if (set.Contains("TID:"))
+            {
+
+                int h = 0;
+                foreach (string v in pset)
+                {
+                    if (pset[h].Contains("TID:"))
+                    {
+                        int trid7 = Convert.ToInt32(pset[h].Replace("TID: ", ""));
+                        pk.TrainerID7 = trid7;
+
+                    }
+                    h++;
+                }
+            }
+            if (set.Contains("SID:"))
+            {
+                int h = 0;
+                foreach (string v in pset)
+                {
+                    if (pset[h].Contains("SID:"))
+                    {
+                        int trsid7 = Convert.ToInt32(pset[h].Replace("SID: ", ""));
+                        pk.TrainerSID7 = trsid7;
+
+                    }
+                    h++;
+                }
+            }
+            if (set.ToLower().Contains("shiny: yes"))
+            {
+                pk.SetShiny();
+            }
 
             if (l.ContainsValue(pk.HeldItem) || Enumerable.Range(656, 115).Contains(pk.HeldItem))
             {
@@ -193,6 +227,14 @@ public class discordbot
            
                 }
             }
+            if (!new LegalityAnalysis(pk).Valid)
+            {
+                await ReplyAsync("Pokemon is illegal dumbass");
+                await ReplyAsync(LegalityFormatting.Report(new LegalityAnalysis(pk)));
+                File.Delete(temppokewait);
+                return;
+
+            }
             await ReplyAsync("yay its legal good job!");
 
             byte[] g = pk.DecryptedBoxData;
@@ -215,25 +257,54 @@ public class discordbot
         {
             var l = Legal.ZCrystalDictionary;
             string temppokewait = Path.GetTempFileName();
-
+            string[] pset = set.Split('\n');
             PKM pk = BuildPokemon(set, 7);
-            if (!new LegalityAnalysis(pk).Valid)
-            {
-                byte[] d = pk.DecryptedBoxData;
-                System.IO.File.WriteAllBytes(temppokewait, d);
-                await Context.Channel.SendFileAsync(temppokewait);
-                await ReplyAsync("Pokemon is illegal dumbass");
-                await ReplyAsync(LegalityFormatting.Report(new LegalityAnalysis(pk)));
-                File.Delete(temppokewait);
-                return;
-
-            }
-            //   if(set.ToLower().Contains("shiny: yes"))
-            //    {
-            //         pk.SetShiny();
-            //      }
+            
+          
             if (pk.OT_Name.ToLower() == "pkhex")
                 pk.OT_Name = trainer;
+            if (set.Contains("OT:"))
+            {
+                int q = 0;
+                foreach(string b in pset)
+                {
+                    if (pset[q].Contains("OT:"))
+                        pk.OT_Name = pset[q].Replace("OT: ","");
+                    q++;
+                }
+            }
+            if (set.Contains("TID:"))
+            {
+                int h = 0;
+                foreach(string v in pset)
+                {
+                    if (pset[h].Contains("TID:"))
+                    {
+                        int trid7 = Convert.ToInt32(pset[h].Replace("TID: ", ""));
+                        pk.TrainerID7 = trid7;
+                       
+                    }
+                    h++;
+                }
+            }
+            if (set.Contains("SID:"))
+            {
+                int h = 0;
+                foreach (string v in pset)
+                {
+                    if (pset[h].Contains("SID:"))
+                    {
+                        int trsid7 = Convert.ToInt32(pset[h].Replace("SID: ", ""));
+                        pk.TrainerSID7 = trsid7;
+                        
+                    }
+                    h++;
+                }
+            }
+               if(set.ToLower().Contains("shiny: yes"))
+                {
+                pk.SetShiny();
+                  }
 
             if (l.ContainsValue(pk.HeldItem) || Enumerable.Range(656, 115).Contains(pk.HeldItem))
             {
@@ -257,10 +328,20 @@ public class discordbot
                     
                 }
             }
+
+            if (!new LegalityAnalysis(pk).Valid)
+            {
+
+                await ReplyAsync("Pokemon is illegal dumbass");
+                await ReplyAsync(LegalityFormatting.Report(new LegalityAnalysis(pk)));
+                File.Delete(temppokewait);
+                return;
+
+            }
             await ReplyAsync("yay its legal good job!");
             byte[] g = pk.DecryptedBoxData;
             System.IO.File.WriteAllBytes(temppokewait, g);
-         
+            await Context.Channel.SendFileAsync(temppokewait);
             pokequeue.Enqueue(temppokewait);
             username.Enqueue(Context.User.Id);
             trainername.Enqueue(trainer);
@@ -760,6 +841,7 @@ public class discordbot
         public async Task dex([Remainder]string pokemon)
 
         {
+            EmbedFieldBuilder z = new EmbedFieldBuilder();
             EmbedFooterBuilder x = new EmbedFooterBuilder();
             var baseLink = "https://raw.githubusercontent.com/BakaKaito/HomeImages/main/homeimg/128x128/poke_capture_0001_000_mf_n_00000000_f_n.png".Split('_');
             var MyArrayLower = Ledybot.Program.PKTable.Species7.Select(s => s.ToLower()).ToArray();
@@ -783,10 +865,10 @@ public class discordbot
                 baseLink[2] = i < 10 ? $"000{i}" : i < 100 && i > 9 ? $"00{i}" : $"0{i}";
                 baseLink[8] = "r.png";
                 var link = string.Join("_", baseLink);
-                var embed = new EmbedBuilder().WithFooter(x);
+                var embed = new EmbedBuilder().WithFooter(x).AddField(z);
                 embed.Color = new Color(147, 191, 230);
                 embed.Title = "National Pokedex #" + i + " " + pokemon;
-
+                embed.ThumbnailUrl = "https://play.pokemonshowdown.com/sprites/ani-shiny/" + pokemon.ToLower() + ".gif";
                 System.Text.StringBuilder abil = new System.Text.StringBuilder();
               
                 foreach (int d in Ledybot.Program.PKTable.getAbilities7(i, default))
@@ -796,22 +878,33 @@ public class discordbot
                     abil.AppendLine(bab);
                 }
                 
-                embed.AddField("Abilities:", abil);
+                embed.AddField("Abilities:", abil,true);
 
                 var quickpk = BuildPokemon(pokemon, 7);
-                int[] sugmov = MoveSetApplicator.GetMoveSet(quickpk);
-                System.Text.StringBuilder smov = new System.Text.StringBuilder();
-                foreach (int j in sugmov)
+                if (quickpk != null)
                 {
-                    string bmov = Ledybot.Program.PKTable.Moves7[j];
-                    smov.AppendLine(bmov);
+                    int[] sugmov = MoveSetApplicator.GetMoveSet(quickpk);
+                    System.Text.StringBuilder smov = new System.Text.StringBuilder();
+                    foreach (int j in sugmov)
+                    {
+                        string bmov = Ledybot.Program.PKTable.Moves7[j];
+                        smov.AppendLine(bmov);
+                    }
+
+                    embed.AddField("Suggested Moves:", smov, true);
                 }
-                embed.AddField("Suggested Moves:", smov);
                 Stream stre = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.DexFlavor.txt");
                 StreamReader reader = new StreamReader(stre);
                 var entry = reader.ReadToEnd().Split('\n')[i];
                 reader.Close();
                 stre.Close();
+
+                Stream stra = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.Types.txt");
+                StreamReader readera = new StreamReader(stra);
+                var typez = readera.ReadToEnd().Split('\n')[i];
+                readera.Close();
+                stra.Close();
+
                 embed.ImageUrl = link;
                 using (WebClient cl = new WebClient())
                 { 
@@ -910,6 +1003,9 @@ public class discordbot
                     }
                     finally
                     {
+                        z.Name = "Type:";
+                        z.Value = typez;
+                        z.IsInline = true;
                         x.Text = "Dex entry: " + entry;
                         await ReplyAsync(embed: embed.Build());
                         
@@ -923,10 +1019,11 @@ public class discordbot
 
         {
             EmbedFooterBuilder x = new EmbedFooterBuilder();
+            EmbedFieldBuilder z = new EmbedFieldBuilder();
             var baseLink = "https://raw.githubusercontent.com/BakaKaito/HomeImages/main/homeimg/128x128/poke_capture_0001_000_mf_n_00000000_f_n.png".Split('_');
             if (national > 807)
             {
-                
+
                 var embed = new EmbedBuilder();
                 embed.Color = new Color(147, 191, 230);
                 embed.Title = "This bot only supports Generation 1-7, dex# 1-807 ";
@@ -939,10 +1036,10 @@ public class discordbot
                 baseLink[2] = national < 10 ? $"000{national}" : national < 100 && national > 9 ? $"00{national}" : $"0{national}";
                 baseLink[8] = "r.png";
                 var link = string.Join("_", baseLink);
-                var embed = new EmbedBuilder().WithFooter(x);
+                var embed = new EmbedBuilder().WithFooter(x).AddField(z);
                 embed.Color = new Color(147, 191, 230);
                 embed.Title = "National Pokedex #" + (national) + " " + Ledybot.Program.PKTable.Species7[national - 1];
-
+                embed.ThumbnailUrl = "https://play.pokemonshowdown.com/sprites/ani-shiny/" + Ledybot.Program.PKTable.Species7[national - 1].ToLower() + ".gif";
                 System.Text.StringBuilder abil = new System.Text.StringBuilder();
                 foreach (int d in Ledybot.Program.PKTable.getAbilities7(national, default))
                 {
@@ -950,9 +1047,10 @@ public class discordbot
                     string bab = Ledybot.Program.PKTable.Ability7[d - 1];
                     abil.AppendLine(bab);
                 }
-                embed.AddField("Abilities:", abil);
+                embed.AddField("Abilities:", abil, true);
 
-                var quickpk = BuildPokemon(Ledybot.Program.PKTable.Species7[national-1], 7);
+                var quickpk = BuildPokemon(Ledybot.Program.PKTable.Species7[national - 1], 7);
+                if(quickpk != null) { 
                 int[] sugmov = MoveSetApplicator.GetMoveSet(quickpk);
                 System.Text.StringBuilder smov = new System.Text.StringBuilder();
                 foreach (int j in sugmov)
@@ -960,12 +1058,20 @@ public class discordbot
                     string bmov = Ledybot.Program.PKTable.Moves7[j];
                     smov.AppendLine(bmov);
                 }
-                embed.AddField("Suggested Moves:", smov);
+                embed.AddField("Suggested Moves:", smov, true);
+                    }
                 Stream stre = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.DexFlavor.txt");
                 StreamReader reader = new StreamReader(stre);
                 var entry = reader.ReadToEnd().Split('\n')[national];
                 reader.Close();
                 stre.Close();
+
+                Stream stra = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.Types.txt");
+                StreamReader readera = new StreamReader(stra);
+                var typez = readera.ReadToEnd().Split('\n')[national];
+                readera.Close();
+                stra.Close();
+
                 embed.ImageUrl = link;
                 using (WebClient cl = new WebClient())
                 {
@@ -1066,11 +1172,15 @@ public class discordbot
                     }
                     finally
                     {
+                        z.Name = "Type:";
+                        z.Value = typez;
+                        z.IsInline = true;
                         x.Text = "Dex entry: " + entry;
                         await ReplyAsync(embed: embed.Build());
 
                     }
-                }  }
+                }
+            }
         }
         public static async Task ban()
         {
@@ -1123,10 +1233,10 @@ public class discordbot
                 APILegality.Timeout = 30;
                 APILegality.PrioritizeGameVersion = GameVersion.USUM;
                 // Reload Database & Ribbon Index
-                if (Directory.Exists(Directory.GetCurrentDirectory() + "\\mgdb"))
-                    EncounterEvent.RefreshMGDB(Directory.GetCurrentDirectory() + "\\mgdb");
-
-                RibbonStrings.ResetDictionary(GameInfo.Strings.ribbons);
+                
+                
+                
+               
 
                 // Convert the given Text into a Showdown Set
                 ShowdownSet set = new ShowdownSet(Set);
@@ -1137,14 +1247,16 @@ public class discordbot
                 var sav = TrainerSettings.GetSavedTrainerData(GameVersion.US, 7);
                 PK7 tru = new PK7();
                 // Generates a PKM from Showdown Set
-                var pk = Legalizer.GetLegalFromSet(sav, re, out _);
+                var pk = sav.GetLegalFromTemplate(tru,re,out _);
                 PKMConverter.SetPrimaryTrainer(sav);
 
                 PKMConverter.AllowIncompatibleConversion = true;
-                pk = PKMConverter.ConvertToType(pk, tru.GetType(), out _);
+                pk = PKMConverter.ConvertToType(pk, typeof(PK7), out _);
                 var sug = EncounterSuggestion.GetSuggestedMetInfo(pk);
                 pk.Met_Location = sug.Location;
                 pk.Met_Level = sug.LevelMin;
+               
+                    
                 pk = pk.Legalize();
 
 
