@@ -881,7 +881,7 @@ public class discordbot
                 readeri.Close();
                 stri.Close();
 
-                embed.AddField("Type: " + typez, "Egg Group: " +"\n" + egggr, true);
+                embed.AddField("Type: " + typez, "Egg Group(s): " +"\n" + egggr, true);
                 Stream strb = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.GenderRatios.txt");
                 StreamReader readerb = new StreamReader(strb);
                 var genders = readerb.ReadToEnd().Split('\n')[i];
@@ -1097,7 +1097,7 @@ public class discordbot
                 readeri.Close();
                 stri.Close();
 
-                embed.AddField("Type: " + typez, "Egg Group: " +"\n" + egggr, true);
+                embed.AddField("Type: " + typez, "Egg Group(s): " +"\n" + egggr, true);
 
                 Stream strb = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.GenderRatios.txt");
                 StreamReader readerb = new StreamReader(strb);
