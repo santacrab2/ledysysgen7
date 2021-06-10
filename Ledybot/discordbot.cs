@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections;
-using System.Runtime.CompilerServices;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Threading;
-using Discord;
-using Discord.WebSocket;
-using Discord.Commands;
+using System.Net;
 using System.Reflection;
+using System.Threading.Tasks;
+using Discord;
+using Discord.Commands;
+using Discord.WebSocket;
 using PKHeX.Core;
 using PKHeX.Core.AutoMod;
-using System.Net;
 
 
 
@@ -841,7 +839,7 @@ public class discordbot
         public async Task dex([Remainder]string pokemon)
 
         {
-            EmbedFieldBuilder z = new EmbedFieldBuilder();
+           
             EmbedFooterBuilder x = new EmbedFooterBuilder();
             var baseLink = "https://raw.githubusercontent.com/BakaKaito/HomeImages/main/homeimg/128x128/poke_capture_0001_000_mf_n_00000000_f_n.png".Split('_');
             var MyArrayLower = Ledybot.Program.PKTable.Species7.Select(s => s.ToLower()).ToArray();
@@ -865,19 +863,71 @@ public class discordbot
                 baseLink[2] = i < 10 ? $"000{i}" : i < 100 && i > 9 ? $"00{i}" : $"0{i}";
                 baseLink[8] = "r.png";
                 var link = string.Join("_", baseLink);
-                var embed = new EmbedBuilder().WithFooter(x).AddField(z);
+                var embed = new EmbedBuilder().WithFooter(x);
                 embed.Color = new Color(147, 191, 230);
                 embed.Title = "National Pokedex #" + i + " " + pokemon;
                 embed.ThumbnailUrl = "https://play.pokemonshowdown.com/sprites/ani-shiny/" + pokemon.ToLower() + ".gif";
                 System.Text.StringBuilder abil = new System.Text.StringBuilder();
-              
+
+                Stream stra = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.Types.txt");
+                StreamReader readera = new StreamReader(stra);
+                var typez = readera.ReadToEnd().Split('\n')[i];
+                readera.Close();
+                stra.Close();
+
+                Stream stri = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.EggGroups.txt");
+                StreamReader readeri = new StreamReader(stri);
+                var egggr = readeri.ReadToEnd().Split('\n')[i];
+                readeri.Close();
+                stri.Close();
+
+                embed.AddField("Type: " + typez, "Egg Group: " +"\n" + egggr, true);
+                Stream strb = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.GenderRatios.txt");
+                StreamReader readerb = new StreamReader(strb);
+                var genders = readerb.ReadToEnd().Split('\n')[i];
+                readerb.Close();
+                strb.Close();
+
+                Stream strj = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.Introduced.txt");
+                StreamReader readerj = new StreamReader(strj);
+                var intro = readerj.ReadToEnd().Split('\n')[i];
+                strj.Close();
+                readerj.Close();
+
+                embed.AddField("Gender Ratios: " + "\n"+ genders,  intro,true);
+
                 foreach (int d in Ledybot.Program.PKTable.getAbilities7(i, default))
                 {
 
                     string bab = Ledybot.Program.PKTable.Ability7[d - 1];
                     abil.AppendLine(bab);
                 }
-                
+
+                Stream strd = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.Height.txt");
+                StreamReader readerd = new StreamReader(strd);
+                var height = readerd.ReadToEnd().Split('\n')[i];
+                readerd.Close();
+                strd.Close();
+                Stream stre = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.Weight.txt");
+                StreamReader readere = new StreamReader(stre);
+                var weight = readere.ReadToEnd().Split('\n')[i];
+                embed.AddField("Height: " + height, "Weight: " + weight, true);
+
+
+                Stream strk = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.Catch_Rate.txt");
+                StreamReader readerk = new StreamReader(strk);
+                var CR = readerk.ReadToEnd().Split('\n')[i];
+                readerk.Close();
+                strk.Close();
+
+                Stream strc = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.BaseStats.txt");
+                StreamReader readerc = new StreamReader(strc);
+                var statc = readerc.ReadToEnd().Split('\n')[i];
+                var nstatc = statc.Replace('\t', '\n');
+                readerc.Close();
+                strc.Close();
+                embed.AddField("Base Stats", nstatc + "\n" + "**Catch Rate: **" + CR, true);
+
                 embed.AddField("Abilities:", abil,true);
 
                 var quickpk = BuildPokemon(pokemon, 7);
@@ -893,17 +943,12 @@ public class discordbot
 
                     embed.AddField("Suggested Moves:", smov, true);
                 }
-                Stream stre = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.DexFlavor.txt");
-                StreamReader reader = new StreamReader(stre);
+                Stream strf = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.DexFlavor.txt");
+                StreamReader reader = new StreamReader(strf);
                 var entry = reader.ReadToEnd().Split('\n')[i];
                 reader.Close();
-                stre.Close();
+                strf.Close();
 
-                Stream stra = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.Types.txt");
-                StreamReader readera = new StreamReader(stra);
-                var typez = readera.ReadToEnd().Split('\n')[i];
-                readera.Close();
-                stra.Close();
 
                 embed.ImageUrl = link;
                 using (WebClient cl = new WebClient())
@@ -1003,9 +1048,7 @@ public class discordbot
                     }
                     finally
                     {
-                        z.Name = "Type:";
-                        z.Value = typez;
-                        z.IsInline = true;
+                       
                         x.Text = "Dex entry: " + entry;
                         await ReplyAsync(embed: embed.Build());
                         
@@ -1019,7 +1062,7 @@ public class discordbot
 
         {
             EmbedFooterBuilder x = new EmbedFooterBuilder();
-            EmbedFieldBuilder z = new EmbedFieldBuilder();
+           
             var baseLink = "https://raw.githubusercontent.com/BakaKaito/HomeImages/main/homeimg/128x128/poke_capture_0001_000_mf_n_00000000_f_n.png".Split('_');
             if (national > 807)
             {
@@ -1036,11 +1079,65 @@ public class discordbot
                 baseLink[2] = national < 10 ? $"000{national}" : national < 100 && national > 9 ? $"00{national}" : $"0{national}";
                 baseLink[8] = "r.png";
                 var link = string.Join("_", baseLink);
-                var embed = new EmbedBuilder().WithFooter(x).AddField(z);
+                var embed = new EmbedBuilder().WithFooter(x);
                 embed.Color = new Color(147, 191, 230);
                 embed.Title = "National Pokedex #" + (national) + " " + Ledybot.Program.PKTable.Species7[national - 1];
                 embed.ThumbnailUrl = "https://play.pokemonshowdown.com/sprites/ani-shiny/" + Ledybot.Program.PKTable.Species7[national - 1].ToLower() + ".gif";
                 System.Text.StringBuilder abil = new System.Text.StringBuilder();
+
+                Stream stra = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.Types.txt");
+                StreamReader readera = new StreamReader(stra);
+                var typez = readera.ReadToEnd().Split('\n')[national];
+                readera.Close();
+                stra.Close();
+
+                Stream stri = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.EggGroups.txt");
+                StreamReader readeri = new StreamReader(stri);
+                var egggr = readeri.ReadToEnd().Split('\n')[national];
+                readeri.Close();
+                stri.Close();
+
+                embed.AddField("Type: " + typez, "Egg Group: " +"\n" + egggr, true);
+
+                Stream strb = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.GenderRatios.txt");
+                StreamReader readerb = new StreamReader(strb);
+                var genders = readerb.ReadToEnd().Split('\n')[national];
+                readerb.Close();
+                strb.Close();
+               
+
+                Stream strj = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.Introduced.txt");
+                StreamReader readerj = new StreamReader(strj);
+                var intro = readerj.ReadToEnd().Split('\n')[national];
+                strj.Close();
+                readerj.Close();
+
+                embed.AddField("Gender Ratios: " + "\n"+genders,  intro, true);
+
+                Stream strd = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.Height.txt");
+                StreamReader readerd = new StreamReader(strd);
+                var height = readerd.ReadToEnd().Split('\n')[national];
+                readerd.Close();
+                strd.Close();
+                Stream stre = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.Weight.txt");
+                StreamReader readere = new StreamReader(stre);
+                var weight = readere.ReadToEnd().Split('\n')[national];
+                embed.AddField("Height: " + height, "Weight: " + weight, true);
+
+
+                Stream strk = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.Catch_Rate.txt");
+                StreamReader readerk = new StreamReader(strk);
+                var CR = readerk.ReadToEnd().Split('\n')[national];
+                readerk.Close();
+                strk.Close();
+
+                Stream strc = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.BaseStats.txt");
+                StreamReader readerc = new StreamReader(strc);
+                var statc = readerc.ReadToEnd().Split('\n')[national];
+                var nstatc = statc.Replace('\t', '\n');
+                readerc.Close();
+                strc.Close();
+                embed.AddField("Base Stats", nstatc + "\n" + "**Catch Rate: **" + CR, true);
                 foreach (int d in Ledybot.Program.PKTable.getAbilities7(national, default))
                 {
 
@@ -1060,17 +1157,17 @@ public class discordbot
                 }
                 embed.AddField("Suggested Moves:", smov, true);
                     }
-                Stream stre = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.DexFlavor.txt");
-                StreamReader reader = new StreamReader(stre);
+
+
+                Stream strf = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.DexFlavor.txt");
+                StreamReader reader = new StreamReader(strf);
                 var entry = reader.ReadToEnd().Split('\n')[national];
                 reader.Close();
-                stre.Close();
+                strf.Close();
 
-                Stream stra = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.Types.txt");
-                StreamReader readera = new StreamReader(stra);
-                var typez = readera.ReadToEnd().Split('\n')[national];
-                readera.Close();
-                stra.Close();
+              
+
+
 
                 embed.ImageUrl = link;
                 using (WebClient cl = new WebClient())
@@ -1172,9 +1269,7 @@ public class discordbot
                     }
                     finally
                     {
-                        z.Name = "Type:";
-                        z.Value = typez;
-                        z.IsInline = true;
+                       
                         x.Text = "Dex entry: " + entry;
                         await ReplyAsync(embed: embed.Build());
 

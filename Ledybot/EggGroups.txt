@@ -1,0 +1,899 @@
+
+Monster 	Grass
+Monster 	Grass
+Monster 	Grass
+Monster 	Dragon
+Monster 	Dragon
+Monster 	Dragon
+Monster 	Water 1
+Monster 	Water 1
+Monster 	Water 1
+Bug 	
+Bug 	
+Bug 	
+Bug 	
+Bug 	
+Bug 	
+Flying 	
+Flying 	
+Flying 	
+Field 	
+Field 	
+Flying 	
+Flying 	
+Field 	Dragon
+Field 	Dragon
+Field 	Fairy
+Field 	Fairy
+Field 	
+Field 	
+Monster 	Field
+Undiscovered 	
+Undiscovered 	
+Monster 	Field
+Monster 	Field
+Monster 	Field
+Fairy 	
+Fairy 	
+Field 	
+Field 	
+Fairy 	
+Fairy 	
+Flying 	
+Flying 	
+Grass 	
+Grass 	
+Grass 	
+Bug 	Grass
+Bug 	Grass
+Bug 	
+Bug 	
+Field 	
+Field 	
+Field 	
+Field 	
+Water 1 	Field
+Water 1 	Field
+Field 	
+Field 	
+Field 	
+Field 	
+Water 1 	
+Water 1 	
+Water 1 	
+Human-Like 	
+Human-Like 	
+Human-Like 	
+Human-Like 	
+Human-Like 	
+Human-Like 	
+Grass 	
+Grass 	
+Grass 	
+Water 3 	
+Water 3 	
+Mineral 	
+Mineral 	
+Mineral 	
+Field 	
+Field 	
+Monster 	Water 1
+Monster 	Water 1
+Mineral 	
+Mineral 	
+Flying 	Field
+Flying 	
+Flying 	
+Water 1 	Field
+Water 1 	Field
+Amorphous 	
+Amorphous 	
+Water 3 	
+Water 3 	
+Amorphous 	
+Amorphous 	
+Amorphous 	
+Mineral 	
+Human-Like 	
+Human-Like 	
+Water 3 	
+Water 3 	
+Mineral 	
+Mineral 	
+Grass 	
+Grass 	
+Monster 	
+Monster 	
+Human-Like 	
+Human-Like 	
+Monster 	
+Amorphous 	
+Amorphous 	
+Monster 	Field
+Monster 	Field
+Fairy 	
+Grass 	
+Monster 	
+Water 1 	Dragon
+Water 1 	Dragon
+Water 2 	
+Water 2 	
+Water 3 	
+Water 3 	
+Human-Like 	
+Bug 	
+Human-Like 	
+Human-Like 	
+Human-Like 	
+Bug 	
+Field 	
+Water 2 	Dragon
+Water 2 	Dragon
+Monster 	Water 1
+Ditto 	
+Field 	
+Field 	
+Field 	
+Field 	
+Mineral 	
+Water 1 	Water 3
+Water 1 	Water 3
+Water 1 	Water 3
+Water 1 	Water 3
+Flying 	
+Monster 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Water 1 	Dragon
+Water 1 	Dragon
+Water 1 	Dragon
+Undiscovered 	
+Undiscovered 	
+Monster 	Grass
+Monster 	Grass
+Monster 	Grass
+Field 	
+Field 	
+Field 	
+Monster 	Water 1
+Monster 	Water 1
+Monster 	Water 1
+Field 	
+Field 	
+Flying 	
+Flying 	
+Bug 	
+Bug 	
+Bug 	
+Bug 	
+Flying 	
+Water 2 	
+Water 2 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Flying 	Fairy
+Flying 	
+Flying 	
+Monster 	Field
+Monster 	Field
+Monster 	Field
+Grass 	
+Water 1 	Fairy
+Water 1 	Fairy
+Mineral 	
+Water 1 	
+Fairy 	Grass
+Fairy 	Grass
+Fairy 	Grass
+Field 	
+Grass 	
+Grass 	
+Bug 	
+Water 1 	Field
+Water 1 	Field
+Field 	
+Field 	
+Flying 	
+Monster 	Water 1
+Amorphous 	
+Undiscovered 	
+Amorphous 	
+Field 	
+Bug 	
+Bug 	
+Field 	
+Bug 	
+Mineral 	
+Field 	Fairy
+Field 	Fairy
+Water 2 	
+Bug 	
+Bug 	
+Bug 	
+Field 	
+Field 	
+Field 	
+Amorphous 	
+Amorphous 	
+Field 	
+Field 	
+Water 1 	Water 3
+Water 1 	Water 2
+Water 1 	Water 2
+Water 1 	Field
+Water 1 	
+Flying 	
+Field 	
+Field 	
+Water 1 	Dragon
+Field 	
+Field 	
+Mineral 	
+Field 	
+Field 	
+Undiscovered 	
+Human-Like 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Field 	
+Fairy 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Monster 	
+Monster 	
+Monster 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Monster 	Dragon
+Monster 	Dragon
+Monster 	Dragon
+Field 	
+Field 	
+Field 	
+Monster 	Water 1
+Monster 	Water 1
+Monster 	Water 1
+Field 	
+Field 	
+Field 	
+Field 	
+Bug 	
+Bug 	
+Bug 	
+Bug 	
+Bug 	
+Water 1 	Grass
+Water 1 	Grass
+Water 1 	Grass
+Field 	Grass
+Field 	Grass
+Field 	Grass
+Flying 	
+Flying 	
+Water 1 	Flying
+Water 1 	Flying
+Human-Like* 	Amorphous
+Human-Like* 	Amorphous
+Human-Like* 	Amorphous
+Water 1 	Bug
+Water 1 	Bug
+Fairy 	Grass
+Fairy 	Grass
+Field 	
+Field 	
+Field 	
+Bug 	
+Bug 	
+Mineral 	
+Monster 	Field
+Monster 	Field
+Monster 	Field
+Human-Like 	
+Human-Like 	
+Undiscovered 	
+Mineral 	
+Field 	Fairy
+Field 	Fairy
+Human-Like 	
+Field 	Fairy
+Monster 	
+Monster 	
+Monster 	
+Human-Like 	
+Human-Like 	
+Field 	
+Field 	
+Fairy 	
+Fairy 	
+Bug 	Human-Like
+Bug 	Human-Like
+Fairy 	Grass
+Amorphous 	
+Amorphous 	
+Water 2 	
+Water 2 	
+Field 	Water 2
+Field 	Water 2
+Field 	
+Field 	
+Field 	
+Field 	
+Field 	
+Field 	Human-Like
+Bug 	Dragon*
+Bug 	Dragon*
+Bug 	Dragon*
+Grass 	Human-Like
+Grass 	Human-Like
+Flying 	Dragon
+Flying 	Dragon
+Field 	
+Field 	Dragon
+Mineral 	
+Mineral 	
+Water 2 	
+Water 2 	
+Water 1 	Water 3
+Water 1 	Water 3
+Mineral 	
+Mineral 	
+Water 3 	
+Water 3 	
+Water 3 	
+Water 3 	
+Water 1 	Dragon
+Water 1 	Dragon
+Fairy 	Amorphous
+Field 	
+Amorphous 	
+Amorphous 	
+Amorphous 	
+Amorphous 	
+Monster 	Grass
+Amorphous 	
+Field 	
+Undiscovered 	
+Fairy 	Mineral
+Fairy 	Mineral
+Water 1 	Field
+Water 1 	Field
+Water 1 	Field
+Water 1 	
+Water 1 	
+Water 1 	
+Water 1 	Water 2
+Water 2 	
+Dragon 	
+Dragon 	
+Dragon 	
+Mineral 	
+Mineral 	
+Mineral 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Monster 	Grass
+Monster 	Grass
+Monster 	Grass
+Field 	Human-Like
+Field 	Human-Like
+Field 	Human-Like
+Water 1 	Field
+Water 1 	Field
+Water 1 	Field
+Flying 	
+Flying 	
+Flying 	
+Water 1 	Field
+Water 1 	Field
+Bug 	
+Bug 	
+Field 	
+Field 	
+Field 	
+Undiscovered 	
+Fairy 	Grass
+Monster 	
+Monster 	
+Monster 	
+Monster 	
+Bug 	
+Bug 	
+Bug 	
+Bug 	
+Bug 	
+Field 	Fairy
+Water 1 	Field
+Water 1 	Field
+Fairy 	Grass
+Fairy 	Grass
+Water 1 	Amorphous
+Water 1 	Amorphous
+Field 	
+Amorphous 	
+Amorphous 	
+Field 	Human-Like
+Field 	Human-Like
+Amorphous 	
+Flying 	
+Field 	
+Field 	
+Undiscovered 	
+Field 	
+Field 	
+Mineral 	
+Mineral 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Flying 	
+Amorphous 	
+Monster 	Dragon
+Monster 	Dragon
+Monster 	Dragon
+Undiscovered 	
+Undiscovered 	
+Field 	Human-Like
+Field 	
+Field 	
+Bug 	Water 3
+Bug 	Water 3
+Human-Like 	
+Human-Like 	
+Grass 	
+Water 2 	
+Water 2 	
+Undiscovered 	
+Monster 	Grass
+Monster 	Grass
+Field 	
+Mineral 	
+Monster 	
+Monster 	Field
+Grass 	
+Human-Like 	
+Human-Like 	
+Flying 	Fairy
+Bug 	
+Field 	
+Field 	
+Bug 	
+Field 	
+Mineral 	
+Human-Like* 	Amorphous
+Mineral 	
+Amorphous 	
+Fairy 	Mineral
+Amorphous 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Water 1 	Fairy
+Water 1 	Fairy
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Field 	Grass
+Field 	Grass
+Field 	Grass
+Field 	
+Field 	
+Field 	
+Field 	
+Field 	
+Field 	
+Field 	
+Field 	
+Field 	
+Field 	
+Field 	
+Field 	
+Field 	
+Field 	
+Field 	
+Field 	
+Field 	
+Field 	
+Field 	
+Field 	
+Field 	
+Flying 	
+Flying 	
+Flying 	
+Field 	
+Field 	
+Mineral 	
+Mineral 	
+Mineral 	
+Field 	Flying
+Field 	Flying
+Field 	
+Field 	
+Fairy 	
+Human-Like 	
+Human-Like 	
+Human-Like 	
+Water 1 	
+Water 1 	
+Water 1 	
+Human-Like 	
+Human-Like 	
+Bug 	
+Bug 	
+Bug 	
+Bug 	
+Bug 	
+Bug 	
+Grass 	Fairy
+Grass 	Fairy
+Grass 	
+Grass 	
+Water 2 	
+Field 	
+Field 	
+Field 	
+Field 	
+Field 	
+Grass 	
+Bug 	Mineral
+Bug 	Mineral
+Field 	Dragon
+Field 	Dragon
+Flying 	
+Mineral 	Amorphous
+Mineral 	Amorphous
+Water 1 	Water 3
+Water 1 	Water 3
+Flying 	Water 3
+Flying 	Water 3
+Mineral 	
+Mineral 	
+Field 	
+Field 	
+Field 	
+Field 	
+Human-Like 	
+Human-Like 	
+Human-Like 	
+Amorphous 	
+Amorphous 	
+Amorphous 	
+Water 1 	Flying
+Water 1 	Flying
+Mineral 	
+Mineral 	
+Mineral 	
+Field 	
+Field 	
+Field 	
+Bug 	
+Bug 	
+Grass 	
+Grass 	
+Amorphous 	
+Amorphous 	
+Water 1 	Water 2
+Bug 	
+Bug 	
+Grass 	Mineral
+Grass 	Mineral
+Mineral 	
+Mineral 	
+Mineral 	
+Amorphous 	
+Amorphous 	
+Amorphous 	
+Human-Like 	
+Human-Like 	
+Amorphous 	
+Amorphous 	
+Amorphous 	
+Monster 	Dragon
+Monster 	Dragon
+Monster 	Dragon
+Field 	
+Field 	
+Mineral 	
+Bug 	
+Bug 	
+Water 1 	Amorphous
+Field 	Human-Like
+Field 	Human-Like
+Dragon 	Monster
+Mineral 	
+Mineral 	
+Human-Like 	
+Human-Like 	
+Field 	
+Flying 	
+Flying 	
+Flying 	
+Flying 	
+Field 	
+Bug 	
+Dragon 	
+Dragon 	
+Dragon 	
+Bug 	
+Bug 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Field 	
+Field 	
+Field 	
+Field 	
+Field 	
+Field 	
+Water 1 	
+Water 1 	
+Water 1 	
+Field 	
+Field 	
+Flying 	
+Flying 	
+Flying 	
+Bug 	
+Bug 	
+Bug 	
+Field 	
+Field 	
+Fairy 	
+Fairy 	
+Fairy 	
+Field 	
+Field 	
+Field 	Human-Like
+Field 	Human-Like
+Field 	
+Field 	
+Field 	
+Mineral 	
+Mineral 	
+Mineral 	
+Fairy 	
+Fairy 	
+Fairy 	
+Fairy 	
+Water 1 	Water 2
+Water 1 	Water 2
+Water 3 	
+Water 3 	
+Water 1 	Dragon
+Water 1 	Dragon
+Water 1 	Water 3
+Water 1 	Water 3
+Monster 	Dragon
+Monster 	Dragon
+Monster 	Dragon
+Monster 	Dragon
+Monster 	
+Monster 	
+Field 	
+Flying* 	Human-Like
+Field 	Fairy
+Fairy 	Mineral
+Dragon 	
+Dragon 	
+Dragon 	
+Mineral 	
+Grass 	Amorphous
+Grass 	Amorphous
+Amorphous 	
+Amorphous 	
+Monster 	Mineral*
+Monster 	Mineral*
+Flying 	Dragon*
+Flying 	Dragon*
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Flying 	
+Flying 	
+Flying 	
+Field 	
+Field 	
+Field 	
+Water 1 	Field
+Water 1 	Field
+Water 1 	Field
+Flying 	
+Flying 	
+Flying 	
+Field 	
+Field 	
+Bug 	
+Bug 	
+Bug 	
+Water 3 	
+Water 3 	
+Flying 	
+Bug 	Fairy
+Bug 	Fairy
+Field 	
+Field 	
+Water 2 	
+Water 1 	
+Water 1 	
+Field 	
+Field 	
+Water 1 	Bug
+Water 1 	Bug
+Grass 	
+Grass 	
+Grass 	
+Grass 	
+Monster 	Dragon
+Monster 	Dragon
+Field 	
+Field 	
+Grass 	
+Grass 	
+Grass 	
+Grass 	
+Field 	
+Field 	
+Bug 	Water 3
+Bug 	Water 3
+Amorphous 	
+Amorphous 	
+Water 1 	
+Undiscovered 	
+Undiscovered 	
+Mineral 	
+Field 	
+Monster 	Dragon
+Field 	Fairy
+Amorphous 	
+Water 2 	
+Monster 	Dragon
+Mineral 	
+Dragon 	
+Dragon 	
+Dragon 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Field 	Grass
+Field 	Grass
+Field 	Grass
+Field 	Human-Like
+Field 	Human-Like
+Field 	Human-Like
+Water 1 	Field
+Water 1 	Field
+Water 1 	Field
+Field 	
+Field 	
+Flying 	
+Flying 	
+Flying 	
+Bug 	
+Bug 	
+Bug 	
+Field 	
+Field 	
+Grass 	
+Grass 	
+Field 	
+Field 	
+Monster 	Water 1
+Monster 	Water 1
+Field 	
+Field 	
+Mineral 	
+Mineral 	
+Mineral 	
+Grass 	Dragon
+Grass 	Dragon
+Grass 	Dragon
+Field 	Dragon
+Field 	Dragon
+Water 1 	Flying
+Water 2 	
+Water 2 	
+Undiscovered 	
+Human-Like 	
+Bug 	
+Bug 	
+Water 1 	Human-Like
+Water 1 	Human-Like
+Mineral 	Amorphous
+Mineral 	Amorphous
+Fairy 	
+Fairy 	
+Fairy 	
+Fairy 	Human-Like
+Fairy 	Human-Like
+Fairy 	Human-Like
+Field 	
+Field 	
+Water 1 	Water 3
+Flying 	Field
+Human-Like 	
+Mineral 	Amorphous
+Fairy 	Amorphous
+Fairy 	Amorphous
+Fairy 	Mineral
+Water 1 	Amorphous
+Bug 	
+Bug 	
+Mineral 	
+Water 1 	Field
+Fairy 	
+Field 	Fairy
+Field 	Mineral
+Field 	Mineral
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Mineral 	Dragon
+Amorphous 	Dragon
+Amorphous 	Dragon
+Amorphous 	Dragon
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
+Undiscovered 	
