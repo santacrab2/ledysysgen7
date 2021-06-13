@@ -839,7 +839,13 @@ public class discordbot
         public async Task dex([Remainder]string pokemon)
 
         {
-           
+           if(pokemon.ToLower() == "random")
+            {
+                Random randit = new Random();
+                int rannumb = randit.Next(1, 807);
+                await dex2(rannumb);
+                return;
+            }
             EmbedFooterBuilder x = new EmbedFooterBuilder();
             var baseLink = "https://raw.githubusercontent.com/BakaKaito/HomeImages/main/homeimg/128x128/poke_capture_0001_000_mf_n_00000000_f_n.png".Split('_');
             var MyArrayLower = Ledybot.Program.PKTable.Species7.Select(s => s.ToLower()).ToArray();
@@ -933,7 +939,7 @@ public class discordbot
                 var quickpk = BuildPokemon(pokemon, 7);
                 if (quickpk != null)
                 {
-                    int[] sugmov = MoveSetApplicator.GetMoveSet(quickpk);
+                    int[] sugmov = MoveSetApplicator.GetMoveSet(quickpk, true);
                     System.Text.StringBuilder smov = new System.Text.StringBuilder();
                     foreach (int j in sugmov)
                     {
@@ -1148,7 +1154,7 @@ public class discordbot
 
                 var quickpk = BuildPokemon(Ledybot.Program.PKTable.Species7[national - 1], 7);
                 if(quickpk != null) { 
-                int[] sugmov = MoveSetApplicator.GetMoveSet(quickpk);
+                int[] sugmov = MoveSetApplicator.GetMoveSet(quickpk, true);
                 System.Text.StringBuilder smov = new System.Text.StringBuilder();
                 foreach (int j in sugmov)
                 {
@@ -1377,11 +1383,230 @@ public class discordbot
                 return null;
             }
         }
+        [Command("catch")]
+        [Alias("k")]
+        public async Task tradecordcatch()
+        {
+            var embed = new EmbedBuilder();
+            string direct;
+            Random balrng = new Random();
+            int ballrng = balrng.Next(24);
+            while (ballrng == 15)
+            {
+                ballrng = balrng.Next(24);
+            }
+            Random frng = new Random();
+            int farng = frng.Next(1, 4);
+            if (farng != 1)
+            {
+                Random misrng = new Random();
+                int missrng = misrng.Next(807);
 
+                embed.Color = new Color(147, 191, 230);
+                embed.Title = "Miss";
+                embed.AddField("" + Context.User, "you failed to catch a " + Ledybot.Program.PKTable.Species7[missrng] + " in a " + Ledybot.Program.PKTable.Balls7[ballrng]);
+                await ReplyAsync(embed: embed.Build());
+                return;
+            }
+            Random carng = new Random();
+            int catchrng = carng.Next(807);
+            var tpk = BuildPokemon(Ledybot.Program.PKTable.Species7[catchrng], 7);
+            while (tpk == null)
+            {
+                catchrng = carng.Next(720);
+                tpk = BuildPokemon(Ledybot.Program.PKTable.Species7[catchrng], 7);
+
+            }
+            Random form = new Random();
+            tpk.Form = form.Next(1);
+            if (!new LegalityAnalysis(tpk).Valid)
+                tpk.Form = 0;
+            Random level = new Random();
+            tpk.CurrentLevel = level.Next(100);
+            tpk = tpk.Legalize();
+            while (!new LegalityAnalysis(tpk).Valid)
+            {
+                tpk.CurrentLevel = level.Next(100);
+                tpk = tpk.Legalize();
+            }
+            int[] sugmov = MoveSetApplicator.GetMoveSet(tpk, true);
+            tpk.SetMoves(sugmov);
+            Random nat = new Random();
+            int natue = nat.Next(24);
+            tpk.Nature = natue;
+            tpk.SetRandomIVs();
+
+            Random shinrng = new Random();
+            int shinyrng = shinrng.Next(4);
+            if (shinyrng != 1)
+                tpk.SetIsShiny(true);
+            tpk = tpk.Legalize();
+            var shinymessage = "non-shiny";
+            if (tpk.IsShiny)
+                shinymessage = "shiny";
+
+            if (!Directory.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id))
+            {
+                Directory.CreateDirectory(Directory.GetCurrentDirectory() + "//" + Context.User.Id);
+            }
+            direct = Directory.GetCurrentDirectory() + "//" + Context.User.Id;
+            string directfile;
+            int a = 1;
+            while (File.Exists(direct + "//" + a))
+                a++;
+            directfile = direct + "//" + a;
+            File.WriteAllBytes(directfile, tpk.EncryptedBoxData);
+
+            var baseLink = "https://raw.githubusercontent.com/BakaKaito/HomeImages/main/homeimg/128x128/poke_capture_0001_000_mf_n_00000000_f_n.png".Split('_');
+            bool md = false;
+            bool fd = false;
+
+
+
+            if (Enum.IsDefined(typeof(Ledybot.LookupTable.GenderDependent), tpk.Species) && tpk.Form == 0)
+            {
+                if (tpk.Gender == 0)
+                    md = true;
+                else fd = true;
+            }
+
+            baseLink[2] = tpk.Species < 10 ? $"000{tpk.Species}" : tpk.Species < 100 && tpk.Species > 9 ? $"00{tpk.Species}" : $"0{tpk.Species}";
+            baseLink[3] = tpk.Form < 10 ? $"00{tpk.Form}" : $"0{tpk.Form}";
+            baseLink[4] = tpk.PersonalInfo.OnlyFemale ? "fo" : tpk.PersonalInfo.OnlyMale ? "mo" : tpk.PersonalInfo.Genderless ? "uk" : fd ? "fd" : md ? "md" : "mf";
+
+            embed.Color = new Color(147, 191, 230);
+            embed.ThumbnailUrl = $"https://raw.githubusercontent.com/BakaKaito/HomeImages/main/Ballimg/50x50/{Ledybot.Program.PKTable.Balls7[tpk.Ball - 1].Split(' ')[0].ToLower()}ball.png";
+            embed.AddField(Context.User + "'s catch!", " you threw a " + Ledybot.Program.PKTable.Balls7[tpk.Ball - 1] + " at a " + shinymessage + " " + Ledybot.Program.PKTable.Species7[tpk.Species - 1] + "...");
+            embed.AddField("Results", "It put up a fight, but you caught " + shinymessage + "  " + Ledybot.Program.PKTable.Species7[tpk.Species - 1]);
+            baseLink[8] = tpk.IsShiny ? "r.png" : "n.png";
+            var baseLink2 = string.Join("_", baseLink);
+            EmbedFooterBuilder x = new EmbedFooterBuilder();
+            x.Text = "Id number: " + a;
+            embed.Footer = x;
+            embed.ImageUrl = baseLink2;
+            await ReplyAsync(embed: embed.Build());
+
+        }
+        [Command("tradecord")]
+        [Alias("tc")]
+        public async Task tradecordtrade(string trainer, int pts, int idnumb)
+        {
+            if (!File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb))
+            {
+                await ReplyAsync("no pokemon assigned that id number");
+                return;
+            }
+            byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb);
+            var tpk = PKMConverter.GetPKMfromBytes(g, 7);
+            pokequeue.Enqueue(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb);
+            username.Enqueue(Context.User.Id);
+            trainername.Enqueue(trainer);
+            pokemonfile.Enqueue(tpk);
+            channel.Enqueue(Context.Channel);
+            poketosearch.Enqueue(pts);
+            discordname.Enqueue(Context.User);
+            await ReplyAsync("added " + Context.User + " to tradecord queue");
+            await checkstarttrade();
+        }
+        [Command("list")]
+        [Alias("l")]
+        public async Task pokelist()
+        {
+            if (!Directory.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id))
+                await ReplyAsync("no pokemon found");
+            if (Directory.GetFiles(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//").Count() == 0)
+                await ReplyAsync("no pokemon found");
+            System.Text.StringBuilder y = new System.Text.StringBuilder();
+            int h = 1;
+            int k = 0;
+            while (Directory.GetFiles(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//").Count() > k)
+            {
+                if (!File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + h))
+                {
+                    h++;
+                    continue;
+                }
+                byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + h);
+                var tpk = PKMConverter.GetPKMfromBytes(g, 7);
+                y.Append(h + "." + (tpk.IsShiny ? "★" : "") + Ledybot.Program.PKTable.Species7[tpk.Species - 1] + " ");
+                k++;
+                h++;
+
+
+
+            }
+            EmbedBuilder embed = new EmbedBuilder();
+            embed.Color = new Color(147, 191, 230);
+
+            embed.AddField("Your pokemon Box", y);
+            await ReplyAsync(embed: embed.Build());
+
+
+        }
+        [Command("release")]
+        [Alias("r")]
+        public async Task pokerelease(int idnumb)
+        {
+            if (File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb))
+            {
+                byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb);
+                var tpk = PKMConverter.GetPKMfromBytes(g, 7);
+                await ReplyAsync(Ledybot.Program.PKTable.Species7[tpk.Species - 1] + " has been released");
+                File.Delete(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb);
+                return;
+            }
+            await ReplyAsync("no pokemon with that id number found");
+        }
+        [Command("massrelease")]
+        [Alias("mr")]
+        public async Task massrelease(string shiny = "")
+        {
+
+            string[] files = Directory.GetFiles(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//");
+            foreach (string file in files)
+            {
+                byte[] g = File.ReadAllBytes(file);
+                var tpk = PKMConverter.GetPKMfromBytes(g, 7);
+                if (!tpk.IsShiny || shiny.ToLower() == "shiny")
+                {
+
+                    File.Delete(file);
+                }
+                else
+                    continue;
+
+
+            }
+
+            if (shiny == "")
+                await ReplyAsync("all non shiny pokemon have been released");
+            if (shiny.ToLower() == "shiny")
+                await ReplyAsync("all pokemon have been released");
+
+        }
+
+
+        [Command("info")]
+        [Alias("i")]
+        public async Task info(int idnumb)
+        {
+            if (File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb))
+            {
+                byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb);
+                var tpk = PKMConverter.GetPKMfromBytes(g, 7);
+                EmbedBuilder embed = new EmbedBuilder();
+                embed.AddField($"{Ledybot.Program.PKTable.Species7[tpk.Species - 1]}'s info", ShowdownParsing.GetShowdownText(tpk));
+                await ReplyAsync(embed: embed.Build());
+                return;
+            }
+            await ReplyAsync("no pokemon with this id number was found");
+        }
     }
 
-
 }
+
+
+
 
 
 
