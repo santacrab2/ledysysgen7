@@ -25,7 +25,7 @@ namespace Ledybot.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("192.168.0.26")]
+        [global::System.Configuration.DefaultSettingValueAttribute("192.168.1.")]
         public string IP {
             get {
                 return ((string)(this["IP"]));
