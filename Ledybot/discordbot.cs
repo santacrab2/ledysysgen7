@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -8,8 +9,10 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using Discord.Rest;
 using PKHeX.Core;
 using PKHeX.Core.AutoMod;
+using System.Diagnostics;
 
 
 
@@ -142,7 +145,7 @@ public class discordbot
 
         
         [Command("trade")]
-        
+        [Alias("t")]
         public async Task stradenotidpts(string trainer, int pts,[Remainder] string set)
         {
             if (tradevolvs.Contains(pts))
@@ -250,7 +253,7 @@ public class discordbot
 
         }
         [Command("trade")]
-        
+        [Alias("t")]
         public async Task stradenotid(string trainer,[Remainder] string set)
         {
             var l = Legal.ZCrystalDictionary;
@@ -271,6 +274,8 @@ public class discordbot
                     q++;
                 }
             }
+            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("OT name too long"))
+                pk.OT_Name = "Pip";
             if (set.Contains("TID:"))
             {
                 int h = 0;
@@ -353,7 +358,7 @@ public class discordbot
         }
 
         [Command("trade")]
-       
+        [Alias("t")]
         public async Task ptrade([Summary("poke to search")] int pts, [Remainder] string trainer)
         {
             string temppokewait = Path.GetTempFileName();
@@ -514,7 +519,7 @@ public class discordbot
 
 
         [Command("trade")]
-        
+        [Alias("t")]
         public async Task trainertrade([Remainder] string trainer)
         {
 
@@ -783,16 +788,22 @@ public class discordbot
         }
 
         [Command("help")]
+        [Alias("h")]
         public async Task help()
         {
             var embed = new EmbedBuilder();
-            embed.Color = new Color(36, 97, 143);
-            embed.Title = "Piplup Gen 7 Bot Help";
+            embed.Color = new Color(147, 191, 230);
+            embed.Title = "Piplup Bot Help";
             embed.ThumbnailUrl = "https://www.shinyhunters.com/images/shiny/393.gif";
-            embed.AddField("Piplup is a Gen 7 GTS Sysbot for" + "\n" + "Sun / Moon / Ultra Sun / Ultra Moon" + "\n", "\n" + "***Do not deposit or request the following - they will not trade over GTS and may break the bot:***" + "\n" + "*Mythical Pokemon*" + "\n" + "*Event Pokemon*" + "\n" + "*Special Pokemon*" + "\n" + "*Fusions*" + "\n" + "*Un-Tradeable Forms*" + "\n" + "*Un-Tradeable Ribbons*" + "\n" + "*Un-Tradeable Moves*" + "\n" + "*Special Items (Megastones/Z-crystals)*" + "\n" + "\n", true);
+            embed.AddField("Piplup is a Gen 7 GTS Sysbot for" + "\n", "SUN / MOON / ULTRA SUN / ULTRA MOON", false);
+            embed.AddField("⠀", "__Deposit a pokemon into the Gen 7 GTS__" + "\n" + "__Then use one of these 2 Commands to make the trade:__" + "⠀", false);
+            embed.AddField(":large_blue_diamond:Attached .pk7 file" + "\n", "```" + "\n" + "!trade NationalDexNumberofDeposit trainerName (and attach the file and hit send)```", true);
+            embed.AddField(":large_blue_diamond:Showdown set" + "\n", "```" + "\n" + "!trade trainername NationalDexNumberofDeposit showdownset (and hit send)```", true);
+            embed.AddField("***Do not deposit or request the following - they will not trade over GTS and may break the bot:***",
+                "*Mythical Pokemon*" + "\n" + "*Event Pokemon*" + "\n" + "*Special Pokemon*" + "\n" + "*Fusions*" + "\n" + " *Un-Tradeable Forms*" + "\n" + "*Un-Tradeable Ribbons*" + "\n" + "*Un-Tradeable Moves*" + "\n" + "*Special Items (Megastone/Z-Crystal)*" + "\n" + "⠀", false);
             embed.ImageUrl = "https://cdn.discordapp.com/attachments/733454651227373579/848772777641377832/piplup.gif";
-            embed.AddField("__Deposit any pokemon into the Gen 7 GTS__" + "\n" + "__Then use one of these 2 Commands to make the trade:__" + "\n", "\n" + ":large_blue_diamond:attached .pk7 file" + "\n" + "```" + "\n" + "!trade NationalDexNumberofDeposit trainerName (and attach the file and hit send)```" + "\n" + "\n" + ":large_blue_diamond:showdown set" + "\n" + "```" + "\n" + "!trade trainername NationalDexNumberofDeposit showdownset (and hit send)```" + "```" + "\n" + "\n" + "*showdown sets now accept batch commands*" + "\n" + "*Please use quotes around your trainer name, if your trainer name has a space in it*", false);
-            embed.AddField("To find out the national dex number for your deposit pokemon use: !dex Pokemon" + "\n", "example: !dex pidgey");
+            embed.AddField("*Showdown sets now accept batch commands!*" + "\n" + "⠀", " *Please use quotes around your trainer name, if your trainer name has a space in it*" + "\n" + "```" + "\n" + "ex: !trade \"bewear hugs\"" + "```", false);
+            embed.AddField("Pokedex Function (helps you figure out your deposited pokemons national # easily)" + "\n" + "**!dex pokemon**" + "\n", "```" + "\n" + "ex: !dex pidgey" + "\n" + "*works in reverse too*" + "\n" + "!dex 016" + "```" + "\n", true);
             await ReplyAsync(embed: embed.Build());
         }
 
@@ -1410,17 +1421,23 @@ public class discordbot
             }
             Random carng = new Random();
             int catchrng = carng.Next(807);
-            var tpk = BuildPokemon(Ledybot.Program.PKTable.Species7[catchrng], 7);
+            Random alol = new Random();
+            int alola = alol.Next(1);
+            var tpk = BuildPokemon(alola ==1 ?Ledybot.Program.PKTable.Species7[catchrng]+"-Alola":Ledybot.Program.PKTable.Species7[catchrng], 7);
             while (tpk == null)
             {
-                catchrng = carng.Next(720);
+                catchrng = carng.Next(807);
                 tpk = BuildPokemon(Ledybot.Program.PKTable.Species7[catchrng], 7);
 
             }
-            Random form = new Random();
-            tpk.Form = form.Next(1);
-            if (!new LegalityAnalysis(tpk).Valid)
-                tpk.Form = 0;
+          while(tpk.FatefulEncounter==true || tpk.WasEvent==true)
+            {
+                catchrng = carng.Next(807);
+                tpk = BuildPokemon(Ledybot.Program.PKTable.Species7[catchrng], 7);
+            }
+           tpk.Ball = BallApplicator.ApplyBallLegalRandom(tpk);
+            while(tpk.Ball == 16)
+                tpk.Ball = BallApplicator.ApplyBallLegalRandom(tpk);
             Random level = new Random();
             tpk.CurrentLevel = level.Next(100);
             tpk = tpk.Legalize();
@@ -1456,6 +1473,13 @@ public class discordbot
                 a++;
             directfile = direct + "//" + a;
             File.WriteAllBytes(directfile, tpk.EncryptedBoxData);
+            if (!File.Exists($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt"))
+                File.Create($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt");
+            if (!File.ReadAllLines($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt").Contains(tpk.Species.ToString())|| File.ReadAllText($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt")== null){ 
+               StreamWriter de = File.AppendText($"{Directory.GetCurrentDirectory()}//dexs///{Context.User.Id}.txt");
+                de.WriteLine(tpk.Species);
+                de.Close();
+            }
 
             var baseLink = "https://raw.githubusercontent.com/BakaKaito/HomeImages/main/homeimg/128x128/poke_capture_0001_000_mf_n_00000000_f_n.png".Split('_');
             bool md = false;
@@ -1489,8 +1513,10 @@ public class discordbot
         }
         [Command("tradecord")]
         [Alias("tc")]
-        public async Task tradecordtrade(string trainer, int pts, int idnumb)
+        public async Task tradecordtrade(string trainer, int pts, int idnumb,[Remainder]string trainerinfo="")
         {
+            string[] tset = trainerinfo.Split('\n');
+            string temppokewait = Path.GetTempFileName();
             if (!File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb))
             {
                 await ReplyAsync("no pokemon assigned that id number");
@@ -1498,7 +1524,56 @@ public class discordbot
             }
             byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb);
             var tpk = PKMConverter.GetPKMfromBytes(g, 7);
-            pokequeue.Enqueue(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb);
+            if (trainerinfo.Contains("OT:"))
+            {
+                int q = 0;
+                foreach (string b in tset)
+                {
+                    if (tset[q].Contains("OT:"))
+                        tpk.OT_Name = tset[q].Replace("OT: ", "");
+                    q++;
+                }
+            }
+            if (trainerinfo.Contains("TID:"))
+            {
+                int h = 0;
+                foreach (string v in tset)
+                {
+                    if (tset[h].Contains("TID:"))
+                    {
+                        int trid7 = Convert.ToInt32(tset[h].Replace("TID: ", ""));
+                        tpk.TrainerID7 = trid7;
+
+                    }
+                    h++;
+                }
+            }
+            if (trainerinfo.Contains("SID:"))
+            {
+                int h = 0;
+                foreach (string v in tset)
+                {
+                    if (tset[h].Contains("SID:"))
+                    {
+                        int trsid7 = Convert.ToInt32(tset[h].Replace("SID: ", ""));
+                        tpk.TrainerSID7 = trsid7;
+
+                    }
+                    h++;
+                }
+            }
+            if (trainerinfo.Contains("OTGender: male"))
+            {
+                tpk.OT_Gender = 0;
+            }
+
+            if (trainerinfo.Contains("OTGender: Female"))
+            {
+                tpk.OT_Gender = 1;
+            }
+            byte[] pc = tpk.DecryptedBoxData;
+            File.WriteAllBytes(temppokewait, pc);
+            pokequeue.Enqueue(temppokewait);
             username.Enqueue(Context.User.Id);
             trainername.Enqueue(trainer);
             pokemonfile.Enqueue(tpk);
@@ -1512,18 +1587,24 @@ public class discordbot
         [Alias("l")]
         public async Task pokelist()
         {
+
+           
             if (!Directory.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id))
                 await ReplyAsync("no pokemon found");
             if (Directory.GetFiles(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//").Count() == 0)
                 await ReplyAsync("no pokemon found");
             System.Text.StringBuilder y = new System.Text.StringBuilder();
             int h = 1;
-            int k = 0;
-            while (Directory.GetFiles(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//").Count() > k)
+            int k = 1;
+           
+            while (Directory.GetFiles(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//").Count() >= k)
             {
+                
                 if (!File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + h))
                 {
                     h++;
+                    
+                   
                     continue;
                 }
                 byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + h);
@@ -1531,15 +1612,41 @@ public class discordbot
                 y.Append(h + "." + (tpk.IsShiny ? "★" : "") + Ledybot.Program.PKTable.Species7[tpk.Species - 1] + " ");
                 k++;
                 h++;
-
-
-
             }
-            EmbedBuilder embed = new EmbedBuilder();
-            embed.Color = new Color(147, 191, 230);
+            string[] n = new string[24];
+            int q = 0;
+            string yb = y.ToString();
+            
+            while (yb.Length > 0)
+            {
+                if (yb.Length > 1000)
+                    n[q] = yb.Substring(0, 1000);
+                else
+                    n[q] = yb.Substring(0, yb.Length);
 
-            embed.AddField("Your pokemon Box", y);
+                if (yb.Length > 1000)
+                    yb = yb.Remove(0, 1000);
+                else
+                    yb = yb.Remove(0, yb.Length);
+              
+                
+                q++;
+            }
+
+            int r = 0;
+            EmbedBuilder embed = new EmbedBuilder();
+            embed.Title = "Your pokemon Box";
+            foreach (string i in n)
+            {
+                if(i != null)
+                    embed.AddField($"page {r + 1} ", n[r].ToString());
+                
+                r++;
+            }
             await ReplyAsync(embed: embed.Build());
+
+
+
 
 
         }
@@ -1565,12 +1672,17 @@ public class discordbot
             string[] files = Directory.GetFiles(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//");
             foreach (string file in files)
             {
+                
                 byte[] g = File.ReadAllBytes(file);
                 var tpk = PKMConverter.GetPKMfromBytes(g, 7);
                 if (!tpk.IsShiny || shiny.ToLower() == "shiny")
                 {
+                    
+                    
 
-                    File.Delete(file);
+                        File.Delete(file);
+                       
+
                 }
                 else
                     continue;
@@ -1595,15 +1707,85 @@ public class discordbot
                 byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb);
                 var tpk = PKMConverter.GetPKMfromBytes(g, 7);
                 EmbedBuilder embed = new EmbedBuilder();
-                embed.AddField($"{Ledybot.Program.PKTable.Species7[tpk.Species - 1]}'s info", ShowdownParsing.GetShowdownText(tpk));
+                embed.ThumbnailUrl = tpk.IsShiny ? "https://play.pokemonshowdown.com/sprites/ani-shiny/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif" : "https://play.pokemonshowdown.com/sprites/ani/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif";
+                embed.AddField($"{Context.User} {Ledybot.Program.PKTable.Species7[tpk.Species - 1]}'s info", ShowdownParsing.GetShowdownText(tpk) + "\n" + "Ball: "+ Ledybot.Program.PKTable.Balls7[tpk.Ball-1]);
                 await ReplyAsync(embed: embed.Build());
                 return;
             }
             await ReplyAsync("no pokemon with this id number was found");
         }
-    }
+        [Command("cordhelp")]
+        [Alias("ch")]
+        public async Task HelpTC()
+        {
+            var embed = new EmbedBuilder();
+            embed.Color = new Color(147, 191, 230);
+            embed.Title = "Piplup Tradecord Help";
+            embed.ThumbnailUrl = "https://www.shinyhunters.com/images/shiny/393.gif";
+            embed.AddField("Piplup tradecord is compatible with:", "SUN / MOON / ULTRA SUN / ULTRA MOON" + "\n" + "Gen 7 GTS", false);
+            embed.AddField("***Tradecord Commands***", "⠀" + "\n" + ":large_blue_diamond:" + "**!catch** (***!k***)" + "\n" + "⠀" + "\n" + "*Attempts to catch a random Pokemon*" + "\n" + "\n" +
+                ":large_blue_diamond:" + "**!list** (***!l***)" + "\n" + "⠀" + "\n" + "*Displays a list of you're caught pokemon*" + "\n" + "\n" +
+                ":large_blue_diamond:" + "**!info #** (***!i #***)" + "\n" + "⠀" + "\n" + "*Replace # with the ID number of the pokemon you want to check (from list command)*" + "\n" + "\n" +
+                ":large_blue_diamond:" + "**!release #** (***!r #***)" + "\n" + "⠀" + "\n" + "*Replace # with the ID number of the pokemon you want to release (from list command)*" + "\n" + "\n" +
+                ":large_blue_diamond:" + "**!massrelease** (***!mr***)" + "\n" + "⠀" + "\n" + "*Releases all non-shiny pokemon*" + "\n" + "**!mr shiny will release ALL pokemon**" + "\n" + "\n" +
+                ":large_blue_diamond:" + "**!tradecord (***!tc***) trainer-name ###**(*natdex#-of-deposit*) **##**(*tradecord-id#*) **trainerinfo**(*optional*) )" + "\n" + "⠀" + "\n" + "*Trades your caught pokemon to you in the gen 7 GTS (Compatible with SUN / MOON / ULTRA SUN / MOON*" 
+                , true);
+            embed.AddField("extras", ":large_blue_diamond:" + "**!nickname (***!n***) # nickname" + "\n" + "\n" + "*Replace # with the ID number of the pokemon you want to nickname(from list command)*" + "\n" + "\n" +
+                ":large_blue_diamond:" + "**!tradecorddex** (***!tdex***)" + "\n" + "\n" + "Displays how many dex entries you have registered out of 807", true);
+            embed.ImageUrl = "https://cdn.discordapp.com/attachments/733454651227373579/848772777641377832/piplup.gif";
+            await ReplyAsync(embed: embed.Build());
+            return;
+        }
+        [Command("nickname")]
+        [Alias("n")]
+        public async Task nick(int idnumb, string nicky)
 
+        {
+
+            if (File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb))
+
+            {
+                byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb);
+                var tpk = PKMConverter.GetPKMfromBytes(g, 7);
+                EmbedBuilder embed = new EmbedBuilder();
+                embed.WithColor(147, 191, 230);
+                tpk.SetNickname(nicky);
+                File.WriteAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb, tpk.DecryptedBoxData);
+                embed.AddField($"{Ledybot.Program.PKTable.Species7[tpk.Species - 1]}'s info", ShowdownParsing.GetShowdownText(tpk) + "\n" + "Ball: " + Ledybot.Program.PKTable.Balls7[tpk.Ball - 1]);
+                await ReplyAsync(embed: embed.Build());
+            }
+            else
+            {
+                EmbedBuilder embeda = new EmbedBuilder();
+                embeda.WithColor(147, 191, 230);
+                embeda.WithTitle("No Pokemon with matching ID # found");
+                await ReplyAsync(embed: embeda.Build());
+            }
+        }
+        [Command("tradecorddex")]
+        [Alias("tdex")]
+        public async Task TCdex()
+        {
+            if(File.Exists(Directory.GetCurrentDirectory() + "//"+"//dexs//" +Context.User.Id+".txt"))
+            {
+                EmbedBuilder embed = new EmbedBuilder();
+                embed.Title = $"{Context.User}'s Pokedex Progress";
+                int count = File.ReadAllLines($"{Directory.GetCurrentDirectory()}//dexs///{Context.User.Id}.txt").Count();
+                embed.AddField("You've caught: ", count.ToString() + "/807");
+                await ReplyAsync(embed: embed.Build());
+                return;
+            }
+            await ReplyAsync("no user found, catch some pokemon with !k");
+
+        }
+
+    
+      
+    }
 }
+    
+
+
 
 
 
