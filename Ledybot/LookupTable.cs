@@ -3054,6 +3054,7 @@ namespace Ledybot
             Gyarados = 130,
             Eevee = 133,
             Meganium = 154,
+            Ledyba = 165,
             Ledian = 166,
             Xatu = 178,
             Sudowoodo = 185,
@@ -3064,6 +3065,7 @@ namespace Ledybot
             Murkrow = 198,
             Wobbuffet = 202,
             Girafarig = 203,
+            Gligar = 207,
             Steelix = 208,
             Scizor = 212,
             Heracross = 214,
@@ -3081,14 +3083,30 @@ namespace Ledybot
             Ludicolo = 272,
             Nuzleaf = 274,
             Shiftry = 275,
+            Meditite = 307,
+            Medicham = 308,
             Roselia = 315,
+            Gulpin = 316,
+            Swalot = 317,
+            Numel = 322,
+            Camerupt = 323,
+            Cacturne = 332,
             Milotic = 350,
             Relicanth = 369,
+            Starly = 396,
+            Staravia = 397,
+            Starraptor = 398,
+            Bidoof = 399,
+            Bibarel = 400,
+            kricketot = 401,
+            Kricketune= 402,
             Shinx = 403,
             Luxio = 404,
             Luxray = 405,
             Roserade = 407,
             Combee = 415,
+            Pachirisu = 417,
+            Ambipom = 424,
             Gible = 443,
             Gabite = 444,
             Garchomp = 445,
@@ -3108,6 +3126,32 @@ namespace Ledybot
             Pyroar = 668,
         }
         #endregion genderdependent
-    }
+        #region mythicals
+        public enum Mythicals : int
+        {
+            Mew = 151,
+            Celebi = 251,
+            Jirachi = 385,
+            Deoxys = 386,
+            Manaphy = 490,
+            Darkrai = 491,
+            Shaymin = 492,
+            Arceus = 493,
+            Keldeo = 647,
+            Meloetta = 648,
+            Kyurem = 646,
+            Genesect = 649,
+            Diancie = 719,
+            Hoopa = 720,
+            Volcanion = 721,
+            Magearna = 801,
+            Marshadow= 802,
+            Zeraora = 807,
+
+        }
+
+            #endregion mythicals
+
+        }
 
 }

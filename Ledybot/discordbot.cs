@@ -172,6 +172,8 @@ public class discordbot
                     q++;
                 }
             }
+            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("ot name too long"))
+                pk.OT_Name = "Pip";
             if (set.Contains("TID:"))
             {
 
@@ -274,7 +276,7 @@ public class discordbot
                     q++;
                 }
             }
-            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("OT name too long"))
+            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("ot name too long"))
                 pk.OT_Name = "Pip";
             if (set.Contains("TID:"))
             {
@@ -1407,11 +1409,11 @@ public class discordbot
                 ballrng = balrng.Next(24);
             }
             Random frng = new Random();
-            int farng = frng.Next(1, 4);
+            int farng = frng.Next(1, 3);
             if (farng != 1)
             {
                 Random misrng = new Random();
-                int missrng = misrng.Next(807);
+                int missrng = misrng.Next(806);
 
                 embed.Color = new Color(147, 191, 230);
                 embed.Title = "Miss";
@@ -1419,20 +1421,28 @@ public class discordbot
                 await ReplyAsync(embed: embed.Build());
                 return;
             }
+           
             Random carng = new Random();
-            int catchrng = carng.Next(807);
-            Random alol = new Random();
-            int alola = alol.Next(1);
-            var tpk = BuildPokemon(alola ==1 ?Ledybot.Program.PKTable.Species7[catchrng]+"-Alola":Ledybot.Program.PKTable.Species7[catchrng], 7);
-            while (tpk == null)
-            {
-                catchrng = carng.Next(807);
-                tpk = BuildPokemon(Ledybot.Program.PKTable.Species7[catchrng], 7);
+            int catchrng = carng.Next(806);
+           while(File.ReadAllLines($"{Directory.GetCurrentDirectory()}//rolls.txt").Contains(catchrng.ToString()))
+                catchrng = carng.Next(806);
+           while(Enum.IsDefined(typeof(Ledybot.LookupTable.Mythicals), catchrng))
+                catchrng = carng.Next(806);
 
+              StreamWriter catches = File.AppendText($"{Directory.GetCurrentDirectory()}//rolls.txt");
+            catches.WriteLine(catchrng);
+            catches.Close();
+            if (File.ReadAllLines($"{Directory.GetCurrentDirectory()}//rolls.txt").Count() > 800)
+            {
+                var lines = File.ReadAllLines($"{Directory.GetCurrentDirectory()}//rolls.txt");
+                File.WriteAllLines($"{Directory.GetCurrentDirectory()}//rolls.txt", lines.Skip(1).ToArray());
             }
+            
+            var tpk = BuildPokemon(Ledybot.Program.PKTable.Species7[catchrng], 7);
+         
           while(tpk.FatefulEncounter==true || tpk.WasEvent==true)
             {
-                catchrng = carng.Next(807);
+                catchrng = carng.Next(806);
                 tpk = BuildPokemon(Ledybot.Program.PKTable.Species7[catchrng], 7);
             }
            tpk.Ball = BallApplicator.ApplyBallLegalRandom(tpk);
@@ -1457,11 +1467,12 @@ public class discordbot
             int shinyrng = shinrng.Next(4);
             if (shinyrng != 1)
                 tpk.SetIsShiny(true);
+         
             tpk = tpk.Legalize();
             var shinymessage = "non-shiny";
             if (tpk.IsShiny)
                 shinymessage = "shiny";
-
+           
             if (!Directory.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id))
             {
                 Directory.CreateDirectory(Directory.GetCurrentDirectory() + "//" + Context.User.Id);
@@ -1706,9 +1717,9 @@ public class discordbot
             {
                 byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb);
                 var tpk = PKMConverter.GetPKMfromBytes(g, 7);
-                EmbedBuilder embed = new EmbedBuilder();
+                EmbedBuilder embed = new EmbedBuilder().WithFooter(Ledybot.Program.PKTable.Balls7[tpk.Ball-1], $"https://raw.githubusercontent.com/BakaKaito/HomeImages/main/Ballimg/50x50/{Ledybot.Program.PKTable.Balls7[tpk.Ball - 1].Split(' ')[0].ToLower()}ball.png");
                 embed.ThumbnailUrl = tpk.IsShiny ? "https://play.pokemonshowdown.com/sprites/ani-shiny/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif" : "https://play.pokemonshowdown.com/sprites/ani/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif";
-                embed.AddField($"{Context.User} {Ledybot.Program.PKTable.Species7[tpk.Species - 1]}'s info", ShowdownParsing.GetShowdownText(tpk) + "\n" + "Ball: "+ Ledybot.Program.PKTable.Balls7[tpk.Ball-1]);
+                embed.AddField($"{Context.User} {Ledybot.Program.PKTable.Species7[tpk.Species - 1]}'s info", ShowdownParsing.GetShowdownText(tpk));
                 await ReplyAsync(embed: embed.Build());
                 return;
             }
