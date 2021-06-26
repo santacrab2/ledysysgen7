@@ -3106,6 +3106,8 @@ namespace Ledybot
             Roserade = 407,
             Combee = 415,
             Pachirisu = 417,
+            Buizel = 418,
+            Floatzel = 419,
             Ambipom = 424,
             Gible = 443,
             Gabite = 444,
@@ -3114,6 +3116,8 @@ namespace Ledybot
             Hippowdon = 450,
             Croagunk = 453,
             Toxicroak = 454,
+            Finneon = 456,
+            Lumineon = 457,
             Snover = 459,
             Abomasnow = 460,
             Weavile = 461,
@@ -3124,6 +3128,8 @@ namespace Ledybot
             Frillish = 592,
             Jellicent = 593,
             Pyroar = 668,
+            Meowstic = 678,
+
         }
         #endregion genderdependent
         #region mythicals
