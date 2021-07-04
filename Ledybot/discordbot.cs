@@ -1573,6 +1573,7 @@ public class discordbot
         [Alias("k")]
         public async Task tradecordcatch()
         {
+            int[] mythic = { 151, 251, 385, 386, 490, 491, 492, 493, 494, 647, 648, 649, 719, 720, 721, 801, 802, 807 };
             var embed = new EmbedBuilder();
             string direct;
             Random balrng = new Random();
@@ -1599,7 +1600,7 @@ public class discordbot
             int catchrng = carng.Next(806);
            while(File.ReadAllLines($"{Directory.GetCurrentDirectory()}//rolls.txt").Contains(catchrng.ToString()))
                 catchrng = carng.Next(806);
-           while(Enum.IsDefined(typeof(Ledybot.LookupTable.Mythicals), catchrng))
+           while(mythic.Contains(catchrng))
                 catchrng = carng.Next(806);
 
             StreamWriter catches = File.AppendText($"{Directory.GetCurrentDirectory()}//rolls.txt");
@@ -1636,7 +1637,8 @@ public class discordbot
             int shinyrng = shinrng.Next(4);
             if (shinyrng != 1)
                 tpk.SetIsShiny(true);
-         
+            if (new LegalityAnalysis(tpk).Report().Contains("Static Encounter shiny mismatch"))
+                tpk.SetIsShiny(false);
             tpk = tpk.Legalize();
             var shinymessage = "non-shiny";
             if (tpk.IsShiny)
