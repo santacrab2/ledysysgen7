@@ -11,6 +11,7 @@ using System.Threading;
 using System.Net;
 using System.Windows.Forms;
 using PKHeX.Core;
+using PKHeX.Core.AutoMod;
 
 namespace Ledybot
 {
@@ -274,7 +275,15 @@ namespace Ledybot
                             botresult = 8;
                             botState = (int)gtsbotstates.botexit;
                             Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
-                            await discordbot.trademodule.slow();
+                            if(discordbot.trademodule.distribute == "false")
+                                await discordbot.trademodule.slow();
+                            if(discordbot.trademodule.distribute == "true")
+                            {
+                               discordbot.trademodule.trainername.Dequeue();
+                                discordbot.trademodule.distribute = "false";
+                                discordbot.trademodule.distributestart = false;
+                                discordbot.trademodule.checkdistr();
+                            }
                             break;
                         }
                         Program.f1.ChangeStatus("Pressing seek button");
@@ -392,7 +401,10 @@ namespace Ledybot
                             attempts = 0;
                             await Program.helper.waitNTRread(addr_PageSize);
                             listlength = (int)Program.helper.lastRead;
-                            pokecheck = (PKM)discordbot.trademodule.pokemonfile.Peek();
+                            if(discordbot.trademodule.distribute == "false")
+                                pokecheck = (PKM)discordbot.trademodule.pokemonfile.Peek();
+                            if (discordbot.trademodule.distribute == "true")
+                                pokecheck = PKMConverter.GetBlank(7);
                             dexnumber = 0;
                             if (searchDirection == SEARCHDIRECTION_FROMBACK || searchDirection == SEARCHDIRECTION_FROMBACKFIRSTPAGEONLY)
                             {
@@ -425,17 +437,101 @@ namespace Ledybot
                                 Array.Copy(blockBytes, addr_PageEntry - addr_ListOfAllPageEntries, block, 0, 256);
                                 dexnumber = BitConverter.ToInt16(block, 0xC);
                                 szTrainerName = Encoding.Unicode.GetString(block, 0x4C, 24).Trim('\0');
-
-
-                                if (szTrainerName.ToLower() == discordbot.trademodule.trainername.Peek().ToString().ToLower() || (string)discordbot.trademodule.trainername.Peek() == "")
-                                    if (pokecheck.Species != dexnumber)
+                                int gender = block[0xE];
+                                int level = block[0xF];
+                                int levels;
+                                if (level == 1)
+                                {
+                                    levels = 10;
+                                }
+                                else if (level == 2)
+                                {
+                                    levels = 20;
+                                }
+                                else if (level == 3)
+                                {
+                                    levels = 30;
+                                }
+                                else if (level == 4)
+                                {
+                                    levels = 40;
+                                }
+                                else if (level == 5)
+                                {
+                                    levels = 50;
+                                }
+                                else if (level == 6)
+                                {
+                                    levels = 60;
+                                }
+                                else if (level == 7)
+                                {
+                                    levels = 70;
+                                }
+                                else if (level ==8)
+                                {
+                                    levels = 80;
+                                }
+                                else if (level == 9)
+                                {
+                                    levels = 90;
+                                }
+                                else
+                                {
+                                    levels = 100;
+                                }
+                                int preprou = 0;
+                                if (gender == 0)
+                                    preprou = 1;
+                               else if (gender == 1)
+                                    preprou = 2;
+                                else if (gender == 2)
+                                    preprou = 1;
+                               else
+                                {
+                                    addr_PageEntry = BitConverter.ToUInt32(block, 0);
+                                    continue;
+                                }
+                                if (szTrainerName.ToLower() == discordbot.trademodule.trainername.Peek().ToString().ToLower() || (string)discordbot.trademodule.trainername.Peek() == "") { 
+                                    if (pokecheck.Species != dexnumber && discordbot.trademodule.distribute == "false")
                                     {
 
-                                        addr_PageEntry = BitConverter.ToUInt32(block, iNextPrevBlockOffest);
+                                        addr_PageEntry = BitConverter.ToUInt32(block, 0);
                                         continue;
                                     }
+
                                     else
                                     {
+                                        if (discordbot.trademodule.distribute == "true")
+                                        {
+
+                                            
+                                            pokecheck = discordbot.trademodule.BuildPokemon(Ledybot.Program.PKTable.Species7[dexnumber - 1], 7);
+                                            
+                                            pokecheck.SetIsShiny(true);
+                                            if (new LegalityAnalysis(pokecheck).Report().Contains("Static Encounter shiny mismatch"))
+                                                pokecheck.SetIsShiny(false);
+                                            pokecheck.CurrentLevel = levels;
+                                            pokecheck.Gender = preprou;
+                                            if (new LegalityAnalysis(pokecheck).Report().Contains("Genderless"))
+                                                pokecheck.Gender = 2;
+                                            int[] sugmov = MoveSetApplicator.GetMoveSet(pokecheck, true);
+                                            pokecheck.SetMoves(sugmov);
+                                            Random nat = new Random();
+                                            int natue = nat.Next(24);
+                                            pokecheck.Nature = natue;
+                                            pokecheck.SetRandomIVs();
+                                            pokecheck.HeldItem = 1;
+                                            pokecheck = pokecheck.Legalize();
+                                            pokecheck.OT_Name = "Piplup.net";
+                                            pokecheck.IsNicknamed = true;
+                                            pokecheck.Nickname = "Piplup.net";
+                                            if (!new LegalityAnalysis(pokecheck).Valid || pokecheck.Species == 132)
+                                            {
+                                                addr_PageEntry = BitConverter.ToUInt32(block, 0);
+                                                continue;
+                                            }
+                                        }
                                         Array.Copy(block, 0x48, principal, 0, 4);
                                         byte checksum = Program.f1.calculateChecksum(principal);
                                         byte[] fc = new byte[8];
@@ -444,50 +540,112 @@ namespace Ledybot
                                         long iFC = BitConverter.ToInt64(fc, 0);
                                         szFC = iFC.ToString().PadLeft(12, '0');
 
-                                        int gender = block[0xE];
-                                        int level = block[0xF];
+                                       
 
-                                        szTrainerName = Encoding.Unicode.GetString(block, 0x4C, 24).Trim('\0');
-                                        int countryIndex = BitConverter.ToInt16(block, 0x68);
-                                        string country = "-";
-                                        Program.f1.countries.TryGetValue(countryIndex, out country);
-                                        Program.f1.getSubRegions(countryIndex);
-                                        int subRegionIndex = BitConverter.ToInt16(block, 0x6A);
-                                        string subregion = "-";
-                                        Program.f1.regions.TryGetValue(subRegionIndex, out subregion);
-                                        int ipage = Convert.ToInt32(Math.Floor(startIndex / 100.0)) + 1;
-                                        if (useLedySync && !Program.f1.banlist.Contains(szFC) && canThisTrade(principal, consoleName, szTrainerName, country, subregion, Program.PKTable.Species7[dexnumber - 1], szFC, ipage + "", (i - 1) + ""))
+
+                                        int level2 = pokecheck.CurrentLevel;
+                                        int levelcheck;
+                                        if (level2 < 11)
                                         {
-                                            Program.f1.ChangeStatus("Found a pokemon to trade");
-                                            tradeIndex = i - 1;
-                                            botState = (int)gtsbotstates.trade;
-                                            break;
+                                            levelcheck = 1;
                                         }
-                                        else if (!useLedySync)
+                                        else if (level2 < 21)
                                         {
-                                            if (!bReddit && !Program.f1.commented.Contains(szFC) && !Program.f1.banlist.Contains(szFC))
+                                            levelcheck = 2;
+                                        }
+                                        else if (level2 < 31)
+                                        {
+                                            levelcheck = 3;
+                                        }
+                                        else if (level2 < 41)
+                                        {
+                                            levelcheck = 4;
+                                        }
+                                        else if (level2 < 51)
+                                        {
+                                            levelcheck = 5;
+                                        }
+                                        else if (level2 < 61)
+                                        {
+                                            levelcheck = 6;
+                                        }
+                                        else if (level2 < 71)
+                                        {
+                                            levelcheck = 7;
+                                        }
+                                        else if (level2 < 81)
+                                        {
+                                            levelcheck = 8;
+                                        }
+                                        else if (level2 < 91)
+                                        {
+                                            levelcheck = 9;
+                                        }
+                                        else
+                                        {
+                                            levelcheck = 10;
+                                        }
+
+                                        int prepro = 0;
+                                        if (pokecheck.Gender == 0)
+                                            prepro = 1;
+                                       else if (pokecheck.Gender == 1)
+                                            prepro = 2;
+                                       else if (pokecheck.Gender == 2)
+                                            prepro = 1;
+                                
+                                        if ((gender == prepro || gender == 0) && (level == 0 || level == levelcheck))
+                                        {
+                                            
+                                            int countryIndex = BitConverter.ToInt16(block, 0x68);
+                                            string country = "-";
+                                            Program.f1.countries.TryGetValue(countryIndex, out country);
+                                            Program.f1.getSubRegions(countryIndex);
+                                            int subRegionIndex = BitConverter.ToInt16(block, 0x6A);
+                                            string subregion = "-";
+                                            Program.f1.regions.TryGetValue(subRegionIndex, out subregion);
+                                            int ipage = Convert.ToInt32(Math.Floor(startIndex / 100.0)) + 1;
+                                            if (useLedySync && !Program.f1.banlist.Contains(szFC) && canThisTrade(principal, consoleName, szTrainerName, country, subregion, Program.PKTable.Species7[dexnumber - 1], szFC, ipage + "", (i - 1) + ""))
                                             {
                                                 Program.f1.ChangeStatus("Found a pokemon to trade");
                                                 tradeIndex = i - 1;
                                                 botState = (int)gtsbotstates.trade;
                                                 break;
                                             }
-                                            else
+                                            else if (!useLedySync)
                                             {
-                                                startIndex = 0;
-                                                tradeIndex = -1;
-                                                listlength = 0;
-                                                addr_PageEntry = 0;
-                                                foundLastPage = false;
-                                                botresult = 8;
-                                                botState = (int)gtsbotstates.botexit;
-                                                Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
-                                                await discordbot.trademodule.ban();
-                                                break;
+                                                if (!bReddit && !Program.f1.commented.Contains(szFC) && !Program.f1.banlist.Contains(szFC))
+                                                {
+                                                    Program.f1.ChangeStatus("Found a pokemon to trade");
+                                                    tradeIndex = i - 1;
+
+                                                    botState = (int)gtsbotstates.trade;
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    startIndex = 0;
+                                                    tradeIndex = -1;
+                                                    listlength = 0;
+                                                    addr_PageEntry = 0;
+                                                    foundLastPage = false;
+                                                    botresult = 8;
+                                                    botState = (int)gtsbotstates.botexit;
+                                                    Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
+                                                    await discordbot.trademodule.ban();
+                                                    break;
+                                                }
+
                                             }
+
+
                                         }
 
                                     }
+
+                                 }
+
+
                                 addr_PageEntry = BitConverter.ToUInt32(block, iNextPrevBlockOffest);
                             }
                             if (tradeIndex == -1)
@@ -506,7 +664,8 @@ namespace Ledybot
                                     else
                                     {
                                         botState = (int)gtsbotstates.pressSeek;
-                                        stupid++;
+                                        
+                                            stupid++;
                                     }
                                 }
                                 else
@@ -519,6 +678,7 @@ namespace Ledybot
                                     botState = (int)gtsbotstates.findfromend;
                                 }
                             }
+
                         }
 
                         break;
@@ -584,15 +744,16 @@ namespace Ledybot
                                 Program.f1.ChangeStatus("Looking for a pokemon to trade");
                                 Array.Copy(blockBytes, addr_PageEntry - addr_ListOfAllPageEntries, block, 0, 256);
                                 dexnumber = BitConverter.ToInt16(block, 0xC);
-                                if (pokecheck.Species != dexnumber)
+                                if (pokecheck.Species != dexnumber && discordbot.trademodule.distribute == "false")
                                 {
 
                                     addr_PageEntry = BitConverter.ToUInt32(block, 0);
                                     continue;
                                 }
+                          
                                 else
                                 {
-
+                                   
 
 
                                     Array.Copy(block, 0x48, principal, 0, 4);
@@ -604,7 +765,56 @@ namespace Ledybot
                                     szFC = iFC.ToString().PadLeft(12, '0');
                                     int gender = block[0xE];
                                     int level = block[0xF];
-                                    if ((gender == 0 || gender == pokecheck.Gender) && (level == 0 || level == pokecheck.CurrentLevel))
+                                    int level2 = pokecheck.CurrentLevel;
+                                    int levelcheck;
+                                    if (level2 < 11)
+                                    {
+                                        levelcheck = 1;
+                                    }
+                                    else if (level2 < 21)
+                                    {
+                                        levelcheck = 2;
+                                    }
+                                    else if (level2 < 31)
+                                    {
+                                        levelcheck = 3;
+                                    }
+                                    else if (level2 < 41)
+                                    {
+                                        levelcheck = 4;
+                                    }
+                                    else if (level2 < 51)
+                                    {
+                                        levelcheck = 5;
+                                    }
+                                    else if (level2 < 61)
+                                    {
+                                        levelcheck = 6;
+                                    }
+                                    else if (level2 < 71)
+                                    {
+                                        levelcheck = 7;
+                                    }
+                                    else if (level2 < 81)
+                                    {
+                                        levelcheck = 8;
+                                    }
+                                    else if (level2 < 91)
+                                    {
+                                        levelcheck = 9;
+                                    }
+                                    else
+                                    {
+                                       levelcheck = 10;
+                                    }
+                                    int prepro = 0;
+                                    if (pokecheck.Gender == 0)
+                                        prepro = 1;
+                                    if (pokecheck.Gender == 1)
+                                        prepro = 2;
+                                    if (pokecheck.Gender == 2)
+                                        prepro = 1;
+                                    if ((prepro == gender || gender == 0) && (level == 0 || level == levelcheck))
                                     {
                                         string szTrainerName = Encoding.Unicode.GetString(block, 0x4C, 24).Trim('\0');
                                         int countryIndex = BitConverter.ToInt16(block, 0x68);
@@ -727,9 +937,11 @@ namespace Ledybot
                         if (await waitTaskbool)
                         {
 
-
-
-                            byte[] pkmEncrypted = System.IO.File.ReadAllBytes(discordbot.trademodule.temppokecurrent);
+                           
+                            
+                               
+                           
+                            byte[] pkmEncrypted = pokecheck.DecryptedBoxData;
                             byte[] cloneshort = PKHeX.encryptArray(pkmEncrypted.Take(232).ToArray());
                             string ek7 = BitConverter.ToString(cloneshort).Replace("-", ", 0x");
 
@@ -790,34 +1002,40 @@ namespace Ledybot
                                 await Task.Delay(1000);
                                 continue;
                             }
-
-                            await Program.helper.waitNTRread(addr_box1slot1, 260);
-                            
-                            byte[] pokebytes = Program.helper.lastArray;
-                            PKM tradedpoke = PKMConverter.GetPKMfromBytes(pokebytes, 7);
-                            PKM checker = (PKM)discordbot.trademodule.pokemonfile.Peek();
-                            if(tradedpoke.PID == checker.PID)
+                            if (discordbot.trademodule.distribute == "false")
                             {
-                                startIndex = 0;
-                                tradeIndex = -1;
-                                listlength = 0;
-                                addr_PageEntry = 0;
-                                foundLastPage = false;
-                                botresult = 8;
-                                botState = (int)gtsbotstates.botexit;
-                                Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
-                                await discordbot.trademodule.notrade();
-                                break;
+                                await Program.helper.waitNTRread(addr_box1slot1, 260);
+
+                                byte[] pokebytes = Program.helper.lastArray;
+                                PKM tradedpoke = PKMConverter.GetPKMfromBytes(pokebytes, 7);
+                                PKM checker = (PKM)discordbot.trademodule.pokemonfile.Peek();
+                                if (tradedpoke.PID == checker.PID)
+                                {
+                                    startIndex = 0;
+                                    tradeIndex = -1;
+                                    listlength = 0;
+                                    addr_PageEntry = 0;
+                                    foundLastPage = false;
+                                    botresult = 8;
+                                    botState = (int)gtsbotstates.botexit;
+                                    Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
+                                    await discordbot.trademodule.notrade();
+                                    break;
+                                }
+                                byte[] writepoke = tradedpoke.DecryptedBoxData;
+                                tpfile = Path.GetTempFileName().Replace(".tmp", "." + tradedpoke.Extension);
+                                tpfile = tpfile.Replace("tmp", tradedpoke.FileNameWithoutExtension);
+                                System.IO.File.WriteAllBytes(tpfile, writepoke);
+                                discordbot.trademodule.retpoke.Enqueue(tpfile);
+                                discordbot.trademodule.username.Dequeue();
+                                discordbot.trademodule.pokequeue.Dequeue();
+                                discordbot.trademodule.pokemonfile.Dequeue();
                             }
-                            byte[] writepoke = tradedpoke.DecryptedBoxData;
-                            tpfile = Path.GetTempFileName().Replace(".tmp","."+tradedpoke.Extension);
-                            tpfile = tpfile.Replace("tmp", tradedpoke.FileNameWithoutExtension);
-                            System.IO.File.WriteAllBytes(tpfile, writepoke);
-                            discordbot.trademodule.retpoke.Enqueue(tpfile);
-                            discordbot.trademodule.pokequeue.Dequeue();
-                            discordbot.trademodule.username.Dequeue();
-                            discordbot.trademodule.pokemonfile.Dequeue();
-                            discordbot.trademodule.trainername.Dequeue();
+                            
+                            
+                            
+                            
+                            
                             
                             bool cont = false;
 
@@ -833,9 +1051,12 @@ namespace Ledybot
                                 botresult = 8;
                                 botState = (int)gtsbotstates.botexit;
                                 Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
+                                discordbot.trademodule.distribute = "false";
+                                discordbot.trademodule.trainername.Dequeue();
+                                discordbot.trademodule.checkdistr();
                                 break;
                             }
-
+                            
                             startIndex = 0;
                             tradeIndex = -1;
                             listlength = 0;
@@ -843,7 +1064,9 @@ namespace Ledybot
                             foundLastPage = false;
                             botState = (int)gtsbotstates.botexit;
                             Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
-
+                            discordbot.trademodule.distribute = "false";
+                            discordbot.trademodule.trainername.Dequeue();
+                            discordbot.trademodule.checkdistr();
                         }
                         break;
                     case (int)gtsbotstates.quicksearch:
@@ -866,6 +1089,7 @@ namespace Ledybot
                         Program.f1.ChangeStatus("Stopped");
                         File.Delete(discordbot.trademodule.temppokecurrent);
                         botstop = true;
+                        
                         break;
 
                     case (int)gtsbotstates.panic:

@@ -176,17 +176,18 @@ public class discordbot
         public static Queue retpoke = new Queue();
         public static Queue poketosearch = new Queue();
         public static Queue discordname = new Queue();
-        public static IUser dmer;
+        public static string distribute = "false";
         public static string trainer;
         public static int[] tradevolvs = { 525, 75, 533, 93, 64, 67, 708, 710 };
+        
+        public static bool distributestart = false;
 
-
-       
         [Command("trade")]
         [Alias("t")]
       
         public async Task stradestringdepo(string trainer, string pts, [Remainder] string set)
         {
+            
             int ptsstr = Array.IndexOf(Ledybot.Program.PKTable.Species7, pts);
             if(ptsstr == -1)
             {
@@ -309,6 +310,7 @@ public class discordbot
      
         public async Task stradenotidpts(string trainer, int pts,[Remainder] string set)
         {
+            
             if (tradevolvs.Contains(pts))
             {
                 await ReplyAsync("you almost just broke the bot by depositing a trade evolution, you are a fucking asshole :)");
@@ -421,6 +423,7 @@ public class discordbot
       
         public async Task pstrtrade([Summary("poke to search")] string pts, [Remainder] string trainer)
         {
+            
             int ptsstr = Array.IndexOf(Ledybot.Program.PKTable.Species7, pts);
             if (ptsstr == -1)
             {
@@ -590,6 +593,7 @@ public class discordbot
       
         public async Task ptrade([Summary("poke to search")] int pts, [Remainder] string trainer)
         {
+            
             string temppokewait = Path.GetTempFileName();
             if (tradevolvs.Contains(pts))
             {
@@ -745,7 +749,7 @@ public class discordbot
 
         }
 
-
+        
 
 
 
@@ -758,13 +762,98 @@ public class discordbot
             }
             else
             {
-                await ReplyAsync("There are " + pokequeue.Count + " trainers in the queue");
+                if (pokequeue.Count == 1)
+                    await ReplyAsync("finishing an ad trade, be right with you!");
+                else
+                    await ReplyAsync("There are " + pokequeue.Count + " trainers in the queue");
             }
         }
-
+        [Command("start")]
+        [RequireOwner]
+        public async Task startdistribute()
+        {
+            await ReplyAsync("starting distribution");
+            distribute = "true";
+            distributestart = true;
+            if(pokequeue.Count == 0)
+                starttrades();
+        }
         public async Task starttrades()
         {
 
+            while (pokequeue.Count != 0)
+            {
+                if (retpoke.Count != 0)
+                {
+
+                    IMessageChannel t = (IMessageChannel)channel.Peek();
+                    await t.SendFileAsync((string)retpoke.Peek(), discordname.Peek() + " here is the pokemon you traded me ");
+                    channel.Dequeue();
+                    retpoke.Dequeue();
+                    discordname.Dequeue();
+                    if (Ledybot.MainForm.game == 0 || Ledybot.MainForm.game == 1)
+                        File.Delete(Ledybot.GTSBot7.tpfile);
+                    else
+                        File.Delete(Ledybot.GTSBot6.tpfile);
+                }
+                if (!Ledybot.MainForm.botWorking)
+                {
+                    IMessageChannel chan = (IMessageChannel)channel.Peek();
+                    temppokecurrent = (string)pokequeue.Peek();
+                    await chan.SendMessageAsync("<@" + username.Peek() + ">" + " deposit your pokemon now");
+
+                    Ledybot.MainForm.btn_Start_Click(null, EventArgs.Empty);
+                
+
+
+                }
+                else
+                {
+                    continue;
+                }
+
+
+
+            }
+
+            if (retpoke.Count != 0)
+            {
+
+                IMessageChannel t = (IMessageChannel)channel.Peek();
+                await t.SendFileAsync((string)retpoke.Peek(), discordname.Peek() + " here is the pokemon you traded me ");
+                channel.Dequeue();
+                retpoke.Dequeue();
+                discordname.Dequeue();
+                if (Ledybot.MainForm.game == 0 || Ledybot.MainForm.game == 1)
+                    File.Delete(Ledybot.GTSBot7.tpfile);
+                else
+                    File.Delete(Ledybot.GTSBot6.tpfile);
+            }
+
+            if(distribute == "true" && distributestart == true)
+            {
+                int pts = 4321;
+                poketosearch.Enqueue(pts);
+                trainername.Enqueue("");
+                Ledybot.MainForm.btn_Start_Click(null, EventArgs.Empty);
+
+            }
+        }
+        public static async Task checkdistr()
+        {
+            await Task.Delay(2000);
+            if (pokequeue.Count == 0)
+                distribute = "true";
+            if (distribute == "true" && distributestart == true)
+            {
+                int pts = 4321;
+                poketosearch.Enqueue(pts);
+                trainername.Enqueue("");
+                Ledybot.MainForm.btn_Start_Click(null, EventArgs.Empty);
+
+            }
+            if (distributestart == false)
+                distribute = "false";
             while (pokequeue.Count != 0)
             {
                 if (retpoke.Count != 0)
@@ -813,9 +902,15 @@ public class discordbot
                     File.Delete(Ledybot.GTSBot6.tpfile);
             }
 
-
         }
+        [Command("stop")]
+        [RequireOwner]
+        public async Task stop()
+        {
 
+            await ReplyAsync("stopping distribution");
+            distributestart = false;
+        }
 
         [Command("queueclear")]
         [Alias("rq")]
@@ -1408,7 +1503,7 @@ public class discordbot
             trainername.Dequeue();
         }
        
-        private static PKM BuildPokemon(string Set, int Generation)
+        public static PKM BuildPokemon(string Set, int Generation)
         {
             try
             {
@@ -1863,7 +1958,72 @@ public class discordbot
             await ReplyAsync("no user found, catch some pokemon with !k");
 
         }
+        [Command("tdexmissing")]
+        [Alias("tdm")]
+        public async Task TCdexmissing()
+        {
+            if(!File.Exists($"{Directory.GetCurrentDirectory()}////dexs//{Context.User.Id}.txt"))
+            {
+                await ReplyAsync("no user found, catch some pokemon with !k");
+                return;
+            }
+            var tdextxt = File.ReadAllLines($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt");
+            var natdex2 = Ledybot.Program.PKTable.Species7;
+            
+            foreach(string w in tdextxt)
+            {
 
+
+                natdex2[Convert.ToInt32(w)-1] = "" ;
+                    
+                
+                
+            }
+            var yb = new System.Text.StringBuilder();
+            foreach(string f in natdex2)
+            {
+                if(f != "")
+                {
+                    yb.Append($"{f} ");
+                }
+                continue;
+            }
+            string[] n = new string[24];
+            int q = 0;
+            string ybc = yb.ToString();
+            while (ybc.Length > 0)
+            {
+                if (ybc.Length > 1000)
+                    n[q] = ybc.Substring(0, 1000);
+                else
+                    n[q] = ybc.Substring(0, ybc.Length);
+
+                if (ybc.Length > 1000)
+                    ybc = ybc.Remove(0, 1000);
+                else
+                    ybc = ybc.Remove(0, ybc.Length);
+
+
+                q++;
+            }
+            
+            int r = 0;
+          
+          await ReplyAsync("missing pokemon: ");
+            foreach(string i in n)
+            {
+                if (i != null)
+                {
+                    await ReplyAsync($"page {r+1}: {i}");
+                    
+                }
+                r++;
+
+            }
+            
+            
+           
+        }
  
       
     }
