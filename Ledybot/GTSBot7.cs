@@ -274,14 +274,20 @@ namespace Ledybot
                             foundLastPage = false;
                             botresult = 8;
                             botState = (int)gtsbotstates.botexit;
-                            Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
+                            MainForm.btn_Stop_Click(null, EventArgs.Empty);
                             if(discordbot.trademodule.distribute == "false")
                                 await discordbot.trademodule.slow();
                             if(discordbot.trademodule.distribute == "true")
                             {
                                discordbot.trademodule.trainername.Dequeue();
                                 discordbot.trademodule.distribute = "false";
-                                discordbot.trademodule.distributestart = false;
+                               
+                                if (MainForm.combo_pkmnList.SelectedIndex == 806)
+                                    MainForm.combo_pkmnList.SelectedIndex = 0;
+                                else
+                                    MainForm.combo_pkmnList.SelectedIndex += 1;
+                                if (discordbot.trademodule.tradevolvs.Contains(MainForm.combo_pkmnList.SelectedIndex + 1))
+                                    MainForm.combo_pkmnList.SelectedIndex += 1;
                                 discordbot.trademodule.checkdistr();
                             }
                             break;
@@ -592,7 +598,7 @@ namespace Ledybot
                                        else if (pokecheck.Gender == 1)
                                             prepro = 2;
                                        else if (pokecheck.Gender == 2)
-                                            prepro = 1;
+                                            prepro = 0;
                                 
                                         if ((gender == prepro || gender == 0) && (level == 0 || level == levelcheck))
                                         {

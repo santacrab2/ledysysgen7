@@ -1490,6 +1490,8 @@ public class discordbot
             username.Dequeue();
             pokemonfile.Dequeue();
             trainername.Dequeue();
+            distribute = "false";
+            checkdistr();
         }
         public static async Task notrade()
         {
@@ -1501,6 +1503,8 @@ public class discordbot
             username.Dequeue();
             pokemonfile.Dequeue();
             trainername.Dequeue();
+            distribute = "false";
+            checkdistr();
         }
        
         public static PKM BuildPokemon(string Set, int Generation)
