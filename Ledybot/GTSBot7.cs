@@ -511,28 +511,35 @@ namespace Ledybot
                                         if (discordbot.trademodule.distribute == "true")
                                         {
 
-                                            
-                                            pokecheck = discordbot.trademodule.BuildPokemon(Ledybot.Program.PKTable.Species7[dexnumber - 1], 7);
-                                            
-                                            pokecheck.SetIsShiny(true);
-                                            if (new LegalityAnalysis(pokecheck).Report().Contains("Static Encounter shiny mismatch"))
-                                                pokecheck.SetIsShiny(false);
-                                            pokecheck.CurrentLevel = levels;
-                                            pokecheck.Gender = preprou;
-                                            if (new LegalityAnalysis(pokecheck).Report().Contains("Genderless"))
-                                                pokecheck.Gender = 2;
-                                            int[] sugmov = MoveSetApplicator.GetMoveSet(pokecheck, true);
-                                            pokecheck.SetMoves(sugmov);
-                                            Random nat = new Random();
-                                            int natue = nat.Next(24);
-                                            pokecheck.Nature = natue;
-                                            pokecheck.SetRandomIVs();
-                                            pokecheck.HeldItem = 1;
-                                            pokecheck = pokecheck.Legalize();
-                                            pokecheck.OT_Name = "Piplup.net";
-                                            pokecheck.IsNicknamed = true;
-                                            pokecheck.Nickname = "Piplup.net";
-                                            if (!new LegalityAnalysis(pokecheck).Valid || pokecheck.Species == 132)
+                                            try
+                                            {
+                                                pokecheck = discordbot.trademodule.BuildPokemon(Ledybot.Program.PKTable.Species7[dexnumber - 1], 7);
+
+                                                pokecheck.SetIsShiny(true);
+                                                if (new LegalityAnalysis(pokecheck).Report().Contains("Static Encounter shiny mismatch"))
+                                                    pokecheck.SetIsShiny(false);
+                                                pokecheck.CurrentLevel = levels;
+                                                pokecheck.Gender = preprou;
+                                                if (new LegalityAnalysis(pokecheck).Report().Contains("Genderless"))
+                                                    pokecheck.Gender = 2;
+                                                int[] sugmov = MoveSetApplicator.GetMoveSet(pokecheck, true);
+                                                pokecheck.SetMoves(sugmov);
+                                                Random nat = new Random();
+                                                int natue = nat.Next(24);
+                                                pokecheck.Nature = natue;
+                                                pokecheck.SetRandomIVs();
+                                                pokecheck.HeldItem = 1;
+                                                pokecheck = pokecheck.Legalize();
+                                                pokecheck.OT_Name = "Piplup.net";
+                                                pokecheck.IsNicknamed = true;
+                                                pokecheck.Nickname = "Piplup.net";
+                                                if (!new LegalityAnalysis(pokecheck).Valid || pokecheck.Species == 132)
+                                                {
+                                                    addr_PageEntry = BitConverter.ToUInt32(block, 0);
+                                                    continue;
+                                                }
+                                            }
+                                            catch
                                             {
                                                 addr_PageEntry = BitConverter.ToUInt32(block, 0);
                                                 continue;
