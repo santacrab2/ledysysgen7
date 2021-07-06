@@ -1599,14 +1599,16 @@ public class discordbot
                 await ReplyAsync(embed: embed.Build());
                 return;
             }
-           
+            
             Random carng = new Random();
             int catchrng = carng.Next(806);
-           while(File.ReadAllLines($"{Directory.GetCurrentDirectory()}//rolls.txt").Contains(catchrng.ToString()))
+            if (!File.Exists($"{Directory.GetCurrentDirectory()}//rolls.txt"))
+                File.Create($"{Directory.GetCurrentDirectory()}//rolls.txt");
+            while (File.ReadAllLines($"{Directory.GetCurrentDirectory()}//rolls.txt").Contains(catchrng.ToString()))
                 catchrng = carng.Next(806);
            while(mythic.Contains(catchrng))
                 catchrng = carng.Next(806);
-
+           
             StreamWriter catches = File.AppendText($"{Directory.GetCurrentDirectory()}//rolls.txt");
             catches.WriteLine(catchrng);
             catches.Close();
@@ -1659,9 +1661,12 @@ public class discordbot
                 a++;
             directfile = direct + "//" + a;
             File.WriteAllBytes(directfile, tpk.EncryptedBoxData);
+            if (!Directory.Exists($"{Directory.GetCurrentDirectory()}//dexs//"))
+                Directory.CreateDirectory($"{Directory.GetCurrentDirectory()}//dexs//");
             if (!File.Exists($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt"))
                 File.Create($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt");
-            if (!File.ReadAllLines($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt").Contains(tpk.Species.ToString())|| File.ReadAllText($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt")== null){ 
+            if (!File.ReadAllLines($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt").Contains(tpk.Species.ToString())|| File.ReadAllText($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt")== null){
+                embed.AddField("Pokedex", $"Registered {Ledybot.Program.PKTable.Species7[tpk.Species - 1]} to your Pokedex");
                StreamWriter de = File.AppendText($"{Directory.GetCurrentDirectory()}//dexs///{Context.User.Id}.txt");
                 de.WriteLine(tpk.Species);
                 de.Close();
@@ -1694,8 +1699,60 @@ public class discordbot
             x.Text = "Id number: " + a;
             embed.Footer = x;
             embed.ImageUrl = baseLink2;
+            
+            if (File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy"))
+            {
+                byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy");
+                var bpk = PKMConverter.GetPKMfromBytes(g, 6);
+                var lvlProgress = (Experience.GetEXPToLevelUpPercentage(bpk.CurrentLevel, bpk.EXP, bpk.PersonalInfo.EXPGrowth) * 100.0).ToString("N1");
+          
+                string evolve = "false";
+                if (bpk.CurrentLevel < 100 && bpk.Species != 0)
+                {
+                    var xpMin = Experience.GetEXP(bpk.CurrentLevel + 1, bpk.PersonalInfo.EXPGrowth);
+                    var xpGet = (uint)Math.Round(Math.Pow(bpk.CurrentLevel / 5.0 * ((2.0 * bpk.CurrentLevel + 10.0) / (bpk.CurrentLevel + bpk.CurrentLevel + 10.0)), 2.5) * (bpk.IsShiny ? 1.3 : 1.0), 0, MidpointRounding.AwayFromZero);
+                    if (xpGet < 100)
+                        xpGet = 175;
+                    
+                    bpk.EXP += xpGet;
+                    while (bpk.EXP >= Experience.GetEXP(bpk.CurrentLevel + 1, bpk.PersonalInfo.EXPGrowth) && bpk.CurrentLevel < 100)
+                    {
+                        bpk.CurrentLevel++;
+                      
+                    }
+             
+                    var b = EvolutionTree.GetEvolutionTree(bpk, 7).GetBaseSpeciesForm(bpk.Species, bpk.Form);
+                    var testpk = BuildPokemon(Ledybot.Program.PKTable.Species7[bpk.Species + 1], 7);
+                    var sug = EncounterSuggestion.GetSuggestedMetInfo(testpk);
+                    if (bpk.CurrentLevel >= sug.LevelMin && EvolutionTree.GetEvolutionTree(7).GetEvolutions(b, 0).Last() != bpk.Species)
+                    {
+                        evolve = "true";
+                        bool savenick = bpk.IsNicknamed;
+                        bpk.Species += 1;
+                        if (savenick == false)
+                            bpk.ClearNickname();
+                        if (!File.Exists($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt"))
+                            File.Create($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt");
+                        if (!File.ReadAllLines($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt").Contains(tpk.Species.ToString()) || File.ReadAllText($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt") == null)
+                        {
+                            embed.AddField("Pokedex", $"Registered {Ledybot.Program.PKTable.Species7[bpk.Species - 1]} to your pokedex");
+                            StreamWriter de = File.AppendText($"{Directory.GetCurrentDirectory()}//dexs///{Context.User.Id}.txt");
+                            de.WriteLine(tpk.Species);
+                            de.Close();
+                        }
+                    }
+                    if (bpk.CurrentLevel == 100)
+                        bpk.EXP = xpMin;
+                    
+                        File.WriteAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy", bpk.DecryptedBoxData);
+                    
+                    if (bpk.EXP >= xpMin)
+                        embed.AddField($"\n{Context.User}'s Buddy {bpk.Nickname}", evolve=="true"? $" gained {xpGet} EXP and leveled up to level {bpk.CurrentLevel} and evolved!" : $" gained {xpGet} EXP and leveled up to level {bpk.CurrentLevel}!");
+                    else embed.AddField($"\n{Context.User}'s Buddy {bpk.Nickname}" , evolve == "true" ? $" gained {xpGet} EXP and evolved!" :$" gained {xpGet} EXP!" );
+                }
+               
+            }
             await ReplyAsync(embed: embed.Build());
-
         }
         [Command("tradecord")]
         [Alias("tc")]
@@ -1916,7 +1973,7 @@ public class discordbot
                 ":large_blue_diamond:" + "**!massrelease** (***!mr***)" + "\n" + "⠀" + "\n" + "*Releases all non-shiny pokemon*" + "\n" + "**!mr shiny will release ALL pokemon**" + "\n" + "\n" +
                 ":large_blue_diamond:" + "**!tradecord (***!tc***) trainer-name ###**(*natdex#-of-deposit*) **##**(*tradecord-id#*) **trainerinfo**(*optional*) )" + "\n" + "⠀" + "\n" + "*Trades your caught pokemon to you in the gen 7 GTS (Compatible with SUN / MOON / ULTRA SUN / MOON*" 
                 , true);
-            embed.AddField("extras", ":large_blue_diamond:" + "**!nickname (***!n***) # nickname" + "\n" + "\n" + "*Replace # with the ID number of the pokemon you want to nickname(from list command)*" + "\n" + "\n" +
+            embed.AddField("extras", ":large_blue_diamond:" + "**!nickname** (***!n***) # nickname" + "\n" + "\n" + "*Replace # with the ID number of the pokemon you want to nickname(from list command)*" + "\n" + "\n" +
                 ":large_blue_diamond:" + "**!tradecorddex** (***!tdex***)" + "\n" + "\n" + "Displays how many dex entries you have registered out of 807", true);
             embed.ImageUrl = "https://cdn.discordapp.com/attachments/733454651227373579/848772777641377832/piplup.gif";
             await ReplyAsync(embed: embed.Build());
@@ -1958,6 +2015,8 @@ public class discordbot
                 embed.Title = $"{Context.User}'s Pokedex Progress";
                 int count = File.ReadAllLines($"{Directory.GetCurrentDirectory()}//dexs///{Context.User.Id}.txt").Count();
                 embed.AddField("You've caught: ", count.ToString() + "/807");
+                if (count == 807)
+                    embed.AddField("Master","You've caught em all! You're a Pokemon Master!");
                 await ReplyAsync(embed: embed.Build());
                 return;
             }
@@ -2030,10 +2089,88 @@ public class discordbot
             
            
         }
- 
-      
+        [Command("Buddy")]
+        [Alias("buddy", "b", "B")]
+        public async Task Buddy()
+        {
+            if (File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy"))
+            {
+                byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy");
+                var tpk = PKMConverter.GetPKMfromBytes(g, 7);
+                var embed = new EmbedBuilder().WithFooter(Ledybot.Program.PKTable.Balls7[tpk.Ball - 1], $"https://raw.githubusercontent.com/BakaKaito/HomeImages/main/Ballimg/50x50/{Ledybot.Program.PKTable.Balls7[tpk.Ball - 1].Split(' ')[0].ToLower()}ball.png"); 
+                embed.Color = new Color(88, 163, 73);
+                embed.Title = Context.User.ToString() + "'s Buddy";
+                embed.AddField($"{Ledybot.Program.PKTable.Species7[tpk.Species - 1]}'s info", ShowdownParsing.GetShowdownText(tpk));
+                embed.ThumbnailUrl = tpk.IsShiny ? "https://play.pokemonshowdown.com/sprites/ani-shiny/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif" : "https://play.pokemonshowdown.com/sprites/ani/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif";
+                await ReplyAsync(embed: embed.Build());
+                return;
+            }
+            else
+            {
+                var embed = new EmbedBuilder();
+                embed.Color = new Color(88, 163, 73);
+                embed.Title = Context.User.ToString() + " has no assigned Buddy, use !bs id# to assign a pokemon as your buddy";
+                await ReplyAsync(embed: embed.Build());
+                return;
+            }
+        }
+
+        [Command("BuddySet")]
+        [Alias("bs", "BS", "sb")]
+        public async Task SetBuddy(int idnumb)
+        {
+            if (File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb))
+            {
+                byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb);
+                var tpk = PKMConverter.GetPKMfromBytes(g, 6);
+                EmbedBuilder embed = new EmbedBuilder();
+                if (Directory.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy"))
+                {
+                    File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy");
+                    byte[] i = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy");
+                    var bpk = PKMConverter.GetPKMfromBytes(i, 6);
+                    var direct = Directory.GetCurrentDirectory() + "//" + Context.User.Id;
+                    string directfile;
+                    int a = 1;
+                    while (File.Exists(direct + "//" + a))
+                        a++;
+                    directfile = direct + "//" + a;
+                    File.WriteAllBytes(directfile, bpk.EncryptedBoxData);
+                    File.Delete(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb);
+                    File.WriteAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy", tpk.DecryptedBoxData);
+
+                    embed.WithColor(88, 163, 73);
+                    embed.Color = new Color(88, 163, 73);
+                    embed.Title = Context.User.ToString() + " has set " + tpk.Nickname.ToString() + " to be there buddy pokemon";
+                    embed.AddField($"{Ledybot.Program.PKTable.Species6[tpk.Species - 1]}'s info", ShowdownParsing.GetShowdownText(tpk));
+                    embed.ThumbnailUrl = tpk.IsShiny ? "https://play.pokemonshowdown.com/sprites/ani-shiny/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif" : "https://play.pokemonshowdown.com/sprites/ani/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif";
+                    embed.WithFooter(Ledybot.Program.PKTable.Balls7[tpk.Ball - 1], $"https://raw.githubusercontent.com/BakaKaito/HomeImages/main/Ballimg/50x50/{Ledybot.Program.PKTable.Balls7[tpk.Ball - 1].Split(' ')[0].ToLower()}ball.png");
+                }
+                if (!Directory.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy"))
+                {
+                    Directory.CreateDirectory(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy");
+                    File.WriteAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy", tpk.DecryptedBoxData);
+                    File.Delete(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb);
+                    embed.ThumbnailUrl = tpk.IsShiny ? "https://play.pokemonshowdown.com/sprites/ani-shiny/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif" : "https://play.pokemonshowdown.com/sprites/ani/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif";
+                    embed.WithColor(88, 163, 73);
+                    embed.Color = new Color(88, 163, 73);
+                    embed.Title = Context.User.ToString() + " has set " + tpk.Nickname + " to be there buddy pokemon";
+                    embed.AddField($"{Ledybot.Program.PKTable.Species6[tpk.Species - 1]}'s info", ShowdownParsing.GetShowdownText(tpk));
+                    embed.WithFooter(Ledybot.Program.PKTable.Balls7[tpk.Ball - 1], $"https://raw.githubusercontent.com/BakaKaito/HomeImages/main/Ballimg/50x50/{Ledybot.Program.PKTable.Balls7[tpk.Ball - 1].Split(' ')[0].ToLower()}ball.png");
+                }
+
+            
+                await ReplyAsync(embed: embed.Build());
+                
+              
+                }
+
+            }
+        }
+
+
     }
-}
+
     
 
 

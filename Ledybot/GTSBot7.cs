@@ -533,7 +533,7 @@ namespace Ledybot
                                                 pokecheck.OT_Name = "Piplup.net";
                                                 pokecheck.IsNicknamed = true;
                                                 pokecheck.Nickname = "Piplup.net";
-                                                if (!new LegalityAnalysis(pokecheck).Valid || pokecheck.Species == 132)
+                                                if (!new LegalityAnalysis(pokecheck).Valid)
                                                 {
                                                     addr_PageEntry = BitConverter.ToUInt32(block, 0);
                                                     continue;
