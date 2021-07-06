@@ -1724,17 +1724,25 @@ public class discordbot
                     var b = EvolutionTree.GetEvolutionTree(bpk, 7).GetBaseSpeciesForm(bpk.Species, bpk.Form);
                     var testpk = BuildPokemon(Ledybot.Program.PKTable.Species7[bpk.Species + 1], 7);
                     var sug = EncounterSuggestion.GetSuggestedMetInfo(testpk);
-                    if (bpk.CurrentLevel >= sug.LevelMin && EvolutionTree.GetEvolutionTree(7).GetEvolutions(b, 0).Last() != bpk.Species)
+                    if (bpk.CurrentLevel >= sug.LevelMin && EvolutionTree.GetEvolutionTree(7).GetEvolutions(b, 0).Last() != bpk.Species && EvolutionTree.GetEvolutionTree(7).GetEvolutions(b,0).LastOrDefault() != default)
                     {
                         evolve = "true";
                         bool savenick = bpk.IsNicknamed;
-                        bpk.Species += 1;
+                        if (bpk.Species == b)
+                            bpk.Species = EvolutionTree.GetEvolutionTree(7).GetEvolutions(b, 0).First();
+                        else
+                            bpk.Species = EvolutionTree.GetEvolutionTree(7).GetEvolutions(b, 0).Last();
                         if (savenick == false)
                             bpk.ClearNickname();
                         if (new LegalityAnalysis(bpk).Report().Contains("Evolution not valid"))
                         {
-                            bpk.Species -= 1;
+                            if (bpk.Species == EvolutionTree.GetEvolutionTree(7).GetEvolutions(b, 0).First())
+                                bpk.Species = b;
+                            else
+                                bpk.Species = EvolutionTree.GetEvolutionTree(7).GetEvolutions(b, 0).First();
                             evolve = "false";
+                            if (savenick == false)
+                                bpk.ClearNickname();
                         }
                         else
                         {
