@@ -1731,14 +1731,22 @@ public class discordbot
                         bpk.Species += 1;
                         if (savenick == false)
                             bpk.ClearNickname();
-                        if (!File.Exists($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt"))
-                            File.Create($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt");
-                        if (!File.ReadAllLines($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt").Contains(tpk.Species.ToString()) || File.ReadAllText($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt") == null)
+                        if (new LegalityAnalysis(bpk).Report().Contains("Evolution not valid"))
                         {
-                            embed.AddField("Pokedex", $"Registered {Ledybot.Program.PKTable.Species7[bpk.Species - 1]} to your pokedex");
-                            StreamWriter de = File.AppendText($"{Directory.GetCurrentDirectory()}//dexs///{Context.User.Id}.txt");
-                            de.WriteLine(tpk.Species);
-                            de.Close();
+                            bpk.Species -= 1;
+                            evolve = "false";
+                        }
+                        else
+                        {
+                            if (!File.Exists($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt"))
+                                File.Create($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt");
+                            if (!File.ReadAllLines($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt").Contains(bpk.Species.ToString()) || File.ReadAllText($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt") == null)
+                            {
+                                embed.AddField("Pokedex", $"Registered {Ledybot.Program.PKTable.Species7[bpk.Species - 1]} to your pokedex");
+                                StreamWriter de = File.AppendText($"{Directory.GetCurrentDirectory()}//dexs///{Context.User.Id}.txt");
+                                de.WriteLine(tpk.Species);
+                                de.Close();
+                            }
                         }
                     }
                     if (bpk.CurrentLevel == 100)
