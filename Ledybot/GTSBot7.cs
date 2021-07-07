@@ -490,7 +490,7 @@ namespace Ledybot
                                 if (gender == 0)
                                     preprou = 1;
                                else if (gender == 1)
-                                    preprou = 2;
+                                    preprou = 0;
                                 else if (gender == 2)
                                     preprou = 1;
                                else
@@ -513,6 +513,7 @@ namespace Ledybot
 
                                             try
                                             {
+                                              
                                                 pokecheck = discordbot.trademodule.BuildPokemon(Ledybot.Program.PKTable.Species7[dexnumber - 1], 7);
 
                                                 pokecheck.SetIsShiny(true);
@@ -520,6 +521,8 @@ namespace Ledybot
                                                     pokecheck.SetIsShiny(false);
                                                 pokecheck.CurrentLevel = levels;
                                                 pokecheck.Gender = preprou;
+                                                if (pokecheck.Species == 29 && preprou == 0)
+                                                    pokecheck.Species = 32;
                                                 if (new LegalityAnalysis(pokecheck).Report().Contains("Genderless"))
                                                     pokecheck.Gender = 2;
                                                 int[] sugmov = MoveSetApplicator.GetMoveSet(pokecheck, true);

@@ -1577,7 +1577,7 @@ public class discordbot
         [Alias("k")]
         public async Task tradecordcatch()
         {
-            int[] mythic = { 151, 251, 385, 386, 490, 491, 492, 493, 494, 647, 648, 649, 719, 720, 721, 801, 802, 807 };
+            int[] mythic = { 151, 251, 385, 386, 490, 491, 492, 493, 494,646, 647, 648, 649, 719, 720, 721, 801, 802, 807 };
             var embed = new EmbedBuilder();
             string direct;
             Random balrng = new Random();
@@ -1703,10 +1703,10 @@ public class discordbot
             if (File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy"))
             {
                 byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy");
-                var bpk = PKMConverter.GetPKMfromBytes(g, 6);
+                var bpk = PKMConverter.GetPKMfromBytes(g, 7);
                 var lvlProgress = (Experience.GetEXPToLevelUpPercentage(bpk.CurrentLevel, bpk.EXP, bpk.PersonalInfo.EXPGrowth) * 100.0).ToString("N1");
-          
-                string evolve = "false";
+                int currentspec = 0;
+                bool evolve = false;
                 if (bpk.CurrentLevel < 100 && bpk.Species != 0)
                 {
                     var xpMin = Experience.GetEXP(bpk.CurrentLevel + 1, bpk.PersonalInfo.EXPGrowth);
@@ -1724,10 +1724,11 @@ public class discordbot
                     var b = EvolutionTree.GetEvolutionTree(bpk, 7).GetBaseSpeciesForm(bpk.Species, bpk.Form);
                     var testpk = BuildPokemon(Ledybot.Program.PKTable.Species7[bpk.Species + 1], 7);
                     var sug = EncounterSuggestion.GetSuggestedMetInfo(testpk);
-                    if (bpk.CurrentLevel >= sug.LevelMin && EvolutionTree.GetEvolutionTree(7).GetEvolutions(b, 0).Last() != bpk.Species && EvolutionTree.GetEvolutionTree(7).GetEvolutions(b,0).LastOrDefault() != default)
+                    if (bpk.CurrentLevel >= sug.LevelMin && EvolutionTree.GetEvolutionTree(7).GetEvolutions(b, 0).Last() != bpk.Species)
                     {
-                        evolve = "true";
+                        evolve = true;
                         bool savenick = bpk.IsNicknamed;
+                        currentspec = bpk.Species;
                         if (bpk.Species == b)
                             bpk.Species = EvolutionTree.GetEvolutionTree(7).GetEvolutions(b, 0).First();
                         else
@@ -1740,7 +1741,7 @@ public class discordbot
                                 bpk.Species = b;
                             else
                                 bpk.Species = EvolutionTree.GetEvolutionTree(7).GetEvolutions(b, 0).First();
-                            evolve = "false";
+                            evolve = false;
                             if (savenick == false)
                                 bpk.ClearNickname();
                         }
@@ -1763,8 +1764,8 @@ public class discordbot
                         File.WriteAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy", bpk.DecryptedBoxData);
                     
                     if (bpk.EXP >= xpMin)
-                        embed.AddField($"\n{Context.User}'s Buddy {bpk.Nickname}", evolve=="true"? $" gained {xpGet} EXP and leveled up to level {bpk.CurrentLevel} and evolved!" : $" gained {xpGet} EXP and leveled up to level {bpk.CurrentLevel}!");
-                    else embed.AddField($"\n{Context.User}'s Buddy {bpk.Nickname}" , evolve == "true" ? $" gained {xpGet} EXP and evolved!" :$" gained {xpGet} EXP!" );
+                        embed.AddField($"\n{Context.User}'s Buddy " + (evolve ? bpk.IsNicknamed ? bpk.Nickname : Ledybot.Program.PKTable.Species7[currentspec-1] : bpk.Nickname ), evolve? $" gained {xpGet} EXP and leveled up to level {bpk.CurrentLevel} and evolved to {(Species)bpk.Species}!" : $" gained {xpGet} EXP and leveled up to level {bpk.CurrentLevel}!");
+                    else embed.AddField($"\n{Context.User}'s Buddy " + (evolve ? bpk.IsNicknamed ? bpk.Nickname : Ledybot.Program.PKTable.Species7[currentspec - 1] : bpk.Nickname), evolve  ? $" gained {xpGet} EXP and evolved to {(Species)bpk.Species}!" :$" gained {xpGet} EXP!" );
                 }
                
             }
@@ -1990,7 +1991,10 @@ public class discordbot
                 ":large_blue_diamond:" + "**!tradecord (***!tc***) trainer-name ###**(*natdex#-of-deposit*) **##**(*tradecord-id#*) **trainerinfo**(*optional*) )" + "\n" + "⠀" + "\n" + "*Trades your caught pokemon to you in the gen 7 GTS (Compatible with SUN / MOON / ULTRA SUN / MOON*" 
                 , true);
             embed.AddField("extras", ":large_blue_diamond:" + "**!nickname** (***!n***) # nickname" + "\n" + "\n" + "*Replace # with the ID number of the pokemon you want to nickname(from list command)*" + "\n" + "\n" +
-                ":large_blue_diamond:" + "**!tradecorddex** (***!tdex***)" + "\n" + "\n" + "Displays how many dex entries you have registered out of 807", true);
+                ":large_blue_diamond:" + "**!tradecorddex** (***!tdex***)" + "\n" + "\n" + "Displays how many dex entries you have registered out of 807" + "\n" + "\n" + 
+                $":large_blue_diamond: **!tdexmissing** (***!tdm***) \n \n Displays what pokemon you are missing from your pokedex \n \n" +
+                $":large_blue_diamond: **!BuddySet** (***!bs***) \n \n Sets a buddy to go on your adventure, will gain exp with each catch and evolve if it meets level criteria! \n \n" +
+                $":large_blue_diamond: **!Buddy** (***!b***) \n \n Displays your buddies information!", true);
             embed.ImageUrl = "https://cdn.discordapp.com/attachments/733454651227373579/848772777641377832/piplup.gif";
             await ReplyAsync(embed: embed.Build());
             return;
@@ -2138,13 +2142,13 @@ public class discordbot
             if (File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb))
             {
                 byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb);
-                var tpk = PKMConverter.GetPKMfromBytes(g, 6);
+                var tpk = PKMConverter.GetPKMfromBytes(g, 7);
                 EmbedBuilder embed = new EmbedBuilder();
                 if (Directory.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy"))
                 {
                     File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy");
                     byte[] i = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy");
-                    var bpk = PKMConverter.GetPKMfromBytes(i, 6);
+                    var bpk = PKMConverter.GetPKMfromBytes(i, 7);
                     var direct = Directory.GetCurrentDirectory() + "//" + Context.User.Id;
                     string directfile;
                     int a = 1;
@@ -2158,7 +2162,7 @@ public class discordbot
                     embed.WithColor(88, 163, 73);
                     embed.Color = new Color(88, 163, 73);
                     embed.Title = Context.User.ToString() + " has set " + tpk.Nickname.ToString() + " to be there buddy pokemon";
-                    embed.AddField($"{Ledybot.Program.PKTable.Species6[tpk.Species - 1]}'s info", ShowdownParsing.GetShowdownText(tpk));
+                    embed.AddField($"{Ledybot.Program.PKTable.Species7[tpk.Species - 1]}'s info", ShowdownParsing.GetShowdownText(tpk));
                     embed.ThumbnailUrl = tpk.IsShiny ? "https://play.pokemonshowdown.com/sprites/ani-shiny/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif" : "https://play.pokemonshowdown.com/sprites/ani/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif";
                     embed.WithFooter(Ledybot.Program.PKTable.Balls7[tpk.Ball - 1], $"https://raw.githubusercontent.com/BakaKaito/HomeImages/main/Ballimg/50x50/{Ledybot.Program.PKTable.Balls7[tpk.Ball - 1].Split(' ')[0].ToLower()}ball.png");
                 }
@@ -2171,7 +2175,7 @@ public class discordbot
                     embed.WithColor(88, 163, 73);
                     embed.Color = new Color(88, 163, 73);
                     embed.Title = Context.User.ToString() + " has set " + tpk.Nickname + " to be there buddy pokemon";
-                    embed.AddField($"{Ledybot.Program.PKTable.Species6[tpk.Species - 1]}'s info", ShowdownParsing.GetShowdownText(tpk));
+                    embed.AddField($"{Ledybot.Program.PKTable.Species7[tpk.Species - 1]}'s info", ShowdownParsing.GetShowdownText(tpk));
                     embed.WithFooter(Ledybot.Program.PKTable.Balls7[tpk.Ball - 1], $"https://raw.githubusercontent.com/BakaKaito/HomeImages/main/Ballimg/50x50/{Ledybot.Program.PKTable.Balls7[tpk.Ball - 1].Split(' ')[0].ToLower()}ball.png");
                 }
 
