@@ -830,14 +830,7 @@ public class discordbot
                     File.Delete(Ledybot.GTSBot6.tpfile);
             }
 
-            if(distribute == "true" && distributestart == true)
-            {
-                int pts = 4321;
-                poketosearch.Enqueue(pts);
-                trainername.Enqueue("");
-                Ledybot.MainForm.btn_Start_Click(null, EventArgs.Empty);
-
-            }
+           
         }
         public static async Task checkdistr()
         {

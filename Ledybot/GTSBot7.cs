@@ -275,8 +275,10 @@ namespace Ledybot
                             botresult = 8;
                             botState = (int)gtsbotstates.botexit;
                             MainForm.btn_Stop_Click(null, EventArgs.Empty);
+                            while (Ledybot.MainForm.botWorking)
+                                await Task.Delay(500);
                             if(discordbot.trademodule.distribute == "false")
-                                await discordbot.trademodule.slow();
+                               discordbot.trademodule.slow();
                             if(discordbot.trademodule.distribute == "true")
                             {
                                discordbot.trademodule.trainername.Dequeue();
@@ -488,7 +490,7 @@ namespace Ledybot
                                 }
                                 int preprou = 0;
                                 if (gender == 0)
-                                    preprou = 1;
+                                    preprou = 0;
                                else if (gender == 1)
                                     preprou = 0;
                                 else if (gender == 2)
@@ -521,8 +523,7 @@ namespace Ledybot
                                                     pokecheck.SetIsShiny(false);
                                                 pokecheck.CurrentLevel = levels;
                                                 pokecheck.Gender = preprou;
-                                                if (pokecheck.Species == 29 && preprou == 0)
-                                                    pokecheck.Species = 32;
+                                              
                                                 if (new LegalityAnalysis(pokecheck).Report().Contains("Genderless"))
                                                     pokecheck.Gender = 2;
                                                 int[] sugmov = MoveSetApplicator.GetMoveSet(pokecheck, true);
@@ -1036,7 +1037,7 @@ namespace Ledybot
                                     botState = (int)gtsbotstates.botexit;
                                     Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
                                     await discordbot.trademodule.notrade();
-                                    break;
+                                    
                                 }
                                 byte[] writepoke = tradedpoke.DecryptedBoxData;
                                 tpfile = Path.GetTempFileName().Replace(".tmp", "." + tradedpoke.Extension);
@@ -1046,6 +1047,7 @@ namespace Ledybot
                                 discordbot.trademodule.username.Dequeue();
                                 discordbot.trademodule.pokequeue.Dequeue();
                                 discordbot.trademodule.pokemonfile.Dequeue();
+                                break;
                             }
                             
                             
@@ -1069,6 +1071,8 @@ namespace Ledybot
                                 Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
                                 discordbot.trademodule.distribute = "false";
                                 discordbot.trademodule.trainername.Dequeue();
+                                while (Ledybot.MainForm.botWorking)
+                                   await Task.Delay(500);
                                 discordbot.trademodule.checkdistr();
                                 break;
                             }
@@ -1082,6 +1086,8 @@ namespace Ledybot
                             Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
                             discordbot.trademodule.distribute = "false";
                             discordbot.trademodule.trainername.Dequeue();
+                            while (Ledybot.MainForm.botWorking)
+                               await Task.Delay(500);
                             discordbot.trademodule.checkdistr();
                         }
                         break;
