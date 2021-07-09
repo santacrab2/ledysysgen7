@@ -1604,6 +1604,10 @@ public class discordbot
             tpk.Nature = natue;
             tpk.SetRandomIVs();
 
+            Random itm = new Random();
+            int item = itm.Next(550);
+            tpk.ApplyHeldItem(item, 1);
+
             Random shinrng = new Random();
             int shinyrng = shinrng.Next(4);
             if (shinyrng != 1)
@@ -1614,10 +1618,6 @@ public class discordbot
             var shinymessage = "non-shiny";
             if (tpk.IsShiny)
                 shinymessage = "shiny";
-
-            Random itm = new Random();
-            int item = itm.Next(550);
-            tpk.ApplyHeldItem(item, 1);
 
             if (!Directory.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id))
             {
@@ -1947,16 +1947,35 @@ public class discordbot
             {
                 byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb);
                 var tpk = PKMConverter.GetPKMfromBytes(g, 7);
-                EmbedBuilder embed = new EmbedBuilder();
-                embed.WithFooter(Ledybot.Program.PKTable.Item7[tpk.HeldItem].ToString(), "https://play.pokemonshowdown.com/sprites/itemicons/" + Ledybot.Program.PKTable.Item7[tpk.HeldItem].ToString().ToLower().Replace(" ", "-").Replace("é", "e") + ".png");
-                embed.Color = new Color(147, 191, 230);
-                embed.ThumbnailUrl = tpk.IsShiny ? "https://play.pokemonshowdown.com/sprites/ani-shiny/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif" : "https://play.pokemonshowdown.com/sprites/ani/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif";
-                embed.AddField($"{Context.User} {Ledybot.Program.PKTable.Species7[tpk.Species - 1]}'s info", ShowdownParsing.GetShowdownText(tpk));
-                await ReplyAsync(embed: embed.Build());
+                if (tpk.HeldItem != 0)
+                {
+                    EmbedBuilder embed = new EmbedBuilder();
+                    embed.ThumbnailUrl = tpk.IsShiny ? "https://play.pokemonshowdown.com/sprites/ani-shiny/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif" : "https://play.pokemonshowdown.com/sprites/ani/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif";
+                    embed.AddField($"{Context.User} {Ledybot.Program.PKTable.Species7[tpk.Species - 1]}'s info", ShowdownParsing.GetShowdownText(tpk) + "\n" + "Ball: " + Ledybot.Program.PKTable.Balls7[tpk.Ball - 1]);
+                    embed.WithColor(147, 191, 230);
+                    embed.WithFooter(Ledybot.Program.PKTable.Item7[tpk.HeldItem].ToString(), "https://play.pokemonshowdown.com/sprites/itemicons/" + Ledybot.Program.PKTable.Item7[tpk.HeldItem].ToString().ToLower().Replace(" ", "-").Replace("é", "e") + ".png");
+                    await ReplyAsync(embed: embed.Build());
+                }
+                else
+                {
+                    EmbedBuilder embed = new EmbedBuilder();
+                    embed.ThumbnailUrl = tpk.IsShiny ? "https://play.pokemonshowdown.com/sprites/ani-shiny/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif" : "https://play.pokemonshowdown.com/sprites/ani/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif";
+                    embed.AddField($"{Context.User} {Ledybot.Program.PKTable.Species7[tpk.Species - 1]}'s info", ShowdownParsing.GetShowdownText(tpk) + "\n" + "Ball: " + Ledybot.Program.PKTable.Balls7[tpk.Ball - 1]);
+                    embed.WithColor(147, 191, 230);
+                    await ReplyAsync(embed: embed.Build());
+
+                }
                 return;
             }
-            await ReplyAsync("no pokemon with this id number was found");
+            else
+            {
+                EmbedBuilder embed = new EmbedBuilder();
+                embed.WithColor(147, 191, 230);
+                embed.AddField("no pokemon with this id number was found", "", false);
+                await ReplyAsync(embed: embed.Build());
+            }
         }
+
         [Command("cordhelp")]
         [Alias("ch")]
         public async Task HelpTC()
