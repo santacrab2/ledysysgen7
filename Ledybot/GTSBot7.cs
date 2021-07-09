@@ -1048,12 +1048,14 @@ namespace Ledybot
                                 discordbot.trademodule.pokemonfile.Dequeue();
                                 
                             }
-                            
-                            
-                            
-                            
-                            
-                            
+
+                            Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
+                            if (discordbot.trademodule.distribute == "false")
+                                discordbot.trademodule.pokequeue.Dequeue();
+
+
+
+
                             bool cont = false;
 
 
@@ -1067,9 +1069,7 @@ namespace Ledybot
                                 foundLastPage = false;
                                 botresult = 8;
                                 botState = (int)gtsbotstates.botexit;
-                                Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
-                                if (discordbot.trademodule.distribute == "false")
-                                    discordbot.trademodule.pokequeue.Dequeue();
+                              
                                 discordbot.trademodule.trainername.Dequeue();
                                 if(discordbot.trademodule.distribute == "true")
                                     discordbot.trademodule.checkdistr();
@@ -1083,9 +1083,7 @@ namespace Ledybot
                             addr_PageEntry = 0;
                             foundLastPage = false;
                             botState = (int)gtsbotstates.botexit;
-                            Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
-                            if (discordbot.trademodule.distribute == "false")
-                                discordbot.trademodule.pokequeue.Dequeue();
+                            
                             discordbot.trademodule.trainername.Dequeue();
                             if (discordbot.trademodule.distribute == "true")
                                 discordbot.trademodule.checkdistr();

@@ -883,7 +883,7 @@ public class discordbot
                 else
                     File.Delete(Ledybot.GTSBot6.tpfile);
             }
-            await Task.Delay(2000);
+            
             if (pokequeue.Count == 0)
                 distribute = "true";
             if (distribute == "true" && distributestart == true)
