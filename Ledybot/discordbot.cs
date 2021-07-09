@@ -97,7 +97,7 @@ public class discordbot
             // Create a number to track where the prefix ends and the command begins
             int argPos = 0;
             // Determine if the message is a command based on the prefix and make sure no bots trigger commands
-            if (!(message.HasCharPrefix('!', ref argPos) ||
+            if (!(message.HasCharPrefix('&', ref argPos) ||
                 message.HasMentionPrefix(_client.CurrentUser, ref argPos)) ||
                 message.Author.IsBot)
                 return;
@@ -152,13 +152,13 @@ public class discordbot
             int ptsstr = Array.IndexOf(Ledybot.Program.PKTable.Species7, pts);
             if(ptsstr == -1)
             {
-                await ReplyAsync("did not recognize your deposit pokemon");
+                await ReplyAsync("CubchooBot does not recognize deposited pokemon value in command, did you spell the name correctly?");
                 return;
             }
             ptsstr = ptsstr + 1;
             if (tradevolvs.Contains(ptsstr))
             {
-                await ReplyAsync("you almost just broke the bot by depositing a trade evolution, you are a fucking asshole :)");
+                await ReplyAsync("Pokemon that evolve when traded to the bot can not be used as a deposited pokemon! ( *they break the bot* )");
                 return;
             }
             string[] pset = set.Split('\n');
@@ -181,7 +181,7 @@ public class discordbot
                 }
             }
             if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("ot name too long"))
-                pk.OT_Name = "Pip";
+                pk.OT_Name = "tiny.cc/bwhd";
             if (set.Contains("TID:"))
             {
 
@@ -220,7 +220,7 @@ public class discordbot
             {
                 if (pk.HeldItem != 686)
                 {
-                    await ReplyAsync("no megastones or z-crystals...fixing pokemon");
+                    await ReplyAsync("Megastones and Z-Crystals will not trade via GTS, take this edited pokemon :open_hands: :clown:");
                     pk.ApplyHeldItem(571, pk.Format);
                     pk.SetEV(0, 0);
                     pk.SetEV(1, 0);
@@ -240,13 +240,13 @@ public class discordbot
             }
             if (!new LegalityAnalysis(pk).Valid)
             {
-                await ReplyAsync("Pokemon is illegal dumbass");
+                await Context.Channel.SendFileAsync("C:\\Users\\cafra\\Desktop\\My Stuff\\bewear_jojo.mp4", ".pk7 is Illegal... uh oh...");
                 await ReplyAsync(LegalityFormatting.Report(new LegalityAnalysis(pk)));
                 File.Delete(temppokewait);
                 return;
 
             }
-            await ReplyAsync("yay its legal good job!");
+            await ReplyAsync(".pk7 is Legal, adding to queue");
 
             byte[] g = pk.DecryptedBoxData;
             System.IO.File.WriteAllBytes(temppokewait, g);
@@ -257,7 +257,7 @@ public class discordbot
             channel.Enqueue(Context.Channel);
             poketosearch.Enqueue(ptsstr);
             discordname.Enqueue(Context.User);
-            await ReplyAsync("added " + Context.User + " to queue");
+            await ReplyAsync("added <@" + Context.User.Id + "> to queue");
             await checkstarttrade();
 
 
@@ -274,7 +274,7 @@ public class discordbot
             
             if (tradevolvs.Contains(pts))
             {
-                await ReplyAsync("you almost just broke the bot by depositing a trade evolution, you are a fucking asshole :)");
+                await ReplyAsync("Pokemon that evolve when traded to the bot can not be used as a deposited pokemon! ( *they break the bot* )");
                 return;
             }
             string[] pset = set.Split('\n');
@@ -297,7 +297,7 @@ public class discordbot
                 }
             }
             if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("ot name too long"))
-                pk.OT_Name = "Pip";
+                pk.OT_Name = "tiny.cc/bwhd";
             if (set.Contains("TID:"))
             {
 
@@ -336,7 +336,7 @@ public class discordbot
             {
                 if (pk.HeldItem != 686)
                 {
-                    await ReplyAsync("no megastones or z-crystals...fixing pokemon");
+                    await ReplyAsync("Megastones and Z - Crystals will not trade via GTS, take this edited pokemon: open_hands: :clown: ");
                     pk.ApplyHeldItem(571, pk.Format);
                     pk.SetEV(0, 0);
                     pk.SetEV(1, 0);
@@ -356,13 +356,13 @@ public class discordbot
             }
             if (!new LegalityAnalysis(pk).Valid)
             {
-                await ReplyAsync("Pokemon is illegal dumbass");
+                await Context.Channel.SendFileAsync("C:\\Users\\cafra\\Desktop\\My Stuff\\bewear_jojo.mp4", ".pk7 is Illegal... uh oh...");
                 await ReplyAsync(LegalityFormatting.Report(new LegalityAnalysis(pk)));
                 File.Delete(temppokewait);
                 return;
 
             }
-            await ReplyAsync("yay its legal good job!");
+            await ReplyAsync(".pk7 is Legal, adding to queue");
 
             byte[] g = pk.DecryptedBoxData;
             System.IO.File.WriteAllBytes(temppokewait, g);
@@ -373,7 +373,7 @@ public class discordbot
             channel.Enqueue(Context.Channel);
             poketosearch.Enqueue(pts);
             discordname.Enqueue(Context.User);
-            await ReplyAsync("added " + Context.User + " to queue");
+            await ReplyAsync("added <@" + Context.User.Id + "> to queue");
             await checkstarttrade();
 
 
@@ -388,21 +388,21 @@ public class discordbot
             int ptsstr = Array.IndexOf(Ledybot.Program.PKTable.Species7, pts);
             if (ptsstr == -1)
             {
-                await ReplyAsync("Deposit pokemon not recognized");
+                await ReplyAsync("CubchooBot does not recognize deposited pokemon value in command, did you spell the name correctly?");
                 return;
             }
             ptsstr = ptsstr + 1;
             string temppokewait = Path.GetTempFileName();
             if (tradevolvs.Contains(ptsstr))
             {
-                await ReplyAsync("you almost just broke the bot by depositing a trade evolution, you are a fucking asshole :)");
+                await ReplyAsync("Pokemon that evolve when traded to the bot can not be used as a deposited pokemon! ( *they break the bot* )");
                 return;
             }
             //this grabs the file the user uploads to discord if they even do it.
             pokm = Context.Message.Attachments.FirstOrDefault();
             if (pokm == default)
             {
-                await ReplyAsync("no attachment provided wtf are you doing?");
+                await ReplyAsync("no attachment provided, are you using the right command format? Use **&help** for more info");
                 File.Delete(temppokewait);
                 return;
             }
@@ -410,12 +410,12 @@ public class discordbot
             att = Format.Sanitize(pokm.Filename);
             if (!att.Contains(".pk7"))
             {
-                await ReplyAsync("no pk7 provided");
+                await ReplyAsync("attached file is not a .pk7, this is a GTS sysbot for Gen7 Pokemon Games SUN / MOON / ULTRA SUN / ULTRA MOON");
                 File.Delete(temppokewait);
                 return;
             }
 
-            await ReplyAsync("file accepted..now to check if you know what you are doing with pkhex");
+            await ReplyAsync(".pk7 detected, checking legality...");
             await webClient.DownloadFileTaskAsync(pokm.Url, temppokewait);
 
             buffer = await DownloadFromUrlAsync(pokm.Url);
@@ -499,7 +499,7 @@ public class discordbot
             var la2 = new LegalityAnalysis(tradeable);
             if (!la2.Valid)
             {
-                await ReplyAsync("pokemon is illegal dumbass");
+                await Context.Channel.SendFileAsync("C:\\Users\\cafra\\Desktop\\My Stuff\\bewear_jojo.mp4", ".pk7 is Illegal... uh oh...");
                 File.Delete(temppokewait);
                 return;
             }
@@ -507,7 +507,7 @@ public class discordbot
             {
                 if (tradeable.HeldItem != 686)
                 {
-                    await ReplyAsync("no megastones or z-crystals...fixing pokemon");
+                    await ReplyAsync("Megastones and Z - Crystals will not trade via GTS, take this edited pokemon: open_hands: :clown:");
                     tradeable.ApplyHeldItem(571, tradeable.Format);
                     tradeable.SetEV(0, 0);
                     tradeable.SetEV(1, 0);
@@ -532,7 +532,7 @@ public class discordbot
 
 
 
-            await ReplyAsync("yay its legal good job!");
+            await ReplyAsync("y.pk7 is Legal, adding to queue");
             pokequeue.Enqueue(temppokewait);
             username.Enqueue(Context.User.Id);
             trainername.Enqueue(trainer);
@@ -540,7 +540,7 @@ public class discordbot
             poketosearch.Enqueue(ptsstr);
             channel.Enqueue(Context.Channel);
             discordname.Enqueue(Context.User);
-            await ReplyAsync("added " + Context.User + " to queue");
+            await ReplyAsync("added <@" + Context.User.Id + "> to queue");
             await checkstarttrade();
 
 
@@ -558,14 +558,14 @@ public class discordbot
             string temppokewait = Path.GetTempFileName();
             if (tradevolvs.Contains(pts))
             {
-                await ReplyAsync("you almost just broke the bot by depositing a trade evolution, you are a fucking asshole :)");
+                await ReplyAsync("Pokemon that evolve when traded to the bot can not be used as a deposited pokemon! ( *they break the bot* )");
                 return;
             }
             //this grabs the file the user uploads to discord if they even do it.
             pokm = Context.Message.Attachments.FirstOrDefault();
             if (pokm == default)
             {
-                await ReplyAsync("no attachment provided wtf are you doing?");
+                await ReplyAsync("No attachment provided, are you using the right command format? Use **&help** for more info");
                 File.Delete(temppokewait);
                 return;
             }
@@ -573,12 +573,12 @@ public class discordbot
             att = Format.Sanitize(pokm.Filename);
             if (!att.Contains(".pk7"))
             {
-                await ReplyAsync("no pk7 provided");
+                await ReplyAsync("The attached file is not a .pk7, this is a GTS sysbot for Gen7 Pokemon Games SUN / MOON / ULTRA SUN / ULTRA MOON");
                 File.Delete(temppokewait);
                 return;
             }
 
-            await ReplyAsync("file accepted..now to check if you know what you are doing with pkhex");
+            await ReplyAsync(".pk7 detected, checking legality...");
             await webClient.DownloadFileTaskAsync(pokm.Url, temppokewait);
 
             buffer = await DownloadFromUrlAsync(pokm.Url);
@@ -662,7 +662,7 @@ public class discordbot
             var la2 = new LegalityAnalysis(tradeable);
             if (!la2.Valid)
             {
-                await ReplyAsync("pokemon is illegal dumbass");
+                await Context.Channel.SendFileAsync("C:\\Users\\cafra\\Desktop\\My Stuff\\bewear_jojo.mp4", ".pk7 is Illegal... RUN!");
                 File.Delete(temppokewait);
                 return;
             }
@@ -670,7 +670,7 @@ public class discordbot
             {
                 if (tradeable.HeldItem != 686)
                 {
-                    await ReplyAsync("no megastones or z-crystals...fixing pokemon");
+                    await ReplyAsync("Megastones and Z - Crystals will not trade via GTS, take this edited pokemon: open_hands: :clown:");
                     tradeable.ApplyHeldItem(571, tradeable.Format);
                     tradeable.SetEV(0, 0);
                     tradeable.SetEV(1, 0);
@@ -695,7 +695,7 @@ public class discordbot
 
 
 
-                await ReplyAsync("yay its legal good job!");
+                await ReplyAsync(".pk7 is Legal, adding to queue");
                 pokequeue.Enqueue(temppokewait);
                 username.Enqueue(Context.User.Id);
                 trainername.Enqueue(trainer);
@@ -703,7 +703,7 @@ public class discordbot
                 poketosearch.Enqueue(pts);
                 channel.Enqueue(Context.Channel);
                 discordname.Enqueue(Context.User);
-                await ReplyAsync("added " + Context.User + " to queue");
+                await ReplyAsync("added <@" + Context.User.Id + "> to queue");
                 await checkstarttrade();
 
             
@@ -724,16 +724,20 @@ public class discordbot
             else
             {
                 if (pokequeue.Count == 1)
-                    await ReplyAsync("finishing an ad trade, be right with you!");
+                    await ReplyAsync("finishing an advertisement trade, be right with you!");
                 else
                     await ReplyAsync("There are " + pokequeue.Count + " trainers in the queue");
             }
         }
+
         [Command("start")]
         [RequireOwner]
         public async Task startdistribute()
         {
-            await ReplyAsync("starting distribution");
+            var embed = new EmbedBuilder();
+            embed.Color = new Color(147, 191, 230);
+            embed.Title = "starting distribution";
+            await ReplyAsync(embed: embed.Build());
             distribute = "true";
             distributestart = true;
             if(pokequeue.Count == 0)
@@ -862,8 +866,10 @@ public class discordbot
         [RequireOwner]
         public async Task stop()
         {
-
-            await ReplyAsync("stopping distribution");
+            var embed = new EmbedBuilder();
+            embed.Color = new Color(147, 191, 230);
+            embed.Title = "stopping distribution";
+            await ReplyAsync(embed: embed.Build());
             distributestart = false;
         }
 
@@ -873,18 +879,21 @@ public class discordbot
         {
             if (Context.User.Id == 763073084676374578)
             {
+                var embed = new EmbedBuilder();
+                embed.Color = new Color(147, 191, 230);
+                embed.Title = "the first person in line has been removed";
+                await ReplyAsync(embed: embed.Build());
                 pokequeue.Dequeue();
                 username.Dequeue();
                 pokemonfile.Dequeue();
                 trainername.Dequeue();
                 channel.Dequeue();
                 discordname.Dequeue();
-                await ReplyAsync("the first person in line has been removed");
                 Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
             }
             else
             {
-                await ReplyAsync("only santacrab can use this command");
+                await ReplyAsync("only bewearhugs can use this command");
                 
             }
 
@@ -895,6 +904,10 @@ public class discordbot
         {
             if (Context.User.Id == 763073084676374578)
             {
+                var embed = new EmbedBuilder();
+                embed.Color = new Color(147, 191, 230);
+                embed.Title = "the entire queue has been cleared";
+                await ReplyAsync(embed: embed.Build());
                 pokequeue.Clear();
                 username.Clear();
                 pokemonfile.Clear();
@@ -902,7 +915,6 @@ public class discordbot
                 channel.Clear();
                 discordname.Clear();
                 poketosearch.Clear();
-                await ReplyAsync("the entire queue has been cleared");
                 Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
             }
             else
@@ -917,25 +929,20 @@ public class discordbot
         {
             var embed = new EmbedBuilder();
             embed.Color = new Color(147, 191, 230);
-            embed.Title = "Piplup Bot Help";
+            embed.Title = "CubchooBot Help";
             embed.ThumbnailUrl = "https://www.shinyhunters.com/images/shiny/393.gif";
-            embed.AddField("Piplup is a Gen 7 GTS Sysbot for" + "\n", "SUN / MOON / ULTRA SUN / ULTRA MOON", false);
+            embed.AddField("Cubchoo is a Gen 7 GTS Sysbot for" + "\n", "SUN / MOON / ULTRA SUN / ULTRA MOON", false);
             embed.AddField("⠀", "__Deposit a pokemon into the Gen 7 GTS__" + "\n" + "__Then use one of these 2 Commands to make the trade:__" + "⠀", false);
-            embed.AddField(":large_blue_diamond:Attached .pk7 file" + "\n", "```" + "\n" + "!trade DepositPokemon trainerName (and attach the file and hit send)```", true);
-            embed.AddField(":large_blue_diamond:Showdown set" + "\n", "```" + "\n" + "!trade trainername DepositPokemon showdownset (and hit send)```"+"\n"+"Deposit Pokemon's name must be Capitalized", true);
+            embed.AddField(":blue_square:Attached .pk7 file" + "\n", "```" + "\n" + "&trade DepositPokemon trainerName (and attach the file and hit send)```", true);
+            embed.AddField(":blue_square:Showdown set" + "\n", "```" + "\n" + "&trade trainername DepositPokemon showdownset (and hit send)```"+"\n"+"Deposit Pokemon's name must be Capitalized", true);
             embed.AddField("***Do not deposit or request the following - they will not trade over GTS and may break the bot:***",
                 "*Mythical Pokemon*" + "\n" + "*Event Pokemon*" + "\n" + "*Special Pokemon*" + "\n" + "*Fusions*" + "\n" + " *Un-Tradeable Forms*" + "\n" + "*Un-Tradeable Ribbons*" + "\n" + "*Un-Tradeable Moves*" + "\n" + "*Special Items (Megastone/Z-Crystal)*" + "\n" + "⠀", false);
             embed.ImageUrl = "https://cdn.discordapp.com/attachments/733454651227373579/848772777641377832/piplup.gif";
-            embed.AddField("*Showdown sets now accept batch commands!*" + "\n" + "⠀", " *Please use quotes around your trainer name, if your trainer name has a space in it*" + "\n" + "```" + "\n" + "ex: !trade \"bewear hugs\"" + "```", false);
-            embed.AddField("Pokedex Function (helps you figure out legal moves and other stats for your Pokemon)" + "\n" + "**!dex pokemon**" + "\n", "```" + "\n" + "ex: !dex pidgey" + "\n" + "*works in reverse too*" + "\n" + "!dex 016" + "```" + "\n", true);
+            embed.AddField("*Showdown sets now accept batch commands!*" + "\n" + "⠀", " *Please use quotes around your trainer name, if your trainer name has a space in it*" + "\n" + "```" + "\n" + "ex: &trade \"bewear hugs\"" + "```", false);
+            embed.AddField("Pokedex Function (helps you figure out legal moves and other stats for your Pokemon)" + "\n" + "**&dex pokemon**" + "\n", "```" + "\n" + "ex: &dex pidgey" + "\n" + "*works in reverse too*" + "\n" + "&dex 016" + "```" + "\n", true);
             await ReplyAsync(embed: embed.Build());
         }
 
-        [Command("hi")]
-        public async Task hi()
-        {
-            await ReplyAsync(":middle_finger:");
-        }
         [Command("fuckyou")]
         public async Task fuckyou()
         {
@@ -948,9 +955,11 @@ public class discordbot
             Object[] arr = discordname.ToArray();
             var sb = new System.Text.StringBuilder();
             var embed = new EmbedBuilder();
-            if(arr.Length ==0)
+            embed.Color = new Color(147, 191, 230);
+            if (arr.Length ==0)
             {
-              await  ReplyAsync("queue is empty");
+                embed.Title = "queue is empty";
+                await ReplyAsync(embed: embed.Build());
             }
             int r = 0;
             foreach (object i in arr)
@@ -1877,7 +1886,10 @@ public class discordbot
                 File.Delete(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb);
                 return;
             }
-            await ReplyAsync("no pokemon with that id number found");
+            var embed = new EmbedBuilder();
+            embed.Color = new Color(147, 191, 230);
+            embed.Title = "no pokemon with that id number found";
+            await ReplyAsync(embed: embed.Build());
         }
         [Command("massrelease")]
         [Alias("mr")]
@@ -1906,10 +1918,19 @@ public class discordbot
             }
 
             if (shiny == "")
-                await ReplyAsync("all non shiny pokemon have been released");
+            {
+                var embed = new EmbedBuilder();
+                embed.Color = new Color(147, 191, 230);
+                embed.Title = "all non shiny pokemon have been released";
+                await ReplyAsync(embed: embed.Build());
+            }
             if (shiny.ToLower() == "shiny")
-                await ReplyAsync("all pokemon have been released");
-
+            {
+                var embed = new EmbedBuilder();
+                embed.Color = new Color(147, 191, 230);
+                embed.Title = "all pokemon have been released";
+                await ReplyAsync(embed: embed.Build());
+            }
         }
 
 
@@ -1922,6 +1943,7 @@ public class discordbot
                 byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb);
                 var tpk = PKMConverter.GetPKMfromBytes(g, 7);
                 EmbedBuilder embed = new EmbedBuilder().WithFooter(Ledybot.Program.PKTable.Balls7[tpk.Ball-1], $"https://raw.githubusercontent.com/BakaKaito/HomeImages/main/Ballimg/50x50/{Ledybot.Program.PKTable.Balls7[tpk.Ball - 1].Split(' ')[0].ToLower()}ball.png");
+                embed.Color = new Color(147, 191, 230);
                 embed.ThumbnailUrl = tpk.IsShiny ? "https://play.pokemonshowdown.com/sprites/ani-shiny/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif" : "https://play.pokemonshowdown.com/sprites/ani/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif";
                 embed.AddField($"{Context.User} {Ledybot.Program.PKTable.Species7[tpk.Species - 1]}'s info", ShowdownParsing.GetShowdownText(tpk));
                 await ReplyAsync(embed: embed.Build());
@@ -1938,18 +1960,18 @@ public class discordbot
             embed.Title = "Piplup Tradecord Help";
             embed.ThumbnailUrl = "https://www.shinyhunters.com/images/shiny/393.gif";
             embed.AddField("Piplup tradecord is compatible with:", "SUN / MOON / ULTRA SUN / ULTRA MOON" + "\n" + "Gen 7 GTS", false);
-            embed.AddField("***Tradecord Commands***", "⠀" + "\n" + ":large_blue_diamond:" + "**!catch** (***!k***)" + "\n" + "⠀" + "\n" + "*Attempts to catch a random Pokemon*" + "\n" + "\n" +
-                ":large_blue_diamond:" + "**!list** (***!l***)" + "\n" + "⠀" + "\n" + "*Displays a list of you're caught pokemon*" + "\n" + "\n" +
-                ":large_blue_diamond:" + "**!info #** (***!i #***)" + "\n" + "⠀" + "\n" + "*Replace # with the ID number of the pokemon you want to check (from list command)*" + "\n" + "\n" +
-                ":large_blue_diamond:" + "**!release #** (***!r #***)" + "\n" + "⠀" + "\n" + "*Replace # with the ID number of the pokemon you want to release (from list command)*" + "\n" + "\n" +
-                ":large_blue_diamond:" + "**!massrelease** (***!mr***)" + "\n" + "⠀" + "\n" + "*Releases all non-shiny pokemon*" + "\n" + "**!mr shiny will release ALL pokemon**" + "\n" + "\n" +
-                ":large_blue_diamond:" + "**!tradecord (***!tc***) trainer-name ###**(*natdex#-of-deposit*) **##**(*tradecord-id#*) **trainerinfo**(*optional*) )" + "\n" + "⠀" + "\n" + "*Trades your caught pokemon to you in the gen 7 GTS (Compatible with SUN / MOON / ULTRA SUN / MOON*" 
+            embed.AddField("***Tradecord Commands***", "⠀" + "\n" + ":large_blue_diamond:" + "**&catch** (***&k***)" + "\n" + "⠀" + "\n" + "*Attempts to catch a random Pokemon*" + "\n" + "\n" +
+                ":large_blue_diamond:" + "**&list** (***&l***)" + "\n" + "⠀" + "\n" + "*Displays a list of you're caught pokemon*" + "\n" + "\n" +
+                ":large_blue_diamond:" + "**&info #** (***&i #***)" + "\n" + "⠀" + "\n" + "*Replace # with the ID number of the pokemon you want to check (from list command)*" + "\n" + "\n" +
+                ":large_blue_diamond:" + "**&release #** (***&r #***)" + "\n" + "⠀" + "\n" + "*Replace # with the ID number of the pokemon you want to release (from list command)*" + "\n" + "\n" +
+                ":large_blue_diamond:" + "**&massrelease** (***&mr***)" + "\n" + "⠀" + "\n" + "*Releases all non-shiny pokemon*" + "\n" + "**!mr shiny will release ALL pokemon**" + "\n" + "\n" +
+                ":large_blue_diamond:" + "**&tradecord (***&tc***) trainer-name ###**(*natdex#-of-deposit*) **##**(*tradecord-id#*) **trainerinfo**(*optional*) )" + "\n" + "⠀" + "\n" + "*Trades your caught pokemon to you in the gen 7 GTS (Compatible with SUN / MOON / ULTRA SUN / MOON*" 
                 , true);
-            embed.AddField("extras", ":large_blue_diamond:" + "**!nickname** (***!n***) # nickname" + "\n" + "\n" + "*Replace # with the ID number of the pokemon you want to nickname(from list command)*" + "\n" + "\n" +
-                ":large_blue_diamond:" + "**!tradecorddex** (***!tdex***)" + "\n" + "\n" + "Displays how many dex entries you have registered out of 807" + "\n" + "\n" + 
-                $":large_blue_diamond: **!tdexmissing** (***!tdm***) \n \n Displays what pokemon you are missing from your pokedex \n \n" +
-                $":large_blue_diamond: **!BuddySet** (***!bs***) \n \n Sets a buddy to go on your adventure, will gain exp with each catch and evolve if it meets level criteria! \n \n" +
-                $":large_blue_diamond: **!Buddy** (***!b***) \n \n Displays your buddies information!", true);
+            embed.AddField("extras", ":large_blue_diamond:" + "**&nickname** (***&n***) # nickname" + "\n" + "\n" + "*Replace # with the ID number of the pokemon you want to nickname(from list command)*" + "\n" + "\n" +
+                ":large_blue_diamond:" + "**&tradecorddex** (***&tdex***)" + "\n" + "\n" + "Displays how many dex entries you have registered out of 807" + "\n" + "\n" + 
+                $":large_blue_diamond: **&tdexmissing** (***&tdm***) \n \n Displays what pokemon you are missing from your pokedex \n \n" +
+                $":large_blue_diamond: **&BuddySet** (***&bs***) \n \n Sets a buddy to go on your adventure, will gain exp with each catch and evolve if it meets level criteria! \n \n" +
+                $":large_blue_diamond: **&Buddy** (***&b***) \n \n Displays your buddies information!", true);
             embed.ImageUrl = "https://cdn.discordapp.com/attachments/733454651227373579/848772777641377832/piplup.gif";
             await ReplyAsync(embed: embed.Build());
             return;
@@ -1987,6 +2009,7 @@ public class discordbot
             if(File.Exists(Directory.GetCurrentDirectory() + "//"+"//dexs//" +Context.User.Id+".txt"))
             {
                 EmbedBuilder embed = new EmbedBuilder();
+                embed.Color = new Color(147, 191, 230);
                 embed.Title = $"{Context.User}'s Pokedex Progress";
                 int count = File.ReadAllLines($"{Directory.GetCurrentDirectory()}//dexs///{Context.User.Id}.txt").Count();
                 embed.AddField("You've caught: ", count.ToString() + "/807");
@@ -2004,7 +2027,10 @@ public class discordbot
         {
             if(!File.Exists($"{Directory.GetCurrentDirectory()}////dexs//{Context.User.Id}.txt"))
             {
-                await ReplyAsync("no user found, catch some pokemon with !k");
+                var embed = new EmbedBuilder();
+                embed.Color = new Color(147, 191, 230);
+                embed.Title = "no user found, catch some pokemon with &k";
+                await ReplyAsync(embed: embed.Build());
                 return;
             }
             var tdextxt = File.ReadAllLines($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt");
@@ -2073,7 +2099,7 @@ public class discordbot
                 byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy");
                 var tpk = PKMConverter.GetPKMfromBytes(g, 7);
                 var embed = new EmbedBuilder().WithFooter(Ledybot.Program.PKTable.Balls7[tpk.Ball - 1], $"https://raw.githubusercontent.com/BakaKaito/HomeImages/main/Ballimg/50x50/{Ledybot.Program.PKTable.Balls7[tpk.Ball - 1].Split(' ')[0].ToLower()}ball.png"); 
-                embed.Color = new Color(88, 163, 73);
+                embed.Color = new Color(147, 191, 230);
                 embed.Title = Context.User.ToString() + "'s Buddy";
                 embed.AddField($"{Ledybot.Program.PKTable.Species7[tpk.Species - 1]}'s info", ShowdownParsing.GetShowdownText(tpk));
                 embed.ThumbnailUrl = tpk.IsShiny ? "https://play.pokemonshowdown.com/sprites/ani-shiny/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif" : "https://play.pokemonshowdown.com/sprites/ani/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif";
@@ -2083,7 +2109,7 @@ public class discordbot
             else
             {
                 var embed = new EmbedBuilder();
-                embed.Color = new Color(88, 163, 73);
+                embed.Color = new Color(147, 191, 230);
                 embed.Title = Context.User.ToString() + " has no assigned Buddy, use !bs id# to assign a pokemon as your buddy";
                 await ReplyAsync(embed: embed.Build());
                 return;
