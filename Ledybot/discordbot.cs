@@ -111,7 +111,7 @@ public class discordbot
                 context: context,
                 argPos: argPos,
                 services: null);
-        }  
+        }
 
     }
 
@@ -140,17 +140,17 @@ public class discordbot
         public static string distribute = "false";
         public static string trainer;
         public static int[] tradevolvs = { 525, 75, 533, 93, 64, 67, 708, 710 };
-        
+
         public static bool distributestart = false;
 
         [Command("trade")]
         [Alias("t")]
-      
+
         public async Task stradestringdepo(string trainer, string pts, [Remainder] string set)
         {
-            
+
             int ptsstr = Array.IndexOf(Ledybot.Program.PKTable.Species7, pts);
-            if(ptsstr == -1)
+            if (ptsstr == -1)
             {
                 await ReplyAsync("CubchooBot does not recognize deposited pokemon value in command, did you spell the name correctly?");
                 return;
@@ -263,15 +263,15 @@ public class discordbot
 
         }
 
-        
+
 
 
         [Command("trade")]
         [Alias("t")]
-     
-        public async Task stradenotidpts(string trainer, int pts,[Remainder] string set)
+
+        public async Task stradenotidpts(string trainer, int pts, [Remainder] string set)
         {
-            
+
             if (tradevolvs.Contains(pts))
             {
                 await ReplyAsync("Pokemon that evolve when traded to the bot can not be used as a deposited pokemon! ( *they break the bot* )");
@@ -282,7 +282,7 @@ public class discordbot
             string temppokewait = Path.GetTempFileName();
 
             PKM pk = BuildPokemon(set, 7);
-        
+
 
             if (pk.OT_Name.ToLower() == "pkhex")
                 pk.OT_Name = trainer;
@@ -351,7 +351,7 @@ public class discordbot
                     pk.SetIV(4, 0);
                     pk.SetIV(5, 0);
 
-           
+
                 }
             }
             if (!new LegalityAnalysis(pk).Valid)
@@ -381,10 +381,10 @@ public class discordbot
 
         [Command("trade")]
         [Alias("t")]
-      
+
         public async Task pstrtrade([Summary("poke to search")] string pts, [Remainder] string trainer)
         {
-            
+
             int ptsstr = Array.IndexOf(Ledybot.Program.PKTable.Species7, pts);
             if (ptsstr == -1)
             {
@@ -551,10 +551,10 @@ public class discordbot
 
         [Command("trade")]
         [Alias("t")]
-      
+
         public async Task ptrade([Summary("poke to search")] int pts, [Remainder] string trainer)
         {
-            
+
             string temppokewait = Path.GetTempFileName();
             if (tradevolvs.Contains(pts))
             {
@@ -689,28 +689,28 @@ public class discordbot
                     System.IO.File.WriteAllBytes(temppokewait, y);
                 }
             }
-            
-            
 
 
 
 
-                await ReplyAsync(".pk7 is Legal, adding to queue");
-                pokequeue.Enqueue(temppokewait);
-                username.Enqueue(Context.User.Id);
-                trainername.Enqueue(trainer);
-                pokemonfile.Enqueue(tradeable);
-                poketosearch.Enqueue(pts);
-                channel.Enqueue(Context.Channel);
-                discordname.Enqueue(Context.User);
-                await ReplyAsync("added <@" + Context.User.Id + "> to queue");
-                await checkstarttrade();
 
-            
+
+            await ReplyAsync(".pk7 is Legal, adding to queue");
+            pokequeue.Enqueue(temppokewait);
+            username.Enqueue(Context.User.Id);
+            trainername.Enqueue(trainer);
+            pokemonfile.Enqueue(tradeable);
+            poketosearch.Enqueue(pts);
+            channel.Enqueue(Context.Channel);
+            discordname.Enqueue(Context.User);
+            await ReplyAsync("added <@" + Context.User.Id + "> to queue");
+            await checkstarttrade();
+
+
 
         }
 
-        
+
 
 
 
@@ -740,7 +740,7 @@ public class discordbot
             await ReplyAsync(embed: embed.Build());
             distribute = "true";
             distributestart = true;
-            if(pokequeue.Count == 0)
+            if (pokequeue.Count == 0)
                 checkdistr();
         }
         public async Task starttrades()
@@ -768,7 +768,7 @@ public class discordbot
                     await chan.SendMessageAsync("<@" + username.Peek() + ">" + " deposit your pokemon now");
 
                     Ledybot.MainForm.btn_Start_Click(null, EventArgs.Empty);
-                
+
 
 
                 }
@@ -795,12 +795,12 @@ public class discordbot
                     File.Delete(Ledybot.GTSBot6.tpfile);
             }
 
-           
+
         }
         public static async Task checkdistr()
         {
             await Task.Delay(2000);
-            
+
             while (pokequeue.Count != 0)
             {
                 if (retpoke.Count != 0)
@@ -894,7 +894,7 @@ public class discordbot
             else
             {
                 await ReplyAsync("only bewearhugs can use this command");
-                
+
             }
 
         }
@@ -957,7 +957,7 @@ public class discordbot
             var sb = new System.Text.StringBuilder();
             var embed = new EmbedBuilder();
             embed.Color = new Color(147, 191, 230);
-            if (arr.Length ==0)
+            if (arr.Length == 0)
             {
                 embed.Title = "queue is empty";
                 await ReplyAsync(embed: embed.Build());
@@ -965,26 +965,26 @@ public class discordbot
             int r = 0;
             foreach (object i in arr)
             {
-                
-                sb.AppendLine((r+1).ToString() +". " + arr[r].ToString());
+
+                sb.AppendLine((r + 1).ToString() + ". " + arr[r].ToString());
                 r++;
             }
             embed.AddField(x =>
             {
-                
+
                 x.Name = "Queue:";
                 x.Value = sb.ToString();
                 x.IsInline = false;
-                
-                
+
+
             });
-            await ReplyAsync( embed: embed.Build());
+            await ReplyAsync(embed: embed.Build());
         }
         [Command("dex")]
-        public async Task dex([Remainder]string pokemon)
+        public async Task dex([Remainder] string pokemon)
 
         {
-           if(pokemon.ToLower() == "random")
+            if (pokemon.ToLower() == "random")
             {
                 Random randit = new Random();
                 int rannumb = randit.Next(1, 807);
@@ -994,7 +994,7 @@ public class discordbot
             EmbedFooterBuilder x = new EmbedFooterBuilder();
             var baseLink = "https://raw.githubusercontent.com/BakaKaito/HomeImages/main/homeimg/128x128/poke_capture_0001_000_mf_n_00000000_f_n.png".Split('_');
             var MyArrayLower = Ledybot.Program.PKTable.Species7.Select(s => s.ToLower()).ToArray();
-            
+
             if (Array.IndexOf(MyArrayLower, pokemon.ToLower()) == -1 || Array.IndexOf(MyArrayLower, pokemon.ToLower()) > 807)
             {
                 var embed = new EmbedBuilder();
@@ -1007,7 +1007,7 @@ public class discordbot
             else
 
             {
-                
+
                 int i = 0;
                 i = Array.IndexOf(MyArrayLower, pokemon.ToLower());
                 i = i + 1;
@@ -1032,7 +1032,7 @@ public class discordbot
                 readeri.Close();
                 stri.Close();
 
-                embed.AddField("Type: " + typez, "Egg Group(s): " +"\n" + egggr, true);
+                embed.AddField("Type: " + typez, "Egg Group(s): " + "\n" + egggr, true);
                 Stream strb = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.GenderRatios.txt");
                 StreamReader readerb = new StreamReader(strb);
                 var genders = readerb.ReadToEnd().Split('\n')[i];
@@ -1045,7 +1045,7 @@ public class discordbot
                 strj.Close();
                 readerj.Close();
 
-                embed.AddField("Gender Ratios: " + "\n"+ genders,  intro,true);
+                embed.AddField("Gender Ratios: " + "\n" + genders, intro, true);
 
                 foreach (int d in Ledybot.Program.PKTable.getAbilities7(i, default))
                 {
@@ -1079,7 +1079,7 @@ public class discordbot
                 strc.Close();
                 embed.AddField("Base Stats", nstatc + "\n" + "**Catch Rate: **" + CR, true);
 
-                embed.AddField("Abilities:", abil,true);
+                embed.AddField("Abilities:", abil, true);
 
                 var quickpk = BuildPokemon(pokemon, 7);
                 if (quickpk != null)
@@ -1106,11 +1106,11 @@ public class discordbot
 
                 embed.ImageUrl = link;
                 using (WebClient cl = new WebClient())
-                { 
-                    
+                {
+
                     try
                     {
-                       
+
                         Stream mystream = cl.OpenRead(link);
                         mystream.Close();
                     }
@@ -1118,7 +1118,7 @@ public class discordbot
                     {
                         if (((HttpWebResponse)wex.Response).StatusCode == HttpStatusCode.NotFound)
                         {
-                            
+
                             baseLink[4] = "fo";
                             link = string.Join("_", baseLink);
                             embed.ImageUrl = link;
@@ -1163,7 +1163,7 @@ public class discordbot
                     {
                         if (((HttpWebResponse)wex.Response).StatusCode == HttpStatusCode.NotFound)
                         {
-                            
+
                             baseLink[4] = "fd";
                             link = string.Join("_", baseLink);
                             embed.ImageUrl = link;
@@ -1193,19 +1193,19 @@ public class discordbot
                     {
                         if (((HttpWebResponse)wex.Response).StatusCode == HttpStatusCode.NotFound)
                         {
-                            
+
                             baseLink[4] = "mf";
                             link = string.Join("_", baseLink);
                             embed.ImageUrl = link;
-                            
+
                         }
                     }
                     finally
                     {
-                       
+
                         x.Text = "Dex entry: " + entry;
                         await ReplyAsync(embed: embed.Build());
-                        
+
                     }
                 }
             }
@@ -1216,7 +1216,7 @@ public class discordbot
 
         {
             EmbedFooterBuilder x = new EmbedFooterBuilder();
-           
+
             var baseLink = "https://raw.githubusercontent.com/BakaKaito/HomeImages/main/homeimg/128x128/poke_capture_0001_000_mf_n_00000000_f_n.png".Split('_');
             if (national > 807)
             {
@@ -1251,14 +1251,14 @@ public class discordbot
                 readeri.Close();
                 stri.Close();
 
-                embed.AddField("Type: " + typez, "Egg Group(s): " +"\n" + egggr, true);
+                embed.AddField("Type: " + typez, "Egg Group(s): " + "\n" + egggr, true);
 
                 Stream strb = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.GenderRatios.txt");
                 StreamReader readerb = new StreamReader(strb);
                 var genders = readerb.ReadToEnd().Split('\n')[national];
                 readerb.Close();
                 strb.Close();
-               
+
 
                 Stream strj = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.Introduced.txt");
                 StreamReader readerj = new StreamReader(strj);
@@ -1266,7 +1266,7 @@ public class discordbot
                 strj.Close();
                 readerj.Close();
 
-                embed.AddField("Gender Ratios: " + "\n"+genders,  intro, true);
+                embed.AddField("Gender Ratios: " + "\n" + genders, intro, true);
 
                 Stream strd = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.Height.txt");
                 StreamReader readerd = new StreamReader(strd);
@@ -1301,8 +1301,9 @@ public class discordbot
                 embed.AddField("Abilities:", abil, true);
 
                 var quickpk = BuildPokemon(Ledybot.Program.PKTable.Species7[national - 1], 7);
-                if(quickpk != null) { 
-                int[] sugmov = MoveSetApplicator.GetMoveSet(quickpk, true);
+                if (quickpk != null)
+                {
+                    int[] sugmov = MoveSetApplicator.GetMoveSet(quickpk, true);
                     if (sugmov.Count() != 0)
                     {
                         System.Text.StringBuilder smov = new System.Text.StringBuilder();
@@ -1313,7 +1314,7 @@ public class discordbot
                         }
                         embed.AddField("Suggested Moves:", smov, true);
                     }
-                 }
+                }
 
 
                 Stream strf = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ledybot.DexFlavor.txt");
@@ -1322,7 +1323,7 @@ public class discordbot
                 reader.Close();
                 strf.Close();
 
-              
+
 
 
 
@@ -1426,7 +1427,7 @@ public class discordbot
                     }
                     finally
                     {
-                       
+
                         x.Text = "Dex entry: " + entry;
                         await ReplyAsync(embed: embed.Build());
 
@@ -1455,8 +1456,6 @@ public class discordbot
             username.Dequeue();
             pokemonfile.Dequeue();
             trainername.Dequeue();
-           
-            
         }
         public static async Task notrade()
         {
@@ -1469,9 +1468,9 @@ public class discordbot
             pokemonfile.Dequeue();
             trainername.Dequeue();
             distribute = "false";
-            
+
         }
-       
+
         public static PKM BuildPokemon(string Set, int Generation)
         {
             try
@@ -1489,21 +1488,16 @@ public class discordbot
                 APILegality.Timeout = 30;
                 APILegality.PrioritizeGameVersion = GameVersion.USUM;
                 // Reload Database & Ribbon Index
-                
-                
-                
-               
 
                 // Convert the given Text into a Showdown Set
                 ShowdownSet set = new ShowdownSet(Set);
                 IBattleTemplate re = new RegenTemplate(set, 7);
                 // Generate a Blank Savefile
 
-
                 var sav = TrainerSettings.GetSavedTrainerData(GameVersion.US, 7);
                 PK7 tru = new PK7();
                 // Generates a PKM from Showdown Set
-                var pk = sav.GetLegalFromTemplate(tru,re,out _);
+                var pk = sav.GetLegalFromTemplate(tru, re, out _);
                 PKMConverter.SetPrimaryTrainer(sav);
 
                 PKMConverter.AllowIncompatibleConversion = true;
@@ -1511,11 +1505,7 @@ public class discordbot
                 var sug = EncounterSuggestion.GetSuggestedMetInfo(pk);
                 pk.Met_Location = sug.Location;
                 pk.Met_Level = sug.LevelMin;
-               
-                    
                 pk = pk.Legalize();
-
-
 
                 // In case its illegal, return null
                 if (!new LegalityAnalysis(pk).Valid)
@@ -1526,8 +1516,6 @@ public class discordbot
                     pk = pk.Legalize();
                     return pk;
                 }
-
-
 
                 // Return PKM
                 return pk;
@@ -1542,7 +1530,7 @@ public class discordbot
         [Alias("k")]
         public async Task tradecordcatch()
         {
-            int[] mythic = { 151, 251, 385, 386, 490, 491, 492, 493, 494,646, 647, 648, 649, 719, 720, 721, 801, 802, 807 };
+            int[] mythic = { 151, 251, 385, 386, 490, 491, 492, 493, 494, 646, 647, 648, 649, 719, 720, 721, 801, 802, 807 };
             var embed = new EmbedBuilder();
             string direct;
             Random balrng = new Random();
@@ -1564,16 +1552,16 @@ public class discordbot
                 await ReplyAsync(embed: embed.Build());
                 return;
             }
-            
+
             Random carng = new Random();
             int catchrng = carng.Next(806);
             if (!File.Exists($"{Directory.GetCurrentDirectory()}//rolls.txt"))
                 File.Create($"{Directory.GetCurrentDirectory()}//rolls.txt");
             while (File.ReadAllLines($"{Directory.GetCurrentDirectory()}//rolls.txt").Contains(catchrng.ToString()))
                 catchrng = carng.Next(806);
-           while(mythic.Contains(catchrng))
+            while (mythic.Contains(catchrng))
                 catchrng = carng.Next(806);
-           
+
             StreamWriter catches = File.AppendText($"{Directory.GetCurrentDirectory()}//rolls.txt");
             catches.WriteLine(catchrng);
             catches.Close();
@@ -1581,14 +1569,14 @@ public class discordbot
             {
 
                 File.WriteAllText($"{Directory.GetCurrentDirectory()}//rolls.txt", string.Empty);
-                    
+
             }
-            
+
             var tpk = BuildPokemon(Ledybot.Program.PKTable.Species7[catchrng], 7);
-         
-       
-           tpk.Ball = BallApplicator.ApplyBallLegalRandom(tpk);
-           
+
+
+            tpk.Ball = BallApplicator.ApplyBallLegalRandom(tpk);
+
             Random level = new Random();
             tpk.CurrentLevel = level.Next(100);
             tpk = tpk.Legalize();
@@ -1634,9 +1622,10 @@ public class discordbot
                 Directory.CreateDirectory($"{Directory.GetCurrentDirectory()}//dexs//");
             if (!File.Exists($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt"))
                 File.Create($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt");
-            if (!File.ReadAllLines($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt").Contains(tpk.Species.ToString())|| File.ReadAllText($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt")== null){
+            if (!File.ReadAllLines($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt").Contains(tpk.Species.ToString()) || File.ReadAllText($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt") == null)
+            {
                 embed.AddField("Pokedex", $"Registered {Ledybot.Program.PKTable.Species7[tpk.Species - 1]} to your Pokedex");
-               StreamWriter de = File.AppendText($"{Directory.GetCurrentDirectory()}//dexs///{Context.User.Id}.txt");
+                StreamWriter de = File.AppendText($"{Directory.GetCurrentDirectory()}//dexs///{Context.User.Id}.txt");
                 de.WriteLine(tpk.Species);
                 de.Close();
             }
@@ -1653,11 +1642,9 @@ public class discordbot
                     md = true;
                 else fd = true;
             }
-
             baseLink[2] = tpk.Species < 10 ? $"000{tpk.Species}" : tpk.Species < 100 && tpk.Species > 9 ? $"00{tpk.Species}" : $"0{tpk.Species}";
             baseLink[3] = tpk.Form < 10 ? $"00{tpk.Form}" : $"0{tpk.Form}";
             baseLink[4] = tpk.PersonalInfo.OnlyFemale ? "fo" : tpk.PersonalInfo.OnlyMale ? "mo" : tpk.PersonalInfo.Genderless ? "uk" : fd ? "fd" : md ? "md" : "mf";
-
             embed.Color = new Color(147, 191, 230);
             embed.ThumbnailUrl = $"https://raw.githubusercontent.com/BakaKaito/HomeImages/main/Ballimg/50x50/{Ledybot.Program.PKTable.Balls7[tpk.Ball - 1].Split(' ')[0].ToLower()}ball.png";
             embed.AddField(Context.User + "'s catch!", " you threw a " + Ledybot.Program.PKTable.Balls7[tpk.Ball - 1] + " at a " + shinymessage + " " + Ledybot.Program.PKTable.Species7[tpk.Species - 1] + "...");
@@ -1668,7 +1655,7 @@ public class discordbot
             x.Text = "Id number: " + a;
             embed.Footer = x;
             embed.ImageUrl = baseLink2;
-            
+
             if (File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy"))
             {
                 byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy");
@@ -1682,14 +1669,14 @@ public class discordbot
                     var xpGet = (uint)Math.Round(Math.Pow(bpk.CurrentLevel / 5.0 * ((2.0 * bpk.CurrentLevel + 10.0) / (bpk.CurrentLevel + bpk.CurrentLevel + 10.0)), 2.5) * (bpk.IsShiny ? 1.3 : 1.0), 0, MidpointRounding.AwayFromZero);
                     if (xpGet < 100)
                         xpGet = 175;
-                    
+
                     bpk.EXP += xpGet;
                     while (bpk.EXP >= Experience.GetEXP(bpk.CurrentLevel + 1, bpk.PersonalInfo.EXPGrowth) && bpk.CurrentLevel < 100)
                     {
                         bpk.CurrentLevel++;
-                      
+
                     }
-             
+
                     var b = EvolutionTree.GetEvolutionTree(bpk, 7).GetBaseSpeciesForm(bpk.Species, bpk.Form);
                     var testpk = BuildPokemon(Ledybot.Program.PKTable.Species7[bpk.Species + 1], 7);
                     var sug = EncounterSuggestion.GetSuggestedMetInfo(testpk);
@@ -1729,20 +1716,20 @@ public class discordbot
                     }
                     if (bpk.CurrentLevel == 100)
                         bpk.EXP = xpMin;
-                    
-                        File.WriteAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy", bpk.DecryptedBoxData);
-                    
+
+                    File.WriteAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy", bpk.DecryptedBoxData);
+
                     if (bpk.EXP >= xpMin)
-                        embed.AddField($"\n{Context.User}'s Buddy " + (evolve ? bpk.IsNicknamed ? bpk.Nickname : Ledybot.Program.PKTable.Species7[currentspec-1] : bpk.Nickname ), evolve? $" gained {xpGet} EXP and leveled up to level {bpk.CurrentLevel} and evolved to {(Species)bpk.Species}!" : $" gained {xpGet} EXP and leveled up to level {bpk.CurrentLevel}!");
-                    else embed.AddField($"\n{Context.User}'s Buddy " + (evolve ? bpk.IsNicknamed ? bpk.Nickname : Ledybot.Program.PKTable.Species7[currentspec - 1] : bpk.Nickname), evolve  ? $" gained {xpGet} EXP and evolved to {(Species)bpk.Species}!" :$" gained {xpGet} EXP!" );
+                        embed.AddField($"\n{Context.User}'s Buddy " + (evolve ? bpk.IsNicknamed ? bpk.Nickname : Ledybot.Program.PKTable.Species7[currentspec - 1] : bpk.Nickname), evolve ? $" gained {xpGet} EXP and leveled up to level {bpk.CurrentLevel} and evolved to {(Species)bpk.Species}!" : $" gained {xpGet} EXP and leveled up to level {bpk.CurrentLevel}!");
+                    else embed.AddField($"\n{Context.User}'s Buddy " + (evolve ? bpk.IsNicknamed ? bpk.Nickname : Ledybot.Program.PKTable.Species7[currentspec - 1] : bpk.Nickname), evolve ? $" gained {xpGet} EXP and evolved to {(Species)bpk.Species}!" : $" gained {xpGet} EXP!");
                 }
-               
+
             }
             await ReplyAsync(embed: embed.Build());
         }
         [Command("tradecord")]
         [Alias("tc")]
-        public async Task tradecordtrade(string trainer, int pts, int idnumb,[Remainder]string trainerinfo="")
+        public async Task tradecordtrade(string trainer, int pts, int idnumb, [Remainder] string trainerinfo = "")
         {
             string[] tset = trainerinfo.Split('\n');
             string temppokewait = Path.GetTempFileName();
@@ -1795,7 +1782,6 @@ public class discordbot
             {
                 tpk.OT_Gender = 0;
             }
-
             if (trainerinfo.Contains("OTGender: Female"))
             {
                 tpk.OT_Gender = 1;
@@ -1816,8 +1802,6 @@ public class discordbot
         [Alias("l")]
         public async Task pokelist()
         {
-
-           
             if (!Directory.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id))
                 await ReplyAsync("no pokemon found");
             if (Directory.GetFiles(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//").Count() == 0)
@@ -1825,15 +1809,11 @@ public class discordbot
             System.Text.StringBuilder y = new System.Text.StringBuilder();
             int h = 1;
             int k = 1;
-           
             while (Directory.GetFiles(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//").Count() >= k)
             {
-                
                 if (!File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + h))
                 {
                     h++;
-                    
-                   
                     continue;
                 }
                 byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + h);
@@ -1845,7 +1825,7 @@ public class discordbot
             string[] n = new string[24];
             int q = 0;
             string yb = y.ToString();
-            
+
             while (yb.Length > 0)
             {
                 if (yb.Length > 1000)
@@ -1857,27 +1837,18 @@ public class discordbot
                     yb = yb.Remove(0, 1000);
                 else
                     yb = yb.Remove(0, yb.Length);
-              
-                
                 q++;
             }
-
             int r = 0;
             EmbedBuilder embed = new EmbedBuilder();
             embed.Title = "Your pokemon Box";
             foreach (string i in n)
             {
-                if(i != null)
+                if (i != null)
                     embed.AddField($"page {r + 1} ", n[r].ToString());
-                
                 r++;
             }
             await ReplyAsync(embed: embed.Build());
-
-
-
-
-
         }
         [Command("release")]
         [Alias("r")]
@@ -1900,28 +1871,18 @@ public class discordbot
         [Alias("mr")]
         public async Task massrelease(string shiny = "")
         {
-
             string[] files = Directory.GetFiles(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//");
             foreach (string file in files)
             {
-                
                 byte[] g = File.ReadAllBytes(file);
                 var tpk = PKMConverter.GetPKMfromBytes(g, 7);
                 if (!tpk.IsShiny || shiny.ToLower() == "shiny")
                 {
-                    
-                    
-
-                        File.Delete(file);
-                       
-
+                    File.Delete(file);
                 }
                 else
                     continue;
-
-
             }
-
             if (shiny == "")
             {
                 var embed = new EmbedBuilder();
@@ -1937,8 +1898,6 @@ public class discordbot
                 await ReplyAsync(embed: embed.Build());
             }
         }
-
-
         [Command("info")]
         [Alias("i")]
         public async Task info(int idnumb)
@@ -1975,7 +1934,6 @@ public class discordbot
                 await ReplyAsync(embed: embed.Build());
             }
         }
-
         [Command("cordhelp")]
         [Alias("ch")]
         public async Task HelpTC()
@@ -1985,7 +1943,7 @@ public class discordbot
             embed.Title = "Piplup Tradecord Help";
             embed.ThumbnailUrl = "https://www.shinyhunters.com/images/shiny/613.gif";
             embed.AddField("Piplup tradecord is compatible with:", "SUN / MOON / ULTRA SUN / ULTRA MOON" + "\n" + "Gen 7 GTS", false);
-            embed.AddField(":blue_square:" + "**&catch** (***&k***)", "*Attempts to catch a random Pokemon*",false);
+            embed.AddField(":blue_square:" + "**&catch** (***&k***)", "*Attempts to catch a random Pokemon*", false);
             embed.AddField(":blue_square:" + "**&list** (***&l***)", "*Displays a list of you're caught pokemon*", false);
             embed.AddField(":blue_square:" + "**&info #** (***&i #***)", "*Replace # with the ID number of the pokemon you want to check (from list command)*", false);
             embed.AddField(":blue_square:" + "**&release #** (***&r #***)", "*Replace # with the ID number of the pokemon you want to release (from list command)*", false);
@@ -2003,11 +1961,8 @@ public class discordbot
         [Command("nickname")]
         [Alias("n")]
         public async Task nick(int idnumb, string nicky)
-
         {
-
             if (File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb))
-
             {
                 byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb);
                 var tpk = PKMConverter.GetPKMfromBytes(g, 7);
@@ -2030,7 +1985,7 @@ public class discordbot
         [Alias("tdex")]
         public async Task TCdex()
         {
-            if(File.Exists(Directory.GetCurrentDirectory() + "//"+"//dexs//" +Context.User.Id+".txt"))
+            if (File.Exists(Directory.GetCurrentDirectory() + "//" + "//dexs//" + Context.User.Id + ".txt"))
             {
                 EmbedBuilder embed = new EmbedBuilder();
                 embed.Color = new Color(147, 191, 230);
@@ -2038,18 +1993,17 @@ public class discordbot
                 int count = File.ReadAllLines($"{Directory.GetCurrentDirectory()}//dexs///{Context.User.Id}.txt").Count();
                 embed.AddField("You've caught: ", count.ToString() + "/807");
                 if (count == 807)
-                    embed.AddField("Master","You've caught em all! You're a Pokemon Master!");
+                    embed.AddField("Master", "You've caught em all! You're a Pokemon Master!");
                 await ReplyAsync(embed: embed.Build());
                 return;
             }
             await ReplyAsync("no user found, catch some pokemon with !k");
-
         }
         [Command("tdexmissing")]
         [Alias("tdm")]
         public async Task TCdexmissing()
         {
-            if(!File.Exists($"{Directory.GetCurrentDirectory()}////dexs//{Context.User.Id}.txt"))
+            if (!File.Exists($"{Directory.GetCurrentDirectory()}////dexs//{Context.User.Id}.txt"))
             {
                 var embed = new EmbedBuilder();
                 embed.Color = new Color(147, 191, 230);
@@ -2059,20 +2013,14 @@ public class discordbot
             }
             var tdextxt = File.ReadAllLines($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt");
             var natdex2 = Ledybot.Program.PKTable.Species7;
-            
-            foreach(string w in tdextxt)
+            foreach (string w in tdextxt)
             {
-
-
-                natdex2[Convert.ToInt32(w)-1] = "" ;
-                    
-                
-                
+                natdex2[Convert.ToInt32(w) - 1] = "";
             }
             var yb = new System.Text.StringBuilder();
-            foreach(string f in natdex2)
+            foreach (string f in natdex2)
             {
-                if(f != "")
+                if (f != "")
                 {
                     yb.Append($"{f} ");
                 }
@@ -2092,27 +2040,19 @@ public class discordbot
                     ybc = ybc.Remove(0, 1000);
                 else
                     ybc = ybc.Remove(0, ybc.Length);
-
-
                 q++;
             }
-            
             int r = 0;
-          
-          await ReplyAsync("missing pokemon: ");
-            foreach(string i in n)
+            await ReplyAsync("missing pokemon: ");
+            foreach (string i in n)
             {
                 if (i != null)
                 {
-                    await ReplyAsync($"page {r+1}: {i}");
-                    
+                    await ReplyAsync($"page {r + 1}: {i}");
+
                 }
                 r++;
-
             }
-            
-            
-           
         }
         [Command("Buddy")]
         [Alias("buddy", "b", "B")]
@@ -2122,7 +2062,7 @@ public class discordbot
             {
                 byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy");
                 var tpk = PKMConverter.GetPKMfromBytes(g, 7);
-                var embed = new EmbedBuilder().WithFooter(Ledybot.Program.PKTable.Balls7[tpk.Ball - 1], $"https://raw.githubusercontent.com/BakaKaito/HomeImages/main/Ballimg/50x50/{Ledybot.Program.PKTable.Balls7[tpk.Ball - 1].Split(' ')[0].ToLower()}ball.png"); 
+                var embed = new EmbedBuilder().WithFooter(Ledybot.Program.PKTable.Balls7[tpk.Ball - 1], $"https://raw.githubusercontent.com/BakaKaito/HomeImages/main/Ballimg/50x50/{Ledybot.Program.PKTable.Balls7[tpk.Ball - 1].Split(' ')[0].ToLower()}ball.png");
                 embed.Color = new Color(147, 191, 230);
                 embed.Title = Context.User.ToString() + "'s Buddy";
                 embed.AddField($"{Ledybot.Program.PKTable.Species7[tpk.Species - 1]}'s info", ShowdownParsing.GetShowdownText(tpk));
@@ -2184,26 +2124,12 @@ public class discordbot
                     embed.WithFooter(Ledybot.Program.PKTable.Balls7[tpk.Ball - 1], $"https://raw.githubusercontent.com/BakaKaito/HomeImages/main/Ballimg/50x50/{Ledybot.Program.PKTable.Balls7[tpk.Ball - 1].Split(' ')[0].ToLower()}ball.png");
                 }
 
-            
+
                 await ReplyAsync(embed: embed.Build());
-                
-              
-                }
+
 
             }
+
         }
-
-
     }
-
-    
-
-
-
-
-
-
-
-
-
-
+}
