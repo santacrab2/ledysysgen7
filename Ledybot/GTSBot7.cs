@@ -1036,7 +1036,7 @@ namespace Ledybot
                                     botState = (int)gtsbotstates.botexit;
                                     Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
                                     await discordbot.trademodule.notrade();
-                                    
+                                    break;
                                 }
                                 byte[] writepoke = tradedpoke.DecryptedBoxData;
                                 tpfile = Path.GetTempFileName().Replace(".tmp", "." + tradedpoke.Extension);
@@ -1046,7 +1046,7 @@ namespace Ledybot
                                 discordbot.trademodule.username.Dequeue();
                                 discordbot.trademodule.pokequeue.Dequeue();
                                 discordbot.trademodule.pokemonfile.Dequeue();
-                                break;
+                                
                             }
                             
                             
