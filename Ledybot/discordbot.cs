@@ -1965,9 +1965,9 @@ public class discordbot
                 ":large_blue_diamond:" + "**&info #** (***&i #***)" + "\n" + "⠀" + "\n" + "*Replace # with the ID number of the pokemon you want to check (from list command)*" + "\n" + "\n" +
                 ":large_blue_diamond:" + "**&release #** (***&r #***)" + "\n" + "⠀" + "\n" + "*Replace # with the ID number of the pokemon you want to release (from list command)*" + "\n" + "\n" +
                 ":large_blue_diamond:" + "**&massrelease** (***&mr***)" + "\n" + "⠀" + "\n" + "*Releases all non-shiny pokemon*" + "\n" + "**!mr shiny will release ALL pokemon**" + "\n" + "\n" +
-                ":large_blue_diamond:" + "**&tradecord (***&tc***) trainer-name ###**(*natdex#-of-deposit*) **##**(*tradecord-id#*) **trainerinfo**(*optional*) )" + "\n" + "⠀" + "\n" + "*Trades your caught pokemon to you in the gen 7 GTS (Compatible with SUN / MOON / ULTRA SUN / MOON*" 
+                ":large_blue_diamond:" + "**&tradecord (***&tc***) trainer-name ###**(*natdex#-of-deposit*) **##**(*tradecord-id#*) **trainerinfo**(*optional*) )" + "\n" + "⠀" + "\n" + "*Trades your caught pokemon to you in the gen 7 GTS (Compatible with SUN/MOON/ULTRA SUN/ULTRA MOON*" 
                 , true);
-            embed.AddField("extras", ":large_blue_diamond:" + "**&nickname** (***&n***) # nickname" + "\n" + "\n" + "*Replace # with the ID number of the pokemon you want to nickname(from list command)*" + "\n" + "\n" +
+            embed.AddField("⠀", "⠀"+"\n"+":large_blue_diamond:" + "**&nickname** (***&n***) # nickname" + "\n" + "\n" + "*Replace # with the ID number of the pokemon you want to nickname(from list command)*" + "\n" + "\n" +
                 ":large_blue_diamond:" + "**&tradecorddex** (***&tdex***)" + "\n" + "\n" + "Displays how many dex entries you have registered out of 807" + "\n" + "\n" + 
                 $":large_blue_diamond: **&tdexmissing** (***&tdm***) \n \n Displays what pokemon you are missing from your pokedex \n \n" +
                 $":large_blue_diamond: **&BuddySet** (***&bs***) \n \n Sets a buddy to go on your adventure, will gain exp with each catch and evolve if it meets level criteria! \n \n" +
