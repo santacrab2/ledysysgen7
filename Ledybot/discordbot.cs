@@ -1590,11 +1590,12 @@ public class discordbot
             Random nat = new Random();
             int natue = nat.Next(24);
             tpk.Nature = natue;
-            tpk.SetRandomIVs();
 
             Random itm = new Random();
             int item = itm.Next(550);
             tpk.ApplyHeldItem(item, 1);
+
+            tpk.SetRandomIVs();
 
             Random shinrng = new Random();
             int shinyrng = shinrng.Next(4);
