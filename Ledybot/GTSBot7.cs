@@ -1068,9 +1068,11 @@ namespace Ledybot
                                 botresult = 8;
                                 botState = (int)gtsbotstates.botexit;
                                 Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
-                                discordbot.trademodule.distribute = "false";
+                               
                                 discordbot.trademodule.trainername.Dequeue();
-                                discordbot.trademodule.checkdistr();
+                                if(discordbot.trademodule.distribute == "true")
+                                    discordbot.trademodule.checkdistr();
+                                discordbot.trademodule.distribute = "false";
                                 break;
                             }
                             
@@ -1081,10 +1083,11 @@ namespace Ledybot
                             foundLastPage = false;
                             botState = (int)gtsbotstates.botexit;
                             Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
-                            discordbot.trademodule.distribute = "false";
+                            
                             discordbot.trademodule.trainername.Dequeue();
-               
-                            discordbot.trademodule.checkdistr();
+                            if (discordbot.trademodule.distribute == "true")
+                                discordbot.trademodule.checkdistr();
+                            discordbot.trademodule.distribute = "false";
                         }
                         break;
                     case (int)gtsbotstates.quicksearch:
