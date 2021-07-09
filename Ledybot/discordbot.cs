@@ -1614,7 +1614,11 @@ public class discordbot
             var shinymessage = "non-shiny";
             if (tpk.IsShiny)
                 shinymessage = "shiny";
-           
+
+            Random itm = new Random();
+            int item = itm.Next(550);
+            tpk.ApplyHeldItem(item, 1);
+
             if (!Directory.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id))
             {
                 Directory.CreateDirectory(Directory.GetCurrentDirectory() + "//" + Context.User.Id);
@@ -1943,7 +1947,8 @@ public class discordbot
             {
                 byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb);
                 var tpk = PKMConverter.GetPKMfromBytes(g, 7);
-                EmbedBuilder embed = new EmbedBuilder().WithFooter(Ledybot.Program.PKTable.Balls7[tpk.Ball-1], $"https://raw.githubusercontent.com/BakaKaito/HomeImages/main/Ballimg/50x50/{Ledybot.Program.PKTable.Balls7[tpk.Ball - 1].Split(' ')[0].ToLower()}ball.png");
+                EmbedBuilder embed = new EmbedBuilder();
+                embed.WithFooter(Ledybot.Program.PKTable.Item7[tpk.HeldItem].ToString(), "https://play.pokemonshowdown.com/sprites/itemicons/" + Ledybot.Program.PKTable.Item7[tpk.HeldItem].ToString().ToLower().Replace(" ", "-").Replace("é", "e") + ".png");
                 embed.Color = new Color(147, 191, 230);
                 embed.ThumbnailUrl = tpk.IsShiny ? "https://play.pokemonshowdown.com/sprites/ani-shiny/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif" : "https://play.pokemonshowdown.com/sprites/ani/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif";
                 embed.AddField($"{Context.User} {Ledybot.Program.PKTable.Species7[tpk.Species - 1]}'s info", ShowdownParsing.GetShowdownText(tpk));
