@@ -773,7 +773,7 @@ public class discordbot
         public async Task startdistribute()
         {
             await ReplyAsync("starting distribution");
-            distribute = "true";
+            
             distributestart = true;
             if(pokequeue.Count == 0)
                 checkdistr();
@@ -834,8 +834,20 @@ public class discordbot
         }
         public static async Task checkdistr()
         {
-            
-            
+            await Task.Delay(5000);
+            if (pokequeue.Count == 0)
+                distribute = "true";
+            if (distribute == "true" && distributestart == true)
+            {
+                int pts = 4321;
+                poketosearch.Enqueue(pts);
+                trainername.Enqueue("");
+                Ledybot.MainForm.btn_Start_Click(null, EventArgs.Empty);
+
+            }
+            if (distributestart == false)
+                distribute = "false";
+
             while (pokequeue.Count != 0)
             {
                 if (retpoke.Count != 0)
@@ -883,19 +895,8 @@ public class discordbot
                 else
                     File.Delete(Ledybot.GTSBot6.tpfile);
             }
+           
             
-            if (pokequeue.Count == 0)
-                distribute = "true";
-            if (distribute == "true" && distributestart == true)
-            {
-                int pts = 4321;
-                poketosearch.Enqueue(pts);
-                trainername.Enqueue("");
-                Ledybot.MainForm.btn_Start_Click(null, EventArgs.Empty);
-
-            }
-            if (distributestart == false)
-                distribute = "false";
 
         }
         [Command("stop")]
@@ -1481,11 +1482,12 @@ public class discordbot
             await chan.SendMessageAsync(discordname.Peek() + " you were too slow or too stupid, one of those, so the trades been cancelled");
             channel.Dequeue();
             discordname.Dequeue();
-            pokequeue.Dequeue();
+            
             username.Dequeue();
             pokemonfile.Dequeue();
             trainername.Dequeue();
-           
+            if (pokequeue.Count == 0)
+                checkdistr();
             
         }
         public static async Task notrade()
@@ -1494,12 +1496,13 @@ public class discordbot
             await chan.SendMessageAsync(discordname.Peek() + " something went wrong with your trade, please try again. if you get this message two times in a row, please ping Santacrab420");
             channel.Dequeue();
             discordname.Dequeue();
-            pokequeue.Dequeue();
+            
             username.Dequeue();
             pokemonfile.Dequeue();
             trainername.Dequeue();
-            distribute = "false";
-            
+            if (pokequeue.Count == 0)
+                checkdistr();
+
         }
        
         public static PKM BuildPokemon(string Set, int Generation)
