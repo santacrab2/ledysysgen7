@@ -1484,7 +1484,7 @@ public class discordbot
             username.Dequeue();
             pokemonfile.Dequeue();
             trainername.Dequeue();
-            distribute = "false";
+           
             
         }
         public static async Task notrade()
