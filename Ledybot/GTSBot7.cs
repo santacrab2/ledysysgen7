@@ -1044,7 +1044,7 @@ namespace Ledybot
                                 System.IO.File.WriteAllBytes(tpfile, writepoke);
                                 discordbot.trademodule.retpoke.Enqueue(tpfile);
                                 discordbot.trademodule.username.Dequeue();
-                                discordbot.trademodule.pokequeue.Dequeue();
+                                
                                 discordbot.trademodule.pokemonfile.Dequeue();
                                 
                             }
@@ -1068,7 +1068,8 @@ namespace Ledybot
                                 botresult = 8;
                                 botState = (int)gtsbotstates.botexit;
                                 Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
-                               
+                                if (discordbot.trademodule.distribute == "false")
+                                    discordbot.trademodule.pokequeue.Dequeue();
                                 discordbot.trademodule.trainername.Dequeue();
                                 if(discordbot.trademodule.distribute == "true")
                                     discordbot.trademodule.checkdistr();
@@ -1083,7 +1084,8 @@ namespace Ledybot
                             foundLastPage = false;
                             botState = (int)gtsbotstates.botexit;
                             Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
-                            
+                            if (discordbot.trademodule.distribute == "false")
+                                discordbot.trademodule.pokequeue.Dequeue();
                             discordbot.trademodule.trainername.Dequeue();
                             if (discordbot.trademodule.distribute == "true")
                                 discordbot.trademodule.checkdistr();
