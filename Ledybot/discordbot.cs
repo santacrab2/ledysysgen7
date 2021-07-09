@@ -835,18 +835,7 @@ public class discordbot
         public static async Task checkdistr()
         {
             await Task.Delay(2000);
-            if (pokequeue.Count == 0)
-                distribute = "true";
-            if (distribute == "true" && distributestart == true)
-            {
-                int pts = 4321;
-                poketosearch.Enqueue(pts);
-                trainername.Enqueue("");
-                Ledybot.MainForm.btn_Start_Click(null, EventArgs.Empty);
-
-            }
-            if (distributestart == false)
-                distribute = "false";
+            
             while (pokequeue.Count != 0)
             {
                 if (retpoke.Count != 0)
@@ -894,6 +883,18 @@ public class discordbot
                 else
                     File.Delete(Ledybot.GTSBot6.tpfile);
             }
+            if (pokequeue.Count == 0)
+                distribute = "true";
+            if (distribute == "true" && distributestart == true)
+            {
+                int pts = 4321;
+                poketosearch.Enqueue(pts);
+                trainername.Enqueue("");
+                Ledybot.MainForm.btn_Start_Click(null, EventArgs.Empty);
+
+            }
+            if (distributestart == false)
+                distribute = "false";
 
         }
         [Command("stop")]
@@ -1484,7 +1485,7 @@ public class discordbot
             pokemonfile.Dequeue();
             trainername.Dequeue();
             distribute = "false";
-            checkdistr();
+            
         }
         public static async Task notrade()
         {
@@ -1497,7 +1498,7 @@ public class discordbot
             pokemonfile.Dequeue();
             trainername.Dequeue();
             distribute = "false";
-            checkdistr();
+            
         }
        
         public static PKM BuildPokemon(string Set, int Generation)
