@@ -1965,12 +1965,12 @@ public class discordbot
             embed.AddField(":blue_square:" + "**&info #** (***&i #***)", "*Replace # with the ID number of the pokemon you want to check (from list command)*", false);
             embed.AddField(":blue_square:" + "**&release #** (***&r #***)", "*Replace # with the ID number of the pokemon you want to release (from list command)*", false);
             embed.AddField(":blue_square:" + "**&massrelease** (***&mr***)", "*Releases all non-shiny pokemon*" + "\n" + "**!mr shiny will release ALL pokemon**", false);
-            embed.AddField(":blue_square:" + "**&tradecord (***&tc***) trainer-name ###**(*natdex#-of-deposit*) **##**(*tradecord-id#*) **trainerinfo**(*optional*) )", "*Trades your caught pokemon to you in the gen 7 GTS (Compatible with SUN/MOON/ULTRA SUN/ULTRA MOON*", false);
+            embed.AddField(":blue_square:" + "**&tradecord** (***&tc***) **trainer-name ###**(*natdex#-of-deposit*) **##**(*tradecord-id#*) **trainerinfo**(*optional*)", "*Trades your caught pokemon to you in the gen 7 GTS (Compatible with SUN/MOON/ULTRA SUN/ULTRA MOON*", false);
             embed.AddField(":blue_square:" + "**&nickname** (***&n***) # nickname", "*Replace # with the ID number of the pokemon you want to nickname(from list command)*", false);
             embed.AddField(":blue_square:" + "**&tradecorddex** (***&tdex***)", "Displays how many dex entries you have registered out of 807", false);
             embed.AddField(":blue_square:" + "**&tdexmissing** (***&tdm***)", "Displays what pokemon you are missing from your pokedex", false);
-            embed.AddField(":blue_square:" + "*&BuddySet** (***&bs***)", "Sets a buddy to go on your adventure, will gain exp with each catch and evolve if it meets level criteria!", false);
-            embed.AddField(":blue_square:" + "**&Buddy** (***&b***), Displays your buddies information!", false);
+            embed.AddField(":blue_square:" + "**&BuddySet** (***&bs***)", "Sets a buddy to go on your adventure, will gain exp with each catch and evolve if it meets level criteria!", false);
+            embed.AddField(":blue_square:" + "**&Buddy** (***&b***)", "Displays your buddies information!", false);
             embed.ImageUrl = "https://cdn.discordapp.com/attachments/733453855039160451/862259838788698122/shiny_cubchoo_fight.gif";
             await ReplyAsync(embed: embed.Build());
             return;
