@@ -275,8 +275,7 @@ namespace Ledybot
                             botresult = 8;
                             botState = (int)gtsbotstates.botexit;
                             MainForm.btn_Stop_Click(null, EventArgs.Empty);
-                            while (Ledybot.MainForm.botWorking)
-                                await Task.Delay(500);
+                           
                             if(discordbot.trademodule.distribute == "false")
                                discordbot.trademodule.slow();
                             if(discordbot.trademodule.distribute == "true")
@@ -1071,8 +1070,6 @@ namespace Ledybot
                                 Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
                                 discordbot.trademodule.distribute = "false";
                                 discordbot.trademodule.trainername.Dequeue();
-                                while (Ledybot.MainForm.botWorking)
-                                   await Task.Delay(500);
                                 discordbot.trademodule.checkdistr();
                                 break;
                             }
@@ -1086,8 +1083,7 @@ namespace Ledybot
                             Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
                             discordbot.trademodule.distribute = "false";
                             discordbot.trademodule.trainername.Dequeue();
-                            while (Ledybot.MainForm.botWorking)
-                               await Task.Delay(500);
+               
                             discordbot.trademodule.checkdistr();
                         }
                         break;

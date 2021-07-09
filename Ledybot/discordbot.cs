@@ -776,7 +776,7 @@ public class discordbot
             distribute = "true";
             distributestart = true;
             if(pokequeue.Count == 0)
-                starttrades();
+                checkdistr();
         }
         public async Task starttrades()
         {
