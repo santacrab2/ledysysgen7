@@ -930,14 +930,14 @@ public class discordbot
             var embed = new EmbedBuilder();
             embed.Color = new Color(147, 191, 230);
             embed.Title = "CubchooBot Help";
-            embed.ThumbnailUrl = "https://www.shinyhunters.com/images/shiny/393.gif";
+            embed.ThumbnailUrl = "https://www.shinyhunters.com/images/shiny/613.gif";
             embed.AddField("Cubchoo is a Gen 7 GTS Sysbot for" + "\n", "SUN / MOON / ULTRA SUN / ULTRA MOON", false);
             embed.AddField("⠀", "__Deposit a pokemon into the Gen 7 GTS__" + "\n" + "__Then use one of these 2 Commands to make the trade:__" + "⠀", false);
             embed.AddField(":blue_square:Attached .pk7 file" + "\n", "```" + "\n" + "&trade DepositPokemon trainerName (and attach the file and hit send)```", true);
             embed.AddField(":blue_square:Showdown set" + "\n", "```" + "\n" + "&trade trainername DepositPokemon showdownset (and hit send)```"+"\n"+"Deposit Pokemon's name must be Capitalized", true);
             embed.AddField("***Do not deposit or request the following - they will not trade over GTS and may break the bot:***",
                 "*Mythical Pokemon*" + "\n" + "*Event Pokemon*" + "\n" + "*Special Pokemon*" + "\n" + "*Fusions*" + "\n" + " *Un-Tradeable Forms*" + "\n" + "*Un-Tradeable Ribbons*" + "\n" + "*Un-Tradeable Moves*" + "\n" + "*Special Items (Megastone/Z-Crystal)*" + "\n" + "⠀", false);
-            embed.ImageUrl = "https://cdn.discordapp.com/attachments/733454651227373579/848772777641377832/piplup.gif";
+            embed.ImageUrl = "https://cdn.discordapp.com/attachments/733453855039160451/862259838788698122/shiny_cubchoo_fight.gif";
             embed.AddField("*Showdown sets now accept batch commands!*" + "\n" + "⠀", " *Please use quotes around your trainer name, if your trainer name has a space in it*" + "\n" + "```" + "\n" + "ex: &trade \"bewear hugs\"" + "```", false);
             embed.AddField("Pokedex Function (helps you figure out legal moves and other stats for your Pokemon)" + "\n" + "**&dex pokemon**" + "\n", "```" + "\n" + "ex: &dex pidgey" + "\n" + "*works in reverse too*" + "\n" + "&dex 016" + "```" + "\n", true);
             await ReplyAsync(embed: embed.Build());
@@ -1958,7 +1958,7 @@ public class discordbot
             var embed = new EmbedBuilder();
             embed.Color = new Color(147, 191, 230);
             embed.Title = "Piplup Tradecord Help";
-            embed.ThumbnailUrl = "https://www.shinyhunters.com/images/shiny/393.gif";
+            embed.ThumbnailUrl = "https://www.shinyhunters.com/images/shiny/613.gif";
             embed.AddField("Piplup tradecord is compatible with:", "SUN / MOON / ULTRA SUN / ULTRA MOON" + "\n" + "Gen 7 GTS", false);
             embed.AddField("***Tradecord Commands***", "⠀" + "\n" + ":large_blue_diamond:" + "**&catch** (***&k***)" + "\n" + "⠀" + "\n" + "*Attempts to catch a random Pokemon*" + "\n" + "\n" +
                 ":large_blue_diamond:" + "**&list** (***&l***)" + "\n" + "⠀" + "\n" + "*Displays a list of you're caught pokemon*" + "\n" + "\n" +
@@ -1972,7 +1972,7 @@ public class discordbot
                 $":large_blue_diamond: **&tdexmissing** (***&tdm***) \n \n Displays what pokemon you are missing from your pokedex \n \n" +
                 $":large_blue_diamond: **&BuddySet** (***&bs***) \n \n Sets a buddy to go on your adventure, will gain exp with each catch and evolve if it meets level criteria! \n \n" +
                 $":large_blue_diamond: **&Buddy** (***&b***) \n \n Displays your buddies information!", true);
-            embed.ImageUrl = "https://cdn.discordapp.com/attachments/733454651227373579/848772777641377832/piplup.gif";
+            embed.ImageUrl = "https://cdn.discordapp.com/attachments/733453855039160451/862259838788698122/shiny_cubchoo_fight.gif";
             await ReplyAsync(embed: embed.Build());
             return;
         }
@@ -2140,8 +2140,8 @@ public class discordbot
                     File.Delete(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb);
                     File.WriteAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy", tpk.DecryptedBoxData);
 
-                    embed.WithColor(88, 163, 73);
-                    embed.Color = new Color(88, 163, 73);
+                    embed.WithColor(147, 191, 230);
+                    embed.Color = new Color(147, 191, 230);
                     embed.Title = Context.User.ToString() + " has set " + tpk.Nickname.ToString() + " to be there buddy pokemon";
                     embed.AddField($"{Ledybot.Program.PKTable.Species7[tpk.Species - 1]}'s info", ShowdownParsing.GetShowdownText(tpk));
                     embed.ThumbnailUrl = tpk.IsShiny ? "https://play.pokemonshowdown.com/sprites/ani-shiny/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif" : "https://play.pokemonshowdown.com/sprites/ani/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif";
