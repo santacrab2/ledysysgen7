@@ -934,7 +934,8 @@ public class discordbot
             embed.AddField("Cubchoo is a Gen 7 GTS Sysbot for" + "\n", "SUN / MOON / ULTRA SUN / ULTRA MOON", false);
             embed.AddField("⠀", "__Deposit a pokemon into the Gen 7 GTS__" + "\n" + "__Then use one of these 2 Commands to make the trade:__" + "⠀", false);
             embed.AddField(":blue_square:Attached .pk7 file" + "\n", "```" + "\n" + "&trade DepositPokemon trainerName (and attach the file and hit send)```", true);
-            embed.AddField(":blue_square:Showdown set" + "\n", "```" + "\n" + "&trade trainername DepositPokemon showdownset (and hit send)```"+"\n"+"Deposit Pokemon's name must be Capitalized", true);
+            embed.AddField(":blue_square:Showdown set" + "\n", "```" + "\n" + "&trade trainername DepositPokemon showdownset (and hit send)```", true);
+            embed.AddField("*Deposit Pokemon's name must be Capitalized*", "Pikachu not pikachu", false);
             embed.AddField("***Do not deposit or request the following - they will not trade over GTS and may break the bot:***",
                 "*Mythical Pokemon*" + "\n" + "*Event Pokemon*" + "\n" + "*Special Pokemon*" + "\n" + "*Fusions*" + "\n" + " *Un-Tradeable Forms*" + "\n" + "*Un-Tradeable Ribbons*" + "\n" + "*Un-Tradeable Moves*" + "\n" + "*Special Items (Megastone/Z-Crystal)*" + "\n" + "⠀", false);
             embed.ImageUrl = "https://cdn.discordapp.com/attachments/733453855039160451/862259838788698122/shiny_cubchoo_fight.gif";
