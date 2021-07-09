@@ -1960,18 +1960,17 @@ public class discordbot
             embed.Title = "Piplup Tradecord Help";
             embed.ThumbnailUrl = "https://www.shinyhunters.com/images/shiny/613.gif";
             embed.AddField("Piplup tradecord is compatible with:", "SUN / MOON / ULTRA SUN / ULTRA MOON" + "\n" + "Gen 7 GTS", false);
-            embed.AddField("***Tradecord Commands***", "⠀" + "\n" + ":large_blue_diamond:" + "**&catch** (***&k***)" + "\n" + "⠀" + "\n" + "*Attempts to catch a random Pokemon*" + "\n" + "\n" +
-                ":large_blue_diamond:" + "**&list** (***&l***)" + "\n" + "⠀" + "\n" + "*Displays a list of you're caught pokemon*" + "\n" + "\n" +
-                ":large_blue_diamond:" + "**&info #** (***&i #***)" + "\n" + "⠀" + "\n" + "*Replace # with the ID number of the pokemon you want to check (from list command)*" + "\n" + "\n" +
-                ":large_blue_diamond:" + "**&release #** (***&r #***)" + "\n" + "⠀" + "\n" + "*Replace # with the ID number of the pokemon you want to release (from list command)*" + "\n" + "\n" +
-                ":large_blue_diamond:" + "**&massrelease** (***&mr***)" + "\n" + "⠀" + "\n" + "*Releases all non-shiny pokemon*" + "\n" + "**!mr shiny will release ALL pokemon**" + "\n" + "\n" +
-                ":large_blue_diamond:" + "**&tradecord (***&tc***) trainer-name ###**(*natdex#-of-deposit*) **##**(*tradecord-id#*) **trainerinfo**(*optional*) )" + "\n" + "⠀" + "\n" + "*Trades your caught pokemon to you in the gen 7 GTS (Compatible with SUN/MOON/ULTRA SUN/ULTRA MOON*" 
-                , true);
-            embed.AddField("⠀", "⠀"+"\n"+":large_blue_diamond:" + "**&nickname** (***&n***) # nickname" + "\n" + "\n" + "*Replace # with the ID number of the pokemon you want to nickname(from list command)*" + "\n" + "\n" +
-                ":large_blue_diamond:" + "**&tradecorddex** (***&tdex***)" + "\n" + "\n" + "Displays how many dex entries you have registered out of 807" + "\n" + "\n" + 
-                $":large_blue_diamond: **&tdexmissing** (***&tdm***) \n \n Displays what pokemon you are missing from your pokedex \n \n" +
-                $":large_blue_diamond: **&BuddySet** (***&bs***) \n \n Sets a buddy to go on your adventure, will gain exp with each catch and evolve if it meets level criteria! \n \n" +
-                $":large_blue_diamond: **&Buddy** (***&b***) \n \n Displays your buddies information!", true);
+            embed.AddField(":blue_square:" + "**&catch** (***&k***)", "*Attempts to catch a random Pokemon*",false);
+            embed.AddField(":blue_square:" + "**&list** (***&l***)", "*Displays a list of you're caught pokemon*", false);
+            embed.AddField(":blue_square:" + "**&info #** (***&i #***)", "*Replace # with the ID number of the pokemon you want to check (from list command)*", false);
+            embed.AddField(":blue_square:" + "**&release #** (***&r #***)", "*Replace # with the ID number of the pokemon you want to release (from list command)*", false);
+            embed.AddField(":blue_square:" + "**&massrelease** (***&mr***)", "*Releases all non-shiny pokemon*" + "\n" + "**!mr shiny will release ALL pokemon**", false);
+            embed.AddField(":blue_square:" + "**&tradecord (***&tc***) trainer-name ###**(*natdex#-of-deposit*) **##**(*tradecord-id#*) **trainerinfo**(*optional*) )", "*Trades your caught pokemon to you in the gen 7 GTS (Compatible with SUN/MOON/ULTRA SUN/ULTRA MOON*", false);
+            embed.AddField(":blue_square:" + "**&nickname** (***&n***) # nickname", "*Replace # with the ID number of the pokemon you want to nickname(from list command)*", false);
+            embed.AddField(":blue_square:" + "**&tradecorddex** (***&tdex***)", "Displays how many dex entries you have registered out of 807", false);
+            embed.AddField(":blue_square:" + "**&tdexmissing** (***&tdm***)", "Displays what pokemon you are missing from your pokedex", false);
+            embed.AddField(":blue_square:" + "*&BuddySet** (***&bs***)", "Sets a buddy to go on your adventure, will gain exp with each catch and evolve if it meets level criteria!", false);
+            embed.AddField(":blue_square:" + "**&Buddy** (***&b***), Displays your buddies information!", false);
             embed.ImageUrl = "https://cdn.discordapp.com/attachments/733453855039160451/862259838788698122/shiny_cubchoo_fight.gif";
             await ReplyAsync(embed: embed.Build());
             return;
