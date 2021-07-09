@@ -96,13 +96,6 @@ public class discordbot
 
             // Create a number to track where the prefix ends and the command begins
             int argPos = 0;
-            if(!message.HasCharPrefix('!', ref argPos)){
-                if(message.Attachments.Count>0)
-                {
-                    await TryHandleMessageAsync(message);
-                }
-            }
-
             // Determine if the message is a command based on the prefix and make sure no bots trigger commands
             if (!(message.HasCharPrefix('!', ref argPos) ||
                 message.HasMentionPrefix(_client.CurrentUser, ref argPos)) ||
@@ -118,39 +111,7 @@ public class discordbot
                 context: context,
                 argPos: argPos,
                 services: null);
-        }
-        public async Task TryHandleMessageAsync(SocketMessage msg)
-        {
-            var attach = msg.Attachments.FirstOrDefault();
-            if (attach == default)
-                return;
-            var att = Format.Sanitize(attach.Filename);
-            if (!PKX.IsPKM(attach.Size)) 
-                return;
-            
-            var pokme = PKMConverter.GetPKMfromBytes(await DownloadFromUrlAsync(attach.Url), 7);
-            var newShowdown = new List<string>();
-            var showdown = ShowdownParsing.GetShowdownText(pokme);
-            foreach (var line in showdown.Split('\n'))
-                newShowdown.Add(line);
-
-            if (pokme.IsEgg)
-                newShowdown.Add("\nPokémon is an egg");
-            if (pokme.Ball > (int)Ball.None)
-                newShowdown.Insert(newShowdown.FindIndex(z => z.Contains("Nature")), $"Ball: {(Ball)pokme.Ball} Ball");
-            if (pokme.IsShiny)
-            {
-                var index = newShowdown.FindIndex(x => x.Contains("Shiny: Yes"));
-                if (pokme.ShinyXor == 0 || pokme.FatefulEncounter)
-                    newShowdown[index] = "Shiny: Square\r";
-                else newShowdown[index] = "Shiny: Star\r";
-            }
-
-            newShowdown.InsertRange(1, new string[] { $"OT: {pokme.OT_Name}", $"TID: {pokme.TrainerID7}", $"SID: {pokme.TrainerSID7}", $"OTGender: {(Gender)pokme.OT_Gender}", $"Language: {(LanguageID)pokme.Language}" });
-           await msg.Channel.SendMessageAsync(Format.Code(string.Join("\n", newShowdown).TrimEnd()));
-        }
-
-    
+        }  
 
     }
 

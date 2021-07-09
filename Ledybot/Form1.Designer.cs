@@ -982,7 +982,7 @@ namespace Ledybot
             this.discord.Padding = new System.Windows.Forms.Padding(3);
             this.discord.Size = new System.Drawing.Size(369, 536);
             this.discord.TabIndex = 4;
-            this.discord.Text = "discord";
+            this.discord.Text = "Discord";
             this.discord.UseVisualStyleBackColor = true;
             this.discord.Click += new System.EventHandler(this.discord_Click);
             // 
@@ -991,9 +991,9 @@ namespace Ledybot
             this.discord.Controls.Add(token);
             this.token.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.token.Location = new System.Drawing.Point(132, 23);
+            this.token.Location = new System.Drawing.Point(5, 5);
             this.token.Name = "token";
-            this.token.Size = new System.Drawing.Size(229, 20);
+            this.token.Size = new System.Drawing.Size(360, 20);
             this.token.TabIndex = 6;
             this.token.TextChanged += new System.EventHandler(this.token_TextChanged_1);
             this.token.Text = "Discord Token";
@@ -1002,7 +1002,7 @@ namespace Ledybot
             // 
             // cordconnect
             // 
-            this.cordconnect.Location = new System.Drawing.Point(141, 60);
+            this.cordconnect.Location = new System.Drawing.Point(141, 30);
             this.cordconnect.Name = "cordconnect";
             this.cordconnect.Size = new System.Drawing.Size(75, 20);
             this.cordconnect.TabIndex = 5;
@@ -1067,7 +1067,7 @@ namespace Ledybot
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Text = "Piplup bot 7";
+            this.Text = "CubchooBot";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);

@@ -533,9 +533,9 @@ namespace Ledybot
                                                 pokecheck.SetRandomIVs();
                                                 pokecheck.HeldItem = 1;
                                                 pokecheck = pokecheck.Legalize();
-                                                pokecheck.OT_Name = "Piplup.net";
+                                                pokecheck.OT_Name = "tiny.cc/bwhd";
                                                 pokecheck.IsNicknamed = true;
-                                                pokecheck.Nickname = "Piplup.net";
+                                                pokecheck.Nickname = "tiny.cc/bwhd";
                                                 if (!new LegalityAnalysis(pokecheck).Valid)
                                                 {
                                                     addr_PageEntry = BitConverter.ToUInt32(block, 0);

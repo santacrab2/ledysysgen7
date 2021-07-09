@@ -52,7 +52,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>165Ledyba.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ledybug6|AnyCPU'">
     <OutputPath>bin\ledybug6\</OutputPath>
@@ -322,7 +323,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <None Include="locale\countries.txt" />
-    <Content Include="165Ledyba.ico" />
     <EmbeddedResource Include="DexFlavor.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -344,6 +344,7 @@
     <EmbeddedResource Include="Introduced.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+    <Content Include="165Ledyba.ico" />
     <Content Include="locale\countryMap.txt" />
     <Content Include="locale\languages.txt" />
     <Content Include="locale\regions3ds.txt" />
