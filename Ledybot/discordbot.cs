@@ -1751,7 +1751,7 @@ public class discordbot
                             {
                                 embed.AddField("Pokedex", $"Registered {Ledybot.Program.PKTable.Species7[bpk.Species - 1]} to your pokedex");
                                 StreamWriter de = File.AppendText($"{Directory.GetCurrentDirectory()}//dexs///{Context.User.Id}.txt");
-                                de.WriteLine(tpk.Species);
+                                de.WriteLine(bpk.Species);
                                 de.Close();
                             }
                         }
