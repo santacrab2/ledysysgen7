@@ -274,7 +274,8 @@ namespace Ledybot
                             foundLastPage = false;
                             botresult = 8;
                             botState = (int)gtsbotstates.botexit;
-                            discordbot.trademodule.pokequeue.Dequeue();
+                            if(discordbot.trademodule.distribute == "false")
+                               discordbot.trademodule.pokequeue.Dequeue();
                             MainForm.btn_Stop_Click(null, EventArgs.Empty);
                            
                             if(discordbot.trademodule.distribute == "false")
