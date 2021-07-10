@@ -265,7 +265,7 @@ namespace Ledybot
                         botState = (int)gtsbotstates.pressSeek;
                         break;
                     case (int)gtsbotstates.pressSeek:
-                        if (stupid == 6)
+                        if (stupid == 5)
                         {
                             startIndex = 0;
                             tradeIndex = -1;
@@ -1074,8 +1074,8 @@ namespace Ledybot
                            
                                 discordbot.trademodule.trainername.Dequeue();
                                 discordbot.trademodule.distribute = "false";
-                           
-                                discordbot.trademodule.checkdistr();
+                                if(discordbot.trademodule.pokequeue.Count == 0)
+                                    discordbot.trademodule.checkdistr();
                                   
                             
                                 
@@ -1092,8 +1092,8 @@ namespace Ledybot
                             Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
                             discordbot.trademodule.trainername.Dequeue();
                             discordbot.trademodule.distribute = "false";
-                         
-                            discordbot.trademodule.checkdistr();
+                            if(discordbot.trademodule.pokequeue.Count == 0)
+                                discordbot.trademodule.checkdistr();
                               
                       
                             
