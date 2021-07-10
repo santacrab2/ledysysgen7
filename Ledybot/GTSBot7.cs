@@ -1073,12 +1073,12 @@ namespace Ledybot
                                 Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
                            
                                 discordbot.trademodule.trainername.Dequeue();
-                                discordbot.trademodule.distribute = "false";
-                                if(discordbot.trademodule.pokequeue.Count == 0)
-                                    discordbot.trademodule.checkdistr();
-                                  
-                            
                                 
+                                if(discordbot.trademodule.pokequeue.Count == 0 || discordbot.trademodule.distribute == "true")
+                                    discordbot.trademodule.checkdistr();
+                                discordbot.trademodule.distribute = "false";
+
+
                                 break;
                             }
                             
@@ -1091,12 +1091,12 @@ namespace Ledybot
                             botState = (int)gtsbotstates.botexit;
                             Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
                             discordbot.trademodule.trainername.Dequeue();
-                            discordbot.trademodule.distribute = "false";
-                            if(discordbot.trademodule.pokequeue.Count == 0)
+                          
+                            if(discordbot.trademodule.pokequeue.Count == 0 || discordbot.trademodule.distribute == "true")
                                 discordbot.trademodule.checkdistr();
-                              
-                      
-                            
+
+                            discordbot.trademodule.distribute = "false";
+
                         }
                         break;
                     case (int)gtsbotstates.quicksearch:
