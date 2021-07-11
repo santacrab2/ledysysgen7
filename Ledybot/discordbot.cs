@@ -1616,38 +1616,44 @@ public class discordbot
                 File.WriteAllText($"{Directory.GetCurrentDirectory()}//rolls.txt", string.Empty);
                     
             }
-            
-            var tpk = BuildPokemon(Ledybot.Program.PKTable.Species7[catchrng], 7);
-         
-       
-           tpk.Ball = BallApplicator.ApplyBallLegalRandom(tpk);
-           
-            Random level = new Random();
-            tpk.CurrentLevel = level.Next(100);
-            tpk = tpk.Legalize();
-            while (!new LegalityAnalysis(tpk).Valid)
+            try
             {
+                var tpk = BuildPokemon(Ledybot.Program.PKTable.Species7[catchrng], 7);
+
+
+                tpk.Ball = BallApplicator.ApplyBallLegalRandom(tpk);
+
+                Random level = new Random();
                 tpk.CurrentLevel = level.Next(100);
                 tpk = tpk.Legalize();
-            }
-            int[] sugmov = MoveSetApplicator.GetMoveSet(tpk, true);
-            tpk.SetMoves(sugmov);
-            Random nat = new Random();
-            int natue = nat.Next(24);
-            tpk.Nature = natue;
-            tpk.SetRandomIVs();
+                while (!new LegalityAnalysis(tpk).Valid)
+                {
+                    tpk.CurrentLevel = level.Next(100);
+                    tpk = tpk.Legalize();
+                }
+                int[] sugmov = MoveSetApplicator.GetMoveSet(tpk, true);
+                tpk.SetMoves(sugmov);
+                Random nat = new Random();
+                int natue = nat.Next(24);
+                tpk.Nature = natue;
+                tpk.SetRandomIVs();
 
-            Random shinrng = new Random();
-            int shinyrng = shinrng.Next(4);
-            if (shinyrng != 1)
-                tpk.SetIsShiny(true);
-            if (new LegalityAnalysis(tpk).Report().Contains("Static Encounter shiny mismatch"))
-                tpk.SetIsShiny(false);
-            tpk = tpk.Legalize();
-            var shinymessage = "non-shiny";
-            if (tpk.IsShiny)
-                shinymessage = "shiny";
-           
+                Random shinrng = new Random();
+                int shinyrng = shinrng.Next(4);
+                if (shinyrng != 1)
+                    tpk.SetIsShiny(true);
+                if (new LegalityAnalysis(tpk).Report().Contains("Static Encounter shiny mismatch"))
+                    tpk.SetIsShiny(false);
+                tpk = tpk.Legalize();
+                var shinymessage = "non-shiny";
+                if (tpk.IsShiny)
+                    shinymessage = "shiny";
+            }
+            catch
+            {
+                tradecordcatch();
+                return;
+            }
             if (!Directory.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id))
             {
                 Directory.CreateDirectory(Directory.GetCurrentDirectory() + "//" + Context.User.Id);
