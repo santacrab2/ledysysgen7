@@ -1614,11 +1614,13 @@ public class discordbot
             {
 
                 File.WriteAllText($"{Directory.GetCurrentDirectory()}//rolls.txt", string.Empty);
-                    
+
             }
+            var tpk = PKMConverter.GetBlank(7);
+            var shinymessage = "non-shiny";
             try
             {
-                var tpk = BuildPokemon(Ledybot.Program.PKTable.Species7[catchrng], 7);
+                 tpk = BuildPokemon(Ledybot.Program.PKTable.Species7[catchrng], 7);
 
 
                 tpk.Ball = BallApplicator.ApplyBallLegalRandom(tpk);
@@ -1645,7 +1647,7 @@ public class discordbot
                 if (new LegalityAnalysis(tpk).Report().Contains("Static Encounter shiny mismatch"))
                     tpk.SetIsShiny(false);
                 tpk = tpk.Legalize();
-                var shinymessage = "non-shiny";
+                
                 if (tpk.IsShiny)
                     shinymessage = "shiny";
             }
@@ -1653,6 +1655,7 @@ public class discordbot
             {
                 tradecordcatch();
                 return;
+                
             }
             if (!Directory.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id))
             {
