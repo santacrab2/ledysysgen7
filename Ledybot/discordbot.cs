@@ -1597,8 +1597,9 @@ public class discordbot
                 await ReplyAsync(embed: embed.Build());
                 return;
             }
-            
-            Random carng = new Random();
+            try
+            {
+                Random carng = new Random();
             int catchrng = carng.Next(806);
             if (!File.Exists($"{Directory.GetCurrentDirectory()}//rolls.txt"))
                 File.Create($"{Directory.GetCurrentDirectory()}//rolls.txt");
@@ -1618,8 +1619,7 @@ public class discordbot
             }
             var tpk = PKMConverter.GetBlank(7);
             var shinymessage = "non-shiny";
-            try
-            {
+           
                  tpk = BuildPokemon(Ledybot.Program.PKTable.Species7[catchrng], 7);
 
 
@@ -1650,13 +1650,7 @@ public class discordbot
                 
                 if (tpk.IsShiny)
                     shinymessage = "shiny";
-            }
-            catch
-            {
-                tradecordcatch();
-                return;
-                
-            }
+       
             if (!Directory.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id))
             {
                 Directory.CreateDirectory(Directory.GetCurrentDirectory() + "//" + Context.User.Id);
@@ -1777,6 +1771,13 @@ public class discordbot
                
             }
             await ReplyAsync(embed: embed.Build());
+            }
+            catch
+            {
+                tradecordcatch();
+                return;
+
+            }
         }
         [Command("tradecord")]
         [Alias("tc")]
