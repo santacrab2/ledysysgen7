@@ -179,7 +179,7 @@ public class discordbot
         public static string distribute = "false";
         public static string trainer;
         public static int[] tradevolvs = { 525, 75, 533, 93, 64, 67, 708, 710 };
-        
+        public static int[] mythic = { 151, 251, 385, 386, 490, 491, 492, 493, 494, 646, 647, 648, 649, 719, 720, 721, 801, 802, 807 };
         public static bool distributestart = false;
 
         [Command("trade")]
@@ -1575,7 +1575,7 @@ public class discordbot
         [Alias("k")]
         public async Task tradecordcatch()
         {
-            int[] mythic = { 151, 251, 385, 386, 490, 491, 492, 493, 494,646, 647, 648, 649, 719, 720, 721, 801, 802, 807 };
+            
             var embed = new EmbedBuilder();
             string direct;
             Random balrng = new Random();
