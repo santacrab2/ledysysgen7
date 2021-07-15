@@ -114,6 +114,7 @@ namespace Ledybot
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.ofd_WCInjection = new System.Windows.Forms.OpenFileDialog();
             this.rt_status = new System.Windows.Forms.RichTextBox();
+            combo_distri = new System.Windows.Forms.ComboBox();
             this.tc_Control.SuspendLayout();
             this.tp_GTS.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -1010,6 +1011,17 @@ namespace Ledybot
             this.cordconnect.UseVisualStyleBackColor = true;
             this.cordconnect.Click += new System.EventHandler(this.cordconnect_ClickAsync);
 
+            //distribute
+            this.discord.Controls.Add(combo_distri);
+            combo_distri.FormattingEnabled = true;
+            combo_distri.Items.AddRange(new object[] {
+            "True",
+            "False",
+            });
+            combo_distri.Location = new System.Drawing.Point(141, 100);
+            combo_distri.Name = "combo_distri";
+            combo_distri.Size = new System.Drawing.Size(64, 21);
+            combo_distri.TabIndex = 37;
             // 
             // ofd_Injection
             // 
@@ -1182,7 +1194,7 @@ namespace Ledybot
         private System.Windows.Forms.TabPage discord;
         public System.Windows.Forms.TextBox token;
         public System.Windows.Forms.Button cordconnect;
-   
+        public static System.Windows.Forms.ComboBox combo_distri;
 
 
     }

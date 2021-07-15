@@ -226,7 +226,21 @@ namespace Ledybot.Properties {
                 this["DepositedLevel"] = value;
             }
         }
-        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int Distribution
+        {
+            get
+            {
+                return ((int)(this["Distribution"]));
+            }
+            set
+            {
+                this["Distribution"] = value;
+            }
+        }
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Discord Token")]

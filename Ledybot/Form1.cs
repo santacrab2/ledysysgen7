@@ -467,6 +467,7 @@ namespace Ledybot
             Properties.Settings.Default.DepositedIndex = combo_pkmnList.SelectedIndex;
             Properties.Settings.Default.DepositedGender = combo_gender.SelectedIndex;
             Properties.Settings.Default.DepositedLevel = combo_levelrange.SelectedIndex;
+            Properties.Settings.Default.Distribution = combo_distri.SelectedIndex;
             Properties.Settings.Default.token = token.Text;
             Properties.Settings.Default.Save();
         }
@@ -489,6 +490,7 @@ namespace Ledybot
             combo_pkmnList.SelectedIndex = Properties.Settings.Default.DepositedIndex;
             combo_gender.SelectedIndex = Properties.Settings.Default.DepositedGender;
             combo_levelrange.SelectedIndex = Properties.Settings.Default.DepositedLevel;
+            combo_distri.SelectedIndex = Properties.Settings.Default.Distribution;
             token.Text = Properties.Settings.Default.token;
         }
 

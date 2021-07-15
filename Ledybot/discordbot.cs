@@ -756,164 +756,44 @@ public class discordbot
 
         public async Task checkstarttrade()
         {
-            if (!Ledybot.MainForm.botWorking && pokequeue.Count != 0)
-            {
-                starttrades();
-            }
-            else
-            {
+           
                 if (pokequeue.Count == 1)
                     await ReplyAsync("finishing an ad trade, be right with you!");
                 else
                     await ReplyAsync("There are " + pokequeue.Count + " trainers in the queue");
-            }
+            
         }
         [Command("start")]
         [RequireOwner]
         public async Task startdistribute()
         {
             await ReplyAsync("starting distribution");
-            
-            distributestart = true;
-            if(pokequeue.Count == 0)
-                checkdistr();
-        }
-        public async Task starttrades()
-        {
-
-            while (pokequeue.Count != 0)
-            {
-                if (retpoke.Count != 0)
-                {
-
-                    IMessageChannel t = (IMessageChannel)channel.Peek();
-                    await t.SendFileAsync((string)retpoke.Peek(), discordname.Peek() + " here is the pokemon you traded me ");
-                    channel.Dequeue();
-                    retpoke.Dequeue();
-                    discordname.Dequeue();
-                    if (Ledybot.MainForm.game == 0 || Ledybot.MainForm.game == 1)
-                        File.Delete(Ledybot.GTSBot7.tpfile);
-                    else
-                        File.Delete(Ledybot.GTSBot6.tpfile);
-                }
-                if (!Ledybot.MainForm.botWorking)
-                {
-                    IMessageChannel chan = (IMessageChannel)channel.Peek();
-                    temppokecurrent = (string)pokequeue.Peek();
-                    await chan.SendMessageAsync("<@" + username.Peek() + ">" + " deposit your pokemon now");
-
-                    Ledybot.MainForm.btn_Start_Click(null, EventArgs.Empty);
-                
-
-
-                }
-                else
-                {
-                    continue;
-                }
-
-
-
-            }
-
-            if (retpoke.Count != 0)
-            {
-
-                IMessageChannel t = (IMessageChannel)channel.Peek();
-                await t.SendFileAsync((string)retpoke.Peek(), discordname.Peek() + " here is the pokemon you traded me ");
-                channel.Dequeue();
-                retpoke.Dequeue();
-                discordname.Dequeue();
-                if (Ledybot.MainForm.game == 0 || Ledybot.MainForm.game == 1)
-                    File.Delete(Ledybot.GTSBot7.tpfile);
-                else
-                    File.Delete(Ledybot.GTSBot6.tpfile);
-            }
-
-           
-        }
-        public static async Task checkdistr()
-        {
-            await Task.Delay(5000);
-            if (pokequeue.Count == 0)
-                distribute = "true";
-            if (distribute == "true" && distributestart == true)
-            {
-                int pts = 4321;
-                poketosearch.Enqueue(pts);
-                trainername.Enqueue("");
+            Ledybot.MainForm.combo_distri.SelectedIndex = 0;
+            if (Ledybot.MainForm.btn_Start.Enabled == true)
                 Ledybot.MainForm.btn_Start_Click(null, EventArgs.Empty);
-
-            }
-            if (distributestart == false)
-                distribute = "false";
-
-            while (pokequeue.Count != 0)
-            {
-                if (retpoke.Count != 0)
-                {
-
-                    IMessageChannel t = (IMessageChannel)channel.Peek();
-                    await t.SendFileAsync((string)retpoke.Peek(), discordname.Peek() + " here is the pokemon you traded me ");
-                    channel.Dequeue();
-                    retpoke.Dequeue();
-                    discordname.Dequeue();
-                    if (Ledybot.MainForm.game == 0 || Ledybot.MainForm.game == 1)
-                        File.Delete(Ledybot.GTSBot7.tpfile);
-                    else
-                        File.Delete(Ledybot.GTSBot6.tpfile);
-                }
-                if (!Ledybot.MainForm.botWorking)
-                {
-                    IMessageChannel chan = (IMessageChannel)channel.Peek();
-                    temppokecurrent = (string)pokequeue.Peek();
-                    await chan.SendMessageAsync("<@" + username.Peek() + ">" + " deposit your pokemon now");
-
-                    Ledybot.MainForm.btn_Start_Click(null, EventArgs.Empty);
-
-
-                }
-                else
-                {
-                    continue;
-                }
-
-
-
-            }
-
-            if (retpoke.Count != 0)
-            {
-
-                IMessageChannel t = (IMessageChannel)channel.Peek();
-                await t.SendFileAsync((string)retpoke.Peek(), discordname.Peek() + " here is the pokemon you traded me ");
-                channel.Dequeue();
-                retpoke.Dequeue();
-                discordname.Dequeue();
-                if (Ledybot.MainForm.game == 0 || Ledybot.MainForm.game == 1)
-                    File.Delete(Ledybot.GTSBot7.tpfile);
-                else
-                    File.Delete(Ledybot.GTSBot6.tpfile);
-            }
+        }
+   
            
             
 
-        }
+        
         [Command("stop")]
         [RequireOwner]
         public async Task stop()
         {
 
             await ReplyAsync("stopping distribution");
-            distributestart = false;
+            Ledybot.MainForm.combo_distri.SelectedIndex = 1;
+            if (Ledybot.MainForm.btn_Start.Enabled == false)
+                Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
         }
 
         [Command("queueclear")]
         [Alias("rq")]
+        [RequireOwner]
         public async Task queueclear()
         {
-            if (Context.User.Id == 763073084676374578)
-            {
+         
                 pokequeue.Dequeue();
                 username.Dequeue();
                 pokemonfile.Dequeue();
@@ -921,21 +801,17 @@ public class discordbot
                 channel.Dequeue();
                 discordname.Dequeue();
                 await ReplyAsync("the first person in line has been removed");
-                Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
-            }
-            else
-            {
-                await ReplyAsync("only santacrab can use this command");
-                
-            }
+              
+            
+     
 
         }
 
         [Command("clear")]
+        [RequireOwner]
         public async Task clqueue()
         {
-            if (Context.User.Id == 763073084676374578)
-            {
+            
                 pokequeue.Clear();
                 username.Clear();
                 pokemonfile.Clear();
@@ -944,12 +820,8 @@ public class discordbot
                 discordname.Clear();
                 poketosearch.Clear();
                 await ReplyAsync("the entire queue has been cleared");
-                Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
-            }
-            else
-            {
-                await ReplyAsync("only santacrab can use this command");
-            }
+                
+         
         }
 
         [Command("help")]
@@ -1482,12 +1354,11 @@ public class discordbot
             await chan.SendMessageAsync(discordname.Peek() + " you were too slow or too stupid, one of those, so the trades been cancelled");
             channel.Dequeue();
             discordname.Dequeue();
-            
+            pokequeue.Dequeue();
             username.Dequeue();
             pokemonfile.Dequeue();
             trainername.Dequeue();
-            if (pokequeue.Count == 0)
-                checkdistr();
+           
             
         }
         public static async Task notrade()
@@ -1496,12 +1367,11 @@ public class discordbot
             await chan.SendMessageAsync(discordname.Peek() + " something went wrong with your trade, please try again. if you get this message two times in a row, please ping Santacrab420");
             channel.Dequeue();
             discordname.Dequeue();
-            
+            pokequeue.Dequeue();
             username.Dequeue();
             pokemonfile.Dequeue();
             trainername.Dequeue();
-            if (pokequeue.Count == 0)
-                checkdistr();
+           
 
         }
        
@@ -2194,6 +2064,7 @@ public class discordbot
                 }
 
             }
+
         }
 
 
