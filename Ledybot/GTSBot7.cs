@@ -318,9 +318,10 @@ namespace Ledybot
                                     MainForm.combo_pkmnList.SelectedIndex += 1;
                                 if (discordbot.trademodule.tradevolvs.Contains(MainForm.combo_pkmnList.SelectedIndex + 1) || discordbot.trademodule.mythic.Contains(MainForm.combo_pkmnList.SelectedIndex + 1))
                                     MainForm.combo_pkmnList.SelectedIndex += 1;
+                                distribute = false;
                                 botState = (int)gtsbotstates.botstart;
                             }
-                            distribute = false;
+                            
                             break;
                         }
                         Program.f1.ChangeStatus("Pressing seek button");
