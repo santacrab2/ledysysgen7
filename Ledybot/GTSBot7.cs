@@ -320,6 +320,7 @@ namespace Ledybot
                                     MainForm.combo_pkmnList.SelectedIndex += 1;
                                 botState = (int)gtsbotstates.botstart;
                             }
+                            distribute = false;
                             break;
                         }
                         Program.f1.ChangeStatus("Pressing seek button");
@@ -675,7 +676,7 @@ namespace Ledybot
                                                     addr_PageEntry = 0;
                                                     foundLastPage = false;
                                                     botresult = 8;
-                                                
+                                                    distribute = false;
                                                     await discordbot.trademodule.ban();
                                                     botState = (int)gtsbotstates.botstart;
                                                     break;
@@ -1062,6 +1063,7 @@ namespace Ledybot
                                     addr_PageEntry = 0;
                                     foundLastPage = false;
                                     botresult = 8;
+                                    distribute = false;
                                     await discordbot.trademodule.notrade();
                                     botState = (int)gtsbotstates.botstart;
                                     break;
