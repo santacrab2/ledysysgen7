@@ -310,14 +310,15 @@ namespace Ledybot
                             if(distribute == true)
                             {
                                discordbot.trademodule.trainername.Dequeue();
-                                
-                               
-                                if (MainForm.combo_pkmnList.SelectedIndex == 806)
-                                    MainForm.combo_pkmnList.SelectedIndex = 0;
-                                else
+
+                             
+                                if (MainForm.combo_pkmnList.SelectedIndex < 805)
                                     MainForm.combo_pkmnList.SelectedIndex += 1;
+                                else
+                                    MainForm.combo_pkmnList.SelectedIndex = 0;
                                 while (discordbot.trademodule.tradevolvs.Contains(MainForm.combo_pkmnList.SelectedIndex + 1) || discordbot.trademodule.mythic.Contains(MainForm.combo_pkmnList.SelectedIndex + 1))
                                     MainForm.combo_pkmnList.SelectedIndex += 1;
+                               
                                 distribute = false;
                                 botState = (int)gtsbotstates.botstart;
                             }
