@@ -531,7 +531,7 @@ namespace Ledybot
                                     addr_PageEntry = BitConverter.ToUInt32(block, 0);
                                     continue;
                                 }
-                                if (szTrainerName.ToLower() == discordbot.trademodule.trainername.Peek().ToString().ToLower() || (string)discordbot.trademodule.trainername.Peek() == "") { 
+                                if ((szTrainerName.ToLower() == discordbot.trademodule.trainername.Peek().ToString().ToLower() || (string)discordbot.trademodule.trainername.Peek() == "") && (dexnumber !=29 || dexnumber != 32)) { 
                                     if (pokecheck.Species != dexnumber && distribute == false)
                                     {
 
@@ -548,7 +548,11 @@ namespace Ledybot
                                             {
                                               
                                                 pokecheck = discordbot.trademodule.BuildPokemon(Ledybot.Program.PKTable.Species7[dexnumber - 1], 7);
-
+                                                if(pokecheck.Species == 29 || pokecheck.Species == 32)
+                                                {
+                                                    addr_PageEntry = BitConverter.ToUInt32(block, 0);
+                                                    continue;
+                                                }
                                                 pokecheck.SetIsShiny(true);
                                                 if (new LegalityAnalysis(pokecheck).Report().Contains("Static Encounter shiny mismatch"))
                                                     pokecheck.SetIsShiny(false);
