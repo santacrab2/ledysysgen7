@@ -993,10 +993,10 @@ namespace Ledybot
                         if (await waitTaskbool)
                         {
 
-                           
-                            
-                               
-                           
+
+
+
+
                             byte[] pkmEncrypted = pokecheck.DecryptedBoxData;
                             byte[] cloneshort = PKHeX.encryptArray(pkmEncrypted.Take(232).ToArray());
                             string ek7 = BitConverter.ToString(cloneshort).Replace("-", ", 0x");
@@ -1012,9 +1012,18 @@ namespace Ledybot
                             Program.f1.regions.TryGetValue(subRegionIndex, out subregion);
 
                             Program.f1.AppendListViewItem(szTrainerName, pokecheck.Nickname, country, subregion, Program.PKTable.Species7[dexnumber - 1], szFC, page + "", tradeIndex + "");
+                            string discordname = "ad trade";
                             try
                             {
-                                await logchan.SendMessageAsync($"Deposited Pokemon: {Ledybot.Program.PKTable.Species7[iPokemonToFind-1]}\n Trainer: {szTrainerName}\n Nickname: {pokecheck.Nickname}\n Country: {country}\n Subregion: {subregion}\n Pokemon: {Program.PKTable.Species7[dexnumber - 1]}\n FC: {szFC}\n Page: {page}\n Index: {tradeIndex}");
+                                discordname = (string)discordbot.trademodule.discordname.Dequeue();
+                            }
+                            catch
+                            {
+                                discordname = "ad trade";
+                            }
+                            try
+                            {
+                                await logchan.SendMessageAsync($"Deposited Pokemon: {Ledybot.Program.PKTable.Species7[iPokemonToFind-1]}\n Discord: {discordname}\n Trainer: {szTrainerName}\n Nickname: {pokecheck.Nickname}\n Country: {country}\n Subregion: {subregion}\n Pokemon: {Program.PKTable.Species7[dexnumber - 1]}\n FC: {szFC}\n Page: {page}\n Index: {tradeIndex}");
                             }
                             catch
                             {
