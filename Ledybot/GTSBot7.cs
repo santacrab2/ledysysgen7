@@ -307,6 +307,7 @@ namespace Ledybot
 
                             if (distribute == false)
                             {
+                                await logchan.SendMessageAsync($"{discordbot.trademodule.discordname} did not complete their trade");
                                 await discordbot.trademodule.slow();
                                botState = (int)gtsbotstates.botstart;
                                 break;
