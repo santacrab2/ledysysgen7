@@ -1014,14 +1014,10 @@ namespace Ledybot
 
                             Program.f1.AppendListViewItem(szTrainerName, pokecheck.Nickname, country, subregion, Program.PKTable.Species7[dexnumber - 1], szFC, page + "", tradeIndex + "");
                             string discordname;
-                            try
-                            {
+                            if (distribute == false)
                                 discordname = (string)discordbot.trademodule.discordname.Peek();
-                            }
-                            catch
-                            {
+                            else
                                 discordname = "ad trade";
-                            }
                             try
                             {
                                 await logchan.SendMessageAsync($"Deposited Pokemon: {Ledybot.Program.PKTable.Species7[iPokemonToFind-1]}\n Discord: {discordname}\n Trainer: {szTrainerName}\n Nickname: {pokecheck.Nickname}\n Country: {country}\n Subregion: {subregion}\n Pokemon: {Program.PKTable.Species7[dexnumber - 1]}\n FC: {szFC}\n Page: {page}\n Index: {tradeIndex}");
