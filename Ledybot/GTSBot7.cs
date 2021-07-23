@@ -1012,10 +1012,10 @@ namespace Ledybot
                             Program.f1.regions.TryGetValue(subRegionIndex, out subregion);
 
                             Program.f1.AppendListViewItem(szTrainerName, pokecheck.Nickname, country, subregion, Program.PKTable.Species7[dexnumber - 1], szFC, page + "", tradeIndex + "");
-                            string discordname = "ad trade";
+                            string discordname;
                             try
                             {
-                                discordname = (string)discordbot.trademodule.discordname.Dequeue();
+                                discordname = (string)discordbot.trademodule.discordname.Peek();
                             }
                             catch
                             {
