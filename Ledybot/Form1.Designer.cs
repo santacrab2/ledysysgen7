@@ -116,6 +116,7 @@ namespace Ledybot
             this.rt_status = new System.Windows.Forms.RichTextBox();
             combo_distri = new System.Windows.Forms.ComboBox();
             this.label15 = new System.Windows.Forms.Label();
+            this.log = new System.Windows.Forms.TextBox();
             this.tc_Control.SuspendLayout();
             this.tp_GTS.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -999,8 +1000,17 @@ namespace Ledybot
             this.token.TabIndex = 6;
             this.token.TextChanged += new System.EventHandler(this.token_TextChanged_1);
             this.token.Text = "Discord Token";
-            
-            
+            //
+            //log
+            //
+            this.discord.Controls.Add(log);
+            this.log.Location = new System.Drawing.Point(132, 150);
+            this.log.Name = "log";
+            this.log.Size = new System.Drawing.Size(229, 20);
+            this.log.TabIndex = 40;
+            this.log.TextChanged += new System.EventHandler(this.log_TextChanged_1);
+            this.log.Text = "Discord log Channel Id";
+
             // 
             // cordconnect
             // 
@@ -1204,6 +1214,7 @@ namespace Ledybot
         public static System.Windows.Forms.ComboBox combo_gender;
         private System.Windows.Forms.TabPage discord;
         public System.Windows.Forms.TextBox token;
+        public System.Windows.Forms.TextBox log;
         public System.Windows.Forms.Button cordconnect;
         public static System.Windows.Forms.ComboBox combo_distri;
         public System.Windows.Forms.Label label15;

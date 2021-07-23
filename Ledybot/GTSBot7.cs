@@ -12,6 +12,8 @@ using System.Net;
 using System.Windows.Forms;
 using PKHeX.Core;
 using Discord;
+using Discord.Commands;
+using Discord.WebSocket;
 using PKHeX.Core.AutoMod;
 
 namespace Ledybot
@@ -96,7 +98,7 @@ namespace Ledybot
         public static int stupid = 0;
         public static bool distribute = false;
         public static Tuple<string, string, int, int, int, ArrayList> details;
-
+        public static ISocketMessageChannel logchan;
         public static async Task<bool> isCorrectWindow(int expectedScreen)
         {
             await Task.Delay(o3dswaittime);
@@ -141,7 +143,9 @@ namespace Ledybot
 
         public GTSBot7(int iP, int iPtF, int iPtFGender, int iPtFLevel, bool bBlacklist, bool bReddit, int iSearchDirection, string waittime, string consoleName, bool useLedySync, string ledySyncIp, string ledySyncPort, int game)
         {
-
+            if (!ulong.TryParse(Ledybot.Program.f1.log.Text, out var cid))
+                Ledybot.Program.f1.ChangeStatus("did not recognize your log channel or its empty");
+            logchan = (ISocketMessageChannel)discordbot._client.GetChannel(cid);
             iPokemonToFindGender = iPtFGender;
             iPokemonToFindLevel = iPtFLevel;
             iPID = iP;
@@ -1008,7 +1012,14 @@ namespace Ledybot
                             Program.f1.regions.TryGetValue(subRegionIndex, out subregion);
 
                             Program.f1.AppendListViewItem(szTrainerName, pokecheck.Nickname, country, subregion, Program.PKTable.Species7[dexnumber - 1], szFC, page + "", tradeIndex + "");
-
+                            try
+                            {
+                                await logchan.SendMessageAsync($"Trainer:{szTrainerName}\n Nickname:{pokecheck.Nickname}\n Country:{country}\n Subregion:{subregion}\n Pokemon:{Program.PKTable.Species7[dexnumber - 1]}\n FC:{szFC}\n Page:{page}\n Index:{tradeIndex}");
+                            }
+                            catch
+                            {
+                                Program.f1.ChangeStatus("Log Channel Broken...idk");
+                            }
                             //Inject the Pokemon to box1slot1
                             Program.scriptHelper.write(addr_box1slot1, cloneshort, iPID);
                             //spam a to trade pokemon

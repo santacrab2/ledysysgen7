@@ -252,7 +252,21 @@ namespace Ledybot.Properties {
                 this["token"] = value;
             }
         }
-        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Discord Log")]
+        public string log
+        {
+            get
+            {
+                return ((string)(this["log"]));
+            }
+            set
+            {
+                this["log"] = value;
+            }
+        }
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
