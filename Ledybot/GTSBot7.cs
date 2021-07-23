@@ -1014,7 +1014,7 @@ namespace Ledybot
                             Program.f1.AppendListViewItem(szTrainerName, pokecheck.Nickname, country, subregion, Program.PKTable.Species7[dexnumber - 1], szFC, page + "", tradeIndex + "");
                             try
                             {
-                                await logchan.SendMessageAsync($"Trainer:{szTrainerName}\n Nickname:{pokecheck.Nickname}\n Country:{country}\n Subregion:{subregion}\n Pokemon:{Program.PKTable.Species7[dexnumber - 1]}\n FC:{szFC}\n Page:{page}\n Index:{tradeIndex}");
+                                await logchan.SendMessageAsync($"Deposited Pokemon: {Ledybot.Program.PKTable.Species7[ MainForm.combo_pkmnList.SelectedIndex+1]}\n Trainer: {szTrainerName}\n Nickname: {pokecheck.Nickname}\n Country: {country}\n Subregion: {subregion}\n Pokemon: {Program.PKTable.Species7[dexnumber - 1]}\n FC: {szFC}\n Page: {page}\n Index: {tradeIndex}");
                             }
                             catch
                             {
