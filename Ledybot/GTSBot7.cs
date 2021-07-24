@@ -307,7 +307,7 @@ namespace Ledybot
 
                             if (distribute == false)
                             {
-                                await logchan.SendMessageAsync($"{discordbot.trademodule.discordname} did not complete their trade");
+                                await logchan.SendMessageAsync($"{discordbot.trademodule.discordname.Peek()} did not complete their trade");
                                 await discordbot.trademodule.slow();
                                botState = (int)gtsbotstates.botstart;
                                 break;
@@ -1013,14 +1013,11 @@ namespace Ledybot
                             Program.f1.regions.TryGetValue(subRegionIndex, out subregion);
 
                             Program.f1.AppendListViewItem(szTrainerName, pokecheck.Nickname, country, subregion, Program.PKTable.Species7[dexnumber - 1], szFC, page + "", tradeIndex + "");
-                            string discordname;
-                            if (distribute == false)
-                                discordname = (string)discordbot.trademodule.discordname.Peek();
-                            else
-                                discordname = "ad trade";
+                         
+                          
                             try
                             {
-                                await logchan.SendMessageAsync($"Deposited Pokemon: {Ledybot.Program.PKTable.Species7[iPokemonToFind-1]}\n Discord: {discordname}\n Trainer: {szTrainerName}\n Nickname: {pokecheck.Nickname}\n Country: {country}\n Subregion: {subregion}\n Pokemon: {Program.PKTable.Species7[dexnumber - 1]}\n FC: {szFC}\n Page: {page}\n Index: {tradeIndex}");
+                                await logchan.SendMessageAsync($"Deposited Pokemon: {Ledybot.Program.PKTable.Species7[iPokemonToFind-1]}\n Discord: {(distribute ? "ad trade" : discordbot.trademodule.discordname.Peek() )}\n Trainer: {szTrainerName}\n Nickname: {pokecheck.Nickname}\n Country: {country}\n Subregion: {subregion}\n Pokemon: {Program.PKTable.Species7[dexnumber - 1]}\n FC: {szFC}\n Page: {page}\n Index: {tradeIndex}");
                             }
                             catch
                             {
