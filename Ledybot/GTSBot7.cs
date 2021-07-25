@@ -1195,7 +1195,7 @@ namespace Ledybot
                         Program.f1.ChangeStatus("Stopped");
                         File.Delete(discordbot.trademodule.temppokecurrent);
                         botstop = true;
-                        
+                        wondertrade = false;
                         break;
                     case (int)gtsbotstates.wondertrade:
                         if (!await isCorrectWindow(val_Quit_SeekScreen))
@@ -1226,31 +1226,31 @@ namespace Ledybot
                         {
                             await wtchan.SendMessageAsync($"Wonder trading {Path.GetFileNameWithoutExtension(wtfile)} in 15 seconds");
                         }
-                        catch { }
+                        catch { continue; }
                         await Task.Delay(15000);
                         try
                         {
                             await wtchan.SendMessageAsync("3");
                         }
-                        catch { }
+                        catch { continue; }
                         await Task.Delay(1000);
                         try
                         {
                             await wtchan.SendMessageAsync("2");
                         }
-                        catch { }
+                        catch { continue; }
                         await Task.Delay(1000);
                         try
                         {
                             await wtchan.SendMessageAsync("1");
                         }
-                        catch { }
+                        catch { continue; }
                         await Task.Delay(1000);
                         try
                         {
                             await wtchan.SendMessageAsync("wonder trade now!");
                         }
-                        catch { }
+                        catch { continue; }
                         Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
                         while (!await isCorrectWindow(val_Quit_SeekScreen))
                             await Task.Delay(25);
