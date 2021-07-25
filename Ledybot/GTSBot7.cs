@@ -326,7 +326,8 @@ namespace Ledybot
                             if(distribute == true)
                             {
                                discordbot.trademodule.trainername.Dequeue();
-                                discordbot.trademodule.mega.Dequeue();
+                                
+                                
 
                              
                                 if (MainForm.combo_pkmnList.SelectedIndex < 805)
