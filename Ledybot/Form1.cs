@@ -470,6 +470,8 @@ namespace Ledybot
             Properties.Settings.Default.Distribution = combo_distri.SelectedIndex;
             Properties.Settings.Default.token = token.Text;
             Properties.Settings.Default.log = log.Text;
+            Properties.Settings.Default.wtfolder = wtfolder.Text;
+            Properties.Settings.Default.wtchannel = wtchannel.Text;
             Properties.Settings.Default.Save();
         }
 
@@ -494,6 +496,8 @@ namespace Ledybot
             combo_distri.SelectedIndex = Properties.Settings.Default.Distribution;
             token.Text = Properties.Settings.Default.token;
             log.Text = Properties.Settings.Default.log;
+            wtfolder.Text = Properties.Settings.Default.wtfolder;
+            wtchannel.Text = Properties.Settings.Default.wtchannel;
         }
 
         private void btn_BrowseInject_Click(object sender, EventArgs e)
@@ -820,12 +824,78 @@ namespace Ledybot
         {
             log.Text = log.Text;
         }
+        public void wtfolder_TextChanged_1(object sender, EventArgs e)
+        {
+            wtfolder.Text = wtfolder.Text;
+        }
+        public void wtchannel_TextChanged_1(object sender, EventArgs e)
+        {
+            wtchannel.Text = wtchannel.Text;
+        }
         private void cordconnect_ClickAsync(object sender, EventArgs e)
         {
             discordbot piplup = new discordbot();
             piplup.MainAsync();
             ChangeStatus("connected to discord");
          }
+        public static async void wondertrade_ClickAsync(object sener, EventArgs e)
+        {
+            GTSBot7.botstop = false;
+            Ledybot.GTSBot6.botstop = false;
+            btn_Stop.Enabled = true;
+            btn_Start.Enabled = false;
+            wondertrade.Enabled = false;
+            Program.gd.disableButtons();
+            botWorking = true;
+            botStop = false;
+            botNumber = 3;
+
+
+
+            int tradeDirection = 0;
+            if (rb_frontfpo.Checked)
+            {
+                tradeDirection = 1;
+            }
+            else if (rb_front.Checked)
+            {
+                tradeDirection = 2;
+            }
+
+            if (game == 1 || game == 2) // SUMO + USUM
+            {
+
+                GTSBot7.wondertrade = true;
+                GTsBot7 = new GTSBot7(pid, combo_pkmnList.SelectedIndex + 1, combo_gender.SelectedIndex, combo_levelrange.SelectedIndex, cb_Blacklist.Checked, cb_Reddit.Checked, tradeDirection, tb_waittime.Text, tb_consoleName.Text, cb_UseLedySync.Checked, tb_LedySyncIP.Text, tb_LedySyncPort.Text, game);
+                Task<int> Bot = GTSBot7.RunBot();
+                
+                int result = await Bot;
+                if (botStop)
+                {
+                    result = 8;
+                }
+                switch (result)
+                {
+                    case 1:
+
+                        break;
+                    case 8:
+                        Program.f1.ChangeStatus("bot stopped");
+                        break;
+                    default:
+                        Program.f1.ChangeStatus("its broken and idk why");
+                        break;
+                }
+
+                Program.gd.enableButtons();
+                btn_Stop.Enabled = false;
+                btn_Start.Enabled = true;
+                wondertrade.Enabled = true;
+                botWorking = false;
+                botNumber = -1;
+
+            }
+        }
     }
 
     public class DataReadyWaiting

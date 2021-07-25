@@ -266,6 +266,34 @@ namespace Ledybot.Properties {
                 this["log"] = value;
             }
         }
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("wtfolder")]
+        public string wtfolder
+        {
+            get
+            {
+                return ((string)(this["wtfolder"]));
+            }
+            set
+            {
+                this["wtfolder"] = value;
+            }
+        }
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("wtchannel")]
+        public string wtchannel
+        {
+            get
+            {
+                return ((string)(this["wtchannel"]));
+            }
+            set
+            {
+                this["wtchannel"] = value;
+            }
+        }
 
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

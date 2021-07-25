@@ -23,7 +23,7 @@ namespace Ledybot
 
         //private System.IO.StreamWriter file = new StreamWriter(@"C:\Temp\ledylog.txt");
 
-        public enum gtsbotstates { botstart, startsearch, pressSeek, openpokemonwanted, openwhatpokemon, typepokemon, presssearch, startfind, findfromend, findfromstart, trade, research, botexit, updatecomments, quicksearch, panic };
+        public enum gtsbotstates { botstart, startsearch, pressSeek, openpokemonwanted, openwhatpokemon, typepokemon, presssearch, startfind, findfromend, findfromstart, trade, research, botexit, updatecomments, quicksearch, panic, wondertrade };
 
         public static string consoleName = "Ledybot";
 
@@ -99,6 +99,8 @@ namespace Ledybot
         public static bool distribute = false;
         public static Tuple<string, string, int, int, int, ArrayList> details;
         public static ISocketMessageChannel logchan;
+        public static ISocketMessageChannel wtchan;
+        public static bool wondertrade = false;
         public static async Task<bool> isCorrectWindow(int expectedScreen)
         {
             await Task.Delay(o3dswaittime);
@@ -145,6 +147,9 @@ namespace Ledybot
         {
             if (!ulong.TryParse(Ledybot.Program.f1.log.Text, out var cid))
                 Ledybot.Program.f1.ChangeStatus("did not recognize your log channel or its empty");
+            if (!ulong.TryParse(Program.f1.wtchannel.Text, out var wid))
+                Program.f1.ChangeStatus("did not recognize your wt channel, or its empty.");
+            wtchan = (ISocketMessageChannel)discordbot._client.GetChannel(wid);
             logchan = (ISocketMessageChannel)discordbot._client.GetChannel(cid);
             iPokemonToFindGender = iPtFGender;
             iPokemonToFindLevel = iPtFLevel;
@@ -214,6 +219,7 @@ namespace Ledybot
                 val_BoxScreen = 0x4120;
                 val_system = 0x1C848;
                 val_duringTrade = 0x3FD5;
+                
             }
 
         }
@@ -224,6 +230,10 @@ namespace Ledybot
             byte pokemonGender = 0x0;
             byte pokemonLevel = 0x0;
             int panicAttempts = 0;
+            if(wondertrade == true)
+            {
+                botState = (int)gtsbotstates.wondertrade;
+            }
             while (!botstop)
             {
                 if (botState != (int)gtsbotstates.panic)
@@ -232,6 +242,7 @@ namespace Ledybot
                 }
                 switch (botState)
                 {
+                    
                     case (int)gtsbotstates.botstart:
                         while (MainForm.combo_distri.SelectedIndex == 1 && discordbot.trademodule.pokequeue.Count == 0)
                             await Task.Delay(25);
@@ -315,6 +326,7 @@ namespace Ledybot
                             if(distribute == true)
                             {
                                discordbot.trademodule.trainername.Dequeue();
+                                discordbot.trademodule.mega.Dequeue();
 
                              
                                 if (MainForm.combo_pkmnList.SelectedIndex < 805)
@@ -1185,7 +1197,67 @@ namespace Ledybot
                         botstop = true;
                         
                         break;
+                    case (int)gtsbotstates.wondertrade:
+                        if (!await isCorrectWindow(val_Quit_SeekScreen))
+                        {
+                            botState = (int)gtsbotstates.botexit;
+                        }
+                        var wtfiles = Directory.GetFiles(Program.f1.wtfolder.Text);
+                        Random wtrand = new Random();
+                        
+                        pokecheck = discordbot.trademodule.BuildPokemon("Mythical (Bulbasaur)", 7);
+                        byte[] wonderfodder = pokecheck.DecryptedBoxData;
+                        byte[] wondershort = PKHeX.encryptArray(wonderfodder.Take(232).ToArray());
+                        var wtfile = wtfiles[wtrand.Next(wtfiles.Length)];
+                        pokecheck = PKMConverter.GetPKMfromBytes(File.ReadAllBytes(wtfile));
+                       
+                        byte[] wtreal = pokecheck.DecryptedBoxData;
+                        byte[] wtrealshort = PKHeX.encryptArray(wtreal.Take(232).ToArray());
+                        Program.scriptHelper.write(addr_box1slot1, wondershort, iPID);
+                        Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
+                        await Task.Delay(5000);
+                        Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
+                        await Task.Delay(1000);
+                        Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
+                        await Task.Delay(1000);
+                        Program.scriptHelper.write(addr_box1slot1, wtrealshort, iPID);
+                        await Task.Delay(500);
+                        try
+                        {
+                            await wtchan.SendMessageAsync($"Wonder trading {Path.GetFileNameWithoutExtension(wtfile)} in 15 seconds");
+                        }
+                        catch { }
+                        await Task.Delay(15000);
+                        try
+                        {
+                            await wtchan.SendMessageAsync("3");
+                        }
+                        catch { }
+                        await Task.Delay(1000);
+                        try
+                        {
+                            await wtchan.SendMessageAsync("2");
+                        }
+                        catch { }
+                        await Task.Delay(1000);
+                        try
+                        {
+                            await wtchan.SendMessageAsync("1");
+                        }
+                        catch { }
+                        await Task.Delay(1000);
+                        try
+                        {
+                            await wtchan.SendMessageAsync("wonder trade now!");
+                        }
+                        catch { }
+                        Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
+                        while (!await isCorrectWindow(val_Quit_SeekScreen))
+                            await Task.Delay(25);
+                        botState = (int)gtsbotstates.wondertrade;
+                        break;
 
+                        
                     case (int)gtsbotstates.panic:
                         Program.f1.ChangeStatus("Recovery mode!");
                         //recover from weird state here

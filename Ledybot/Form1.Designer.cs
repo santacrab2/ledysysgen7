@@ -117,6 +117,10 @@ namespace Ledybot
             combo_distri = new System.Windows.Forms.ComboBox();
             this.label15 = new System.Windows.Forms.Label();
             this.log = new System.Windows.Forms.TextBox();
+            this.wtfolder = new System.Windows.Forms.TextBox();
+            this.wtchannel = new System.Windows.Forms.TextBox();
+            wondertrade = new System.Windows.Forms.Button();
+          
             this.tc_Control.SuspendLayout();
             this.tp_GTS.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -1043,6 +1047,36 @@ namespace Ledybot
             this.label15.Size = new System.Drawing.Size(55, 13);
             this.label15.TabIndex = 38;
             this.label15.Text = "Distribute:";
+
+            //
+            //wondertrade 
+            //
+            this.discord.Controls.Add(wondertrade);
+            wondertrade.Location = new System.Drawing.Point(141, 180);
+            wondertrade.Name = "wondertrade";
+            wondertrade.Size = new System.Drawing.Size(80, 20);
+            wondertrade.TabIndex = 40;
+            wondertrade.Text = "Wondertrade";
+            wondertrade.UseVisualStyleBackColor = true;
+            wondertrade.Click += new System.EventHandler(wondertrade_ClickAsync);
+
+            //wonder trade folder
+            this.discord.Controls.Add(wtfolder);
+            this.wtfolder.Location = new System.Drawing.Point(132, 200);
+            this.wtfolder.Name = "wtfolder";
+            this.wtfolder.Size = new System.Drawing.Size(229, 20);
+            this.wtfolder.TabIndex = 41;
+            this.wtfolder.TextChanged += new System.EventHandler(this.wtfolder_TextChanged_1);
+            this.wtfolder.Text = "wtfolder path";
+
+            //wt discord countdown channel
+            this.discord.Controls.Add(wtchannel);
+            this.wtchannel.Location = new System.Drawing.Point(132, 230);
+            this.wtchannel.Name = "wtchannel";
+            this.wtchannel.Size = new System.Drawing.Size(229, 20);
+            this.wtchannel.TabIndex = 42;
+            this.wtchannel.TextChanged += new System.EventHandler(this.wtchannel_TextChanged_1);
+            this.wtchannel.Text = "Discord wtchannel ID";
             // 
             // ofd_Injection
             // 
@@ -1215,9 +1249,13 @@ namespace Ledybot
         private System.Windows.Forms.TabPage discord;
         public System.Windows.Forms.TextBox token;
         public System.Windows.Forms.TextBox log;
+        public System.Windows.Forms.TextBox wtfolder;
+        public System.Windows.Forms.TextBox wtchannel;
+        public static System.Windows.Forms.Button wondertrade;
         public System.Windows.Forms.Button cordconnect;
         public static System.Windows.Forms.ComboBox combo_distri;
         public System.Windows.Forms.Label label15;
+        
 
     }
 }
