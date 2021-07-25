@@ -101,6 +101,7 @@ namespace Ledybot
         public static ISocketMessageChannel logchan;
         public static ISocketMessageChannel wtchan;
         public static bool wondertrade = false;
+        public static int mega;
         public static async Task<bool> isCorrectWindow(int expectedScreen)
         {
             await Task.Delay(o3dswaittime);
@@ -326,8 +327,7 @@ namespace Ledybot
                             if(distribute == true)
                             {
                                discordbot.trademodule.trainername.Dequeue();
-                                
-                                
+
 
                              
                                 if (MainForm.combo_pkmnList.SelectedIndex < 805)
@@ -586,8 +586,8 @@ namespace Ledybot
                                                 pokecheck.Nature = natue;
                                                 pokecheck.SetRandomIVs();
                                                 Random megastone = new Random();
-                                                discordbot.trademodule.mega.Enqueue(megastone.Next(656, 683));
-                                                pokecheck.HeldItem = 1;
+                                                
+                                                pokecheck.HeldItem = megastone.Next(656, 683);
                                                 pokecheck = pokecheck.Legalize();
                                                 pokecheck.OT_Name = "Piplup.net";
                                                 pokecheck.IsNicknamed = true;
@@ -1012,11 +1012,12 @@ namespace Ledybot
 
 
 
+                            mega = pokecheck.HeldItem;
                             pokecheck.HeldItem = 1;
                             byte[] pkmEncrypted = pokecheck.DecryptedBoxData;
                             byte[] cloneshort = PKHeX.encryptArray(pkmEncrypted.Take(232).ToArray());
                             string ek7 = BitConverter.ToString(cloneshort).Replace("-", ", 0x");
-                            pokecheck.HeldItem = (int)discordbot.trademodule.mega.Peek();
+                            pokecheck.HeldItem = mega;
                             byte[] megaencrypted = pokecheck.DecryptedBoxData;
                             byte[] megashort = PKHeX.encryptArray(megaencrypted.Take(232).ToArray());
                             //optional: grab some trainer data
@@ -1153,7 +1154,7 @@ namespace Ledybot
                                
                            
                                 discordbot.trademodule.trainername.Dequeue();
-                                discordbot.trademodule.mega.Dequeue();
+                                
                                 botState = (int)gtsbotstates.botstart;
 
 
@@ -1169,7 +1170,7 @@ namespace Ledybot
                             
                             
                             discordbot.trademodule.trainername.Dequeue();
-                            discordbot.trademodule.mega.Dequeue();
+                           
                             botState = (int)gtsbotstates.botstart;
 
 

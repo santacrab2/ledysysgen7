@@ -181,7 +181,7 @@ public class discordbot
         public static int[] tradevolvs = { 525, 75, 533, 93, 64, 67, 708, 710 };
         public static int[] mythic = { 151, 251, 385, 386, 490, 491, 492, 493, 494, 646, 647, 648, 649, 719, 720, 721, 801, 802, 807 };
         public static bool distributestart = false;
-        public static Queue mega = new Queue();
+        
         
 
         [Command("trade")]
@@ -286,7 +286,7 @@ public class discordbot
             channel.Enqueue(Context.Channel);
             poketosearch.Enqueue(ptsstr);
             discordname.Enqueue(Context.User);
-            mega.Enqueue(pk.HeldItem);
+           
             await ReplyAsync("added " + Context.User + " to queue");
             await checkstarttrade();
 
@@ -391,7 +391,7 @@ public class discordbot
             channel.Enqueue(Context.Channel);
             poketosearch.Enqueue(pts);
             discordname.Enqueue(Context.User);
-            mega.Enqueue(pk.HeldItem);
+           
             await ReplyAsync("added " + Context.User + " to queue");
             await checkstarttrade();
 
@@ -547,7 +547,7 @@ public class discordbot
             poketosearch.Enqueue(ptsstr);
             channel.Enqueue(Context.Channel);
             discordname.Enqueue(Context.User);
-            mega.Enqueue(tradeable.HeldItem);
+           
             await ReplyAsync("added " + Context.User + " to queue");
             await checkstarttrade();
 
@@ -698,7 +698,7 @@ public class discordbot
                 poketosearch.Enqueue(pts);
                 channel.Enqueue(Context.Channel);
                 discordname.Enqueue(Context.User);
-            mega.Enqueue(tradeable.HeldItem);
+           
                 await ReplyAsync("added " + Context.User + " to queue");
                 await checkstarttrade();
 
@@ -757,7 +757,7 @@ public class discordbot
                 trainername.Dequeue();
                 channel.Dequeue();
                 discordname.Dequeue();
-            mega.Dequeue();
+           
                 await ReplyAsync("the first person in line has been removed");
               
             
@@ -1305,7 +1305,7 @@ public class discordbot
             username.Dequeue();
             pokemonfile.Dequeue();
             trainername.Dequeue();
-            mega.Dequeue();
+            
         }
         public static async Task slow()
         {
@@ -1317,7 +1317,7 @@ public class discordbot
             username.Dequeue();
             pokemonfile.Dequeue();
             trainername.Dequeue();
-            mega.Dequeue();
+            
             
         }
         public static async Task notrade()
@@ -1330,7 +1330,7 @@ public class discordbot
             username.Dequeue();
             pokemonfile.Dequeue();
             trainername.Dequeue();
-            mega.Dequeue();
+            
 
         }
        
