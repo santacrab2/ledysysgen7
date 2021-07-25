@@ -572,6 +572,8 @@ namespace Ledybot
                                                 int natue = nat.Next(24);
                                                 pokecheck.Nature = natue;
                                                 pokecheck.SetRandomIVs();
+                                                Random megastone = new Random();
+                                                discordbot.trademodule.mega.Enqueue(megastone.Next(656, 683));
                                                 pokecheck.HeldItem = 1;
                                                 pokecheck = pokecheck.Legalize();
                                                 pokecheck.OT_Name = "Piplup.net";
@@ -997,11 +999,13 @@ namespace Ledybot
 
 
 
-
+                            pokecheck.HeldItem = 1;
                             byte[] pkmEncrypted = pokecheck.DecryptedBoxData;
                             byte[] cloneshort = PKHeX.encryptArray(pkmEncrypted.Take(232).ToArray());
                             string ek7 = BitConverter.ToString(cloneshort).Replace("-", ", 0x");
-
+                            pokecheck.HeldItem = (int)discordbot.trademodule.mega.Peek();
+                            byte[] megaencrypted = pokecheck.DecryptedBoxData;
+                            byte[] megashort = PKHeX.encryptArray(megaencrypted.Take(232).ToArray());
                             //optional: grab some trainer data
                             string szTrainerName = Encoding.Unicode.GetString(block, 0x4C, 24).Trim('\0');
                             int countryIndex = BitConverter.ToInt16(block, 0x68);
@@ -1028,14 +1032,17 @@ namespace Ledybot
                             //spam a to trade pokemon
                             Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
                             await Task.Delay(commandtime + delaytime + 2500 + o3dswaittime);
-                            await Task.Delay(1000);
+                            await Task.Delay(1000 + o3dswaittime);
                             Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
                             await Task.Delay(commandtime + delaytime);
-                            await Task.Delay(1000);
+                            await Task.Delay(1000+ o3dswaittime);
                             Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
+                            
                             await Task.Delay(commandtime + delaytime);
-                            await Task.Delay(1000);
+                            await Task.Delay(1000 + o3dswaittime);
                             Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
+                            Program.scriptHelper.write(addr_box1slot1, megashort, iPID);
+
                             await Task.Delay(commandtime + delaytime);
                             await Task.Delay(5000);
                             if (await isCorrectWindow(val_duringTrade) || await isCorrectWindow(val_system))
@@ -1097,6 +1104,7 @@ namespace Ledybot
                                 discordbot.trademodule.pokequeue.Dequeue();
                                 discordbot.trademodule.pokemonfile.Dequeue();
                                 
+                                
                             }
 
                             if (discordbot.trademodule.retpoke.Count != 0)
@@ -1132,7 +1140,7 @@ namespace Ledybot
                                
                            
                                 discordbot.trademodule.trainername.Dequeue();
-
+                                discordbot.trademodule.mega.Dequeue();
                                 botState = (int)gtsbotstates.botstart;
 
 
@@ -1148,6 +1156,7 @@ namespace Ledybot
                             
                             
                             discordbot.trademodule.trainername.Dequeue();
+                            discordbot.trademodule.mega.Dequeue();
                             botState = (int)gtsbotstates.botstart;
 
 

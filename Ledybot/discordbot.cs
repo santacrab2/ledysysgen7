@@ -181,6 +181,7 @@ public class discordbot
         public static int[] tradevolvs = { 525, 75, 533, 93, 64, 67, 708, 710 };
         public static int[] mythic = { 151, 251, 385, 386, 490, 491, 492, 493, 494, 646, 647, 648, 649, 719, 720, 721, 801, 802, 807 };
         public static bool distributestart = false;
+        public static Queue mega = new Queue();
         
 
         [Command("trade")]
@@ -255,28 +256,16 @@ public class discordbot
             {
                 pk.SetShiny();
             }
-
-            if (l.ContainsValue(pk.HeldItem) || Enumerable.Range(656, 115).Contains(pk.HeldItem))
+            
+            if (l.ContainsValue(pk.HeldItem))
             {
-                if (pk.HeldItem != 686)
-                {
-                    await ReplyAsync("no megastones or z-crystals...fixing pokemon");
+                
+                    await ReplyAsync("no z-crystals...fixing pokemon");
                     pk.ApplyHeldItem(571, pk.Format);
-                    pk.SetEV(0, 0);
-                    pk.SetEV(1, 0);
-                    pk.SetEV(2, 0);
-                    pk.SetEV(3, 0);
-                    pk.SetEV(4, 0);
-                    pk.SetEV(5, 0);
-                    pk.SetIV(0, 0);
-                    pk.SetIV(1, 0);
-                    pk.SetIV(2, 0);
-                    pk.SetIV(3, 0);
-                    pk.SetIV(4, 0);
-                    pk.SetIV(5, 0);
+                
 
 
-                }
+                
             }
             if (!new LegalityAnalysis(pk).Valid)
             {
@@ -297,6 +286,7 @@ public class discordbot
             channel.Enqueue(Context.Channel);
             poketosearch.Enqueue(ptsstr);
             discordname.Enqueue(Context.User);
+            mega.Enqueue(pk.HeldItem);
             await ReplyAsync("added " + Context.User + " to queue");
             await checkstarttrade();
 
@@ -371,28 +361,16 @@ public class discordbot
             {
                 pk.SetShiny();
             }
-
-            if (l.ContainsValue(pk.HeldItem) || Enumerable.Range(656, 115).Contains(pk.HeldItem))
+         
+            if (l.ContainsValue(pk.HeldItem))
             {
-                if (pk.HeldItem != 686)
-                {
-                    await ReplyAsync("no megastones or z-crystals...fixing pokemon");
-                    pk.ApplyHeldItem(571, pk.Format);
-                    pk.SetEV(0, 0);
-                    pk.SetEV(1, 0);
-                    pk.SetEV(2, 0);
-                    pk.SetEV(3, 0);
-                    pk.SetEV(4, 0);
-                    pk.SetEV(5, 0);
-                    pk.SetIV(0, 0);
-                    pk.SetIV(1, 0);
-                    pk.SetIV(2, 0);
-                    pk.SetIV(3, 0);
-                    pk.SetIV(4, 0);
-                    pk.SetIV(5, 0);
 
-           
-                }
+                await ReplyAsync("no z-crystals...fixing pokemon");
+                pk.ApplyHeldItem(571, pk.Format);
+
+
+
+
             }
             if (!new LegalityAnalysis(pk).Valid)
             {
@@ -413,6 +391,7 @@ public class discordbot
             channel.Enqueue(Context.Channel);
             poketosearch.Enqueue(pts);
             discordname.Enqueue(Context.User);
+            mega.Enqueue(pk.HeldItem);
             await ReplyAsync("added " + Context.User + " to queue");
             await checkstarttrade();
 
@@ -543,28 +522,16 @@ public class discordbot
                 File.Delete(temppokewait);
                 return;
             }
-            if (l.ContainsValue(tradeable.HeldItem) || Enumerable.Range(656, 115).Contains(tradeable.HeldItem))
+           
+            if (l.ContainsValue(tradeable.HeldItem))
             {
-                if (tradeable.HeldItem != 686)
-                {
-                    await ReplyAsync("no megastones or z-crystals...fixing pokemon");
-                    tradeable.ApplyHeldItem(571, tradeable.Format);
-                    tradeable.SetEV(0, 0);
-                    tradeable.SetEV(1, 0);
-                    tradeable.SetEV(2, 0);
-                    tradeable.SetEV(3, 0);
-                    tradeable.SetEV(4, 0);
-                    tradeable.SetEV(5, 0);
-                    tradeable.SetIV(0, 0);
-                    tradeable.SetIV(1, 0);
-                    tradeable.SetIV(2, 0);
-                    tradeable.SetIV(3, 0);
-                    tradeable.SetIV(4, 0);
-                    tradeable.SetIV(5, 0);
 
-                    byte[] y = tradeable.DecryptedBoxData;
-                    System.IO.File.WriteAllBytes(temppokewait, y);
-                }
+                await ReplyAsync("no z-crystals...fixing pokemon");
+                tradeable.ApplyHeldItem(571, tradeable.Format);
+
+
+
+
             }
 
 
@@ -580,6 +547,7 @@ public class discordbot
             poketosearch.Enqueue(ptsstr);
             channel.Enqueue(Context.Channel);
             discordname.Enqueue(Context.User);
+            mega.Enqueue(tradeable.HeldItem);
             await ReplyAsync("added " + Context.User + " to queue");
             await checkstarttrade();
 
@@ -706,36 +674,23 @@ public class discordbot
                 File.Delete(temppokewait);
                 return;
             }
-            if (l.ContainsValue(tradeable.HeldItem) || Enumerable.Range(656, 115).Contains(tradeable.HeldItem))
+            
+            if (l.ContainsValue(tradeable.HeldItem))
             {
-                if (tradeable.HeldItem != 686)
-                {
-                    await ReplyAsync("no megastones or z-crystals...fixing pokemon");
-                    tradeable.ApplyHeldItem(571, tradeable.Format);
-                    tradeable.SetEV(0, 0);
-                    tradeable.SetEV(1, 0);
-                    tradeable.SetEV(2, 0);
-                    tradeable.SetEV(3, 0);
-                    tradeable.SetEV(4, 0);
-                    tradeable.SetEV(5, 0);
-                    tradeable.SetIV(0, 0);
-                    tradeable.SetIV(1, 0);
-                    tradeable.SetIV(2, 0);
-                    tradeable.SetIV(3, 0);
-                    tradeable.SetIV(4, 0);
-                    tradeable.SetIV(5, 0);
 
-                    byte[] y = tradeable.DecryptedBoxData;
-                    System.IO.File.WriteAllBytes(temppokewait, y);
-                }
+                await ReplyAsync("no z-crystals...fixing pokemon");
+                tradeable.ApplyHeldItem(571, tradeable.Format);
+
+
+
+
             }
-            
-            
 
 
 
 
-                await ReplyAsync("yay its legal good job!");
+
+            await ReplyAsync("yay its legal good job!");
                 pokequeue.Enqueue(temppokewait);
                 username.Enqueue(Context.User.Id);
                 trainername.Enqueue(trainer);
@@ -743,6 +698,7 @@ public class discordbot
                 poketosearch.Enqueue(pts);
                 channel.Enqueue(Context.Channel);
                 discordname.Enqueue(Context.User);
+            mega.Enqueue(tradeable.HeldItem);
                 await ReplyAsync("added " + Context.User + " to queue");
                 await checkstarttrade();
 
@@ -801,6 +757,7 @@ public class discordbot
                 trainername.Dequeue();
                 channel.Dequeue();
                 discordname.Dequeue();
+            mega.Dequeue();
                 await ReplyAsync("the first person in line has been removed");
               
             
@@ -1348,6 +1305,7 @@ public class discordbot
             username.Dequeue();
             pokemonfile.Dequeue();
             trainername.Dequeue();
+            mega.Dequeue();
         }
         public static async Task slow()
         {
@@ -1359,7 +1317,7 @@ public class discordbot
             username.Dequeue();
             pokemonfile.Dequeue();
             trainername.Dequeue();
-           
+            mega.Dequeue();
             
         }
         public static async Task notrade()
@@ -1372,7 +1330,7 @@ public class discordbot
             username.Dequeue();
             pokemonfile.Dequeue();
             trainername.Dequeue();
-           
+            mega.Dequeue();
 
         }
        
