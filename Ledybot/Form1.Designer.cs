@@ -1055,7 +1055,7 @@ namespace Ledybot
             wondertrade.Location = new System.Drawing.Point(141, 180);
             wondertrade.Name = "wondertrade";
             wondertrade.Size = new System.Drawing.Size(80, 20);
-            wondertrade.TabIndex = 40;
+            wondertrade.TabIndex = 43;
             wondertrade.Text = "Wondertrade";
             wondertrade.UseVisualStyleBackColor = true;
             wondertrade.Click += new System.EventHandler(wondertrade_ClickAsync);

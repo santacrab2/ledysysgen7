@@ -1256,6 +1256,7 @@ namespace Ledybot
                         Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
                         while (!await isCorrectWindow(val_Quit_SeekScreen))
                             await Task.Delay(25);
+                        await Task.Delay(20000);
                         botState = (int)gtsbotstates.wondertrade;
                         break;
 
