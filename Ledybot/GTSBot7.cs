@@ -1217,43 +1217,49 @@ namespace Ledybot
                         byte[] wtrealshort = PKHeX.encryptArray(wtreal.Take(232).ToArray());
                         Program.scriptHelper.write(addr_box1slot1, wondershort, iPID);
                         Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
-                        await Task.Delay(5000);
+                        await Task.Delay(10000);
                         Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
-                        await Task.Delay(1000);
+                        await Task.Delay(2000);
                         Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
-                        await Task.Delay(1000);
+                        await Task.Delay(2000);
                         Program.scriptHelper.write(addr_box1slot1, wtrealshort, iPID);
                         await Task.Delay(500);
                         try
                         {
                             await wtchan.SendMessageAsync($"Wonder trading {Path.GetFileNameWithoutExtension(wtfile)} in 15 seconds");
                         }
-                        catch { continue; }
+                        catch { await Task.Delay(1); }
                         await Task.Delay(15000);
                         try
                         {
                             await wtchan.SendMessageAsync("3");
                         }
-                        catch { continue; }
+                        catch { await Task.Delay(1); }
                         await Task.Delay(1000);
                         try
                         {
                             await wtchan.SendMessageAsync("2");
                         }
-                        catch { continue; }
+                        catch { await Task.Delay(1); }
                         await Task.Delay(1000);
                         try
                         {
                             await wtchan.SendMessageAsync("1");
                         }
-                        catch { continue; }
+                        catch { await Task.Delay(1); }
                         await Task.Delay(1000);
                         try
                         {
                             await wtchan.SendMessageAsync("wonder trade now!");
                         }
-                        catch { continue; }
+                        catch { await Task.Delay(1); }
                         Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
+                        while (await isCorrectWindow(val_BoxScreen))
+                        {
+                            Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
+                            await Task.Delay(1000);
+                        }
+                        
                         while (!await isCorrectWindow(val_Quit_SeekScreen))
                             await Task.Delay(25);
                         await Task.Delay(60000);
