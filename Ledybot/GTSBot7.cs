@@ -83,7 +83,7 @@ namespace Ledybot
         public static int botresult = 0;
         public static int attempts = 0;
         public static Task<bool> waitTaskbool;
-        public static int commandtime = 100;
+        public static int commandtime = 200;
         public static int delaytime = 150;
         public static int o3dswaittime = 1000;
 
