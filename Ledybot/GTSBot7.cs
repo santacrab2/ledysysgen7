@@ -590,8 +590,7 @@ namespace Ledybot
                                                 pokecheck.HeldItem = megastone.Next(656, 683);
                                                 pokecheck = pokecheck.Legalize();
                                                 pokecheck.OT_Name = "Piplup.net";
-                                                pokecheck.IsNicknamed = true;
-                                                pokecheck.Nickname = "Piplup.net";
+                                               
                                                 if (!new LegalityAnalysis(pokecheck).Valid)
                                                 {
                                                     addr_PageEntry = BitConverter.ToUInt32(block, 0);
