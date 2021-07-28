@@ -893,7 +893,7 @@ namespace Ledybot
                 wondertrade.Enabled = true;
                 botWorking = false;
                 botNumber = -1;
-
+                GTSBot7.wondertrade = false;
             }
         }
     }

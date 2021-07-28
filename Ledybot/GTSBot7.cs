@@ -231,10 +231,12 @@ namespace Ledybot
             byte pokemonGender = 0x0;
             byte pokemonLevel = 0x0;
             int panicAttempts = 0;
-            if(wondertrade == true)
+            if (wondertrade == true)
             {
                 botState = (int)gtsbotstates.wondertrade;
             }
+            else
+                botState = (int)gtsbotstates.botstart;
             while (!botstop)
             {
                 if (botState != (int)gtsbotstates.panic)
@@ -261,7 +263,7 @@ namespace Ledybot
                         {
                             IMessageChannel chan = (IMessageChannel)discordbot.trademodule.channel.Peek();
                             
-                            await chan.SendMessageAsync("<@" + discordbot.trademodule.username.Peek() + ">" + " deposit your pokemon now");
+                            await chan.SendMessageAsync("<@" + discordbot.trademodule.username.Peek() + ">" + " searching for you now. Deposit your pokemon if you haven't already.");
                         }
                         if ((int)discordbot.trademodule.poketosearch.Peek() == 4321)
                         {
