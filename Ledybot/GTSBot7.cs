@@ -231,7 +231,7 @@ namespace Ledybot
             byte pokemonGender = 0x0;
             byte pokemonLevel = 0x0;
             int panicAttempts = 0;
-            if (wondertrade == true)
+            if(wondertrade == true)
             {
                 botState = (int)gtsbotstates.wondertrade;
             }
@@ -1263,6 +1263,7 @@ namespace Ledybot
                         
                         while (!await isCorrectWindow(val_Quit_SeekScreen))
                             await Task.Delay(25);
+                        await wtchan.SendMessageAsync("starting the next wonder trade in 60 seconds");
                         await Task.Delay(60000);
                         botState = (int)gtsbotstates.wondertrade;
                         break;
