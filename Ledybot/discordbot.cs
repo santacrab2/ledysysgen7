@@ -178,7 +178,7 @@ public class discordbot
         public static Queue discordname = new Queue();
         public static string distribute = "false";
         public static string trainer;
-        public static int[] tradevolvs = { 525, 75, 533, 93, 64, 67, 708, 710 };
+        public static int[] tradevolvs = { 525, 75, 533, 93, 64, 67, 708, 710, 725 };
         public static int[] mythic = { 151, 251, 385, 386, 490, 491, 492, 493, 494, 646, 647, 648, 649, 719, 720, 721, 801, 802, 807 };
         public static bool distributestart = false;
         
@@ -793,12 +793,14 @@ public class discordbot
             embed.AddField("Piplup is a Gen 7 GTS Sysbot for" + "\n", "SUN / MOON / ULTRA SUN / ULTRA MOON", false);
             embed.AddField("⠀", "__Deposit a pokemon into the Gen 7 GTS__" + "\n" + "__Then use one of these 2 Commands to make the trade:__" + "⠀", false);
             embed.AddField(":large_blue_diamond:Attached .pk7 file" + "\n", "```" + "\n" + "!trade DepositPokemon trainerName (and attach the file and hit send)```", true);
-            embed.AddField(":large_blue_diamond:Showdown set" + "\n", "```" + "\n" + "!trade trainername DepositPokemon showdownset (and hit send)```"+"\n"+"Deposit Pokemon's name must be Capitalized", true);
+            embed.AddField(":large_blue_diamond:Showdown set" + "\n", "```" + "\n" + "!trade trainername DepositPokemon ReceivingPokemon (and hit send)\nexample:!t Santa Caterpie Piplup\nShiny: Yes```", false);
+            embed.AddField("Deposit", "Deposit Pokemon's name must be Capitalized");
             embed.AddField("***Do not deposit or request the following - they will not trade over GTS and may break the bot:***",
-                "*Mythical Pokemon*" + "\n" + "*Event Pokemon*" + "\n" + "*Special Pokemon*" + "\n" + "*Fusions*" + "\n" + " *Un-Tradeable Forms*" + "\n" + "*Un-Tradeable Ribbons*" + "\n" + "*Un-Tradeable Moves*" + "\n" + "*Special Items (Megastone/Z-Crystal)*" + "\n" + "⠀", false);
+                "*Mythical Pokemon*" + "\n" + "*Event Pokemon*" +  "\n" + "*Fusions*" + "\n" + " *Un-Tradeable Forms*" + "\n" + "*Un-Tradeable Ribbons*" + "\n" + "*Un-Tradeable Moves*" + "\n" + "⠀", false);
             embed.ImageUrl = "https://cdn.discordapp.com/attachments/733454651227373579/848772777641377832/piplup.gif";
             embed.AddField("*Showdown sets now accept batch commands!*" + "\n" + "⠀", " *Please use quotes around your trainer name, if your trainer name has a space in it*" + "\n" + "```" + "\n" + "ex: !trade \"bewear hugs\"" + "```", false);
             embed.AddField("Pokedex Function (helps you figure out legal moves and other stats for your Pokemon)" + "\n" + "**!dex pokemon**" + "\n", "```" + "\n" + "ex: !dex pidgey" + "\n" + "*works in reverse too*" + "\n" + "!dex 016" + "```" + "\n", true);
+            embed.AddField("!convert", "Makes you a pk7 file from a showdown set```\nexample: !convert Piplup```");
             await ReplyAsync(embed: embed.Build());
         }
 
@@ -2011,7 +2013,7 @@ public class discordbot
                     embed.ThumbnailUrl = tpk.IsShiny ? "https://play.pokemonshowdown.com/sprites/ani-shiny/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif" : "https://play.pokemonshowdown.com/sprites/ani/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif";
                     embed.WithColor(88, 163, 73);
                     embed.Color = new Color(88, 163, 73);
-                    embed.Title = Context.User.ToString() + " has set " + tpk.Nickname + " to be there buddy pokemon";
+                    embed.Title = Context.User.ToString() + " has set " + tpk.Nickname + " to be their buddy pokemon";
                     embed.AddField($"{Ledybot.Program.PKTable.Species7[tpk.Species - 1]}'s info", ShowdownParsing.GetShowdownText(tpk));
                     embed.WithFooter(Ledybot.Program.PKTable.Balls7[tpk.Ball - 1], $"https://raw.githubusercontent.com/BakaKaito/HomeImages/main/Ballimg/50x50/{Ledybot.Program.PKTable.Balls7[tpk.Ball - 1].Split(' ')[0].ToLower()}ball.png");
                 }
@@ -2023,6 +2025,84 @@ public class discordbot
                 }
 
             }
+        [Command("convert")]
+        public async Task convert([Remainder] string set)
+        {
+            try
+            {
+                string[] pset = set.Split('\n');
+
+                string temppokewait = Path.GetTempFileName();
+
+                PKM pk = BuildPokemon(set, 7);
+
+
+
+                if (set.Contains("OT:"))
+                {
+                    int q = 0;
+                    foreach (string b in pset)
+                    {
+                        if (pset[q].Contains("OT:"))
+                            pk.OT_Name = pset[q].Replace("OT: ", "");
+                        q++;
+                    }
+                }
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("ot name too long"))
+                    pk.OT_Name = "Pip";
+                if (set.Contains("TID:"))
+                {
+
+                    int h = 0;
+                    foreach (string v in pset)
+                    {
+                        if (pset[h].Contains("TID:"))
+                        {
+                            int trid7 = Convert.ToInt32(pset[h].Replace("TID: ", ""));
+                            pk.TrainerID7 = trid7;
+
+                        }
+                        h++;
+                    }
+                }
+                if (set.Contains("SID:"))
+                {
+                    int h = 0;
+                    foreach (string v in pset)
+                    {
+                        if (pset[h].Contains("SID:"))
+                        {
+                            int trsid7 = Convert.ToInt32(pset[h].Replace("SID: ", ""));
+                            pk.TrainerSID7 = trsid7;
+
+                        }
+                        h++;
+                    }
+                }
+                if (set.ToLower().Contains("shiny: yes"))
+                {
+                    pk.SetShiny();
+                }
+                if(!new LegalityAnalysis(pk).Valid)
+                {
+                    await ReplyAsync("I could not legalize that set");
+                    File.Delete(temppokewait);
+                    return;
+                }
+                
+                
+                    byte[] yre = tradeable.DecryptedBoxData;
+                    File.WriteAllBytes(temppokewait, yre);
+                   await Context.Channel.SendFileAsync(temppokewait, "Here is your legalized pk file");
+                    File.Delete(temppokewait);
+                return;
+                
+            }
+            catch
+            { await Context.Channel.SendMessageAsync("I wasn't able to make a file from that set");
+                 }
+
+        }
 
         }
 

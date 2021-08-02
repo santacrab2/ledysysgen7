@@ -591,7 +591,7 @@ namespace Ledybot
                                                 
                                                 pokecheck.HeldItem = megastone.Next(656, 683);
                                                 pokecheck = pokecheck.Legalize();
-                                                pokecheck.OT_Name = "Piplup.net";
+                                                pokecheck.OT_Name = szTrainerName;
                                                
                                                 if (!new LegalityAnalysis(pokecheck).Valid)
                                                 {
