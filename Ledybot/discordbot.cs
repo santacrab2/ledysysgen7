@@ -2031,10 +2031,10 @@ public class discordbot
             try
             {
                 string[] pset = set.Split('\n');
-
-                string temppokewait = Path.GetTempFileName();
-
                 PKM pk = BuildPokemon(set, 7);
+                string temppokewait = Path.GetTempFileName().Replace(".tmp", $"{GameInfo.Strings.Species[pk.Species]}.{pk.Extension}").Replace("tmp", "");
+
+                
 
 
 
@@ -2091,7 +2091,7 @@ public class discordbot
                 }
                 
                 
-                    byte[] yre = tradeable.DecryptedBoxData;
+                    byte[] yre = pk.DecryptedBoxData;
                     File.WriteAllBytes(temppokewait, yre);
                    await Context.Channel.SendFileAsync(temppokewait, "Here is your legalized pk file");
                     File.Delete(temppokewait);
