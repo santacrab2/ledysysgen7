@@ -1210,6 +1210,7 @@ namespace Ledybot
                         Random wtrand = new Random();
                         
                         pokecheck = discordbot.trademodule.BuildPokemon("Piplup.net (Piplup)", 7);
+                        pokecheck.OT_Name = "Piplup.net";
                         byte[] wonderfodder = pokecheck.DecryptedBoxData;
                         byte[] wondershort = PKHeX.encryptArray(wonderfodder.Take(232).ToArray());
                         var wtfile = wtfiles[wtrand.Next(wtfiles.Length)];
@@ -1257,8 +1258,8 @@ namespace Ledybot
                         catch { await Task.Delay(1); }
                         Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
                         await Task.Delay(2000);
-                        
-                        if (await isCorrectWindow(val_BoxScreen))
+
+                        if (await isCorrectWindow(val_BoxScreen) || await isCorrectWindow(val_system)) 
                         {
                             Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
                             await Task.Delay(1000);
