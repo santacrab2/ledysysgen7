@@ -1255,19 +1255,25 @@ namespace Ledybot
                         }
                         catch { await Task.Delay(1); }
                         Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
-                        while (await isCorrectWindow(val_BoxScreen))
+                        await Task.Delay(2000);
+                        
+                        if (await isCorrectWindow(val_BoxScreen))
                         {
                             Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
                             await Task.Delay(1000);
+                            while (!await isCorrectWindow(val_Quit_SeekScreen))
+                            {
+                                Program.helper.quickbuton(Program.PKTable.keyB, commandtime);
+                                await Task.Delay(1000);
+                            }
                         }
+                            while (!await isCorrectWindow(val_Quit_SeekScreen))
+                                await Task.Delay(25);
+                            await wtchan.SendMessageAsync("starting the next wonder trade in 60 seconds");
+                            await Task.Delay(60000);
+                            botState = (int)gtsbotstates.wondertrade;
+                            break;
                         
-                        while (!await isCorrectWindow(val_Quit_SeekScreen))
-                            await Task.Delay(25);
-                        await wtchan.SendMessageAsync("starting the next wonder trade in 60 seconds");
-                        await Task.Delay(60000);
-                        botState = (int)gtsbotstates.wondertrade;
-                        break;
-
                         
                     case (int)gtsbotstates.panic:
                         Program.f1.ChangeStatus("Recovery mode!");
