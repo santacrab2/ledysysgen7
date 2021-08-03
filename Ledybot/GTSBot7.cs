@@ -1201,6 +1201,7 @@ namespace Ledybot
                         wondertrade = false;
                         break;
                     case (int)gtsbotstates.wondertrade:
+                        Program.f1.ChangeStatus("wonder trading");
                         if (!await isCorrectWindow(val_Quit_SeekScreen))
                         {
                             botState = (int)gtsbotstates.botexit;
@@ -1208,7 +1209,7 @@ namespace Ledybot
                         var wtfiles = Directory.GetFiles(Program.f1.wtfolder.Text);
                         Random wtrand = new Random();
                         
-                        pokecheck = discordbot.trademodule.BuildPokemon("Mythical (Bulbasaur)", 7);
+                        pokecheck = discordbot.trademodule.BuildPokemon("Piplup.net (Piplup)", 7);
                         byte[] wonderfodder = pokecheck.DecryptedBoxData;
                         byte[] wondershort = PKHeX.encryptArray(wonderfodder.Take(232).ToArray());
                         var wtfile = wtfiles[wtrand.Next(wtfiles.Length)];
