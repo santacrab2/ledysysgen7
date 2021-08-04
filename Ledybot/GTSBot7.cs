@@ -245,7 +245,7 @@ namespace Ledybot
                 }
                 switch (botState)
                 {
-                    
+
                     case (int)gtsbotstates.botstart:
                         while (MainForm.combo_distri.SelectedIndex == 1 && discordbot.trademodule.pokequeue.Count == 0)
                             await Task.Delay(25);
@@ -254,20 +254,20 @@ namespace Ledybot
                         if (MainForm.combo_distri.SelectedIndex == 0 && distribute == true)
                         {
                             int pts = 4321;
-                           discordbot.trademodule.poketosearch.Enqueue(pts);
+                            discordbot.trademodule.poketosearch.Enqueue(pts);
                             discordbot.trademodule.trainername.Enqueue("");
-                           
+
 
                         }
-                        if(distribute == false)
+                        if (distribute == false)
                         {
                             IMessageChannel chan = (IMessageChannel)discordbot.trademodule.channel.Peek();
-                            
+
                             await chan.SendMessageAsync("<@" + discordbot.trademodule.username.Peek() + ">" + " searching for you now. Deposit your pokemon if you haven't already.");
                         }
                         if ((int)discordbot.trademodule.poketosearch.Peek() == 4321)
                         {
-                            iPokemonToFind = MainForm.combo_pkmnList.SelectedIndex+1;
+                            iPokemonToFind = MainForm.combo_pkmnList.SelectedIndex + 1;
                             discordbot.trademodule.poketosearch.Dequeue();
                         }
                         else
@@ -275,7 +275,7 @@ namespace Ledybot
                             iPokemonToFind = (int)discordbot.trademodule.poketosearch.Peek();
                             discordbot.trademodule.poketosearch.Dequeue();
                         }
-                      
+
                         new discordbot.trademodule();
                         bool correctScreen = true;
                         pokemonIndex = new byte[2];
@@ -316,33 +316,33 @@ namespace Ledybot
                             addr_PageEntry = 0;
                             foundLastPage = false;
                             botresult = 8;
-                            
-                          
+
+
 
                             if (distribute == false)
                             {
                                 await logchan.SendMessageAsync($"{discordbot.trademodule.discordname.Peek()} did not complete their trade");
                                 await discordbot.trademodule.slow();
-                               botState = (int)gtsbotstates.botstart;
+                                botState = (int)gtsbotstates.botstart;
                                 break;
                             }
-                            if(distribute == true)
+                            if (distribute == true)
                             {
-                               discordbot.trademodule.trainername.Dequeue();
+                                discordbot.trademodule.trainername.Dequeue();
 
 
-                             
+
                                 if (MainForm.combo_pkmnList.SelectedIndex < 805)
                                     MainForm.combo_pkmnList.SelectedIndex += 1;
                                 else
                                     MainForm.combo_pkmnList.SelectedIndex = 0;
                                 while (discordbot.trademodule.tradevolvs.Contains(MainForm.combo_pkmnList.SelectedIndex + 1) || discordbot.trademodule.mythic.Contains(MainForm.combo_pkmnList.SelectedIndex + 1))
                                     MainForm.combo_pkmnList.SelectedIndex += 1;
-                               
+
                                 distribute = false;
                                 botState = (int)gtsbotstates.botstart;
                             }
-                            
+
                             break;
                         }
                         Program.f1.ChangeStatus("Pressing seek button");
@@ -367,10 +367,10 @@ namespace Ledybot
                         }
                         //Pokemon wanted screen again, this time with filled out information
                         await Task.Delay(2000);
-                        
+
                         waitTaskbool = Program.helper.waittouch(160, 185);
-                    
-                        
+
+
                         if (await waitTaskbool)
                         {
                             botState = (int)gtsbotstates.findfromstart;
@@ -384,7 +384,7 @@ namespace Ledybot
                         }
                         break;
                     case (int)gtsbotstates.findfromstart:
-                    
+
                         correctScreen = await isCorrectWindow(val_GTSListScreen);
                         if (!correctScreen)
                         {
@@ -460,7 +460,7 @@ namespace Ledybot
                             attempts = 0;
                             await Program.helper.waitNTRread(addr_PageSize);
                             listlength = (int)Program.helper.lastRead;
-                            if(distribute == false)
+                            if (distribute == false)
                                 pokecheck = (PKM)discordbot.trademodule.pokemonfile.Peek();
                             if (distribute == true)
                                 pokecheck = PKMConverter.GetBlank(7);
@@ -527,7 +527,7 @@ namespace Ledybot
                                 {
                                     levels = 70;
                                 }
-                                else if (level ==8)
+                                else if (level == 8)
                                 {
                                     levels = 80;
                                 }
@@ -542,16 +542,16 @@ namespace Ledybot
                                 int preprou = 0;
                                 if (gender == 0)
                                     preprou = 0;
-                               else if (gender == 1)
+                                else if (gender == 1)
                                     preprou = 0;
                                 else if (gender == 2)
                                     preprou = 1;
-                               else
+                                else
                                 {
                                     addr_PageEntry = BitConverter.ToUInt32(block, 0);
                                     continue;
                                 }
-                                if ((szTrainerName.ToLower() == discordbot.trademodule.trainername.Peek().ToString().ToLower() || (string)discordbot.trademodule.trainername.Peek() == "") && (dexnumber !=29 || dexnumber != 32)) { 
+                                if ((szTrainerName.ToLower() == discordbot.trademodule.trainername.Peek().ToString().ToLower() || (string)discordbot.trademodule.trainername.Peek() == "") && (dexnumber != 29 || dexnumber != 32)) {
                                     if (pokecheck.Species != dexnumber && distribute == false)
                                     {
 
@@ -566,9 +566,9 @@ namespace Ledybot
 
                                             try
                                             {
-                                              
+
                                                 pokecheck = discordbot.trademodule.BuildPokemon(Ledybot.Program.PKTable.Species7[dexnumber - 1], 7);
-                                                if(pokecheck.Species == 29 || pokecheck.Species == 32)
+                                                if (pokecheck.Species == 29 || pokecheck.Species == 32)
                                                 {
                                                     addr_PageEntry = BitConverter.ToUInt32(block, 0);
                                                     continue;
@@ -578,7 +578,7 @@ namespace Ledybot
                                                     pokecheck.SetIsShiny(false);
                                                 pokecheck.CurrentLevel = levels;
                                                 pokecheck.Gender = preprou;
-                                              
+
                                                 if (new LegalityAnalysis(pokecheck).Report().Contains("Genderless"))
                                                     pokecheck.Gender = 2;
                                                 int[] sugmov = MoveSetApplicator.GetMoveSet(pokecheck, true);
@@ -588,11 +588,11 @@ namespace Ledybot
                                                 pokecheck.Nature = natue;
                                                 pokecheck.SetRandomIVs();
                                                 Random megastone = new Random();
-                                                
+
                                                 pokecheck.HeldItem = megastone.Next(656, 683);
                                                 pokecheck = pokecheck.Legalize();
                                                 pokecheck.OT_Name = szTrainerName;
-                                               
+
                                                 if (!new LegalityAnalysis(pokecheck).Valid)
                                                 {
                                                     addr_PageEntry = BitConverter.ToUInt32(block, 0);
@@ -613,7 +613,7 @@ namespace Ledybot
                                         long iFC = BitConverter.ToInt64(fc, 0);
                                         szFC = iFC.ToString().PadLeft(12, '0');
 
-                                       
+
 
 
                                         int level2 = pokecheck.CurrentLevel;
@@ -662,14 +662,14 @@ namespace Ledybot
                                         int prepro = 0;
                                         if (pokecheck.Gender == 0)
                                             prepro = 1;
-                                       else if (pokecheck.Gender == 1)
+                                        else if (pokecheck.Gender == 1)
                                             prepro = 2;
-                                       else if (pokecheck.Gender == 2)
+                                        else if (pokecheck.Gender == 2)
                                             prepro = 0;
-                                
+
                                         if ((gender == prepro || gender == 0) && (level == 0 || level == levelcheck))
                                         {
-                                            
+
                                             int countryIndex = BitConverter.ToInt16(block, 0x68);
                                             string country = "-";
                                             Program.f1.countries.TryGetValue(countryIndex, out country);
@@ -716,7 +716,7 @@ namespace Ledybot
 
                                     }
 
-                                 }
+                                }
 
 
                                 addr_PageEntry = BitConverter.ToUInt32(block, iNextPrevBlockOffest);
@@ -737,8 +737,8 @@ namespace Ledybot
                                     else
                                     {
                                         botState = (int)gtsbotstates.pressSeek;
-                                        
-                                            stupid++;
+
+                                        stupid++;
                                     }
                                 }
                                 else
@@ -823,10 +823,10 @@ namespace Ledybot
                                     addr_PageEntry = BitConverter.ToUInt32(block, 0);
                                     continue;
                                 }
-                          
+
                                 else
                                 {
-                                   
+
 
 
                                     Array.Copy(block, 0x48, principal, 0, 4);
@@ -878,7 +878,7 @@ namespace Ledybot
                                     }
                                     else
                                     {
-                                       levelcheck = 10;
+                                        levelcheck = 10;
                                     }
                                     int prepro = 0;
                                     if (pokecheck.Gender == 0)
@@ -924,7 +924,7 @@ namespace Ledybot
                                                 botresult = 8;
                                                 botState = (int)gtsbotstates.botexit;
                                                 Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
-                                                await discordbot.trademodule.ban(); 
+                                                await discordbot.trademodule.ban();
                                                 break;
                                             }
                                         }
@@ -1019,6 +1019,57 @@ namespace Ledybot
                             byte[] cloneshort = PKHeX.encryptArray(pkmEncrypted.Take(232).ToArray());
                             string ek7 = BitConverter.ToString(cloneshort).Replace("-", ", 0x");
                             pokecheck.HeldItem = mega;
+                            if (pokecheck.Nickname.ToLower() == "egg")
+                            {
+                                pokecheck.IsNicknamed = true;
+                                switch (pokecheck.Language)
+                                {
+                                    case 1: pokecheck.Nickname = "タマゴ"; break;
+                                    case 3: pokecheck.Nickname = "Œuf"; break;
+                                    case 4: pokecheck.Nickname = "Uovo"; break;
+                                    case 5: pokecheck.Nickname = "Ei"; break;
+                                    case 7: pokecheck.Nickname = "Huevo"; break;
+                                    case 8: pokecheck.Nickname = "알"; break;
+                                    case 9: pokecheck.Nickname = "蛋"; break;
+                                    case 10: pokecheck.Nickname = "蛋"; break;
+                                    default: pokecheck.Nickname = "Egg"; break;
+
+
+                                }
+
+                                pokecheck.IsEgg = true;
+                                pokecheck.Egg_Location = 60002;
+                                pokecheck.MetDate = DateTime.Parse("2020/04/20");
+                                pokecheck.EggMetDate = pokecheck.MetDate;
+                                pokecheck.HeldItem = 0;
+                                pokecheck.CurrentLevel = 1;
+                                pokecheck.EXP = 0;
+                                
+                                pokecheck.Met_Level = 1;
+                                pokecheck.Met_Location = 30002;
+                                pokecheck.CurrentHandler = 0;
+                                pokecheck.OT_Friendship = 1;
+                                pokecheck.HT_Name = "";
+                                pokecheck.HT_Friendship = 0;
+                               
+                                pokecheck.HT_Gender = 0;
+                                
+                               
+                            
+                                pokecheck.StatNature = pokecheck.Nature;
+                                pokecheck.EVs = new int[] { 0, 0, 0, 0, 0, 0 };
+                                pokecheck.Markings = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
+                                pokecheck.ClearRecordFlags();
+                                pokecheck.ClearRelearnMoves();
+                                pokecheck.Moves = new int[] { 0, 0, 0, 0 };
+                                var la = new LegalityAnalysis(pokecheck);
+                                pokecheck.RelearnMoves = MoveBreed.GetExpectedMoves(pokecheck.RelearnMoves, la.EncounterMatch);
+                                pokecheck.Moves = pokecheck.RelearnMoves;
+                                pokecheck.Move1_PPUps = pokecheck.Move2_PPUps = pokecheck.Move3_PPUps = pokecheck.Move4_PPUps = 0;
+                                pokecheck.SetMaximumPPCurrent(pokecheck.Moves);
+                                pokecheck.SetSuggestedHyperTrainingData();
+                                pokecheck.SetSuggestedRibbons(la.EncounterMatch);
+                            }
                             byte[] megaencrypted = pokecheck.DecryptedBoxData;
                             byte[] megashort = PKHeX.encryptArray(megaencrypted.Take(232).ToArray());
                             //optional: grab some trainer data
@@ -1271,8 +1322,8 @@ namespace Ledybot
                         }
                             while (!await isCorrectWindow(val_Quit_SeekScreen))
                                 await Task.Delay(25);
-                            await wtchan.SendMessageAsync("starting the next wonder trade in 60 seconds");
-                            await Task.Delay(60000);
+                            await wtchan.SendMessageAsync("starting the next wonder trade in 42 seconds");
+                            await Task.Delay(42000);
                             botState = (int)gtsbotstates.wondertrade;
                             break;
                         
