@@ -591,7 +591,7 @@ namespace Ledybot
 
                                                 pokecheck.HeldItem = megastone.Next(656, 683);
                                                 pokecheck = pokecheck.Legalize();
-                                                pokecheck.OT_Name = szTrainerName;
+                                                pokecheck.OT_Name = "Piplup.net";
 
                                                 if (!new LegalityAnalysis(pokecheck).Valid)
                                                 {
@@ -1019,6 +1019,9 @@ namespace Ledybot
                             byte[] cloneshort = PKHeX.encryptArray(pkmEncrypted.Take(232).ToArray());
                             string ek7 = BitConverter.ToString(cloneshort).Replace("-", ", 0x");
                             pokecheck.HeldItem = mega;
+                            bool shiny = false;
+                            if (pokecheck.IsShiny == true)
+                                shiny = true;
                             if (pokecheck.Nickname.ToLower() == "egg")
                             {
                                 pokecheck.IsNicknamed = true;
@@ -1036,6 +1039,7 @@ namespace Ledybot
 
 
                                 }
+                                
 
                                 pokecheck.IsEgg = true;
                                 pokecheck.Egg_Location = 60002;
@@ -1069,6 +1073,8 @@ namespace Ledybot
                                 pokecheck.SetMaximumPPCurrent(pokecheck.Moves);
                                 pokecheck.SetSuggestedHyperTrainingData();
                                 pokecheck.SetSuggestedRibbons(la.EncounterMatch);
+                                if (shiny == true)
+                                    pokecheck.SetIsShiny(true);
                             }
                             byte[] megaencrypted = pokecheck.DecryptedBoxData;
                             byte[] megashort = PKHeX.encryptArray(megaencrypted.Take(232).ToArray());

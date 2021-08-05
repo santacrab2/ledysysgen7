@@ -257,16 +257,12 @@ public class discordbot
                 pk.SetShiny();
             }
             
-            if (l.ContainsValue(pk.HeldItem))
-            {
-                
-                    await ReplyAsync("no z-crystals...fixing pokemon");
-                    pk.ApplyHeldItem(571, pk.Format);
+            
                 
 
 
                 
-            }
+            
             if (!new LegalityAnalysis(pk).Valid)
             {
                 await ReplyAsync("Pokemon is illegal dumbass");
@@ -362,16 +358,7 @@ public class discordbot
                 pk.SetShiny();
             }
          
-            if (l.ContainsValue(pk.HeldItem))
-            {
-
-                await ReplyAsync("no z-crystals...fixing pokemon");
-                pk.ApplyHeldItem(571, pk.Format);
-
-
-
-
-            }
+      
             if (!new LegalityAnalysis(pk).Valid)
             {
                 await ReplyAsync("Pokemon is illegal dumbass");
@@ -522,21 +509,6 @@ public class discordbot
                 File.Delete(temppokewait);
                 return;
             }
-           
-            if (l.ContainsValue(tradeable.HeldItem))
-            {
-
-                await ReplyAsync("no z-crystals...fixing pokemon");
-                tradeable.ApplyHeldItem(571, tradeable.Format);
-
-
-
-
-            }
-
-
-
-
 
 
             await ReplyAsync("yay its legal good job!");
@@ -673,17 +645,6 @@ public class discordbot
                 await ReplyAsync("pokemon is illegal dumbass");
                 File.Delete(temppokewait);
                 return;
-            }
-            
-            if (l.ContainsValue(tradeable.HeldItem))
-            {
-
-                await ReplyAsync("no z-crystals...fixing pokemon");
-                tradeable.ApplyHeldItem(571, tradeable.Format);
-
-
-
-
             }
 
 
