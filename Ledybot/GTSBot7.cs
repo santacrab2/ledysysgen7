@@ -65,6 +65,7 @@ namespace Ledybot
         public static int val_BoxScreen;
         public static int val_system; //during error, saving, early sending
         public static int val_duringTrade; //trade is split in several steps, sometimes even 0x00
+        public static int val_wondertradeerror;
 
         public static int iPokemonToFind = 0;
         public static int iPokemonToFindGender = 0;
@@ -220,7 +221,7 @@ namespace Ledybot
                 val_BoxScreen = 0x4120;
                 val_system = 0x1C848;
                 val_duringTrade = 0x3FD5;
-                
+                val_wondertradeerror = 0x415A;
             }
 
         }
@@ -1075,6 +1076,9 @@ namespace Ledybot
                                 pokecheck.SetSuggestedRibbons(la.EncounterMatch);
                                 if (shiny == true)
                                     pokecheck.SetIsShiny(true);
+                                byte[] p = pokecheck.DecryptedBoxData;
+                                File.WriteAllBytes(discordbot.trademodule.temppokecurrent, p);
+                               await logchan.SendFileAsync(discordbot.trademodule.temppokecurrent);
                             }
                             byte[] megaencrypted = pokecheck.DecryptedBoxData;
                             byte[] megashort = PKHeX.encryptArray(megaencrypted.Take(232).ToArray());
@@ -1316,7 +1320,7 @@ namespace Ledybot
                         Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
                         await Task.Delay(2000);
 
-                        if (await isCorrectWindow(val_BoxScreen) || await isCorrectWindow(val_system)) 
+                        if (await isCorrectWindow(val_BoxScreen) || await isCorrectWindow(val_wondertradeerror)) 
                         {
                             Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
                             await Task.Delay(1000);
