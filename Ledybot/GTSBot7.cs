@@ -1288,7 +1288,28 @@ namespace Ledybot
                         await Task.Delay(500);
                         try
                         {
-                            await wtchan.SendMessageAsync($"Wonder trading {Path.GetFileNameWithoutExtension(wtfile)} holding {GameInfo.Strings.Item[pokecheck.HeldItem]} in 15 seconds");
+                            EmbedBuilder embed = new EmbedBuilder();
+                            embed.ThumbnailUrl = pokecheck.IsShiny ? $"https://play.pokemonshowdown.com/sprites/ani-shiny/{GameInfo.Strings.Species[pokecheck.Species].ToLower()}.gif" : $"https://play.pokemonshowdown.com/sprites/ani/{GameInfo.Strings.Species[pokecheck.Species].ToLower()}.gif";
+                            var newShowdown = new List<string>();
+                            var showdown = ShowdownParsing.GetShowdownText(pokecheck);
+                            foreach (var line in showdown.Split('\n'))
+                                newShowdown.Add(line);
+
+                            if (pokecheck.IsEgg)
+                                newShowdown.Add("\nPokémon is an egg");
+                            if (pokecheck.Ball > (int)Ball.None)
+                                newShowdown.Insert(newShowdown.FindIndex(z => z.Contains("Nature")), $"Ball: {(Ball)pokecheck.Ball} Ball");
+                            if (pokecheck.IsShiny)
+                            {
+                                var index = newShowdown.FindIndex(x => x.Contains("Shiny: Yes"));
+                                if (pokecheck.ShinyXor == 0 || pokecheck.FatefulEncounter)
+                                    newShowdown[index] = "Shiny: Square\r";
+                                else newShowdown[index] = "Shiny: Star\r";
+                            }
+
+                            newShowdown.InsertRange(1, new string[] { $"OT: {pokecheck.OT_Name}", $"TID: {pokecheck.TrainerID7}", $"SID: {pokecheck.TrainerSID7}", $"OTGender: {(Gender)pokecheck.OT_Gender}", $"Language: {(LanguageID)pokecheck.Language}" });
+                            embed.AddField("Wonder trading in 15 seconds", Format.Code(string.Join("\n", newShowdown).TrimEnd()));
+                            await wtchan.SendMessageAsync(embed: embed.Build());
                         }
                         catch { await Task.Delay(1); }
                         await Task.Delay(15000);
