@@ -1311,7 +1311,7 @@ namespace Ledybot
                             embed.AddField("Wonder trading in 15 seconds", Format.Code(string.Join("\n", newShowdown).TrimEnd()));
                             if (!File.Exists($"{Directory.GetCurrentDirectory()}//wondertrade.txt"))
                                 File.Create($"{Directory.GetCurrentDirectory()}//wondertrade.txt");
-                            File.WriteAllText($"{Directory.GetCurrentDirectory()}//wondertrade.txt", $"Gen 7 Wonder trading:{GameInfo.Strings.Species[pokecheck.Species]}");
+                            File.WriteAllText($"{Directory.GetCurrentDirectory()}//wondertrade.txt", $"Gen 7 Wonder trading:{Program.PKTable.Species7[pokecheck.Species-1]}");
                             await wtchan.SendMessageAsync(embed: embed.Build());
                         }   
                         catch { await Task.Delay(1); }
