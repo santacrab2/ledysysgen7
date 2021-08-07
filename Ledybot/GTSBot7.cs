@@ -1309,7 +1309,9 @@ namespace Ledybot
 
                             newShowdown.InsertRange(1, new string[] { $"OT: {pokecheck.OT_Name}", $"TID: {pokecheck.TrainerID7}", $"SID: {pokecheck.TrainerSID7}", $"OTGender: {(Gender)pokecheck.OT_Gender}", $"Language: {(LanguageID)pokecheck.Language}" });
                             embed.AddField("Wonder trading in 15 seconds", Format.Code(string.Join("\n", newShowdown).TrimEnd()));
-                            File.WriteAllText($"{Directory.GetCurrentDirectory()}//wondertrade.text", $"Gen 7 Wonder trading:{GameInfo.Strings.Species[pokecheck.Species]}");
+                            if (!File.Exists($"{Directory.GetCurrentDirectory()}//wondertrade.txt"))
+                                File.Create($"{Directory.GetCurrentDirectory()}//wondertrade.txt");
+                            File.WriteAllText($"{Directory.GetCurrentDirectory()}//wondertrade.txt", $"Gen 7 Wonder trading:{GameInfo.Strings.Species[pokecheck.Species]}");
                             await wtchan.SendMessageAsync(embed: embed.Build());
                         }   
                         catch { await Task.Delay(1); }
