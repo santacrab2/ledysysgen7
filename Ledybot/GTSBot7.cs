@@ -1076,9 +1076,7 @@ namespace Ledybot
                                 pokecheck.SetSuggestedRibbons(la.EncounterMatch);
                                 if (shiny == true)
                                     pokecheck.SetIsShiny(true);
-                                byte[] p = pokecheck.DecryptedBoxData;
-                                File.WriteAllBytes(discordbot.trademodule.temppokecurrent, p);
-                               await logchan.SendFileAsync(discordbot.trademodule.temppokecurrent);
+        
                             }
                             byte[] megaencrypted = pokecheck.DecryptedBoxData;
                             byte[] megashort = PKHeX.encryptArray(megaencrypted.Take(232).ToArray());
@@ -1290,7 +1288,7 @@ namespace Ledybot
                         await Task.Delay(500);
                         try
                         {
-                            await wtchan.SendMessageAsync($"Wonder trading {Path.GetFileNameWithoutExtension(wtfile)} in 15 seconds");
+                            await wtchan.SendMessageAsync($"Wonder trading {Path.GetFileNameWithoutExtension(wtfile)} holding {GameInfo.Strings.Item[pokecheck.HeldItem]} in 15 seconds");
                         }
                         catch { await Task.Delay(1); }
                         await Task.Delay(15000);
