@@ -1289,7 +1289,7 @@ namespace Ledybot
                         try
                         {
                             EmbedBuilder embed = new EmbedBuilder();
-                            embed.ThumbnailUrl = pokecheck.IsShiny ? $"https://play.pokemonshowdown.com/sprites/ani-shiny/{GameInfo.Strings.Species[pokecheck.Species].ToLower()}.gif" : $"https://play.pokemonshowdown.com/sprites/ani/{GameInfo.Strings.Species[pokecheck.Species].ToLower()}.gif";
+                            embed.ThumbnailUrl = pokecheck.IsShiny ? $"https://play.pokemonshowdown.com/sprites/ani-shiny/{Program.PKTable.Species7[pokecheck.Species-1].ToLower()}.gif" : $"https://play.pokemonshowdown.com/sprites/ani/{Program.PKTable.Species7[pokecheck.Species-1].ToLower()}.gif";
                             var newShowdown = new List<string>();
                             var showdown = ShowdownParsing.GetShowdownText(pokecheck);
                             foreach (var line in showdown.Split('\n'))
