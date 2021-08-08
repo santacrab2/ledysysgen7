@@ -1643,6 +1643,90 @@ public class discordbot
             await ReplyAsync("added " + Context.User + " to tradecord queue");
             await checkstarttrade();
         }
+        [Command("tradecord")]
+        [Alias("tc")]
+        public async Task tradecordstrtrade(string trainer, string pts, int idnumb, [Remainder] string trainerinfo = "")
+        {
+            int ptsstr = Array.IndexOf(Ledybot.Program.PKTable.Species6, pts);
+            if (ptsstr == -1)
+            {
+                await ReplyAsync("did not recognize your deposit pokemon");
+                return;
+            }
+            ptsstr = ptsstr + 1;
+            if (tradevolvs.Contains(ptsstr))
+            {
+                await ReplyAsync("you almost just broke the bot by depositing a trade evolution, you are a fucking asshole :)");
+                return;
+            }
+            string[] tset = trainerinfo.Split('\n');
+            string temppokewait = Path.GetTempFileName();
+            if (!File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb))
+            {
+                await ReplyAsync("no pokemon assigned that id number");
+                return;
+            }
+            byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb);
+            var tpk = PKMConverter.GetPKMfromBytes(g, 7);
+            if (trainerinfo.Contains("OT:"))
+            {
+                int q = 0;
+                foreach (string b in tset)
+                {
+                    if (tset[q].Contains("OT:"))
+                        tpk.OT_Name = tset[q].Replace("OT: ", "");
+                    q++;
+                }
+            }
+            if (trainerinfo.Contains("TID:"))
+            {
+                int h = 0;
+                foreach (string v in tset)
+                {
+                    if (tset[h].Contains("TID:"))
+                    {
+                        int trid7 = Convert.ToInt32(tset[h].Replace("TID: ", ""));
+                        tpk.TrainerID7 = trid7;
+
+                    }
+                    h++;
+                }
+            }
+            if (trainerinfo.Contains("SID:"))
+            {
+                int h = 0;
+                foreach (string v in tset)
+                {
+                    if (tset[h].Contains("SID:"))
+                    {
+                        int trsid7 = Convert.ToInt32(tset[h].Replace("SID: ", ""));
+                        tpk.TrainerSID7 = trsid7;
+
+                    }
+                    h++;
+                }
+            }
+            if (trainerinfo.Contains("OTGender: male"))
+            {
+                tpk.OT_Gender = 0;
+            }
+
+            if (trainerinfo.Contains("OTGender: Female"))
+            {
+                tpk.OT_Gender = 1;
+            }
+            byte[] pc = tpk.DecryptedBoxData;
+            File.WriteAllBytes(temppokewait, pc);
+            pokequeue.Enqueue(temppokewait);
+            username.Enqueue(Context.User.Id);
+            trainername.Enqueue(trainer);
+            pokemonfile.Enqueue(tpk);
+            channel.Enqueue(Context.Channel);
+            poketosearch.Enqueue(ptsstr);
+            discordname.Enqueue(Context.User);
+            await ReplyAsync("added " + Context.User + " to tradecord queue");
+            await checkstarttrade();
+        }
         [Command("list")]
         [Alias("l")]
         public async Task pokelist()
