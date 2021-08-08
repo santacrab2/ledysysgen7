@@ -65,7 +65,9 @@ namespace Ledybot
         public static int val_BoxScreen;
         public static int val_system; //during error, saving, early sending
         public static int val_duringTrade; //trade is split in several steps, sometimes even 0x00
-        public static int val_wondertradeerror;
+        public static int val_wondertradeerror; //special pokemon message
+        public static int val_WTerror2; //catches if it doesnt even make it to the special pokemon error lol
+        public static int val_emptyGTSpage; //since theres now a million bots because im the only one smart enough to realize this was a bad plan. This will catch empty GTS pages after the bots ravage them.
 
         public static int iPokemonToFind = 0;
         public static int iPokemonToFindGender = 0;
@@ -222,6 +224,8 @@ namespace Ledybot
                 val_system = 0x1C848;
                 val_duringTrade = 0x3FD5;
                 val_wondertradeerror = 0x415A;
+                val_emptyGTSpage = 0x40F5;
+                val_WTerror2 = 0x41B8;
             }
 
         }
@@ -389,6 +393,17 @@ namespace Ledybot
                         correctScreen = await isCorrectWindow(val_GTSListScreen);
                         if (!correctScreen)
                         {
+                            if (Program.helper.lastRead == val_emptyGTSpage)
+                            {
+                                stupid = 5;
+                                while (!await isCorrectWindow(val_Quit_SeekScreen))
+                                {
+                                    Program.helper.quickbuton(Program.PKTable.keyB, commandtime);
+                                    await Task.Delay(500);
+                                }
+
+                                botState = (int)gtsbotstates.pressSeek;
+                            }
                             //Hotfix for Only one Pokemon on List
                             if (Program.helper.lastRead == 0x40F5)
                             {
@@ -1344,7 +1359,7 @@ namespace Ledybot
                         Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
                         await Task.Delay(2000);
 
-                        if (await isCorrectWindow(val_BoxScreen) || await isCorrectWindow(val_wondertradeerror)) 
+                        if (await isCorrectWindow(val_BoxScreen) || await isCorrectWindow(val_wondertradeerror) || await isCorrectWindow(val_WTerror2)) 
                         {
                             Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
                             await Task.Delay(1000);

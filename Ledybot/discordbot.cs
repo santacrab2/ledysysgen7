@@ -1439,7 +1439,8 @@ public class discordbot
                 if (new LegalityAnalysis(tpk).Report().Contains("Static Encounter shiny mismatch"))
                     tpk.SetIsShiny(false);
                 tpk = tpk.Legalize();
-                
+                new LegalityAnalysis(tpk);
+                 
                 if (tpk.IsShiny)
                     shinymessage = "shiny";
        
