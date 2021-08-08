@@ -1065,11 +1065,13 @@ namespace Ledybot
                                 pokecheck.EVs = new int[] { 0, 0, 0, 0, 0, 0 };
                                 pokecheck.Markings = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
                                 pokecheck.ClearRecordFlags();
-                                pokecheck.ClearRelearnMoves();
-                                pokecheck.Moves = new int[] { 0, 0, 0, 0 };
                                 var la = new LegalityAnalysis(pokecheck);
-                                pokecheck.RelearnMoves = MoveBreed.GetExpectedMoves(pokecheck.RelearnMoves, la.EncounterMatch);
-                                pokecheck.Moves = pokecheck.RelearnMoves;
+                                if (la.Report().ToLower().Contains("illegal move")){
+                                    pokecheck.ClearRelearnMoves();
+                                    pokecheck.Moves = new int[] { 0, 0, 0, 0 };
+                                    pokecheck.RelearnMoves = MoveBreed.GetExpectedMoves(pokecheck.RelearnMoves, la.EncounterMatch);
+                                    pokecheck.Moves = pokecheck.RelearnMoves;
+                                }
                                 pokecheck.Move1_PPUps = pokecheck.Move2_PPUps = pokecheck.Move3_PPUps = pokecheck.Move4_PPUps = 0;
                                 pokecheck.SetMaximumPPCurrent(pokecheck.Moves);
                                 pokecheck.SetSuggestedHyperTrainingData();
