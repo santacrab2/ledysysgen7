@@ -1361,8 +1361,7 @@ namespace Ledybot
 
                         if (await isCorrectWindow(val_BoxScreen) || await isCorrectWindow(val_wondertradeerror) || await isCorrectWindow(val_WTerror2)) 
                         {
-                            Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
-                            await Task.Delay(1000);
+                           
                             while (!await isCorrectWindow(val_Quit_SeekScreen))
                             {
                                 Program.helper.quickbuton(Program.PKTable.keyB, commandtime);

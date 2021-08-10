@@ -373,8 +373,23 @@ namespace Ledybot
                 btn_Start.Enabled = true;
                 btn_Stop.Enabled = false;
                 botStop = true;
-                
-                
+                if (GTSBot7.wondertrade == false)
+                {
+                    try
+                    {
+                        discordbot.trademodule.channel.Dequeue();
+                        discordbot.trademodule.discordname.Dequeue();
+                        discordbot.trademodule.pokequeue.Dequeue();
+                        discordbot.trademodule.username.Dequeue();
+                        discordbot.trademodule.pokemonfile.Dequeue();
+                        discordbot.trademodule.trainername.Dequeue();
+                    }
+                    catch
+                    {
+                        discordbot.trademodule.trainername.Dequeue();
+                    }
+                }
+
             }
             else if (game == 3 || game == 4) // XY + ORAS
             {
@@ -893,6 +908,7 @@ namespace Ledybot
                 wondertrade.Enabled = true;
                 botWorking = false;
                 botNumber = -1;
+               
                 GTSBot7.wondertrade = false;
             }
         }
