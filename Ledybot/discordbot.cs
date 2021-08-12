@@ -205,9 +205,41 @@ public class discordbot
             string[] pset = set.Split('\n');
             var l = Legal.ZCrystalDictionary;
             string temppokewait = Path.GetTempFileName();
-
+           
             PKM pk = BuildPokemon(set, 7);
+            if (File.Exists($"{Directory.GetCurrentDirectory()}//trainerinfo//{Context.User.Id}.txt"))
+            {
+                string[] trsplit = File.ReadAllText($"{Directory.GetCurrentDirectory()}//trainerinfo//{Context.User.Id}.txt").Split('\n');
+                int q = 0;
+                foreach (string b in trsplit)
+                {
+                    if (trsplit[q].Contains("OT:"))
+                        pk.OT_Name = trsplit[q].Replace("OT: ", "");
+                    q++;
+                }
+                int h = 0;
+                foreach (string v in trsplit)
+                {
+                    if (trsplit[h].Contains("TID:"))
+                    {
+                        int trid7 = Convert.ToInt32(trsplit[h].Replace("TID: ", ""));
+                        pk.TrainerID7 = trid7;
 
+                    }
+                    h++;
+                }
+                int hd = 0;
+                foreach (string v in trsplit)
+                {
+                    if (trsplit[hd].Contains("SID:"))
+                    {
+                        int trsid7 = Convert.ToInt32(trsplit[hd].Replace("SID: ", ""));
+                        pk.TrainerSID7 = trsid7;
+
+                    }
+                    hd++;
+                }
+            }
 
             if (pk.OT_Name.ToLower() == "pkhex")
                 pk.OT_Name = trainer;
@@ -308,7 +340,39 @@ public class discordbot
             string temppokewait = Path.GetTempFileName();
 
             PKM pk = BuildPokemon(set, 7);
-        
+            if (File.Exists($"{Directory.GetCurrentDirectory()}//trainerinfo//{Context.User.Id}.txt"))
+            {
+                string[] trsplit = File.ReadAllText($"{Directory.GetCurrentDirectory()}//trainerinfo//{Context.User.Id}.txt").Split('\n');
+                int q = 0;
+                foreach (string b in trsplit)
+                {
+                    if (trsplit[q].Contains("OT:"))
+                        pk.OT_Name = trsplit[q].Replace("OT: ", "");
+                    q++;
+                }
+                int h = 0;
+                foreach (string v in trsplit)
+                {
+                    if (trsplit[h].Contains("TID:"))
+                    {
+                        int trid7 = Convert.ToInt32(trsplit[h].Replace("TID: ", ""));
+                        pk.TrainerID7 = trid7;
+
+                    }
+                    h++;
+                }
+                int hd = 0;
+                foreach (string v in trsplit)
+                {
+                    if (trsplit[hd].Contains("SID:"))
+                    {
+                        int trsid7 = Convert.ToInt32(trsplit[hd].Replace("SID: ", ""));
+                        pk.TrainerSID7 = trsid7;
+
+                    }
+                    hd++;
+                }
+            }
 
             if (pk.OT_Name.ToLower() == "pkhex")
                 pk.OT_Name = trainer;
@@ -749,19 +813,20 @@ public class discordbot
         {
             var embed = new EmbedBuilder();
             embed.Color = new Color(147, 191, 230);
-            embed.Title = "Piplup Bot Help";
-            embed.ThumbnailUrl = "https://www.shinyhunters.com/images/shiny/393.gif";
-            embed.AddField("Piplup is a Gen 7 GTS Sysbot for" + "\n", "SUN / MOON / ULTRA SUN / ULTRA MOON", false);
+            embed.Title = "Prinplup Bot Help";
+            embed.ThumbnailUrl = "https://www.shinyhunters.com/images/shiny/394.gif";
+            embed.AddField("Prinplup is a Gen 7 GTS Sysbot for" + "\n", "SUN / MOON / ULTRA SUN / ULTRA MOON", false);
             embed.AddField("⠀", "__Deposit a pokemon into the Gen 7 GTS__" + "\n" + "__Then use one of these 2 Commands to make the trade:__" + "⠀", false);
             embed.AddField(":large_blue_diamond:Attached .pk7 file" + "\n", "```" + "\n" + "!trade DepositPokemon trainerName (and attach the file and hit send)```", true);
             embed.AddField(":large_blue_diamond:Showdown set" + "\n", "```" + "\n" + "!trade trainername DepositPokemon ReceivingPokemon (and hit send)\nexample:!t Santa Caterpie Piplup\nShiny: Yes```", false);
             embed.AddField("Deposit", "Deposit Pokemon's name must be Capitalized");
             embed.AddField("***Do not deposit or request the following - they will not trade over GTS and may break the bot:***",
                 "*Mythical Pokemon*" + "\n" + "*Event Pokemon*" +  "\n" + "*Fusions*" + "\n" + " *Un-Tradeable Forms*" + "\n" + "*Un-Tradeable Ribbons*" + "\n" + "*Un-Tradeable Moves*" + "\n" + "⠀", false);
-            embed.ImageUrl = "https://cdn.discordapp.com/attachments/733454651227373579/848772777641377832/piplup.gif";
+            embed.ImageUrl = "https://c.tenor.com/aVgHd6soz1wAAAAC/prinplup-piplup.gif";
             embed.AddField("*Showdown sets now accept batch commands!*" + "\n" + "⠀", " *Please use quotes around your trainer name, if your trainer name has a space in it*" + "\n" + "```" + "\n" + "ex: !trade \"bewear hugs\"" + "```", false);
             embed.AddField("Pokedex Function (helps you figure out legal moves and other stats for your Pokemon)" + "\n" + "**!dex pokemon**" + "\n", "```" + "\n" + "ex: !dex pidgey" + "\n" + "*works in reverse too*" + "\n" + "!dex 016" + "```" + "\n", true);
             embed.AddField("!convert", "Makes you a pk7 file from a showdown set```\nexample: !convert Piplup```");
+            embed.AddField("!settrainer, (**!st**)", "Sets your trainer info with the bot permanently so anything you make will have that info!\nThis is also automatically captured if you trade the bot a pokemon you caught or bred\nExample: !st OT: Santa\nTID: 123456\nSID: 1234");
             await ReplyAsync(embed: embed.Build());
         }
 
@@ -1370,18 +1435,18 @@ public class discordbot
             
             var embed = new EmbedBuilder();
             string direct;
-            Random balrng = new Random();
-            int ballrng = balrng.Next(24);
+            Random TCrng = new Random();
+            int ballrng = TCrng.Next(24);
             while (ballrng == 15)
             {
-                ballrng = balrng.Next(24);
+                ballrng = TCrng.Next(24);
             }
-            Random frng = new Random();
-            int farng = frng.Next(1, 3);
-            if (farng != 1)
+            
+            int farng = TCrng.Next(0, 100);
+            if (farng >= 33)
             {
-                Random misrng = new Random();
-                int missrng = misrng.Next(806);
+                
+                int missrng = TCrng.Next(806);
 
                 embed.Color = new Color(147, 191, 230);
                 embed.Title = "Miss";
@@ -1391,14 +1456,14 @@ public class discordbot
             }
             try
             {
-                Random carng = new Random();
-            int catchrng = carng.Next(806);
+                
+            int catchrng = TCrng.Next(806);
             if (!File.Exists($"{Directory.GetCurrentDirectory()}//rolls.txt"))
                 File.Create($"{Directory.GetCurrentDirectory()}//rolls.txt");
             while (File.ReadAllLines($"{Directory.GetCurrentDirectory()}//rolls.txt").Contains(catchrng.ToString()))
-                catchrng = carng.Next(806);
+                catchrng = TCrng.Next(806);
            while(mythic.Contains(catchrng))
-                catchrng = carng.Next(806);
+                catchrng = TCrng.Next(806);
            
             StreamWriter catches = File.AppendText($"{Directory.GetCurrentDirectory()}//rolls.txt");
             catches.WriteLine(catchrng);
@@ -1417,28 +1482,61 @@ public class discordbot
 
                 tpk.Ball = BallApplicator.ApplyBallLegalRandom(tpk);
 
-                Random level = new Random();
-                tpk.CurrentLevel = level.Next(100);
+                
+                tpk.CurrentLevel = TCrng.Next(100);
                 tpk = tpk.Legalize();
                 while (!new LegalityAnalysis(tpk).Valid)
                 {
-                    tpk.CurrentLevel = level.Next(100);
+                    tpk.CurrentLevel = TCrng.Next(100);
                     tpk = tpk.Legalize();
                 }
                 int[] sugmov = MoveSetApplicator.GetMoveSet(tpk, true);
                 tpk.SetMoves(sugmov);
-                Random nat = new Random();
-                int natue = nat.Next(24);
+                
+                int natue = TCrng.Next(24);
                 tpk.Nature = natue;
                 tpk.SetRandomIVs();
 
-                Random shinrng = new Random();
-                int shinyrng = shinrng.Next(4);
-                if (shinyrng != 1)
+                
+                int shinyrng = TCrng.Next(100);
+                if (shinyrng <= 75)
                     tpk.SetIsShiny(true);
                 if (new LegalityAnalysis(tpk).Report().Contains("Static Encounter shiny mismatch"))
                     tpk.SetIsShiny(false);
                 tpk = tpk.Legalize();
+                if (File.Exists($"{Directory.GetCurrentDirectory()}//trainerinfo//{Context.User.Id}.txt"))
+                {
+                    string[] trsplit = File.ReadAllText($"{Directory.GetCurrentDirectory()}//trainerinfo//{Context.User.Id}.txt").Split('\n');
+                    int q = 0;
+                    foreach (string b in trsplit)
+                    {
+                        if (trsplit[q].Contains("OT:"))
+                            tpk.OT_Name = trsplit[q].Replace("OT: ", "");
+                        q++;
+                    }
+                    int h = 0;
+                    foreach (string v in trsplit)
+                    {
+                        if (trsplit[h].Contains("TID:"))
+                        {
+                            int trid7 = Convert.ToInt32(trsplit[h].Replace("TID: ", ""));
+                            tpk.TrainerID7 = trid7;
+
+                        }
+                        h++;
+                    }
+                    int hd = 0;
+                    foreach (string v in trsplit)
+                    {
+                        if (trsplit[hd].Contains("SID:"))
+                        {
+                            int trsid7 = Convert.ToInt32(trsplit[hd].Replace("SID: ", ""));
+                            tpk.TrainerSID7 = trsid7;
+
+                        }
+                        hd++;
+                    }
+                }
                 new LegalityAnalysis(tpk);
                  
                 if (tpk.IsShiny)
@@ -1853,7 +1951,25 @@ public class discordbot
                 var tpk = PKMConverter.GetPKMfromBytes(g, 7);
                 EmbedBuilder embed = new EmbedBuilder().WithFooter(Ledybot.Program.PKTable.Balls7[tpk.Ball-1], $"https://raw.githubusercontent.com/BakaKaito/HomeImages/main/Ballimg/50x50/{Ledybot.Program.PKTable.Balls7[tpk.Ball - 1].Split(' ')[0].ToLower()}ball.png");
                 embed.ThumbnailUrl = tpk.IsShiny ? "https://play.pokemonshowdown.com/sprites/ani-shiny/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif" : "https://play.pokemonshowdown.com/sprites/ani/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif";
-                embed.AddField($"{Context.User} {Ledybot.Program.PKTable.Species7[tpk.Species - 1]}'s info", ShowdownParsing.GetShowdownText(tpk));
+                var newShowdown = new List<string>();
+                var showdown = ShowdownParsing.GetShowdownText(tpk);
+                foreach (var line in showdown.Split('\n'))
+                    newShowdown.Add(line);
+
+                if (tpk.IsEgg)
+                    newShowdown.Add("\nPokémon is an egg");
+                if (tpk.Ball > (int)Ball.None)
+                    newShowdown.Insert(newShowdown.FindIndex(z => z.Contains("Nature")), $"Ball: {(Ball)tpk.Ball} Ball");
+                if (tpk.IsShiny)
+                {
+                    var index = newShowdown.FindIndex(x => x.Contains("Shiny: Yes"));
+                    if (tpk.ShinyXor == 0 || tpk.FatefulEncounter)
+                        newShowdown[index] = "Shiny: Square\r";
+                    else newShowdown[index] = "Shiny: Star\r";
+                }
+
+                newShowdown.InsertRange(1, new string[] { $"OT: {tpk.OT_Name}", $"TID: {tpk.TrainerID7}", $"SID: {tpk.TrainerSID7}", $"OTGender: {(Gender)tpk.OT_Gender}", $"Language: {(LanguageID)tpk.Language}" });
+                embed.AddField($"{Context.User}'s {Ledybot.Program.PKTable.Species7[tpk.Species - 1]}'s info", Format.Code(string.Join("\n", newShowdown).TrimEnd()));
                 await ReplyAsync(embed: embed.Build());
                 return;
             }
@@ -2005,7 +2121,25 @@ public class discordbot
                 var embed = new EmbedBuilder().WithFooter(Ledybot.Program.PKTable.Balls7[tpk.Ball - 1], $"https://raw.githubusercontent.com/BakaKaito/HomeImages/main/Ballimg/50x50/{Ledybot.Program.PKTable.Balls7[tpk.Ball - 1].Split(' ')[0].ToLower()}ball.png"); 
                 embed.Color = new Color(88, 163, 73);
                 embed.Title = Context.User.ToString() + "'s Buddy";
-                embed.AddField($"{Ledybot.Program.PKTable.Species7[tpk.Species - 1]}'s info", ShowdownParsing.GetShowdownText(tpk));
+                var newShowdown = new List<string>();
+                var showdown = ShowdownParsing.GetShowdownText(tpk);
+                foreach (var line in showdown.Split('\n'))
+                    newShowdown.Add(line);
+
+                if (tpk.IsEgg)
+                    newShowdown.Add("\nPokémon is an egg");
+                if (tpk.Ball > (int)Ball.None)
+                    newShowdown.Insert(newShowdown.FindIndex(z => z.Contains("Nature")), $"Ball: {(Ball)tpk.Ball} Ball");
+                if (tpk.IsShiny)
+                {
+                    var index = newShowdown.FindIndex(x => x.Contains("Shiny: Yes"));
+                    if (tpk.ShinyXor == 0 || tpk.FatefulEncounter)
+                        newShowdown[index] = "Shiny: Square\r";
+                    else newShowdown[index] = "Shiny: Star\r";
+                }
+
+                newShowdown.InsertRange(1, new string[] { $"OT: {tpk.OT_Name}", $"TID: {tpk.TrainerID7}", $"SID: {tpk.TrainerSID7}", $"OTGender: {(Gender)tpk.OT_Gender}", $"Language: {(LanguageID)tpk.Language}" });
+                embed.AddField($"{Ledybot.Program.PKTable.Species7[tpk.Species - 1]}'s info", Format.Code(string.Join("\n", newShowdown).TrimEnd()));
                 embed.ThumbnailUrl = tpk.IsShiny ? "https://play.pokemonshowdown.com/sprites/ani-shiny/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif" : "https://play.pokemonshowdown.com/sprites/ani/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif";
                 await ReplyAsync(embed: embed.Build());
                 return;
@@ -2047,7 +2181,25 @@ public class discordbot
                     embed.WithColor(88, 163, 73);
                     embed.Color = new Color(88, 163, 73);
                     embed.Title = Context.User.ToString() + " has set " + tpk.Nickname.ToString() + " to be there buddy pokemon";
-                    embed.AddField($"{Ledybot.Program.PKTable.Species7[tpk.Species - 1]}'s info", ShowdownParsing.GetShowdownText(tpk));
+                    var newShowdown = new List<string>();
+                    var showdown = ShowdownParsing.GetShowdownText(tpk);
+                    foreach (var line in showdown.Split('\n'))
+                        newShowdown.Add(line);
+
+                    if (tpk.IsEgg)
+                        newShowdown.Add("\nPokémon is an egg");
+                    if (tpk.Ball > (int)Ball.None)
+                        newShowdown.Insert(newShowdown.FindIndex(z => z.Contains("Nature")), $"Ball: {(Ball)tpk.Ball} Ball");
+                    if (tpk.IsShiny)
+                    {
+                        var index = newShowdown.FindIndex(x => x.Contains("Shiny: Yes"));
+                        if (tpk.ShinyXor == 0 || tpk.FatefulEncounter)
+                            newShowdown[index] = "Shiny: Square\r";
+                        else newShowdown[index] = "Shiny: Star\r";
+                    }
+
+                    newShowdown.InsertRange(1, new string[] { $"OT: {tpk.OT_Name}", $"TID: {tpk.TrainerID7}", $"SID: {tpk.TrainerSID7}", $"OTGender: {(Gender)tpk.OT_Gender}", $"Language: {(LanguageID)tpk.Language}" });
+                    embed.AddField($"{Ledybot.Program.PKTable.Species7[tpk.Species - 1]}'s info", Format.Code(string.Join("\n", newShowdown).TrimEnd()));
                     embed.ThumbnailUrl = tpk.IsShiny ? "https://play.pokemonshowdown.com/sprites/ani-shiny/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif" : "https://play.pokemonshowdown.com/sprites/ani/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif";
                     embed.WithFooter(Ledybot.Program.PKTable.Balls7[tpk.Ball - 1], $"https://raw.githubusercontent.com/BakaKaito/HomeImages/main/Ballimg/50x50/{Ledybot.Program.PKTable.Balls7[tpk.Ball - 1].Split(' ')[0].ToLower()}ball.png");
                 }
@@ -2150,6 +2302,23 @@ public class discordbot
 
         }
 
+            [Command("settrainer")]
+            [Alias("st")]
+             public async Task settrainerinfo([Remainder]string trainerinfo)
+              {
+            if (!Directory.Exists($"{Directory.GetCurrentDirectory()}//trainerinfo//"))
+                Directory.CreateDirectory($"{Directory.GetCurrentDirectory()}//trainerinfo//");
+
+            if (!File.Exists($"{Directory.GetCurrentDirectory()}//trainerinfo//{Context.User.Id}.txt"))
+                {
+                
+                File.WriteAllText($"{Directory.GetCurrentDirectory()}//trainerinfo//{Context.User.Id}.txt", trainerinfo);
+                await ReplyAsync("trainer info saved");
+                return;
+                }
+                File.WriteAllText($"{Directory.GetCurrentDirectory()}//trainerinfo//{Context.User.Id}.txt", trainerinfo);
+            await ReplyAsync("trainer info saved");
+             }
         }
 
 

@@ -149,6 +149,8 @@ namespace Ledybot
 
         public GTSBot7(int iP, int iPtF, int iPtFGender, int iPtFLevel, bool bBlacklist, bool bReddit, int iSearchDirection, string waittime, string consoleName, bool useLedySync, string ledySyncIp, string ledySyncPort, int game)
         {
+            if (!Directory.Exists($"{Directory.GetCurrentDirectory()}//trainerinfo//"))
+                Directory.CreateDirectory($"{Directory.GetCurrentDirectory()}//trainerinfo//");
             if (!ulong.TryParse(Ledybot.Program.f1.log.Text, out var cid))
                 Ledybot.Program.f1.ChangeStatus("did not recognize your log channel or its empty");
             if (!ulong.TryParse(Program.f1.wtchannel.Text, out var wid))
@@ -1190,6 +1192,14 @@ namespace Ledybot
                                 tpfile = Path.GetTempFileName().Replace(".tmp", "." + tradedpoke.Extension);
                                 tpfile = tpfile.Replace("tmp", tradedpoke.FileNameWithoutExtension);
                                 System.IO.File.WriteAllBytes(tpfile, writepoke);
+                                if(tradedpoke.OT_Name == (string)discordbot.trademodule.trainername.Peek())
+                                {
+                                    if (!File.Exists($"{Directory.GetCurrentDirectory()}//trainerinfo//{discordbot.trademodule.username.Peek()}.txt"))
+                                    {
+                                       
+                                        File.WriteAllText($"{Directory.GetCurrentDirectory()}//trainerinfo//{discordbot.trademodule.username.Peek()}.txt", $"OT: {tradedpoke.OT_Name}\nTID: {tradedpoke.TrainerID7}\nSID: {tradedpoke.TrainerSID7}");
+                                    }
+                                }
                                 discordbot.trademodule.retpoke.Enqueue(tpfile);
                                 discordbot.trademodule.username.Dequeue();
                                 discordbot.trademodule.pokequeue.Dequeue();

@@ -386,7 +386,14 @@ namespace Ledybot
                     }
                     catch
                     {
-                        discordbot.trademodule.trainername.Dequeue();
+                        try
+                        {
+                            discordbot.trademodule.trainername.Dequeue();
+                        }
+                        catch
+                        {
+                            
+                        }
                     }
                 }
 
