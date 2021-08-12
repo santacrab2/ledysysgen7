@@ -1485,7 +1485,7 @@ public class discordbot
                 
                 tpk.CurrentLevel = TCrng.Next(100);
                 tpk = tpk.Legalize();
-                while (!new LegalityAnalysis(tpk).Valid)
+                while (new LegalityAnalysis(tpk).Report().Contains("Evolution not valid"))
                 {
                     tpk.CurrentLevel = TCrng.Next(100);
                     tpk = tpk.Legalize();
