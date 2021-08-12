@@ -826,7 +826,7 @@ public class discordbot
             embed.AddField("*Showdown sets now accept batch commands!*" + "\n" + "⠀", " *Please use quotes around your trainer name, if your trainer name has a space in it*" + "\n" + "```" + "\n" + "ex: !trade \"bewear hugs\"" + "```", false);
             embed.AddField("Pokedex Function (helps you figure out legal moves and other stats for your Pokemon)" + "\n" + "**!dex pokemon**" + "\n", "```" + "\n" + "ex: !dex pidgey" + "\n" + "*works in reverse too*" + "\n" + "!dex 016" + "```" + "\n", true);
             embed.AddField("!convert", "Makes you a pk7 file from a showdown set```\nexample: !convert Piplup```");
-            embed.AddField("!settrainer, (**!st**)", "Sets your trainer info with the bot permanently so anything you make will have that info!\nThis is also automatically captured if you trade the bot a pokemon you caught or bred\nExample: !st OT: Santa\nTID: 123456\nSID: 1234");
+            embed.AddField("!settrainer, (**!st**)", "Sets your trainer info with the bot permanently so anything you make will have that info!\nThis is also automatically captured if you trade the bot a pokemon you caught or bred\n```Example: !st OT: Santa\nTID: 123456\nSID: 1234```");
             await ReplyAsync(embed: embed.Build());
         }
 
@@ -1996,6 +1996,7 @@ public class discordbot
                 $":large_blue_diamond: **!tdexmissing** (***!tdm***) \n \n Displays what pokemon you are missing from your pokedex \n \n" +
                 $":large_blue_diamond: **!BuddySet** (***!bs***) \n \n Sets a buddy to go on your adventure, will gain exp with each catch and evolve if it meets level criteria! \n \n" +
                 $":large_blue_diamond: **!Buddy** (***!b***) \n \n Displays your buddies information!", true);
+            embed.AddField("!settrainer, (**!st**)", "Sets your trainer info with the bot permanently so anything you catch will have that info!\nThis is also automatically captured if you trade the bot a pokemon you caught or bred\n```Example: !st OT: Santa\nTID: 123456\nSID: 1234```");
             embed.ImageUrl = "https://cdn.discordapp.com/attachments/733454651227373579/848772777641377832/piplup.gif";
             await ReplyAsync(embed: embed.Build());
             return;
@@ -2319,6 +2320,17 @@ public class discordbot
                 File.WriteAllText($"{Directory.GetCurrentDirectory()}//trainerinfo//{Context.User.Id}.txt", trainerinfo);
             await ReplyAsync("trainer info saved");
              }
+        [Command("trainerinfo")]
+        [Alias("ti")]
+        public async Task gettrainerinfo()
+        {
+            if (File.Exists($"{Directory.GetCurrentDirectory()}//trainerinfo//{Context.User.Id}.txt"))
+            {
+                await ReplyAsync(File.ReadAllText($"{Directory.GetCurrentDirectory()}//trainerinfo//{Context.User.Id}.txt"));
+                return;
+            }
+            await ReplyAsync("no trainer info found");
+        }
         }
 
 
