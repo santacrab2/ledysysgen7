@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using Discord.Addons.Interactive;
 using Discord.Rest;
 using PKHeX.Core;
 using PKHeX.Core.AutoMod;
 using System.Diagnostics;
+using Microsoft.Extensions.DependencyInjection;
 
-
-
-public class discordbot
+public class discordbot 
 {
 
 
@@ -27,7 +27,7 @@ public class discordbot
 
 
 
-
+    public IServiceProvider _services;
 
 
     public static void tot(string[] args)
@@ -42,12 +42,15 @@ public class discordbot
         _commands = new CommandService();
         var token = Ledybot.Program.f1.token.Text;
         //var token = File.ReadAllText("token.txt");
-
+        _services = new ServiceCollection()
+          .AddSingleton(_client)
+          .AddSingleton<InteractiveService>()
+          .BuildServiceProvider();
         await _client.LoginAsync(TokenType.Bot, token);
         await _client.StartAsync();
         CommandHandler ch = new CommandHandler(_client, _commands);
         await ch.InstallCommandsAsync();
-
+   
         // Block this task until the program is closed.
         await Task.Delay(-1);
 
@@ -1498,12 +1501,7 @@ public class discordbot
                 tpk.SetRandomIVs();
 
                 
-                int shinyrng = TCrng.Next(100);
-                if (shinyrng <= 75)
-                    tpk.SetIsShiny(true);
-                if (new LegalityAnalysis(tpk).Report().Contains("Static Encounter shiny mismatch"))
-                    tpk.SetIsShiny(false);
-                tpk = tpk.Legalize();
+               
                 if (File.Exists($"{Directory.GetCurrentDirectory()}//trainerinfo//{Context.User.Id}.txt"))
                 {
                     string[] trsplit = File.ReadAllText($"{Directory.GetCurrentDirectory()}//trainerinfo//{Context.User.Id}.txt").Split('\n');
@@ -1539,10 +1537,16 @@ public class discordbot
                 }
                 new LegalityAnalysis(tpk);
                  
+             
+                int shinyrng = TCrng.Next(100);
+                if (shinyrng <= 75)
+                    tpk.SetIsShiny(true);
+                if (new LegalityAnalysis(tpk).Report().Contains("Static Encounter shiny mismatch"))
+                    tpk.SetIsShiny(false);
+                tpk = tpk.Legalize();
                 if (tpk.IsShiny)
                     shinymessage = "shiny";
-       
-            if (!Directory.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id))
+                if (!Directory.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id))
             {
                 Directory.CreateDirectory(Directory.GetCurrentDirectory() + "//" + Context.User.Id);
             }
@@ -1886,8 +1890,11 @@ public class discordbot
                 
                 r++;
             }
-            await ReplyAsync(embed: embed.Build());
 
+
+            await ReplyAsync(embed: embed.Build());
+            
+      
 
 
 

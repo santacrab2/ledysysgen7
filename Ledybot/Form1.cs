@@ -300,7 +300,29 @@ namespace Ledybot
                         Program.f1.ChangeStatus("its broken and idk why");
                         break;
                 }
+                if (GTSBot7.wondertrade == false)
+                {
+                    try
+                    {
+                        discordbot.trademodule.channel.Dequeue();
+                        discordbot.trademodule.discordname.Dequeue();
+                        discordbot.trademodule.pokequeue.Dequeue();
+                        discordbot.trademodule.username.Dequeue();
+                        discordbot.trademodule.pokemonfile.Dequeue();
+                        discordbot.trademodule.trainername.Dequeue();
+                    }
+                    catch
+                    {
+                        try
+                        {
+                            discordbot.trademodule.trainername.Dequeue();
+                        }
+                        catch
+                        {
 
+                        }
+                    }
+                }
                 Program.gd.enableButtons();
                 btn_Stop.Enabled = false;
                 btn_Start.Enabled = true;
@@ -373,29 +395,7 @@ namespace Ledybot
                 btn_Start.Enabled = true;
                 btn_Stop.Enabled = false;
                 botStop = true;
-                if (GTSBot7.wondertrade == false)
-                {
-                    try
-                    {
-                        discordbot.trademodule.channel.Dequeue();
-                        discordbot.trademodule.discordname.Dequeue();
-                        discordbot.trademodule.pokequeue.Dequeue();
-                        discordbot.trademodule.username.Dequeue();
-                        discordbot.trademodule.pokemonfile.Dequeue();
-                        discordbot.trademodule.trainername.Dequeue();
-                    }
-                    catch
-                    {
-                        try
-                        {
-                            discordbot.trademodule.trainername.Dequeue();
-                        }
-                        catch
-                        {
-                            
-                        }
-                    }
-                }
+                
 
             }
             else if (game == 3 || game == 4) // XY + ORAS

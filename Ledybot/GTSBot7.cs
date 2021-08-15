@@ -68,6 +68,7 @@ namespace Ledybot
         public static int val_wondertradeerror; //special pokemon message
         public static int val_WTerror2; //catches if it doesnt even make it to the special pokemon error lol
         public static int val_emptyGTSpage; //since theres now a million bots because im the only one smart enough to realize this was a bad plan. This will catch empty GTS pages after the bots ravage them.
+        public static int val_wondertradesearch;
 
         public static int iPokemonToFind = 0;
         public static int iPokemonToFindGender = 0;
@@ -216,7 +217,7 @@ namespace Ledybot
                 addr_pokemonToFind = 0x32992180;
                 addr_pokemonToFindGender = 0x32992184;
                 addr_pokemonToFindLevel = 0x32992188;
-
+                val_wondertradesearch = 0x41A8;
                 val_PlazaScreen = 0x00;
                 val_Quit_SeekScreen = 0x3F2B;
                 val_SearchScreen = 0x412A;
@@ -1369,7 +1370,7 @@ namespace Ledybot
                         Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
                         await Task.Delay(2000);
 
-                        if (await isCorrectWindow(val_BoxScreen) || await isCorrectWindow(val_wondertradeerror) || await isCorrectWindow(val_WTerror2)) 
+                        if (!await isCorrectWindow(val_wondertradesearch)) 
                         {
                            
                             while (!await isCorrectWindow(val_Quit_SeekScreen))
