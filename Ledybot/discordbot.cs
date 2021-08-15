@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using Discord.Addons.Interactive;
 using Discord.Rest;
 using PKHeX.Core;
 using PKHeX.Core.AutoMod;
@@ -18,8 +17,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 public class discordbot 
 {
-
-
+    public static int page = 0;
+    public static IUserMessage msg;
     public static DiscordSocketClient _client;
     private CommandService _commands;
     Queue tradequeue = new Queue();
@@ -42,10 +41,7 @@ public class discordbot
         _commands = new CommandService();
         var token = Ledybot.Program.f1.token.Text;
         //var token = File.ReadAllText("token.txt");
-        _services = new ServiceCollection()
-          .AddSingleton(_client)
-          .AddSingleton<InteractiveService>()
-          .BuildServiceProvider();
+      
         await _client.LoginAsync(TokenType.Bot, token);
         await _client.StartAsync();
         CommandHandler ch = new CommandHandler(_client, _commands);
@@ -77,7 +73,7 @@ public class discordbot
         {
             // Hook the MessageReceived event into our command handler
             _client.MessageReceived += HandleCommandAsync;
-
+            _client.ReactionAdded += HandleReactionAsync;
             // Here we discover all of the command modules in the entry 
             // assembly and load them. Starting from Discord.NET 2.0, a
             // service provider is required to be passed into the
@@ -153,7 +149,46 @@ public class discordbot
            await msg.Channel.SendMessageAsync(Format.Code(string.Join("\n", newShowdown).TrimEnd()));
         }
 
-    
+        public static async Task HandleReactionAsync(Cacheable<IUserMessage, ulong> cachedMsg, ISocketMessageChannel _, SocketReaction reaction)
+        {
+           
+        var user = reaction.User.Value;
+            if (user.IsBot)
+                return;
+            
+
+            if (!cachedMsg.HasValue)
+                msg = await cachedMsg.GetOrDownloadAsync().ConfigureAwait(false);
+            else msg = cachedMsg.Value;
+
+           
+
+
+
+            IEmote[] reactions = { new Emoji("⬅️"), new Emoji("➡️") };
+            if (!reactions.Contains(reaction.Emote))
+                return;
+            if (reaction.Emote.Name == reactions[0].Name || reaction.Emote.Name == reactions[1].Name)
+            {
+                if (reaction.Emote.Name == reactions[0].Name)
+                {
+                     page--;
+                }
+                else
+                {
+                    page++;
+                    
+                }
+
+                trademodule.embed.Fields.Clear();
+                trademodule.embed.AddField("box", trademodule.n[page].ToString());
+                trademodule.embed.Footer.Text = $"Page {page + 1} of {trademodule.n.Length}";
+                
+                await msg.RemoveReactionAsync(reactions[reaction.Emote.Name == reactions[0].Name ? 0 : 1], user);
+                await msg.ModifyAsync(x => x.Embed = trademodule.embed.Build()).ConfigureAwait(false);
+
+            }
+        }
 
     }
 
@@ -163,9 +198,10 @@ public class discordbot
         return await webClient.DownloadDataTaskAsync(url);
     }
 
-    public class trademodule : ModuleBase
+    public class trademodule : ModuleBase<SocketCommandContext>
     {
-
+        public static EmbedBuilder embed = new EmbedBuilder();
+        
         public static PKM tradeable;
         public static byte[] buffer;
         public static IAttachment pokm;
@@ -184,7 +220,7 @@ public class discordbot
         public static int[] tradevolvs = { 525, 75, 533, 93, 64, 67, 708, 710, 61, 79, 95, 123, 117, 137, 366, 112, 125, 126, 233, 356, 684, 682, 349 };
         public static int[] mythic = { 151, 251, 385, 386, 490, 491, 492, 493, 494, 646, 647, 648, 649, 719, 720, 721, 801, 802, 807 };
         public static bool distributestart = false;
-        
+        public static string[] n;
         
 
         [Command("trade")]
@@ -814,7 +850,7 @@ public class discordbot
         [Alias("h")]
         public async Task help()
         {
-            var embed = new EmbedBuilder();
+            embed = new EmbedBuilder();
             embed.Color = new Color(147, 191, 230);
             embed.Title = "Prinplup Bot Help";
             embed.ThumbnailUrl = "https://www.shinyhunters.com/images/shiny/394.gif";
@@ -849,7 +885,7 @@ public class discordbot
         {
             Object[] arr = discordname.ToArray();
             var sb = new System.Text.StringBuilder();
-            var embed = new EmbedBuilder();
+            embed = new EmbedBuilder();
             if(arr.Length ==0)
             {
               await  ReplyAsync("queue is empty");
@@ -889,7 +925,7 @@ public class discordbot
             
             if (Array.IndexOf(MyArrayLower, pokemon.ToLower()) == -1 || Array.IndexOf(MyArrayLower, pokemon.ToLower()) > 807)
             {
-                var embed = new EmbedBuilder();
+                embed = new EmbedBuilder();
                 embed.Color = new Color(147, 191, 230);
                 embed.Title = "This bot only supports Generation 1-7, dex# 1-807 ";
                 await ReplyAsync(embed: embed.Build());
@@ -906,7 +942,8 @@ public class discordbot
                 baseLink[2] = i < 10 ? $"000{i}" : i < 100 && i > 9 ? $"00{i}" : $"0{i}";
                 baseLink[8] = "r.png";
                 var link = string.Join("_", baseLink);
-                var embed = new EmbedBuilder().WithFooter(x);
+                embed = new EmbedBuilder().WithFooter(x);
+                
                 embed.Color = new Color(147, 191, 230);
                 embed.Title = "National Pokedex #" + i + " " + pokemon;
                 embed.ThumbnailUrl = "https://play.pokemonshowdown.com/sprites/ani-shiny/" + pokemon.ToLower() + ".gif";
@@ -1113,7 +1150,7 @@ public class discordbot
             if (national > 807)
             {
 
-                var embed = new EmbedBuilder();
+                embed = new EmbedBuilder();
                 embed.Color = new Color(147, 191, 230);
                 embed.Title = "This bot only supports Generation 1-7, dex# 1-807 ";
                 await ReplyAsync(embed: embed.Build());
@@ -1125,7 +1162,8 @@ public class discordbot
                 baseLink[2] = national < 10 ? $"000{national}" : national < 100 && national > 9 ? $"00{national}" : $"0{national}";
                 baseLink[8] = "r.png";
                 var link = string.Join("_", baseLink);
-                var embed = new EmbedBuilder().WithFooter(x);
+                embed = new EmbedBuilder().WithFooter(x);
+                
                 embed.Color = new Color(147, 191, 230);
                 embed.Title = "National Pokedex #" + (national) + " " + Ledybot.Program.PKTable.Species7[national - 1];
                 embed.ThumbnailUrl = "https://play.pokemonshowdown.com/sprites/ani-shiny/" + Ledybot.Program.PKTable.Species7[national - 1].ToLower() + ".gif";
@@ -1435,8 +1473,8 @@ public class discordbot
         [Alias("k")]
         public async Task tradecordcatch()
         {
-            
-            var embed = new EmbedBuilder();
+
+            embed = new EmbedBuilder();
             string direct;
             Random TCrng = new Random();
             int ballrng = TCrng.Next(24);
@@ -1834,8 +1872,8 @@ public class discordbot
         [Alias("l")]
         public async Task pokelist()
         {
-
-           
+            page = 0;
+            embed = new EmbedBuilder();
             if (!Directory.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id))
                 await ReplyAsync("no pokemon found");
             if (Directory.GetFiles(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//").Count() == 0)
@@ -1860,7 +1898,7 @@ public class discordbot
                 k++;
                 h++;
             }
-            string[] n = new string[24];
+            n = new string[24];
             int q = 0;
             string yb = y.ToString();
             
@@ -1879,22 +1917,28 @@ public class discordbot
                 
                 q++;
             }
-
-            int r = 0;
-            EmbedBuilder embed = new EmbedBuilder();
-            embed.Title = "Your pokemon Box";
-            foreach (string i in n)
-            {
-                if(i != null)
-                    embed.AddField($"page {r + 1} ", n[r].ToString());
-                
-                r++;
-            }
-
-
-            await ReplyAsync(embed: embed.Build());
             
-      
+            
+            
+            embed.Title = "Your pokemon Box";
+            // foreach (string i in n)
+            //  {
+            //      if(i != null)
+
+
+            //   r++;
+            // }
+            embed.AddField("Box", "hi");
+            
+             embed.Fields[0].Value = n[0].ToString();
+         
+            embed.WithFooter($"Page {page + 1} of {n.Length}");
+            IEmote[] reactions = { new Emoji("⬅️"), new Emoji("➡️") };
+            var listmsg = await Context.Channel.SendMessageAsync(embed: embed.Build());
+            
+            _ = Task.Run(() => listmsg.AddReactionsAsync(reactions).ConfigureAwait(false));
+          
+
 
 
 
@@ -1956,7 +2000,7 @@ public class discordbot
             {
                 byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb);
                 var tpk = PKMConverter.GetPKMfromBytes(g, 7);
-                EmbedBuilder embed = new EmbedBuilder().WithFooter(Ledybot.Program.PKTable.Balls7[tpk.Ball-1], $"https://raw.githubusercontent.com/BakaKaito/HomeImages/main/Ballimg/50x50/{Ledybot.Program.PKTable.Balls7[tpk.Ball - 1].Split(' ')[0].ToLower()}ball.png");
+                embed = new EmbedBuilder().WithFooter(Ledybot.Program.PKTable.Balls7[tpk.Ball-1], $"https://raw.githubusercontent.com/BakaKaito/HomeImages/main/Ballimg/50x50/{Ledybot.Program.PKTable.Balls7[tpk.Ball - 1].Split(' ')[0].ToLower()}ball.png");
                 embed.ThumbnailUrl = tpk.IsShiny ? "https://play.pokemonshowdown.com/sprites/ani-shiny/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif" : "https://play.pokemonshowdown.com/sprites/ani/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif";
                 var newShowdown = new List<string>();
                 var showdown = ShowdownParsing.GetShowdownText(tpk);
@@ -1986,7 +2030,7 @@ public class discordbot
         [Alias("ch")]
         public async Task HelpTC()
         {
-            var embed = new EmbedBuilder();
+            embed = new EmbedBuilder();
             embed.Color = new Color(147, 191, 230);
             embed.Title = "Piplup Tradecord Help";
             embed.ThumbnailUrl = "https://www.shinyhunters.com/images/shiny/393.gif";
@@ -2019,7 +2063,7 @@ public class discordbot
             {
                 byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb);
                 var tpk = PKMConverter.GetPKMfromBytes(g, 7);
-                EmbedBuilder embed = new EmbedBuilder();
+                embed = new EmbedBuilder();
                 embed.WithColor(147, 191, 230);
                 tpk.SetNickname(nicky);
                 File.WriteAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb, tpk.DecryptedBoxData);
@@ -2040,7 +2084,7 @@ public class discordbot
         {
             if(File.Exists(Directory.GetCurrentDirectory() + "//"+"//dexs//" +Context.User.Id+".txt"))
             {
-                EmbedBuilder embed = new EmbedBuilder();
+                embed = new EmbedBuilder();
                 embed.Title = $"{Context.User}'s Pokedex Progress";
                 int count = File.ReadAllLines($"{Directory.GetCurrentDirectory()}//dexs///{Context.User.Id}.txt").Count();
                 embed.AddField("You've caught: ", count.ToString() + "/807");
@@ -2126,7 +2170,7 @@ public class discordbot
             {
                 byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy");
                 var tpk = PKMConverter.GetPKMfromBytes(g, 7);
-                var embed = new EmbedBuilder().WithFooter(Ledybot.Program.PKTable.Balls7[tpk.Ball - 1], $"https://raw.githubusercontent.com/BakaKaito/HomeImages/main/Ballimg/50x50/{Ledybot.Program.PKTable.Balls7[tpk.Ball - 1].Split(' ')[0].ToLower()}ball.png"); 
+                embed = new EmbedBuilder().WithFooter(Ledybot.Program.PKTable.Balls7[tpk.Ball - 1], $"https://raw.githubusercontent.com/BakaKaito/HomeImages/main/Ballimg/50x50/{Ledybot.Program.PKTable.Balls7[tpk.Ball - 1].Split(' ')[0].ToLower()}ball.png"); 
                 embed.Color = new Color(88, 163, 73);
                 embed.Title = Context.User.ToString() + "'s Buddy";
                 var newShowdown = new List<string>();
@@ -2154,7 +2198,7 @@ public class discordbot
             }
             else
             {
-                var embed = new EmbedBuilder();
+                embed = new EmbedBuilder();
                 embed.Color = new Color(88, 163, 73);
                 embed.Title = Context.User.ToString() + " has no assigned Buddy, use !bs id# to assign a pokemon as your buddy";
                 await ReplyAsync(embed: embed.Build());
@@ -2170,7 +2214,7 @@ public class discordbot
             {
                 byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb);
                 var tpk = PKMConverter.GetPKMfromBytes(g, 7);
-                EmbedBuilder embed = new EmbedBuilder();
+                embed = new EmbedBuilder();
                 if (Directory.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy"))
                 {
                     File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy");
@@ -2338,6 +2382,8 @@ public class discordbot
             }
             await ReplyAsync("no trainer info found");
         }
+
+        
         }
 
 
