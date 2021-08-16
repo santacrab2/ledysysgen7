@@ -329,7 +329,7 @@ public class discordbot
             }
             if (set.ToLower().Contains("shiny: yes"))
             {
-                pk.SetShiny();
+                pk.SetIsShiny(true);
             }
             
             
@@ -462,7 +462,7 @@ public class discordbot
             }
             if (set.ToLower().Contains("shiny: yes"))
             {
-                pk.SetShiny();
+                pk.SetIsShiny(true);
             }
          
       
@@ -1435,7 +1435,7 @@ public class discordbot
                 // Generate a Blank Savefile
 
 
-                var sav = TrainerSettings.GetSavedTrainerData(GameVersion.US, 7);
+                var sav = TrainerSettings.DefaultFallback(7);
                 PK7 tru = new PK7();
                 // Generates a PKM from Showdown Set
                 var pk = sav.GetLegalFromTemplate(tru,re,out _);
@@ -2331,7 +2331,7 @@ public class discordbot
                 }
                 if (set.ToLower().Contains("shiny: yes"))
                 {
-                    pk.SetShiny();
+                    pk.SetIsShiny(true);
                 }
                 if(!new LegalityAnalysis(pk).Valid)
                 {
