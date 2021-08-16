@@ -172,17 +172,21 @@ public class discordbot
             {
                 if (reaction.Emote.Name == reactions[0].Name)
                 {
-                     page--;
+                    if (page == 0)
+                        page = trademodule.n.Count - 1;
+                    else page--;
                 }
                 else
                 {
-                    page++;
+                    if (page + 1== trademodule.n.Count)
+                        page = 0;
+                   else page++;
                     
                 }
 
-                trademodule.embed.Fields.Clear();
-                trademodule.embed.AddField("box", trademodule.n[page].ToString());
-                trademodule.embed.Footer.Text = $"Page {page + 1} of {trademodule.n.Length}";
+                
+                trademodule.embed.Fields[0].Value=trademodule.n[page].ToString();
+                trademodule.embed.Footer.Text = $"Page {page + 1} of {trademodule.n.Count}";
                 
                 await msg.RemoveReactionAsync(reactions[reaction.Emote.Name == reactions[0].Name ? 0 : 1], user);
                 await msg.ModifyAsync(x => x.Embed = trademodule.embed.Build()).ConfigureAwait(false);
@@ -220,7 +224,7 @@ public class discordbot
         public static int[] tradevolvs = { 525, 75, 533, 93, 64, 67, 708, 710, 61, 79, 95, 123, 117, 137, 366, 112, 125, 126, 233, 356, 684, 682, 349 };
         public static int[] mythic = { 151, 251, 385, 386, 490, 491, 492, 493, 494, 646, 647, 648, 649, 719, 720, 721, 801, 802, 807 };
         public static bool distributestart = false;
-        public static string[] n;
+        public static List<string> n;
         
 
         [Command("trade")]
@@ -1483,8 +1487,8 @@ public class discordbot
                 ballrng = TCrng.Next(24);
             }
             
-            int farng = TCrng.Next(0, 100);
-            if (farng >= 33)
+            int farng = TCrng.Next(2);
+            if (farng != 1)
             {
                 
                 int missrng = TCrng.Next(806);
@@ -1581,7 +1585,7 @@ public class discordbot
                     tpk.SetIsShiny(true);
                 if (new LegalityAnalysis(tpk).Report().Contains("Static Encounter shiny mismatch"))
                     tpk.SetIsShiny(false);
-                tpk = tpk.Legalize();
+              
                 if (tpk.IsShiny)
                     shinymessage = "shiny";
                 if (!Directory.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id))
@@ -1898,16 +1902,16 @@ public class discordbot
                 k++;
                 h++;
             }
-            n = new string[24];
+            n = new List<string>();
             int q = 0;
             string yb = y.ToString();
             
             while (yb.Length > 0)
             {
                 if (yb.Length > 1000)
-                    n[q] = yb.Substring(0, 1000);
+                    n.Add(yb.Substring(0, 1000));
                 else
-                    n[q] = yb.Substring(0, yb.Length);
+                    n.Add(yb.Substring(0, yb.Length));
 
                 if (yb.Length > 1000)
                     yb = yb.Remove(0, 1000);
@@ -1920,19 +1924,13 @@ public class discordbot
             
             
             
-            embed.Title = "Your pokemon Box";
-            // foreach (string i in n)
-            //  {
-            //      if(i != null)
-
-
-            //   r++;
-            // }
+            embed.Title = $"{Context.User.Username}'s pokemon Box";
+      
             embed.AddField("Box", "hi");
             
              embed.Fields[0].Value = n[0].ToString();
          
-            embed.WithFooter($"Page {page + 1} of {n.Length}");
+            embed.WithFooter($"Page {page + 1} of {n.Count}");
             IEmote[] reactions = { new Emoji("⬅️"), new Emoji("➡️") };
             var listmsg = await Context.Channel.SendMessageAsync(embed: embed.Build());
             
@@ -2100,6 +2098,8 @@ public class discordbot
         [Alias("tdm")]
         public async Task TCdexmissing()
         {
+            page = 0;
+            embed = new EmbedBuilder();
             if(!File.Exists($"{Directory.GetCurrentDirectory()}////dexs//{Context.User.Id}.txt"))
             {
                 await ReplyAsync("no user found, catch some pokemon with !k");
@@ -2126,15 +2126,15 @@ public class discordbot
                 }
                 continue;
             }
-            string[] n = new string[24];
+            n = new List<string>();
             int q = 0;
             string ybc = yb.ToString();
             while (ybc.Length > 0)
             {
                 if (ybc.Length > 1000)
-                    n[q] = ybc.Substring(0, 1000);
+                    n.Add(ybc.Substring(0, 1000));
                 else
-                    n[q] = ybc.Substring(0, ybc.Length);
+                    n.Add(ybc.Substring(0, ybc.Length));
 
                 if (ybc.Length > 1000)
                     ybc = ybc.Remove(0, 1000);
@@ -2145,22 +2145,22 @@ public class discordbot
                 q++;
             }
             
-            int r = 0;
-          
-          await ReplyAsync("missing pokemon: ");
-            foreach(string i in n)
-            {
-                if (i != null)
-                {
-                    await ReplyAsync($"page {r+1}: {i}");
-                    
-                }
-                r++;
+            
 
-            }
-            
-            
-           
+            embed.Title = $"{Context.User.Username}'s Missing Pokemon";
+      
+            embed.AddField("Missing Entries", "hi");
+
+            embed.Fields[0].Value = n[0].ToString();
+
+            embed.WithFooter($"Page {page + 1} of {n.Count}");
+            IEmote[] reactions = { new Emoji("⬅️"), new Emoji("➡️") };
+            var listmsg = await Context.Channel.SendMessageAsync(embed: embed.Build());
+
+            _ = Task.Run(() => listmsg.AddReactionsAsync(reactions).ConfigureAwait(false));
+
+
+
         }
         [Command("Buddy")]
         [Alias("buddy", "b", "B")]
