@@ -1541,7 +1541,7 @@ public class discordbot
                 int natue = TCrng.Next(24);
                 tpk.Nature = natue;
                 tpk.SetRandomIVs();
-
+                tpk = tpk.Legalize();
                 
                
                 if (File.Exists($"{Directory.GetCurrentDirectory()}//trainerinfo//{Context.User.Id}.txt"))
@@ -1585,13 +1585,19 @@ public class discordbot
                     tpk.SetIsShiny(true);
                 if (new LegalityAnalysis(tpk).Report().Contains("Static Encounter shiny mismatch"))
                     tpk.SetIsShiny(false);
-              
+                if (!new LegalityAnalysis(tpk).Valid)
+                    tpk.SetIsShiny(false);
+                if(!new LegalityAnalysis(tpk).Valid)
+                {
+                    tradecordcatch();
+                    return;
+                }
                 if (tpk.IsShiny)
                     shinymessage = "shiny";
                 if (!Directory.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id))
-            {
+                {
                 Directory.CreateDirectory(Directory.GetCurrentDirectory() + "//" + Context.User.Id);
-            }
+                }
             direct = Directory.GetCurrentDirectory() + "//" + Context.User.Id;
             string directfile;
             int a = 1;
@@ -1711,7 +1717,7 @@ public class discordbot
             }
             catch
             {
-                tradecordcatch();
+                await ReplyAsync("something went wrong with this catch, try again!");
                 return;
 
             }
