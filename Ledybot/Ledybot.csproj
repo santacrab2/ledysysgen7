@@ -10,6 +10,7 @@
     <RootNamespace>Ledybot</RootNamespace>
     <AssemblyName>Piplup bot 7</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <LangVersion>9</LangVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
@@ -25,7 +26,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>258</ApplicationRevision>
+    <ApplicationRevision>259</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -63,7 +64,7 @@
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>8.0</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
@@ -282,6 +283,7 @@
     <Compile Include="RemoteControl.cs" />
     <Compile Include="ScriptHelper.cs" />
     <Compile Include="EggBot.cs" />
+    <Compile Include="tradecordmodule.cs" />
     <EmbeddedResource Include="BanlistDetails.resx">
       <DependentUpon>BanlistDetails.cs</DependentUpon>
     </EmbeddedResource>

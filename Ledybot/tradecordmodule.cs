@@ -159,7 +159,7 @@ namespace Ledybot
                 if (!Directory.Exists($"{Directory.GetCurrentDirectory()}//dexs//"))
                     Directory.CreateDirectory($"{Directory.GetCurrentDirectory()}//dexs//");
                 if (!File.Exists($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt"))
-                    File.Create($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt");
+                    File.WriteAllText($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt", "\n");
                 if (!File.ReadAllLines($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt").Contains(tpk.Species.ToString()) || File.ReadAllText($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt") == null)
                 {
                     discordbot.trademodule.embed.AddField("Pokedex", $"Registered {Ledybot.Program.PKTable.Species7[tpk.Species - 1]} to your Pokedex");
@@ -195,14 +195,27 @@ namespace Ledybot
                 x.Text = "Id number: " + a;
                 discordbot.trademodule.embed.Footer = x;
                 discordbot.trademodule.embed.ImageUrl = baseLink2;
-
+                int item = TCrng.Next(2);
+                if(item == 1)
+                {
+                    
+                    var vals = Enum.GetValues(typeof(TCItems));
+                    TCItems founditem = (TCItems)vals.GetValue(TCrng.Next(vals.Length));
+                    if (!Directory.Exists($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//"))
+                        Directory.CreateDirectory($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//");
+                    if (!File.Exists($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt"))
+                        File.WriteAllText($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt", " ");
+                    StreamWriter ite = File.AppendText($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt");
+                    ite.WriteLine(founditem);
+                    ite.Close();
+                    discordbot.trademodule.embed.AddField("item", $"{GameInfo.Strings.Species[tpk.Species]} dropped a {founditem}. Added {founditem} to your bag!");
+                }
                 if (File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy"))
                 {
                     byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy");
                     var bpk = PKMConverter.GetPKMfromBytes(g, 7);
                     var lvlProgress = (Experience.GetEXPToLevelUpPercentage(bpk.CurrentLevel, bpk.EXP, bpk.PersonalInfo.EXPGrowth) * 100.0).ToString("N1");
-                    int currentspec = 0;
-                    bool evolve = false;
+               
                     if (bpk.CurrentLevel < 100 && bpk.Species != 0)
                     {
                         var xpMin = Experience.GetEXP(bpk.CurrentLevel + 1, bpk.PersonalInfo.EXPGrowth);
@@ -217,51 +230,14 @@ namespace Ledybot
 
                         }
 
-                        var b = EvolutionTree.GetEvolutionTree(bpk, 7).GetBaseSpeciesForm(bpk.Species, bpk.Form);
-                        var testpk = discordbot.trademodule.BuildPokemon(Ledybot.Program.PKTable.Species7[bpk.Species + 1], 7);
-                        var sug = EncounterSuggestion.GetSuggestedMetInfo(testpk);
-                        if (bpk.CurrentLevel >= sug.LevelMin && EvolutionTree.GetEvolutionTree(7).GetEvolutions(b, 0).Last() != bpk.Species)
-                        {
-                            evolve = true;
-                            bool savenick = bpk.IsNicknamed;
-                            currentspec = bpk.Species;
-                            if (bpk.Species == b)
-                                bpk.Species = EvolutionTree.GetEvolutionTree(7).GetEvolutions(b, 0).First();
-                            else
-                                bpk.Species = EvolutionTree.GetEvolutionTree(7).GetEvolutions(b, 0).Last();
-                            if (savenick == false)
-                                bpk.ClearNickname();
-                            if (new LegalityAnalysis(bpk).Report().Contains("Evolution not valid"))
-                            {
-                                if (bpk.Species == EvolutionTree.GetEvolutionTree(7).GetEvolutions(b, 0).First())
-                                    bpk.Species = b;
-                                else
-                                    bpk.Species = EvolutionTree.GetEvolutionTree(7).GetEvolutions(b, 0).First();
-                                evolve = false;
-                                if (savenick == false)
-                                    bpk.ClearNickname();
-                            }
-                            else
-                            {
-                                if (!File.Exists($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt"))
-                                    File.Create($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt");
-                                if (!File.ReadAllLines($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt").Contains(bpk.Species.ToString()) || File.ReadAllText($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt") == null)
-                                {
-                                    discordbot.trademodule.embed.AddField("Pokedex", $"Registered {Ledybot.Program.PKTable.Species7[bpk.Species - 1]} to your pokedex");
-                                    StreamWriter de = File.AppendText($"{Directory.GetCurrentDirectory()}//dexs///{Context.User.Id}.txt");
-                                    de.WriteLine(bpk.Species);
-                                    de.Close();
-                                }
-                            }
-                        }
-                        if (bpk.CurrentLevel == 100)
-                            bpk.EXP = xpMin;
+                       
+                        
 
                         File.WriteAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy", bpk.DecryptedBoxData);
 
                         if (bpk.EXP >= xpMin)
-                            discordbot.trademodule.embed.AddField($"\n{Context.User}'s Buddy " + (evolve ? bpk.IsNicknamed ? bpk.Nickname : Ledybot.Program.PKTable.Species7[currentspec - 1] : bpk.Nickname), evolve ? $" gained {xpGet} EXP and leveled up to level {bpk.CurrentLevel} and evolved to {(Species)bpk.Species}!" : $" gained {xpGet} EXP and leveled up to level {bpk.CurrentLevel}!");
-                        else discordbot.trademodule.embed.AddField($"\n{Context.User}'s Buddy " + (evolve ? bpk.IsNicknamed ? bpk.Nickname : Ledybot.Program.PKTable.Species7[currentspec - 1] : bpk.Nickname), evolve ? $" gained {xpGet} EXP and evolved to {(Species)bpk.Species}!" : $" gained {xpGet} EXP!");
+                            discordbot.trademodule.embed.AddField($"{Context.User}'s Buddy {(bpk.IsNicknamed ? bpk.Nickname : GameInfo.Strings.Species[bpk.Species])}", $" gained {xpGet} EXP and leveled up to level {bpk.CurrentLevel}!");
+                        else discordbot.trademodule.embed.AddField($"{Context.User}'s Buddy {(bpk.IsNicknamed ? bpk.Nickname : GameInfo.Strings.Species[bpk.Species])}",$" gained {xpGet} EXP!");
                     }
 
                 }
@@ -837,12 +813,20 @@ namespace Ledybot
         [Alias("evo", "e")]
         public async Task evolve([Remainder]string useitem = "")
         {
+            if(!File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt").Contains(useitem) && useitem != "")
+            {
+                await ReplyAsync("You do not have that item");
+                return;
+            }    
             if (File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy"))
             {
-
+                bool useditem = false;
+                bool heldused = false;
+                discordbot.trademodule.embed = new EmbedBuilder();
+                int[] levelupevo = { 2, 3, 6, 8, 17, 18, 19, 20, 32, 33, 37, 38, 40, };
                 byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy");
                 PKM bpk = PKMConverter.GetPKMfromBytes(g, 7);
-               ;
+                int ogspecies = bpk.Species;
                 
                 bool savenick = bpk.IsNicknamed;
          
@@ -855,29 +839,310 @@ namespace Ledybot
                         await ReplyAsync("Your buddy cannot evolve.");
                         return;
                     }
-
                     
-                var preevos = evoltree.GetValidPreEvolutions(bpk, 100, 7, true);
+                    
+                
                  var temp = new PK7 { Species = evos.First() };
-                if(evos.Count() >= 2 && preevos.Count >= 2)
+                var preevos = evoltree.GetValidPreEvolutions(temp, 100, 7, true);
+                var evoType = (EvolutionType)preevos[1].Method;
+                int[] Specieslist;
+                int[] todspecieslist;
+                if (useitem != "" && useitem.ToLower() != "night" && useitem.ToLower() != "day" && useitem.ToLower() != "dusk")
                 {
-                    var reqitem = bpk.species switch { }
 
+                    Specieslist = useitem switch
+                    {
+                        "Water Stone" => new int[] { (int)Species.Vaporeon, (int)Species.Poliwrath, (int)Species.Cloyster, (int)Species.Starmie, (int)Species.Ludicolo, (int)Species.Simipour },
+                        "Thunder Stone" => new int[] { (int)Species.Jolteon, (int)Species.Raichu, (int)Species.Magnezone, (int)Species.Eelektross, (int)Species.Vikavolt },
+                        "Fire Stone" => new int[] { (int)Species.Flareon, (int)Species.Ninetales, (int)Species.Arcanine, (int)Species.Simisear },
+                        "Leaf Stone" => new int[] { (int)Species.Leafeon, (int)Species.Vileplume, (int)Species.Victreebel, (int)Species.Exeggutor, (int)Species.Shiftry, (int)Species.Simisage },
+                        "Ice Stone" => new int[] { (int)Species.Glaceon },
+                        "Moon Stone" => new int[] { (int)Species.Nidoqueen, (int)Species.Nidoking, (int)Species.Clefable, (int)Species.Wigglytuff, (int)Species.Delcatty, (int)Species.Musharna },
+                        "Sun Stone" => new int[] { (int)Species.Bellossom, (int)Species.Sunflora, (int)Species.Whimsicott, (int)Species.Lilligant, (int)Species.Heliolisk },
+                        "Shiny Stone" => new int[] { (int)Species.Togekiss, (int)Species.Roserade, (int)Species.Cinccino, (int)Species.Florges },
+                        "Dusk Stone" => new int[] { (int)Species.Honchkrow, (int)Species.Mismagius, (int)Species.Chandelure, (int)Species.Aegislash },
+                        "Dawn Stone" => new int[] { (int)Species.Gallade, (int)Species.Froslass },
+                        "Kings Rock" => new int[] { (int)Species.Slowking, (int)Species.Politoed },
+                        _ => new int[] { }
+                    };
+                  
+                    foreach (int itemevols in Specieslist)
+                    {
+                        if (evos.Contains(itemevols))
+                        {
+                            bpk.Species = itemevols;
+                        }
+                    }
+                    if (bpk.Species != ogspecies)
+                        useditem = true;
+
+                }
+                else if(useitem.ToLower() == "night" || useitem.ToLower() == "day" || useitem.ToLower() == "dusk")
+                {
+                    todspecieslist = useitem switch
+                    {
+                        "day" => new int[] { (int)Species.Roselia, (int)Species.Lurantis, (int)Species.Lucario, (int)Species.Tyrantrum, (int)Species.Gumshoos, (int)Species.Espeon, (int)Species.Solgaleo },
+                        "night" => new int[] { (int)Species.Aurorus, (int)Species.Chimecho, (int)Species.Umbreon, (int)Species.Lunala },
+                        _ => null
+
+                    };
+                    foreach(int tod in todspecieslist)
+                    {
+                        if(evos.Contains(tod))
+                        {
+                            bpk.Species = tod;
+                        }
+                    }
+                    if(bpk.Species == (int)Species.Rockruff)
+                    {
+                        bpk.Species = (int)Species.Lycanroc;
+                        bpk.Form = useitem switch
+                        {
+                            "day" => 0,
+                            "night" => 1,
+                            "dusk" => 2,
+                            _ => 0
+                        };
+                        
+                    }
+
+                }
+
+                
+                else if(bpk.HeldItem != 0)
+                {
+                    
+                    
+                        bpk.Species = Program.PKTable.Item7[bpk.HeldItem] switch
+                        {
+                            "Dragon Scale" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Dragon Scale") && bpk.Species == (int)Species.Seadra) ? (int)Species.Kingdra : bpk.Species,
+                            "Dubious Disc" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Dubious Disc") && bpk.Species == (int)Species.Porygon2) ? (int)Species.PorygonZ : bpk.Species,
+                            "Electirizer" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Electirizer") && bpk.Species == (int)Species.Electabuzz) ? (int)Species.Electivire : bpk.Species,
+                            "Magmarizer" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Magmarizer") && bpk.Species == (int)Species.Magmar) ? (int)Species.Magmortar : bpk.Species,
+                            "Metal Coat" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Metal Coat") && bpk.Species == (int)Species.Onix) ? (int)Species.Steelix : (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Metal Coat") && bpk.Species == (int)Species.Scyther) ? (int)Species.Scizor : bpk.Species,
+                            "Oval Stone" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Oval Stone") && bpk.Species == (int)Species.Happiny) ? (int)Species.Chansey : bpk.Species,
+                            "Prism Scale" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Prism Scale") && bpk.Species == (int)Species.Feebas) ? (int)Species.Milotic : bpk.Species,
+                            "Protector" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Protector") && bpk.Species == (int)Species.Rhydon) ? (int)Species.Rhyperior : bpk.Species,
+                            "Razor Claw" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Razor Claw") && bpk.Species == (int)Species.Sneasel) ? (int)Species.Weavile : bpk.Species,
+                            "Reaper Cloth" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Reaper Cloth") && bpk.Species == (int)Species.Dusclops) ? (int)Species.Dusknoir : bpk.Species,
+                            "Sachet" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Sachet") && bpk.Species == (int)Species.Spritzee) ? (int)Species.Aromatisse : bpk.Species,
+                            "Upgrade" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Upgrade") && bpk.Species == (int)Species.Porygon) ? (int)Species.Porygon2 : bpk.Species,
+                            "Whipped Dream" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Whipped Dream") && bpk.Species == (int)Species.Swirlix) ? (int)Species.Slurpuff : bpk.Species,
+                            _ => bpk.Species,
+                        };
+                    if (ogspecies != bpk.Species)
+                        heldused = true;
                     
                 }
-              preevos = evoltree.GetValidPreEvolutions(temp, 100, 7, true);
+                else if(!levelupevo.Contains(preevos[1].Method))
+                    bpk.Species = evos.First();
+                string ot = bpk.OT_Name;
+                int tid = bpk.TrainerID7;
+                int sid = bpk.TrainerSID7;
+                try { bpk = bpk.Legalize(); }
+                catch { await ReplyAsync("Your buddy can not evolve for some reason"); return; }
+                bpk.OT_Name = ot;
+                bpk.TrainerID7 = tid;
+                bpk.TrainerSID7 = sid;
+                if (!new LegalityAnalysis(bpk).Valid)
+                    bpk.Species = ogspecies;
 
-                //var evoType = (EvolutionType)preevos[1].Method;
-                
-                await ReplyAsync(evos.Count().ToString());
-                    if (!savenick)
+                if (!savenick)
                         bpk.ClearNickname();
                     File.WriteAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy", bpk.DecryptedBoxData);
+                if (ogspecies != bpk.Species)
+                {
+                    if (heldused == true)
+                        bpk.HeldItem = 0;
+                    if(useditem == true)
+                    {
+                        var bag = File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt").ToList();
+                        bag.Remove(useitem);
+                        File.WriteAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt", bag);
+                    }
+                    var newShowdown = new List<string>();
+                    var showdown = ShowdownParsing.GetShowdownText(bpk);
+                    foreach (var line in showdown.Split('\n'))
+                        newShowdown.Add(line);
 
+                    if (bpk.IsEgg)
+                        newShowdown.Add("\nPokémon is an egg");
+                    if (bpk.Ball > (int)Ball.None)
+                        newShowdown.Insert(newShowdown.FindIndex(z => z.Contains("Nature")), $"Ball: {(Ball)bpk.Ball} Ball");
+                    if (bpk.IsShiny)
+                    {
+                        var index = newShowdown.FindIndex(x => x.Contains("Shiny: Yes"));
+                        if (bpk.ShinyXor == 0 || bpk.FatefulEncounter)
+                            newShowdown[index] = "Shiny: Square\r";
+                        else newShowdown[index] = "Shiny: Star\r";
+                    }
+
+                    newShowdown.InsertRange(1, new string[] { $"OT: {bpk.OT_Name}", $"TID: {bpk.TrainerID7}", $"SID: {bpk.TrainerSID7}", $"OTGender: {(Gender)bpk.OT_Gender}", $"Language: {(LanguageID)bpk.Language}" });
+                    discordbot.trademodule.embed.AddField("Evolution", $"{Context.User.Username}'s {GameInfo.Strings.Species[ogspecies]} evolved into {GameInfo.Strings.Species[bpk.Species]}");
+                    discordbot.trademodule.embed.AddField($"{Program.PKTable.Species7[bpk.Species - 1]}'s info", Format.Code(string.Join("\n", newShowdown).TrimEnd()));
+                    if (!File.ReadAllLines($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt").Contains(bpk.Species.ToString()))
+                    {
+                        discordbot.trademodule.embed.AddField("Pokedex", $"Registered {Ledybot.Program.PKTable.Species7[bpk.Species - 1]} to your Pokedex");
+                        StreamWriter de = File.AppendText($"{Directory.GetCurrentDirectory()}//dexs///{Context.User.Id}.txt");
+                        de.WriteLine(bpk.Species);
+                        de.Close();
+                    }
+                    await ReplyAsync(embed: discordbot.trademodule.embed.Build());
+                }
+                else
+                    await ReplyAsync("Your buddy can not evolve for some reason or another");
                 
              
             
             }
         }
-    }
+        [Command("items")]
+        [Alias("bag")]
+        public async Task viewbag()
+        {
+            discordbot.trademodule.embed = new EmbedBuilder();
+            discordbot.trademodule.n = new List<string>();
+            var yb = new System.Text.StringBuilder();
+            if (File.Exists($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt"))
+            {
+
+                var items = File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt");
+                foreach (string it in items)
+                {
+                    if(it != "")
+                        yb.Append($"{it} ");
+                }
+
+
+                int q = 0;
+                string ybc = yb.ToString();
+                while (ybc.Length > 0)
+                {
+                    if (ybc.Length > 1000)
+                        discordbot.trademodule.n.Add(ybc.Substring(0, 1000));
+                    else
+                        discordbot.trademodule.n.Add(ybc.Substring(0, ybc.Length));
+
+                    if (ybc.Length > 1000)
+                        ybc = ybc.Remove(0, 1000);
+                    else
+                        ybc = ybc.Remove(0, ybc.Length);
+
+
+                    q++;
+                }
+
+
+
+                discordbot.trademodule.embed.Title = $"{Context.User.Username}'s Bag";
+
+                discordbot.trademodule.embed.AddField("Items", "hi");
+
+                discordbot.trademodule.embed.Fields[0].Value = discordbot.trademodule.n[0].ToString();
+
+                discordbot.trademodule.embed.WithFooter($"Page {discordbot.page + 1} of {discordbot.trademodule.n.Count}");
+                IEmote[] reactions = { new Emoji("⬅️"), new Emoji("➡️") };
+                var listmsg = await Context.Channel.SendMessageAsync(embed: discordbot.trademodule.embed.Build());
+
+                _ = Task.Run(() => listmsg.AddReactionsAsync(reactions).ConfigureAwait(false));
+            }
+            else
+                await ReplyAsync("no items found");
+        }
+
+        [Command("giveitem")]
+        [Alias("gi")]
+        public async Task giveitem(string itemtogive)
+        {
+            if (File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt").Contains(itemtogive))
+            {
+                TCItems newheld = (TCItems)Enum.Parse(typeof(TCItems), itemtogive);
+                if (File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy"))
+                {
+                    if (itemtogive != TCItems.RareCandy.ToString())
+                    {
+                        var bag = File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt").ToList();
+                        bag.Remove(itemtogive);
+                        File.WriteAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt", bag);
+                        byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy");
+                        PKM bpk = PKMConverter.GetPKMfromBytes(g, 7);
+                        bpk.HeldItem = (int)newheld;
+                        File.WriteAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy", bpk.DecryptedBoxData);
+                        await ReplyAsync($"{GameInfo.Strings.Species[bpk.Species]} is now holding a {itemtogive}");
+                    }
+                    else
+                    {
+                        var bag = File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt").ToList();
+                        bag.Remove(itemtogive);
+                        File.WriteAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt", bag);
+                        byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy");
+                        PKM bpk = PKMConverter.GetPKMfromBytes(g, 7);
+                        if (bpk.CurrentLevel < 100)
+                            bpk.CurrentLevel++;
+                        else
+                            await ReplyAsync("you just wasted a rare candy lol");
+                    }
+                }
+                else
+                    await ReplyAsync("no buddy set");
+            }
+            else
+                await ReplyAsync("you do not have that item");
+        }
+        [Command("takeitem")]
+        [Alias("ti")]
+        public async Task takeitem()
+        {
+            if (File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy"))
+            {
+                byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy");
+                PKM bpk = PKMConverter.GetPKMfromBytes(g, 7);
+                if (bpk.HeldItem != 0)
+                {
+                    StreamWriter ite = File.AppendText($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt");
+                    ite.WriteLine((TCItems)bpk.HeldItem);
+                    ite.Close();
+                    bpk.HeldItem = 0;
+                    File.WriteAllBytes($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//Buddy//Buddy", bpk.DecryptedBoxData);
+                    await ReplyAsync($"You took {(TCItems)bpk.HeldItem} from your Buddy {GameInfo.Strings.Species[bpk.Species]}");
+                }
+                else
+                    await ReplyAsync("Your buddy is not holding an item");
+            }
+            else
+                await ReplyAsync("You do not have a buddy set");
+        }
+        public enum TCItems
+        {
+            
+            // Evolution items
+            None = 0,
+            SunStone = 80,
+            MoonStone = 81,
+            FireStone = 82,
+            ThunderStone = 83,
+            WaterStone = 84,
+            LeafStone = 85,
+            ShinyStone = 107,
+            DuskStone = 108,
+            DawnStone = 109,
+            OvalStone = 110,
+            KingsRock = 221,
+            Everstone = 229,
+            MetalCoat = 233,
+            DragonScale = 235,
+            Upgrade = 252,
+            Protector = 321,
+            Electirizer = 322,
+            Magmarizer = 323,
+            DubiousDisc = 324,
+            ReaperCloth = 325,
+            RazorClaw = 326,
+            PrismScale = 537,
+            WhippedDream = 646,
+            Sachet = 647,
+            IceStone = 849,
+            RareCandy = 50
+        }
+        }
 }
