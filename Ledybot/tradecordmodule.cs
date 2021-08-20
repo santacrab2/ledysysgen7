@@ -195,7 +195,7 @@ namespace Ledybot
                 x.Text = "Id number: " + a;
                 discordbot.trademodule.embed.Footer = x;
                 discordbot.trademodule.embed.ImageUrl = baseLink2;
-                int item = TCrng.Next(2);
+                int item = TCrng.Next(3);
                 if(item == 1)
                 {
                     
@@ -209,6 +209,17 @@ namespace Ledybot
                     ite.WriteLine(founditem);
                     ite.Close();
                     discordbot.trademodule.embed.AddField("item", $"{GameInfo.Strings.Species[tpk.Species]} dropped a {founditem}. Added {founditem} to your bag!");
+                }
+                else if(item == 3)
+                {
+                    if (!Directory.Exists($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//"))
+                        Directory.CreateDirectory($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//");
+                    if (!File.Exists($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt"))
+                        File.WriteAllText($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt", "\n");
+                    StreamWriter ite = File.AppendText($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt");
+                    ite.WriteLine(TCItems.RareCandy);
+                    ite.Close();
+                    discordbot.trademodule.embed.AddField("item", $"{GameInfo.Strings.Species[tpk.Species]} dropped a {TCItems.RareCandy}. Added {TCItems.RareCandy} to your bag!");
                 }
                 if (File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy"))
                 {
