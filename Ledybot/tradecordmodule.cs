@@ -950,11 +950,11 @@ namespace Ledybot
 
                 if (!savenick)
                         bpk.ClearNickname();
-                    File.WriteAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy", bpk.DecryptedBoxData);
+                if (shiny)
+                    bpk.SetIsShiny(true);
                 if (ogspecies != bpk.Species)
                 {
-                    if (shiny)
-                        bpk.SetIsShiny(true);
+                   
                     if (heldused == true)
                         bpk.HeldItem = 0;
                     if(useditem == true)
@@ -995,9 +995,9 @@ namespace Ledybot
                 }
                 else
                     await ReplyAsync("Your buddy can not evolve for some reason or another");
-                
-             
-            
+                File.WriteAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy", bpk.DecryptedBoxData);
+
+
             }
         }
         [Command("items")]
