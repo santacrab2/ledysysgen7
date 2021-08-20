@@ -813,7 +813,7 @@ namespace Ledybot
         [Alias("evo", "e")]
         public async Task evolve([Remainder]string useitem = "")
         {
-            if(!File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt").Contains(useitem) && useitem != "")
+            if(!File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt").Contains(useitem) && useitem != "" && useitem.ToLower() != "night" && useitem.ToLower() != "day" && useitem.ToLower() != "dusk")
             {
                 await ReplyAsync("You do not have that item");
                 return;
@@ -826,6 +826,7 @@ namespace Ledybot
                 int[] levelupevo = { 2, 3, 6, 8, 17, 18, 19, 20, 32, 33, 37, 38, 40, };
                 byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy");
                 PKM bpk = PKMConverter.GetPKMfromBytes(g, 7);
+                bool shiny = bpk.IsShiny;
                 int ogspecies = bpk.Species;
                 
                 bool savenick = bpk.IsNicknamed;
@@ -852,17 +853,17 @@ namespace Ledybot
 
                     Specieslist = useitem switch
                     {
-                        "Water Stone" => new int[] { (int)Species.Vaporeon, (int)Species.Poliwrath, (int)Species.Cloyster, (int)Species.Starmie, (int)Species.Ludicolo, (int)Species.Simipour },
-                        "Thunder Stone" => new int[] { (int)Species.Jolteon, (int)Species.Raichu, (int)Species.Magnezone, (int)Species.Eelektross, (int)Species.Vikavolt },
-                        "Fire Stone" => new int[] { (int)Species.Flareon, (int)Species.Ninetales, (int)Species.Arcanine, (int)Species.Simisear },
-                        "Leaf Stone" => new int[] { (int)Species.Leafeon, (int)Species.Vileplume, (int)Species.Victreebel, (int)Species.Exeggutor, (int)Species.Shiftry, (int)Species.Simisage },
-                        "Ice Stone" => new int[] { (int)Species.Glaceon },
-                        "Moon Stone" => new int[] { (int)Species.Nidoqueen, (int)Species.Nidoking, (int)Species.Clefable, (int)Species.Wigglytuff, (int)Species.Delcatty, (int)Species.Musharna },
-                        "Sun Stone" => new int[] { (int)Species.Bellossom, (int)Species.Sunflora, (int)Species.Whimsicott, (int)Species.Lilligant, (int)Species.Heliolisk },
-                        "Shiny Stone" => new int[] { (int)Species.Togekiss, (int)Species.Roserade, (int)Species.Cinccino, (int)Species.Florges },
-                        "Dusk Stone" => new int[] { (int)Species.Honchkrow, (int)Species.Mismagius, (int)Species.Chandelure, (int)Species.Aegislash },
-                        "Dawn Stone" => new int[] { (int)Species.Gallade, (int)Species.Froslass },
-                        "Kings Rock" => new int[] { (int)Species.Slowking, (int)Species.Politoed },
+                        "WaterStone" => new int[] { (int)Species.Vaporeon, (int)Species.Poliwrath, (int)Species.Cloyster, (int)Species.Starmie, (int)Species.Ludicolo, (int)Species.Simipour },
+                        "ThunderStone" => new int[] { (int)Species.Jolteon, (int)Species.Raichu, (int)Species.Magnezone, (int)Species.Eelektross, (int)Species.Vikavolt },
+                        "FireStone" => new int[] { (int)Species.Flareon, (int)Species.Ninetales, (int)Species.Arcanine, (int)Species.Simisear },
+                        "LeafStone" => new int[] { (int)Species.Leafeon, (int)Species.Vileplume, (int)Species.Victreebel, (int)Species.Exeggutor, (int)Species.Shiftry, (int)Species.Simisage },
+                        "IceStone" => new int[] { (int)Species.Glaceon },
+                        "MoonStone" => new int[] { (int)Species.Nidoqueen, (int)Species.Nidoking, (int)Species.Clefable, (int)Species.Wigglytuff, (int)Species.Delcatty, (int)Species.Musharna },
+                        "SunStone" => new int[] { (int)Species.Bellossom, (int)Species.Sunflora, (int)Species.Whimsicott, (int)Species.Lilligant, (int)Species.Heliolisk },
+                        "ShinyStone" => new int[] { (int)Species.Togekiss, (int)Species.Roserade, (int)Species.Cinccino, (int)Species.Florges },
+                        "DuskStone" => new int[] { (int)Species.Honchkrow, (int)Species.Mismagius, (int)Species.Chandelure, (int)Species.Aegislash },
+                        "DawnStone" => new int[] { (int)Species.Gallade, (int)Species.Froslass },
+                        "KingsRock" => new int[] { (int)Species.Slowking, (int)Species.Politoed },
                         _ => new int[] { }
                     };
                   
@@ -952,6 +953,8 @@ namespace Ledybot
                     File.WriteAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy", bpk.DecryptedBoxData);
                 if (ogspecies != bpk.Species)
                 {
+                    if (shiny)
+                        bpk.SetIsShiny(true);
                     if (heldused == true)
                         bpk.HeldItem = 0;
                     if(useditem == true)
@@ -978,6 +981,7 @@ namespace Ledybot
                     }
 
                     newShowdown.InsertRange(1, new string[] { $"OT: {bpk.OT_Name}", $"TID: {bpk.TrainerID7}", $"SID: {bpk.TrainerSID7}", $"OTGender: {(Gender)bpk.OT_Gender}", $"Language: {(LanguageID)bpk.Language}" });
+                    discordbot.trademodule.embed.ThumbnailUrl = bpk.IsShiny ? "https://play.pokemonshowdown.com/sprites/ani-shiny/" + Ledybot.Program.PKTable.Species7[bpk.Species - 1].ToLower() + ".gif" : "https://play.pokemonshowdown.com/sprites/ani/" + Ledybot.Program.PKTable.Species7[bpk.Species - 1].ToLower() + ".gif";
                     discordbot.trademodule.embed.AddField("Evolution", $"{Context.User.Username}'s {GameInfo.Strings.Species[ogspecies]} evolved into {GameInfo.Strings.Species[bpk.Species]}");
                     discordbot.trademodule.embed.AddField($"{Program.PKTable.Species7[bpk.Species - 1]}'s info", Format.Code(string.Join("\n", newShowdown).TrimEnd()));
                     if (!File.ReadAllLines($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt").Contains(bpk.Species.ToString()))
