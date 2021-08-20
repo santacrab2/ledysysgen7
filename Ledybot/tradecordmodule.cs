@@ -248,7 +248,12 @@ namespace Ledybot
                             bpk.CurrentLevel++;
 
                         }
-
+                        bpk.Stat_HPCurrent += tpk.PersonalInfo.EV_HP;
+                        bpk.EV_ATK += tpk.PersonalInfo.EV_ATK;
+                        bpk.EV_DEF += tpk.PersonalInfo.EV_DEF;
+                        bpk.EV_SPA += tpk.PersonalInfo.EV_SPA;
+                        bpk.EV_SPD += tpk.PersonalInfo.EV_SPD;
+                        bpk.EV_SPE += tpk.PersonalInfo.EV_SPE;
                        
                         
 
@@ -842,7 +847,7 @@ namespace Ledybot
                 bool useditem = false;
                 bool heldused = false;
                 discordbot.trademodule.embed = new EmbedBuilder();
-                int[] levelupevo = { 2, 3, 6, 8, 17, 18, 19, 20, 32, 33, 37, 38, 40, };
+                int[] levelupevo = { 2, 3, 6, 8, 17, 18, 19, 20,23,24, 32, 33, 37, 38, 40, };
                 byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy");
                 PKM bpk = PKMConverter.GetPKMfromBytes(g, 7);
                 bool shiny = bpk.IsShiny;
@@ -850,7 +855,7 @@ namespace Ledybot
                 
                 bool savenick = bpk.IsNicknamed;
          
-                    var evoltree = EvolutionTree.GetEvolutionTree(bpk, 7);
+                    var evoltree = EvolutionTree.GetEvolutionTree( 7);
                     
                     var evos = evoltree.GetEvolutions(bpk.Species, bpk.Form);
                     bool hasEvo = evos.Count() > 0;
@@ -885,7 +890,7 @@ namespace Ledybot
                         "KingsRock" => new int[] { (int)Species.Slowking, (int)Species.Politoed },
                         _ => new int[] { }
                     };
-                  
+
                     foreach (int itemevols in Specieslist)
                     {
                         if (evos.Contains(itemevols))
@@ -893,11 +898,18 @@ namespace Ledybot
                             bpk.Species = itemevols;
                         }
                     }
+                    var gendercheck = evoltree.GetValidPreEvolutions(bpk, bpk.CurrentLevel, 7, true)[1].Method;
+                    if (gendercheck == 17)
+                        if (bpk.Gender != 0)
+                            bpk.Species = ogspecies;
+                    if (gendercheck == 18)
+                        if (bpk.Gender != 1)
+                            bpk.Species = ogspecies;
                     if (bpk.Species != ogspecies)
                         useditem = true;
 
                 }
-                else if(useitem.ToLower() == "night" || useitem.ToLower() == "day" || useitem.ToLower() == "dusk")
+                else if (useitem.ToLower() == "night" || useitem.ToLower() == "day" || useitem.ToLower() == "dusk")
                 {
                     todspecieslist = useitem switch
                     {
@@ -906,14 +918,14 @@ namespace Ledybot
                         _ => null
 
                     };
-                    foreach(int tod in todspecieslist)
+                    foreach (int tod in todspecieslist)
                     {
-                        if(evos.Contains(tod))
+                        if (evos.Contains(tod))
                         {
                             bpk.Species = tod;
                         }
                     }
-                    if(bpk.Species == (int)Species.Rockruff)
+                    if (bpk.Species == (int)Species.Rockruff)
                     {
                         bpk.Species = (int)Species.Lycanroc;
                         bpk.Form = useitem switch
@@ -923,39 +935,60 @@ namespace Ledybot
                             "dusk" => 2,
                             _ => 0
                         };
-                        
+
                     }
 
                 }
 
-                
-                else if(bpk.HeldItem != 0)
+
+                else if (bpk.HeldItem != 0)
                 {
-                    
-                    
-                        bpk.Species = Program.PKTable.Item7[bpk.HeldItem] switch
-                        {
-                            "Dragon Scale" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Dragon Scale") && bpk.Species == (int)Species.Seadra) ? (int)Species.Kingdra : bpk.Species,
-                            "Dubious Disc" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Dubious Disc") && bpk.Species == (int)Species.Porygon2) ? (int)Species.PorygonZ : bpk.Species,
-                            "Electirizer" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Electirizer") && bpk.Species == (int)Species.Electabuzz) ? (int)Species.Electivire : bpk.Species,
-                            "Magmarizer" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Magmarizer") && bpk.Species == (int)Species.Magmar) ? (int)Species.Magmortar : bpk.Species,
-                            "Metal Coat" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Metal Coat") && bpk.Species == (int)Species.Onix) ? (int)Species.Steelix : (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Metal Coat") && bpk.Species == (int)Species.Scyther) ? (int)Species.Scizor : bpk.Species,
-                            "Oval Stone" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Oval Stone") && bpk.Species == (int)Species.Happiny) ? (int)Species.Chansey : bpk.Species,
-                            "Prism Scale" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Prism Scale") && bpk.Species == (int)Species.Feebas) ? (int)Species.Milotic : bpk.Species,
-                            "Protector" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Protector") && bpk.Species == (int)Species.Rhydon) ? (int)Species.Rhyperior : bpk.Species,
-                            "Razor Claw" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Razor Claw") && bpk.Species == (int)Species.Sneasel) ? (int)Species.Weavile : bpk.Species,
-                            "Reaper Cloth" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Reaper Cloth") && bpk.Species == (int)Species.Dusclops) ? (int)Species.Dusknoir : bpk.Species,
-                            "Sachet" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Sachet") && bpk.Species == (int)Species.Spritzee) ? (int)Species.Aromatisse : bpk.Species,
-                            "Upgrade" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Upgrade") && bpk.Species == (int)Species.Porygon) ? (int)Species.Porygon2 : bpk.Species,
-                            "Whipped Dream" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Whipped Dream") && bpk.Species == (int)Species.Swirlix) ? (int)Species.Slurpuff : bpk.Species,
-                            _ => bpk.Species,
-                        };
+
+
+                    bpk.Species = Program.PKTable.Item7[bpk.HeldItem] switch
+                    {
+                        "Dragon Scale" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Dragon Scale") && bpk.Species == (int)Species.Seadra) ? (int)Species.Kingdra : bpk.Species,
+                        "Dubious Disc" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Dubious Disc") && bpk.Species == (int)Species.Porygon2) ? (int)Species.PorygonZ : bpk.Species,
+                        "Electirizer" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Electirizer") && bpk.Species == (int)Species.Electabuzz) ? (int)Species.Electivire : bpk.Species,
+                        "Magmarizer" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Magmarizer") && bpk.Species == (int)Species.Magmar) ? (int)Species.Magmortar : bpk.Species,
+                        "Metal Coat" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Metal Coat") && bpk.Species == (int)Species.Onix) ? (int)Species.Steelix : (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Metal Coat") && bpk.Species == (int)Species.Scyther) ? (int)Species.Scizor : bpk.Species,
+                        "Oval Stone" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Oval Stone") && bpk.Species == (int)Species.Happiny) ? (int)Species.Chansey : bpk.Species,
+                        "Prism Scale" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Prism Scale") && bpk.Species == (int)Species.Feebas) ? (int)Species.Milotic : bpk.Species,
+                        "Protector" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Protector") && bpk.Species == (int)Species.Rhydon) ? (int)Species.Rhyperior : bpk.Species,
+                        "Razor Claw" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Razor Claw") && bpk.Species == (int)Species.Sneasel) ? (int)Species.Weavile : bpk.Species,
+                        "Reaper Cloth" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Reaper Cloth") && bpk.Species == (int)Species.Dusclops) ? (int)Species.Dusknoir : bpk.Species,
+                        "Sachet" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Sachet") && bpk.Species == (int)Species.Spritzee) ? (int)Species.Aromatisse : bpk.Species,
+                        "Upgrade" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Upgrade") && bpk.Species == (int)Species.Porygon) ? (int)Species.Porygon2 : bpk.Species,
+                        "Whipped Dream" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Whipped Dream") && bpk.Species == (int)Species.Swirlix) ? (int)Species.Slurpuff : bpk.Species,
+                        _ => bpk.Species,
+                    };
                     if (ogspecies != bpk.Species)
                         heldused = true;
-                    
+
                 }
-                else if(!levelupevo.Contains(preevos[1].Method))
+                else if (!levelupevo.Contains(preevos[1].Method) && bpk.Species != (int)Species.Eevee)
                     bpk.Species = evos.First();
+                else if ((int)evoType == 23 || (int)evoType == 24)
+                {
+                    Specieslist = new int[0];
+                    if ((int)evoType == 23)
+                    {
+                        Specieslist = new int[] { (int)Species.Mothim };
+                    }
+                    if ((int)evoType == 24)
+                    {
+                        Specieslist = new int[] { (int)Species.Wormadam, (int)Species.Vespiquen };
+                    }
+                    foreach (int itemevols in Specieslist)
+                    {
+                        if (evos.Contains(itemevols))
+                        {
+                            bpk.Species = itemevols;
+                        }
+                    }
+                }
+                else if (bpk.Species == (int)Species.Eevee)
+                    bpk.Species = (int)Species.Sylveon;
                 string ot = bpk.OT_Name;
                 int tid = bpk.TrainerID7;
                 int sid = bpk.TrainerSID7;
