@@ -1082,7 +1082,11 @@ namespace Ledybot
                         byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy");
                         PKM bpk = PKMConverter.GetPKMfromBytes(g, 7);
                         if (bpk.CurrentLevel < 100)
+                        {
                             bpk.CurrentLevel++;
+                            File.WriteAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy", bpk.DecryptedBoxData);
+                            await ReplyAsync("Your Buddy just leveled up!");
+                        }
                         else
                             await ReplyAsync("you just wasted a rare candy lol");
                     }
