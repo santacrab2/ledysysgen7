@@ -207,7 +207,7 @@ namespace Ledybot
                         File.WriteAllText($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt", " ");
                     var itemcountlist = File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt").ToList();
                     var itemcount = itemcountlist.Count(x => x == founditem.ToString());
-                    while(itemcount > 2)
+                    while(itemcount > 2 && itemcountlist.Count() < 78)
                     {
                         founditem = (TCItems)vals.GetValue(TCrng.Next(vals.Length));
                         itemcount = itemcountlist.Count(x => x == founditem.ToString());
@@ -217,8 +217,9 @@ namespace Ledybot
                     ite.Close();
                     discordbot.trademodule.embed.AddField("item", $"{GameInfo.Strings.Species[tpk.Species]} dropped a {founditem}. Added {founditem} to your bag!");
                 }
-                else if(item == 2 || item == 3)
+                else if((item == 2 || item == 3) && File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt").ToList().Count(x => x == TCItems.RareCandy.ToString()) < 11)
                 {
+                    
                     if (!Directory.Exists($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//"))
                         Directory.CreateDirectory($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//");
                     if (!File.Exists($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt"))
@@ -1147,6 +1148,7 @@ namespace Ledybot
             {
                 var itemlist = File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt").ToList();
                 itemlist.Remove(item);
+                File.WriteAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt", itemlist);
                 await ReplyAsync($"You dropped {item}");
             }
             else
@@ -1156,7 +1158,7 @@ namespace Ledybot
         {
             
             // Evolution items
-            None = 0,
+            
             SunStone = 80,
             MoonStone = 81,
             FireStone = 82,
