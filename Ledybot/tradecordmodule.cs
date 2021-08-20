@@ -205,6 +205,13 @@ namespace Ledybot
                         Directory.CreateDirectory($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//");
                     if (!File.Exists($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt"))
                         File.WriteAllText($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt", " ");
+                    var itemcountlist = File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt").ToList();
+                    var itemcount = itemcountlist.Count(x => x == founditem.ToString());
+                    while(itemcount > 2)
+                    {
+                        founditem = (TCItems)vals.GetValue(TCrng.Next(vals.Length));
+                        itemcount = itemcountlist.Count(x => x == founditem.ToString());
+                    }
                     StreamWriter ite = File.AppendText($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt");
                     ite.WriteLine(founditem);
                     ite.Close();
@@ -1131,6 +1138,19 @@ namespace Ledybot
             }
             else
                 await ReplyAsync("You do not have a buddy set");
+        }
+        [Command("dropitem")]
+        [Alias("di")]
+        public async Task dropitem(string item)
+        {
+            if (File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt").Contains(item))
+            {
+                var itemlist = File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt").ToList();
+                itemlist.Remove(item);
+                await ReplyAsync($"You dropped {item}");
+            }
+            else
+                await ReplyAsync("You do not have that item");
         }
         public enum TCItems
         {
