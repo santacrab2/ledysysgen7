@@ -195,7 +195,7 @@ namespace Ledybot
                 x.Text = "Id number: " + a;
                 discordbot.trademodule.embed.Footer = x;
                 discordbot.trademodule.embed.ImageUrl = baseLink2;
-                int item = TCrng.Next(3);
+                int item = TCrng.Next(4);
                 if(item == 1)
                 {
                     
@@ -210,7 +210,7 @@ namespace Ledybot
                     ite.Close();
                     discordbot.trademodule.embed.AddField("item", $"{GameInfo.Strings.Species[tpk.Species]} dropped a {founditem}. Added {founditem} to your bag!");
                 }
-                else if(item == 3)
+                else if(item == 2 || item == 3)
                 {
                     if (!Directory.Exists($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//"))
                         Directory.CreateDirectory($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//");
@@ -953,11 +953,12 @@ namespace Ledybot
                 int sid = bpk.TrainerSID7;
                 try { bpk = bpk.Legalize(); }
                 catch { await ReplyAsync("Your buddy can not evolve for some reason"); return; }
+                if (!new LegalityAnalysis(bpk).Valid)
+                    bpk.Species = ogspecies;
                 bpk.OT_Name = ot;
                 bpk.TrainerID7 = tid;
                 bpk.TrainerSID7 = sid;
-                if (!new LegalityAnalysis(bpk).Valid)
-                    bpk.Species = ogspecies;
+                
 
                 if (!savenick)
                         bpk.ClearNickname();
