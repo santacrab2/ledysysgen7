@@ -41,12 +41,24 @@ namespace Ledybot
             int farng = TCrng.Next(2);
             if (farng != 1)
             {
-
-                int missrng = TCrng.Next(806);
-
                 discordbot.trademodule.embed.Color = new Color(147, 191, 230);
                 discordbot.trademodule.embed.Title = "Miss";
-                discordbot.trademodule.embed.AddField("" + Context.User, "you failed to catch a " + Ledybot.Program.PKTable.Species7[missrng] + " in a " + Ledybot.Program.PKTable.Balls7[ballrng]);
+                string[] spookyimages = { "https://static1.fjcdn.com/comments/Yea+though+i+walk+through+the+valley+of+the+shadow+_ee2df64a7a2664fc69f29c1e4710a11e.png", "https://image.pngaaa.com/994/4727994-middle.png", "https://pbs.twimg.com/media/EBYGQCqWsAEsVZb.jpg", "https://media.discordapp.net/attachments/873319088775122954/878526466801958962/newgod.jpg", "https://media.discordapp.net/attachments/873319088775122954/878526890300801094/alsogod.jpg", "https://media.discordapp.net/attachments/873319088775122954/878527168907444244/Togedude.png" };
+                int spookyimg = TCrng.Next(spookyimages.Length);
+                int missrng = TCrng.Next(806);
+                int spookey = TCrng.Next(2);
+                if (spookey == 1)
+                {
+                    discordbot.trademodule.embed.AddField($"{Context.User.Username}", $"You threw a {GameInfo.Strings.balllist[ballrng]} at a wild...whatever that thing is\n\nOne wiggle... Two... It breaks free and stares at you, smiling.You run for dear life.");
+                    discordbot.trademodule.embed.WithFooter(x => x.Text = "But deep inside you know there is no escape... ");
+                    discordbot.trademodule.embed.ImageUrl = spookyimages[spookyimg];
+                    discordbot.trademodule.embed.ThumbnailUrl = $"https://raw.githubusercontent.com/BakaKaito/HomeImages/main/Ballimg/50x50/{Ledybot.Program.PKTable.Balls7[ballrng - 1].Split(' ')[0].ToLower()}ball.png";
+                }
+                else
+                {
+                    
+                    discordbot.trademodule.embed.AddField("" + Context.User.Username, "you failed to catch a " + Ledybot.Program.PKTable.Species7[missrng] + " in a " + Ledybot.Program.PKTable.Balls7[ballrng]);
+                }
                 await ReplyAsync(embed: discordbot.trademodule.embed.Build());
                 return;
             }
