@@ -43,7 +43,7 @@ namespace Ledybot
             {
                 discordbot.trademodule.embed.Color = new Color(147, 191, 230);
                 discordbot.trademodule.embed.Title = "Miss";
-                string[] spookyimages = { "https://static1.fjcdn.com/comments/Yea+though+i+walk+through+the+valley+of+the+shadow+_ee2df64a7a2664fc69f29c1e4710a11e.png", "https://image.pngaaa.com/994/4727994-middle.png", "https://pbs.twimg.com/media/EBYGQCqWsAEsVZb.jpg", "https://media.discordapp.net/attachments/873319088775122954/878526466801958962/newgod.jpg", "https://media.discordapp.net/attachments/873319088775122954/878526890300801094/alsogod.jpg", "https://media.discordapp.net/attachments/873319088775122954/878527168907444244/Togedude.png" };
+                string[] spookyimages = { "https://media.discordapp.net/attachments/873319088775122954/878532498760548392/Yeathoughiwalkthroughthevalleyoftheshadow_ee2df64a7a2664fc69f29c1e4710a11e.png?width=420&height=369", "https://image.pngaaa.com/994/4727994-middle.png", "https://pbs.twimg.com/media/EBYGQCqWsAEsVZb.jpg", "https://media.discordapp.net/attachments/873319088775122954/878526466801958962/newgod.jpg", "https://media.discordapp.net/attachments/873319088775122954/878526890300801094/alsogod.jpg", "https://media.discordapp.net/attachments/873319088775122954/878527168907444244/Togedude.png" };
                 int spookyimg = TCrng.Next(spookyimages.Length);
                 int missrng = TCrng.Next(806);
                 int spookey = TCrng.Next(2);
