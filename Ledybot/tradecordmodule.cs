@@ -586,27 +586,40 @@ namespace Ledybot
         [Alias("ch")]
         public async Task HelpTC()
         {
+            
+            discordbot.trademodule.n = new List<string>();
             discordbot.trademodule.embed = new EmbedBuilder();
             discordbot.trademodule.embed.Color = new Color(147, 191, 230);
-            discordbot.trademodule.embed.Title = "Piplup Tradecord Help";
-            discordbot.trademodule.embed.ThumbnailUrl = "https://www.shinyhunters.com/images/shiny/393.gif";
-            discordbot.trademodule.embed.AddField("Piplup tradecord is compatible with:", "SUN / MOON / ULTRA SUN / ULTRA MOON" + "\n" + "Gen 7 GTS", false);
-            discordbot.trademodule.embed.AddField("***Tradecord Commands***", "⠀" + "\n" + ":large_blue_diamond:" + "**!catch** (***!k***)" + "\n" + "⠀" + "\n" + "*Attempts to catch a random Pokemon*" + "\n" + "\n" +
-                ":large_blue_diamond:" + "**!list** (***!l***)" + "\n" + "⠀" + "\n" + "*Displays a list of you're caught pokemon*" + "\n" + "\n" +
-                ":large_blue_diamond:" + "**!info #** (***!i #***)" + "\n" + "⠀" + "\n" + "*Replace # with the ID number of the pokemon you want to check (from list command)*" + "\n" + "\n" +
-                ":large_blue_diamond:" + "**!release #** (***!r #***)" + "\n" + "⠀" + "\n" + "*Replace # with the ID number of the pokemon you want to release (from list command)*" + "\n" + "\n" +
-                ":large_blue_diamond:" + "**!massrelease** (***!mr***)" + "\n" + "⠀" + "\n" + "*Releases all non-shiny pokemon*" + "\n" + "**!mr shiny will release ALL pokemon**" + "\n" + "\n" +
-                ":large_blue_diamond:" + "**!tradecord (***!tc***) trainer-name ###**(*natdex#-of-deposit*) **##**(*tradecord-id#*) **trainerinfo**(*optional*) )" + "\n" + "⠀" + "\n" + "*Trades your caught pokemon to you in the gen 7 GTS (Compatible with SUN / MOON / ULTRA SUN / MOON*"
-                , true);
-            discordbot.trademodule.embed.AddField("extras", ":large_blue_diamond:" + "**!nickname** (***!n***) # nickname" + "\n" + "\n" + "*Replace # with the ID number of the pokemon you want to nickname(from list command)*" + "\n" + "\n" +
+            discordbot.trademodule.embed.Title = "Prinplup Tradecord Help";
+            discordbot.trademodule.embed.ThumbnailUrl = "https://www.shinyhunters.com/images/shiny/394.gif";
+            discordbot.trademodule.embed.AddField("Prinplup tradecord is compatible with: SUN / MOON / ULTRA SUN / ULTRA MOON" + "\n" + "Gen 7 GTS", "hi", false);
+            discordbot.trademodule.n.Add($"***Tradecord Commands***\n:large_blue_diamond: **!catch** (***!k***)\n\n*Attempts to catch a random Pokemon*\n\n" +
+                ":large_blue_diamond: **!list** (***!l***)\n" +  "\n" + "*Displays a list of you're caught pokemon*" + "\n" + "\n" +
+                ":large_blue_diamond:" + "**!info #** (***!i #***)" + "\n" + "\n" + "*Replace # with the ID number of the pokemon you want to check (from list command)*" + "\n" + "\n" +
+                ":large_blue_diamond:" + "**!release #** (***!r #***)" + "\n" + "\n" + "*Replace # with the ID number of the pokemon you want to release (from list command)*" + "\n" + "\n" +
+                ":large_blue_diamond:" + "**!massrelease** (***!mr***)" + "\n" + "\n" + "*Releases all non-shiny pokemon*" + "\n" + "**!mr shiny will release ALL pokemon**" + "\n" + "\n" +
+                ":large_blue_diamond:" + "**!tradecord** (***!tc***) **trainer-name** **DepositPokemon** **##**(*tradecord-id#*) **trainerinfo**(*optional*) )" + "\n" +  "\n" + "*Trades your caught pokemon to you in the gen 7 GTS (Compatible with SUN / MOON / ULTRA SUN / MOON*");
+
+            discordbot.trademodule.n.Add("***Tradecord Commands Cont.\n***" + ":large_blue_diamond:" + "**!nickname** (***!n***) # nickname" + "\n" + "\n" + "*Replace # with the ID number of the pokemon you want to nickname(from list command)*" + "\n" + "\n" +
                 ":large_blue_diamond:" + "**!tradecorddex** (***!tdex***)" + "\n" + "\n" + "Displays how many dex entries you have registered out of 807" + "\n" + "\n" +
                 $":large_blue_diamond: **!tdexmissing** (***!tdm***) \n \n Displays what pokemon you are missing from your pokedex \n \n" +
-                $":large_blue_diamond: **!BuddySet** (***!bs***) \n \n Sets a buddy to go on your adventure, will gain exp with each catch and evolve if it meets level criteria! \n \n" +
-                $":large_blue_diamond: **!Buddy** (***!b***) \n \n Displays your buddies information!", true);
-            discordbot.trademodule.embed.AddField("!settrainer, (**!st**)", "Sets your trainer info with the bot permanently so anything you catch will have that info!\nThis is also automatically captured if you trade the bot a pokemon you caught or bred\n```Example: !st OT: Santa\nTID: 123456\nSID: 1234```");
-            discordbot.trademodule.embed.ImageUrl = "https://cdn.discordapp.com/attachments/733454651227373579/848772777641377832/piplup.gif";
-            await ReplyAsync(embed: discordbot.trademodule.embed.Build());
-            return;
+                $":large_blue_diamond: **!BuddySet** (***!bs***) id# \n \n Sets a buddy to go on your adventure, will gain exp with each catch and evolve if it meets level criteria! \n \n" +
+                $":large_blue_diamond: **!Buddy** (***!b***) \n \n Displays your buddies information!\n\n"
+            + ":large_blue_diamond: **!settrainer**, (**!st**)\n" + "Sets your trainer info with the bot permanently so anything you catch will have that info!\nThis is also automatically captured if you trade the bot a pokemon you caught or bred\n```Example: !st OT: Santa\nTID: 123456\nSID: 1234```\n\n" );
+           discordbot.trademodule.n.Add($"***Tradecord Commands cont.***\n:large_blue_diamond: **!evolve**, (**!e**) optional item / timeofday\nEvolves your current Buddy if its able to, if it requires an item like ThunderStone type it with the command\n```example: !evolve ThunderStone```\n\n" + 
+                $":large_blue_diamond: **!items**\nDisplays your item bag\n\n" +
+            $":large_blue_diamond: **!giveitem**, (**!gi**) item\nGives an item to your buddy to hold, if its a Rare Candy your buddy will level up\n\n" +
+            $":large_blue_diamond: **!takeitem**, (**!ti**)\n takes back the item your buddy is holding\n\n" +
+            $":large_blue_diamond: **!dropitem**, (**!di**) item\n drops 1 of the item specified from your bag");
+
+            discordbot.trademodule.embed.Fields[0].Value = discordbot.trademodule.n[0].ToString();
+            discordbot.trademodule.embed.ImageUrl = "https://c.tenor.com/aVgHd6soz1wAAAAC/prinplup-piplup.gif";
+            discordbot.trademodule.embed.WithFooter($"Page {discordbot.page + 1} of {discordbot.trademodule.n.Count}");
+            IEmote[] reactions = { new Emoji("⬅️"), new Emoji("➡️") };
+            var listmsg = await Context.Channel.SendMessageAsync(embed: discordbot.trademodule.embed.Build());
+
+            _ = Task.Run(() => listmsg.AddReactionsAsync(reactions).ConfigureAwait(false));
+            
         }
         [Command("nickname")]
         [Alias("n")]
@@ -870,6 +883,7 @@ namespace Ledybot
                  var temp = new PK7 { Species = evos.First() };
                 var preevos = evoltree.GetValidPreEvolutions(temp, 100, 7, true);
                 var evoType = (EvolutionType)preevos[1].Method;
+               
                 int[] Specieslist;
                 int[] todspecieslist;
                 if (useitem != "" && useitem.ToLower() != "night" && useitem.ToLower() != "day" && useitem.ToLower() != "dusk")
