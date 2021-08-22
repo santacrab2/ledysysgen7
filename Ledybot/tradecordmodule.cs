@@ -623,7 +623,9 @@ namespace Ledybot
                 $":large_blue_diamond: **!items**\nDisplays your item bag\n\n" +
             $":large_blue_diamond: **!giveitem**, (**!gi**) item\nGives an item to your buddy to hold, if its a Rare Candy your buddy will level up\n\n" +
             $":large_blue_diamond: **!takeitem**, (**!ti**)\n takes back the item your buddy is holding\n\n" +
-            $":large_blue_diamond: **!dropitem**, (**!di**) item\n drops 1 of the item specified from your bag");
+            $":large_blue_diamond: **!dropitem**, (**!di**) item\n drops 1 of the item specified from your bag\n\n" +
+            $":large_blue_diamond: **!gift** *@user* id#\ngifts a pokemon to another tradecord user\n\n" +
+            $":large_blue_diamond: **!giftitem** *@user* item\ngifts an item to another tradecord user");
 
             discordbot.trademodule.embed.Fields[0].Value = discordbot.trademodule.n[0].ToString();
             discordbot.trademodule.embed.ImageUrl = "https://c.tenor.com/aVgHd6soz1wAAAAC/prinplup-piplup.gif";
@@ -1213,6 +1215,53 @@ namespace Ledybot
             }
             else
                 await ReplyAsync("You do not have that item");
+        }
+        [Command("gift")]
+        public async Task gift(string user, int giftid)
+        {
+            var receiver = Context.Message.MentionedUsers.ElementAt(0);
+            if (Directory.Exists($"{ Directory.GetCurrentDirectory()}//{receiver.Id}//"))
+            {
+                if (File.Exists($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//{giftid}"))
+                {
+                    var temp = PKMConverter.GetPKMfromBytes(File.ReadAllBytes($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//{giftid}"),7);
+                    int a = 1;
+                    while (File.Exists($"{ Directory.GetCurrentDirectory()}//{receiver.Id}//{a}"))
+                        a++;
+                    File.Move($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//{giftid}", $"{ Directory.GetCurrentDirectory()}//{receiver.Id}//{a}");
+                    await ReplyAsync($"{receiver.Username} has been given a {(Species)temp.Species} from {Context.User.Username}");
+                }
+                else
+                    await ReplyAsync("No pokemon with this id# found");
+            }
+            else
+                await ReplyAsync($"{receiver.Username} has not started playing tradecord, tell them to!");
+        }
+        [Command("giftitem")]
+        public async Task giftitem(string user, string giftid)
+        {
+            var receiver = Context.Message.MentionedUsers.ElementAt(0);
+            if (!Directory.Exists($"{ Directory.GetCurrentDirectory()}//{receiver.Id}//items"))
+                Directory.CreateDirectory($"{ Directory.GetCurrentDirectory()}//{receiver.Id}//items");
+      
+                if (File.Exists($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt"))
+                {
+                    if (File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt").Contains(giftid))
+                    {
+                        var itemlist = File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt").ToList();
+                        itemlist.Remove(giftid);
+                        File.WriteAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt", itemlist);
+                        StreamWriter receiversfile = File.AppendText($"{Directory.GetCurrentDirectory()}//{receiver.Id}//items//items.txt");
+                        receiversfile.WriteLine(giftid);
+                        receiversfile.Close();
+                    await ReplyAsync($"{receiver.Username} has been gifted {giftid} by {Context.User.Username}");
+                    }
+                    else await ReplyAsync("You do not have this item");
+                }
+                else await ReplyAsync("You do not have any items to gift");
+           
+            
+               
         }
         public enum TCItems
         {
