@@ -17,6 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 public class discordbot 
 {
+    public static int selectedmove = -1;
     public static int page = 0;
     public static IUserMessage msg;
     public static DiscordSocketClient _client;
@@ -151,7 +152,9 @@ public class discordbot
 
         public static async Task HandleReactionAsync(Cacheable<IUserMessage, ulong> cachedMsg, ISocketMessageChannel _, SocketReaction reaction)
         {
+            selectedmove = -1;
            
+            page = 0;
         var user = reaction.User.Value;
             if (user.IsBot)
                 return;
@@ -161,13 +164,12 @@ public class discordbot
                 msg = await cachedMsg.GetOrDownloadAsync().ConfigureAwait(false);
             else msg = cachedMsg.Value;
 
-           
 
 
 
+            IEmote[] reactions2 = { new Emoji("1️⃣"), new Emoji("2️⃣"), new Emoji("3️⃣"), new Emoji("4️⃣") };
             IEmote[] reactions = { new Emoji("⬅️"), new Emoji("➡️") };
-            if (!reactions.Contains(reaction.Emote))
-                return;
+        
             if (reaction.Emote.Name == reactions[0].Name || reaction.Emote.Name == reactions[1].Name)
             {
                 if (reaction.Emote.Name == reactions[0].Name)
@@ -192,6 +194,21 @@ public class discordbot
                 await msg.ModifyAsync(x => x.Embed = trademodule.embed.Build()).ConfigureAwait(false);
 
             }
+            if (reaction.Emote.Name == reactions2[0].Name || reaction.Emote.Name == reactions2[1].Name|| reaction.Emote.Name == reactions2[2].Name || reaction.Emote.Name == reactions2[3].Name)
+            {
+                if (reaction.Emote.Name == reactions2[0].Name)
+                    selectedmove = 0;
+                else if (reaction.Emote.Name == reactions2[1].Name)
+                    selectedmove = 1;
+                else if (reaction.Emote.Name == reactions2[2].Name)
+                    selectedmove = 2;
+                else if (reaction.Emote.Name == reactions2[3].Name)
+                    selectedmove = 3;
+               await Ledybot.gymbattlemodule.battle(selectedmove, msg.Channel);
+              
+            }
+
+
         }
 
     }

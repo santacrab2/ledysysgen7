@@ -999,15 +999,14 @@ namespace Ledybot
                     bpk.Species = evos.First();
                 else if ((int)evoType == 23 || (int)evoType == 24)
                 {
-                    Specieslist = new int[0];
-                    if ((int)evoType == 23)
-                    {
-                        Specieslist = new int[] { (int)Species.Mothim };
-                    }
-                    if ((int)evoType == 24)
-                    {
-                        Specieslist = new int[] { (int)Species.Wormadam, (int)Species.Vespiquen };
-                    }
+                    Specieslist = (int)evoType switch {
+
+
+                        23 => new int[] { (int)Species.Mothim },
+
+
+                        24 => new int[] { (int)Species.Wormadam, (int)Species.Vespiquen },
+                    };
                     foreach (int itemevols in Specieslist)
                     {
                         if (evos.Contains(itemevols))
