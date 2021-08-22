@@ -536,18 +536,18 @@ namespace Ledybot
             {
 
                 byte[] g = File.ReadAllBytes(file);
-                var tpk = PKMConverter.GetPKMfromBytes(g, 7);
-                if (!tpk.IsShiny || shiny.ToLower() == "shiny")
+                var tpk = PKMConverter.GetPKMfromBytes(g, 6);
+                var pokespec = (Species)tpk.Species;
+                if (!tpk.IsShiny && shiny == "")
                 {
-
-
-
                     File.Delete(file);
-
-
                 }
-                else
-                    continue;
+                else if (shiny == "shiny" && tpk.IsShiny)
+                    File.Delete(file);
+                else if (shiny == pokespec.ToString())
+                    File.Delete(file);
+                else if (shiny == "all")
+                    File.Delete(file);
 
 
             }
@@ -555,11 +555,12 @@ namespace Ledybot
             if (shiny == "")
                 await ReplyAsync("all non shiny pokemon have been released");
             if (shiny.ToLower() == "shiny")
-                await ReplyAsync("all pokemon have been released");
-
+                await ReplyAsync("all shiny pokemon have been released");
+            if (GameInfo.Strings.specieslist.Contains(shiny))
+                await ReplyAsync($"all {shiny} have been released");
+            if (shiny == "all")
+                await ReplyAsync("all Pokemon have been released");
         }
-
-
         [Command("info")]
         [Alias("i")]
         public async Task info(int idnumb)
@@ -609,7 +610,7 @@ namespace Ledybot
                 ":large_blue_diamond: **!list** (***!l***)\n" +  "\n" + "*Displays a list of you're caught pokemon*" + "\n" + "\n" +
                 ":large_blue_diamond:" + "**!info #** (***!i #***)" + "\n" + "\n" + "*Replace # with the ID number of the pokemon you want to check (from list command)*" + "\n" + "\n" +
                 ":large_blue_diamond:" + "**!release #** (***!r #***)" + "\n" + "\n" + "*Replace # with the ID number of the pokemon you want to release (from list command)*" + "\n" + "\n" +
-                ":large_blue_diamond:" + "**!massrelease** (***!mr***)" + "\n" + "\n" + "*Releases all non-shiny pokemon*" + "\n" + "**!mr shiny will release ALL pokemon**" + "\n" + "\n" +
+                ":large_blue_diamond:" + "**!massrelease** (***!mr***)" + "\n" + "\n" + "*Releases all non-shiny pokemon*" + "\n" + "**!mr shiny|all|species**" + "\n" + "\n" +
                 ":large_blue_diamond:" + "**!tradecord** (***!tc***) **trainer-name** **DepositPokemon** **##**(*tradecord-id#*) **trainerinfo**(*optional*) )" + "\n" +  "\n" + "*Trades your caught pokemon to you in the gen 7 GTS (Compatible with SUN / MOON / ULTRA SUN / MOON*");
 
             discordbot.trademodule.n.Add("***Tradecord Commands Cont.\n***" + ":large_blue_diamond:" + "**!nickname** (***!n***) # nickname" + "\n" + "\n" + "*Replace # with the ID number of the pokemon you want to nickname(from list command)*" + "\n" + "\n" +
