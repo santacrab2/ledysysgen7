@@ -130,10 +130,11 @@ namespace Ledybot
                 if (opponentpoke.Stat_HPCurrent >= yourmovepower)
                     opponentpoke.Stat_HPCurrent -= (int)yourmovepower;
                 else opponentpoke.Stat_HPCurrent = 0;
-            if (opponentpoke.Stat_HPCurrent != 0 && battlebuddy.Stat_HPCurrent != 0)
-            {
+          
                 await battler.SendMessageAsync(yourmovepower != 0 ? $"You used {yourmove.Name} and did {yourmovepower} damage" : $"{yourmove.Name} missed and did 0 damage"); ;
                 await battler.SendMessageAsync($"{leaderpoke} used {opmove.Name} and did {opmovepower} damage");
+            if (opponentpoke.Stat_HPCurrent != 0 && battlebuddy.Stat_HPCurrent != 0)
+            {
                 battleembed = new EmbedBuilder();
                 battleembed.AddField("gym battle", $"Battle between {leaderpoke}'s {(Species)leaderpoke} and {battler.Username}'s {(Species)battlebuddy.Species}");
                 battleembed.AddField("Opponent", $"{(Species)opponentpoke.Species}\n HP:{opponentpoke.Stat_HPCurrent}/{opponentpoke.Stat_HPMax}");
