@@ -79,7 +79,7 @@ namespace Ledybot
             int natue = GBrng.Next(24);
             var vals = Enum.GetValues(typeof(gleaderpoke));
             leaderpoke = (gleaderpoke)vals.GetValue(GBrng.Next(vals.Length));
-            while (File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Badges.txt").Contains(Enum.GetNames(typeof(badges)).ToString())) 
+            while (File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Badges.txt").Contains($"{(badges)leaderpoke}") || File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Badges.txt").Length >= 60) 
                 leaderpoke = (gleaderpoke)vals.GetValue(GBrng.Next(vals.Length));
           
             opponentpoke = new PK7 { Species = (int)leaderpoke, Nature = natue, CurrentLevel = battlebuddy.CurrentLevel };
@@ -137,11 +137,19 @@ namespace Ledybot
             {
                 if(opponentpoke.Stat_HPCurrent == 0)
                 {
-                    StreamWriter ite = File.AppendText($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Badges.txt");
-                    ite.WriteLine((badges)leaderpoke);
-                    ite.Close();
+                    if (!File.ReadAllText($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Badges.txt").Contains($"{(badges)leaderpoke}"))
+                    {
+                        StreamWriter ite = File.AppendText($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Badges.txt");
+                        ite.WriteLine((badges)leaderpoke);
+                        ite.Close();
+                    }
+                    
                     battleembed = new EmbedBuilder();
                     battleembed.AddField("You Won!", $"You defeated {leaderpoke} and earned a {(badges)leaderpoke}");
+                    if (File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Badges.txt").Length >= 60)
+                    {
+                        battleembed.AddField("Champion", "With 60 or more Badges you are a Champion of PokéEarth");
+                    }
                     await battler.SendMessageAsync(embed: battleembed.Build());
                     gymbattlequeue.Dequeue();
                     if (gymbattlequeue.Count != 0)
@@ -206,6 +214,10 @@ namespace Ledybot
                 discordbot.trademodule.embed.Title = $"{Context.User.Username}'s Badges";
 
                 discordbot.trademodule.embed.AddField("Badges", "hi");
+                if (File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Badges.txt").Length >= 60)
+                {
+                    discordbot.trademodule.embed.AddField("Champion", "With 60 or more Badges you are a Champion of PokéEarth");
+                }
 
                 discordbot.trademodule.embed.Fields[0].Value = discordbot.trademodule.n[0].ToString();
 
