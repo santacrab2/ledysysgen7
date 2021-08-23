@@ -106,12 +106,15 @@ namespace Ledybot
         {
             if(opponentpoke.Stat_HPCurrent != 0 && battlebuddy.Stat_HPCurrent != 0)
             {
+                Random GBrng = new Random();
                 string json = File.ReadAllText($"{Directory.GetCurrentDirectory()}//MoveInfo.json");
                 MoveRoot = JsonConvert.DeserializeObject<MoveInfo.MoveInfoRoot>(json);
                 var yourmove = MoveRoot.Moves.FirstOrDefault(x => x.MoveID == battlebuddy.Moves[move]);
                 var yourtypes = new int[] { battlebuddy.PersonalInfo.Type1, battlebuddy.PersonalInfo.Type2 };
-                var yourmovepower = Math.Round( WeightedDamage(opponentpoke, (PK7)battlebuddy, yourtypes, yourmove));
-                Random GBrng = new Random();
+                double yourmovepower = 0;
+                if (GBrng.Next(4) != 0)
+                    yourmovepower = Math.Round(WeightedDamage(opponentpoke, (PK7)battlebuddy, yourtypes, yourmove));
+
                 int opselect = GBrng.Next(4);
                 var opmove = MoveRoot.Moves.FirstOrDefault(x => x.MoveID == opponentpoke.Moves[opselect]);
                 var optypes = new int[] { opponentpoke.PersonalInfo.Type1, opponentpoke.PersonalInfo.Type2 };
@@ -122,7 +125,7 @@ namespace Ledybot
                 if (opponentpoke.Stat_HPCurrent >= yourmovepower)
                     opponentpoke.Stat_HPCurrent -= (int)yourmovepower;
                 else opponentpoke.Stat_HPCurrent = 0;
-                await battler.SendMessageAsync($"You used {yourmove.Name} and did {yourmovepower} damage");
+                await battler.SendMessageAsync(yourmovepower != 0 ? $"You used {yourmove.Name} and did {yourmovepower} damage" : $"Your move missed and did 0 damage"); ;
                 await battler.SendMessageAsync($"{leaderpoke} used {opmove.Name} and did {opmovepower} damage");
                 battleembed = new EmbedBuilder();
                 battleembed.AddField("gym battle", $"Battle between {leaderpoke}'s {(Species)leaderpoke} and {battler.Username}'s {(Species)battlebuddy.Species}");
