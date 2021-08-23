@@ -28,38 +28,58 @@ namespace Ledybot
         public static gleaderpoke leaderpoke;
         public static IUserMessage battlemsg;
         public static IUser battler;
-
+        public static Queue gymbattlequeue = new Queue();
+        public static bool gymon = false;
         [Command("gymbattle")]
         [Alias("gb")]
-        public async Task gymbattle()
+        public async Task gymbattlequeuer()
         {
+            gymbattlequeue.Enqueue(Context.User);
+            if (gymbattlequeue.Count == 1)
+            {
+                await ReplyAsync("starting your gym battle now!");
+                await gymbattle();
+            }
+            else
+            {
+                await ReplyAsync($"There are {gymbattlequeue.Count} trainers in line for a gym battle! Make sure you have your Private Messages turned on!");
+              
+            }
+
+        }
+        public static async Task gymbattle()
+        {
+            gymon = true;
+            battler = (IUser)gymbattlequeue.Peek();
             try
             {
-                await Context.User.SendMessageAsync("gym battle will occur here!");
+                await battler.SendMessageAsync("gym battle will occur here!");
             }
             catch
             {
-                await ReplyAsync("You must enable private messages to have a gym battle");
+                
+                gymbattlequeue.Dequeue();
             }
             
          
-            if (!File.Exists($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//Buddy//Buddy"))
+            if (!File.Exists($"{Directory.GetCurrentDirectory()}//{battler.Id}//Buddy//Buddy"))
             {
-                await ReplyAsync("You don't have a buddy to battle with");
+                await battler.SendMessageAsync("You don't have a buddy to battle with");
+                gymbattlequeue.Dequeue();
                 return;
             }
-            if (!Directory.Exists($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//Badges//"))
-                Directory.CreateDirectory($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//Badges//");
-            if (!File.Exists($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//Badges//Badges.txt"))
-                File.WriteAllText($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//Badges//Badges.txt", "\n");
+            if (!Directory.Exists($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//"))
+                Directory.CreateDirectory($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//");
+            if (!File.Exists($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Badges.txt"))
+                File.WriteAllText($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Badges.txt", "\n");
        
-            battlebuddy = PKMConverter.GetPKMfromBytes(File.ReadAllBytes($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//Buddy//Buddy"));
-            battler = Context.User;
+            battlebuddy = PKMConverter.GetPKMfromBytes(File.ReadAllBytes($"{Directory.GetCurrentDirectory()}//{battler.Id}//Buddy//Buddy"));
+            
             Random GBrng = new Random();
             int natue = GBrng.Next(24);
             var vals = Enum.GetValues(typeof(gleaderpoke));
             leaderpoke = (gleaderpoke)vals.GetValue(GBrng.Next(vals.Length));
-            while (File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//Badges//Badges.txt").Contains(Enum.GetNames(typeof(badges)).ToString())) 
+            while (File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Badges.txt").Contains(Enum.GetNames(typeof(badges)).ToString())) 
                 leaderpoke = (gleaderpoke)vals.GetValue(GBrng.Next(vals.Length));
           
             opponentpoke = new PK7 { Species = (int)leaderpoke, Nature = natue, CurrentLevel = battlebuddy.CurrentLevel };
@@ -72,22 +92,22 @@ namespace Ledybot
             battlebuddy.Stat_HPCurrent = (int)(0.01 * (2 * battlebuddy.PersonalInfo.HP + battlebuddy.IV_HP + (0.25 * battlebuddy.EV_HP)) * battlebuddy.CurrentLevel) + battlebuddy.CurrentLevel + 10;
             battlebuddy.Stat_HPMax = battlebuddy.Stat_HPCurrent;
             battleembed = new EmbedBuilder();
-            battleembed.AddField("gym battle", $"Battle between {leaderpoke}'s {(Species)leaderpoke} and {Context.User.Username}'s {(Species)battlebuddy.Species}");
+            battleembed.AddField("gym battle", $"Battle between {leaderpoke}'s {(Species)leaderpoke} and {battler.Username}'s {(Species)battlebuddy.Species}");
             battleembed.AddField("Opponent", $"{(Species)opponentpoke.Species}\n HP:{opponentpoke.Stat_HPCurrent}/{opponentpoke.Stat_HPMax}");
-            battleembed.AddField($"{Context.User.Username}", $"{(Species)battlebuddy.Species}\n HP:{battlebuddy.Stat_HPCurrent}/{battlebuddy.Stat_HPMax}");
+            battleembed.AddField($"{battler.Username}", $"{(Species)battlebuddy.Species}\n HP:{battlebuddy.Stat_HPCurrent}/{battlebuddy.Stat_HPMax}");
             battleembed.AddField($"Moves", $":one:{(Move)battlebuddy.Move1}\n:two:{(Move)battlebuddy.Move2}\n:three:{(Move)battlebuddy.Move3}\n:four:{(Move)battlebuddy.Move4}");
             IEmote[] reactions = { new Emoji("1️⃣"), new Emoji("2️⃣"), new Emoji("3️⃣"), new Emoji("4️⃣") };
-            battlemsg = await Context.User.SendMessageAsync(embed: battleembed.Build());
+            battlemsg = await battler.SendMessageAsync(embed: battleembed.Build());
             await battlemsg.AddReactionsAsync(reactions).ConfigureAwait(false);
         }
 
-        public static async Task battle(int move, IMessageChannel channel)
+        public static async Task battle(int move)
         {
             if(opponentpoke.Stat_HPCurrent != 0 && battlebuddy.Stat_HPCurrent != 0)
             {
                 string json = File.ReadAllText($"{Directory.GetCurrentDirectory()}//MoveInfo.json");
                 MoveRoot = JsonConvert.DeserializeObject<MoveInfo.MoveInfoRoot>(json);
-                var yourmove = MoveRoot.Moves.FirstOrDefault(x => x.MoveID == battlebuddy.Moves[discordbot.selectedmove]);
+                var yourmove = MoveRoot.Moves.FirstOrDefault(x => x.MoveID == battlebuddy.Moves[move]);
                 var yourtypes = new int[] { battlebuddy.PersonalInfo.Type1, battlebuddy.PersonalInfo.Type2 };
                 var yourmovepower = Math.Round( WeightedDamage(opponentpoke, (PK7)battlebuddy, yourtypes, yourmove));
                 Random GBrng = new Random();
@@ -101,9 +121,8 @@ namespace Ledybot
                 if (opponentpoke.Stat_HPCurrent >= yourmovepower)
                     opponentpoke.Stat_HPCurrent -= (int)yourmovepower;
                 else opponentpoke.Stat_HPCurrent = 0;
-                await channel.SendMessageAsync($"You used {yourmove.Name} and did {yourmovepower} damage");
-                await channel.SendMessageAsync($"{leaderpoke} used {opmove.Name} and did {opmovepower} damage");
-                await Task.Delay(2500);
+                await battler.SendMessageAsync($"You used {yourmove.Name} and did {yourmovepower} damage");
+                await battler.SendMessageAsync($"{leaderpoke} used {opmove.Name} and did {opmovepower} damage");
                 battleembed = new EmbedBuilder();
                 battleembed.AddField("gym battle", $"Battle between {leaderpoke}'s {(Species)leaderpoke} and {battler.Username}'s {(Species)battlebuddy.Species}");
                 battleembed.AddField("Opponent", $"{(Species)opponentpoke.Species}\n HP:{opponentpoke.Stat_HPCurrent}/{opponentpoke.Stat_HPMax}");
@@ -118,10 +137,18 @@ namespace Ledybot
             {
                 if(opponentpoke.Stat_HPCurrent == 0)
                 {
-                    File.WriteAllText($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Badges.txt", $"{(badges)leaderpoke}\n");
+                    StreamWriter ite = File.AppendText($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Badges.txt");
+                    ite.WriteLine((badges)leaderpoke);
+                    ite.Close();
                     battleembed = new EmbedBuilder();
                     battleembed.AddField("You Won!", $"You defeated {leaderpoke} and earned a {(badges)leaderpoke}");
-                    await channel.SendMessageAsync(embed: battleembed.Build());
+                    await battler.SendMessageAsync(embed: battleembed.Build());
+                    gymbattlequeue.Dequeue();
+                    if (gymbattlequeue.Count != 0)
+                        await gymbattle();
+
+                        
+                        
                 }
             }
         }
@@ -180,6 +207,36 @@ namespace Ledybot
                 _ = Task.Run(() => listmsg.AddReactionsAsync(reactions).ConfigureAwait(false));
             }
 
+        }
+        [Command("gymqueue")]
+        [Alias("gq")]
+        public async Task que()
+        {
+            EmbedBuilder gqembed = new EmbedBuilder();
+            Object[] arr = gymbattlequeue.ToArray();
+            var sb = new System.Text.StringBuilder();
+            
+            if (arr.Length == 0)
+            {
+                await ReplyAsync("queue is empty");
+            }
+            int r = 0;
+            foreach (object i in arr)
+            {
+
+                sb.AppendLine((r + 1).ToString() + ". " + arr[r].ToString());
+                r++;
+            }
+            gqembed.AddField(x =>
+            {
+
+                x.Name = "Queue:";
+                x.Value = sb.ToString();
+                x.IsInline = false;
+
+
+            });
+            await ReplyAsync(embed: gqembed.Build());
         }
         public static int[] SetMaxEVs(PKM entity)
         {

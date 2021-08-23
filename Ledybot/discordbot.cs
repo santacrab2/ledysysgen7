@@ -204,7 +204,7 @@ public class discordbot
                     selectedmove = 2;
                 else if (reaction.Emote.Name == reactions2[3].Name)
                     selectedmove = 3;
-               await Ledybot.gymbattlemodule.battle(selectedmove, msg.Channel);
+               await Ledybot.gymbattlemodule.battle(selectedmove);
               
             }
 

@@ -625,7 +625,8 @@ namespace Ledybot
             $":large_blue_diamond: **!takeitem**, (**!ti**)\n takes back the item your buddy is holding\n\n" +
             $":large_blue_diamond: **!dropitem**, (**!di**) item\n drops 1 of the item specified from your bag\n\n" +
             $":large_blue_diamond: **!gift** *@user* id#\ngifts a pokemon to another tradecord user\n\n" +
-            $":large_blue_diamond: **!giftitem** *@user* item\ngifts an item to another tradecord user");
+            $":large_blue_diamond: **!giftitem** *@user* item\ngifts an item to another tradecord user\n\n"+
+            $":large_blue_diamond: **!gymbattle**, (**!gb**)\nLets you challenge a random gym leader to a 1v1 match with your buddy");
 
             discordbot.trademodule.embed.Fields[0].Value = discordbot.trademodule.n[0].ToString();
             discordbot.trademodule.embed.ImageUrl = "https://c.tenor.com/aVgHd6soz1wAAAAC/prinplup-piplup.gif";
