@@ -150,6 +150,15 @@ namespace Ledybot
                         
                         
                 }
+                else
+                {
+                    battleembed = new EmbedBuilder();
+                    battleembed.AddField("You lost!", $"{leaderpoke} just kicked your ass, try again!");
+                    await battler.SendMessageAsync(embed: battleembed.Build());
+                    gymbattlequeue.Dequeue();
+                    if (gymbattlequeue.Count != 0)
+                        await gymbattle();
+                }
             }
         }
         [Command("badges")]
