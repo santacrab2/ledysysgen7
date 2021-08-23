@@ -599,7 +599,7 @@ namespace Ledybot
         [Alias("ch")]
         public async Task HelpTC()
         {
-            
+            discordbot.page = 0;
             discordbot.trademodule.n = new List<string>();
             discordbot.trademodule.embed = new EmbedBuilder();
             discordbot.trademodule.embed.Color = new Color(147, 191, 230);
@@ -1087,6 +1087,7 @@ namespace Ledybot
         [Alias("bag")]
         public async Task viewbag()
         {
+            discordbot.page = 0;
             discordbot.trademodule.embed = new EmbedBuilder();
             discordbot.trademodule.n = new List<string>();
             var yb = new System.Text.StringBuilder();
@@ -1230,6 +1231,13 @@ namespace Ledybot
                     while (File.Exists($"{ Directory.GetCurrentDirectory()}//{receiver.Id}//{a}"))
                         a++;
                     File.Move($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//{giftid}", $"{ Directory.GetCurrentDirectory()}//{receiver.Id}//{a}");
+                    if(!File.ReadAllText($"{ Directory.GetCurrentDirectory()}//dexs//{receiver.Id}.txt").Contains(temp.Species.ToString()))
+                    {
+                        await ReplyAsync($"Registered {(Species)temp.Species} to {receiver.Username}'s Pokedex");
+                        StreamWriter de = File.AppendText($"{Directory.GetCurrentDirectory()}//dexs///{Context.User.Id}.txt");
+                        de.WriteLine(temp.Species);
+                        de.Close();
+                    }
                     await ReplyAsync($"{receiver.Username} has been given a {(Species)temp.Species} from {Context.User.Username}");
                 }
                 else

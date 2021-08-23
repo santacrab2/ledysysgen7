@@ -154,7 +154,7 @@ public class discordbot
         {
             selectedmove = -1;
            
-            page = 0;
+            
         var user = reaction.User.Value;
             if (user.IsBot)
                 return;

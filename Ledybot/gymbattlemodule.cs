@@ -174,6 +174,7 @@ namespace Ledybot
         [Command("badges")]
         public async Task viewbadges()
         {
+            discordbot.page = 0;
             if (!File.Exists($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//Badges//Badges.txt"))
             {
                 await ReplyAsync("you do not have any badges, type !gymbattle to do a gym battle with your buddy");
