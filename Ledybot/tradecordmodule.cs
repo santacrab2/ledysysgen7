@@ -990,6 +990,8 @@ namespace Ledybot
                         "Sachet" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Sachet") && bpk.Species == (int)Species.Spritzee) ? (int)Species.Aromatisse : bpk.Species,
                         "Upgrade" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Upgrade") && bpk.Species == (int)Species.Porygon) ? (int)Species.Porygon2 : bpk.Species,
                         "Whipped Dream" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x => x == "Whipped Dream") && bpk.Species == (int)Species.Swirlix) ? (int)Species.Slurpuff : bpk.Species,
+                        "Deap Sea Tooth" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x=> x == "Deep Sea Tooth") && bpk.Species == (int)Species.Clamperl)? (int)Species.Huntail : bpk.Species,
+                        "Deep Sea Scale" => (bpk.HeldItem == Array.FindIndex(Program.PKTable.Item7, x=> x == "Deep Sea Scale") && bpk.Species == (int)Species.Clamperl)? (int)Species.Gorebyss : bpk.Species,
                         _ => bpk.Species,
                     };
                     if (ogspecies != bpk.Species)
@@ -998,7 +1000,7 @@ namespace Ledybot
                 }
                 else if (!levelupevo.Contains(preevos[1].Method) && bpk.Species != (int)Species.Eevee)
                     bpk.Species = evos.First();
-                else if ((int)evoType == 23 || (int)evoType == 24)
+                else if (preevos[1].Method == 23 || preevos[1].Method == 24)
                 {
                     Specieslist = preevos[1].Method switch {
 

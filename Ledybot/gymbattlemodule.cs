@@ -79,10 +79,16 @@ namespace Ledybot
             int natue = GBrng.Next(24);
             var vals = Enum.GetValues(typeof(gleaderpoke));
             leaderpoke = (gleaderpoke)vals.GetValue(GBrng.Next(vals.Length));
-            while (File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Badges.txt").Contains($"{(badges)leaderpoke}") || File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Badges.txt").Length >= 60) 
+            while (File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Badges.txt").Contains($"{(badges)leaderpoke}"))
+            {
+                if (File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Badges.txt").Length >= 60)
+                    break;
                 leaderpoke = (gleaderpoke)vals.GetValue(GBrng.Next(vals.Length));
+            }
           
             opponentpoke = new PK7 { Species = (int)leaderpoke, Nature = natue, CurrentLevel = battlebuddy.CurrentLevel };
+            if (File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Badges.txt").Length >= 60)
+                opponentpoke.CurrentLevel = 100;
              int[] sugmov = MoveSetApplicator.GetMoveSet(opponentpoke, true);
             opponentpoke.SetMoves(sugmov);
             opponentpoke.SetRandomIVs();
@@ -112,7 +118,7 @@ namespace Ledybot
                 var yourmove = MoveRoot.Moves.FirstOrDefault(x => x.MoveID == battlebuddy.Moves[move]);
                 var yourtypes = new int[] { battlebuddy.PersonalInfo.Type1, battlebuddy.PersonalInfo.Type2 };
                 double yourmovepower = 0;
-                if (GBrng.Next(4) != 0)
+                if (GBrng.Next(3) != 0)
                     yourmovepower = Math.Round(WeightedDamage(opponentpoke, (PK7)battlebuddy, yourtypes, yourmove));
 
                 int opselect = GBrng.Next(4);
