@@ -110,8 +110,7 @@ namespace Ledybot
 
         public static async Task battle(int move)
         {
-            if(opponentpoke.Stat_HPCurrent != 0 && battlebuddy.Stat_HPCurrent != 0)
-            {
+          
                 Random GBrng = new Random();
                 string json = File.ReadAllText($"{Directory.GetCurrentDirectory()}//MoveInfo.json");
                 MoveRoot = JsonConvert.DeserializeObject<MoveInfo.MoveInfoRoot>(json);
@@ -131,7 +130,9 @@ namespace Ledybot
                 if (opponentpoke.Stat_HPCurrent >= yourmovepower)
                     opponentpoke.Stat_HPCurrent -= (int)yourmovepower;
                 else opponentpoke.Stat_HPCurrent = 0;
-                await battler.SendMessageAsync(yourmovepower != 0 ? $"You used {yourmove.Name} and did {yourmovepower} damage" : $"Your move missed and did 0 damage"); ;
+            if (opponentpoke.Stat_HPCurrent != 0 && battlebuddy.Stat_HPCurrent != 0)
+            {
+                await battler.SendMessageAsync(yourmovepower != 0 ? $"You used {yourmove.Name} and did {yourmovepower} damage" : $"{yourmove.Name} missed and did 0 damage"); ;
                 await battler.SendMessageAsync($"{leaderpoke} used {opmove.Name} and did {opmovepower} damage");
                 battleembed = new EmbedBuilder();
                 battleembed.AddField("gym battle", $"Battle between {leaderpoke}'s {(Species)leaderpoke} and {battler.Username}'s {(Species)battlebuddy.Species}");
