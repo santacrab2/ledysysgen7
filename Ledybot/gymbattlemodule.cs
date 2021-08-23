@@ -96,6 +96,7 @@ namespace Ledybot
             battleembed.AddField("Opponent", $"{(Species)opponentpoke.Species}\n HP:{opponentpoke.Stat_HPCurrent}/{opponentpoke.Stat_HPMax}");
             battleembed.AddField($"{battler.Username}", $"{(Species)battlebuddy.Species}\n HP:{battlebuddy.Stat_HPCurrent}/{battlebuddy.Stat_HPMax}");
             battleembed.AddField($"Moves", $":one:{(Move)battlebuddy.Move1}\n:two:{(Move)battlebuddy.Move2}\n:three:{(Move)battlebuddy.Move3}\n:four:{(Move)battlebuddy.Move4}");
+            battleembed.ImageUrl = $"https://play.pokemonshowdown.com/sprites/trainers/{leaderpoke.ToString().ToLower()}.png";
             IEmote[] reactions = { new Emoji("1️⃣"), new Emoji("2️⃣"), new Emoji("3️⃣"), new Emoji("4️⃣") };
             battlemsg = await battler.SendMessageAsync(embed: battleembed.Build());
             await battlemsg.AddReactionsAsync(reactions).ConfigureAwait(false);
@@ -128,6 +129,7 @@ namespace Ledybot
                 battleembed.AddField("Opponent", $"{(Species)opponentpoke.Species}\n HP:{opponentpoke.Stat_HPCurrent}/{opponentpoke.Stat_HPMax}");
                 battleembed.AddField($"{battler.Username}", $"{(Species)battlebuddy.Species}\n HP:{battlebuddy.Stat_HPCurrent}/{battlebuddy.Stat_HPMax}");
                 battleembed.AddField($"Moves", $":one:{(Move)battlebuddy.Move1}\n:two:{(Move)battlebuddy.Move2}\n:three:{(Move)battlebuddy.Move3}\n:four:{(Move)battlebuddy.Move4}");
+                battleembed.ImageUrl = $"https://play.pokemonshowdown.com/sprites/trainers/{leaderpoke.ToString().ToLower()}.png";
                 IEmote[] reactions = { new Emoji("1️⃣"), new Emoji("2️⃣"), new Emoji("3️⃣"), new Emoji("4️⃣") };
                 var battlemsg = await battler.SendMessageAsync(embed: battleembed.Build());
                 await battlemsg.AddReactionsAsync(reactions).ConfigureAwait(false);
