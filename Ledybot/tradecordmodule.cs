@@ -626,7 +626,9 @@ namespace Ledybot
             $":large_blue_diamond: **!dropitem**, (**!di**) item\n drops 1 of the item specified from your bag\n\n" +
             $":large_blue_diamond: **!gift** *@user* id#\ngifts a pokemon to another tradecord user\n\n" +
             $":large_blue_diamond: **!giftitem** *@user* item\ngifts an item to another tradecord user\n\n"+
-            $":large_blue_diamond: **!gymbattle**, (**!gb**)\nLets you challenge a random gym leader to a 1v1 match with your buddy");
+            $":large_blue_diamond: **!gymbattle**, (**!gb**)\nLets you challenge a random gym leader to a 1v1 match with your buddy\n\n"+
+            $":large_blue_diamond: **!badges**\nDisplays your badges\n\n"+
+            $":large_blue_diamond: **!gymqueue**, (**!gq**)\nDisplays the current queue for gym battles");
 
             discordbot.trademodule.embed.Fields[0].Value = discordbot.trademodule.n[0].ToString();
             discordbot.trademodule.embed.ImageUrl = "https://c.tenor.com/aVgHd6soz1wAAAAC/prinplup-piplup.gif";
@@ -1290,7 +1292,6 @@ namespace Ledybot
             DawnStone = 109,
             OvalStone = 110,
             KingsRock = 221,
-            Everstone = 229,
             MetalCoat = 233,
             DragonScale = 235,
             Upgrade = 252,
@@ -1304,6 +1305,8 @@ namespace Ledybot
             WhippedDream = 646,
             Sachet = 647,
             IceStone = 849,
+            ExpertBelt = 268,
+            LifeOrb = 270,
             RareCandy = 50
         }
         }
