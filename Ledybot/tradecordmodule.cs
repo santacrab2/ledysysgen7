@@ -1166,7 +1166,7 @@ namespace Ledybot
                     else
                     {
                         var bag = File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt").ToList();
-                        while (amount != 0)
+                        while (amount != 0 && bag.Contains(itemtogive))
                         {
                             bag.Remove(itemtogive);
                             File.WriteAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt", bag);
