@@ -201,10 +201,9 @@ namespace Ledybot
                     };
                 }
                 if (GBrng.Next(4) == 0)
-                {
-                    opponentpoke.Status_Condition = 0;
                     battlebuddy.Status_Condition = 0;
-                }
+                if (GBrng.Next(4) == 0)
+                    opponentpoke.Status_Condition = 0;
                 battleembed = new EmbedBuilder();
                 battleembed.AddField("gym battle", $"Battle between {leaderpoke}'s {(Species)leaderpoke} and {battler.Username}'s {(Species)battlebuddy.Species}");
                 battleembed.AddField("Opponent", $"{(opponentpoke.Status_Condition == 0 ? (Species)opponentpoke.Species : $"{(Species)opponentpoke.Species}({(StatusCondition)opponentpoke.Status_Condition})")}\n HP:{opponentpoke.Stat_HPCurrent}/{opponentpoke.Stat_HPMax}");
