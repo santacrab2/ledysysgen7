@@ -619,14 +619,14 @@ namespace Ledybot
                 $":large_blue_diamond: **!BuddySet** (***!bs***) id# \n \n Sets a buddy to go on your adventure, will gain exp with each catch and evolve if it meets level criteria! \n \n" +
                 $":large_blue_diamond: **!Buddy** (***!b***) \n \n Displays your buddies information!\n\n"
             + ":large_blue_diamond: **!settrainer**, (**!st**)\n" + "Sets your trainer info with the bot permanently so anything you catch will have that info!\nThis is also automatically captured if you trade the bot a pokemon you caught or bred\n```Example: !st OT: Santa\nTID: 123456\nSID: 1234```\n\n" );
-           discordbot.trademodule.n.Add($"***Tradecord Commands cont.***\n:large_blue_diamond: **!evolve**, (**!e**) optional item / timeofday\nEvolves your current Buddy if its able to, if it requires an item like ThunderStone type it with the command\n```example: !evolve ThunderStone```\n\n" + 
-                $":large_blue_diamond: **!items**\nDisplays your item bag\n\n" +
-            $":large_blue_diamond: **!giveitem**, (**!gi**) item\nGives an item to your buddy to hold, if its a Rare Candy you can specify amount and your buddy will level up\n\n" +
-            $":large_blue_diamond: **!takeitem**, (**!ti**)\n takes back the item your buddy is holding\n\n" +
-            $":large_blue_diamond: **!dropitem**, (**!di**) item *optional amount*\n drops 1 or the specified amount of the item specified from your bag\n\n" +
-            $":large_blue_diamond: **!gift** *@user* id#\ngifts a pokemon to another tradecord user\n\n" +
-            $":large_blue_diamond: **!giftitem** *@user* item\ngifts an item to another tradecord user\n\n"+
-            $":large_blue_diamond: **!gymbattle**, (**!gb**)\nLets you challenge a random gym leader to a 1v1 match with your buddy\n\n"+
+            discordbot.trademodule.n.Add($"***Tradecord Commands cont.***\n:large_blue_diamond: **!evolve**, (**!e**) optional item / timeofday\nEvolves your current Buddy if its able to, if it requires an item like ThunderStone type it with the command\n```example: !evolve ThunderStone```\n\n" +
+                 $":large_blue_diamond: **!items**\nDisplays your item bag\n\n" +
+             $":large_blue_diamond: **!giveitem**, (**!gi**) item\nGives an item to your buddy to hold, if its a Rare Candy you can specify amount and your buddy will level up\n\n" +
+             $":large_blue_diamond: **!takeitem**, (**!ti**)\n takes back the item your buddy is holding\n\n" +
+             $":large_blue_diamond: **!dropitem**, (**!di**) item *optional amount*\n drops 1 or the specified amount of the item specified from your bag\n\n" +
+             $":large_blue_diamond: **!gift** *@user* id#\ngifts a pokemon to another tradecord user\n\n" +
+             $":large_blue_diamond: **!giftitem** *@user* item\ngifts an item to another tradecord user\n\n");
+           discordbot.trademodule.n.Add( $":large_blue_diamond: **!gymbattle**, (**!gb**)\nLets you challenge a random gym leader to a 1v1 match with your buddy\n\n"+
             $":large_blue_diamond: **!badges**\nDisplays your badges\n\n"+
             $":large_blue_diamond: **!gymqueue**, (**!gq**)\nDisplays the current queue for gym battles\n\n"+
             $":large_blue_diamond: **!randommoves**, (**!rm**)\nChanges all of your buddies moves to a new legal random set of moves");
