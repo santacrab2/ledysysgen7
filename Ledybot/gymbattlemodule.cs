@@ -81,9 +81,10 @@ namespace Ledybot
             leaderpoke = (gleaderpoke)vals.GetValue(GBrng.Next(vals.Length));
             while (File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Badges.txt").Contains($"{(badges)leaderpoke}"))
             {
+                leaderpoke = (gleaderpoke)vals.GetValue(GBrng.Next(vals.Length));
                 if (File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Badges.txt").Length >= 60)
                     break;
-                leaderpoke = (gleaderpoke)vals.GetValue(GBrng.Next(vals.Length));
+                
             }
 
             opponentpoke = new PK7 { Species = (int)leaderpoke, Nature = natue, CurrentLevel = battlebuddy.CurrentLevel };
