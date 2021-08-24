@@ -542,6 +542,7 @@ namespace Ledybot
             bool groundImmune = move.MoveID != (int)Move.ThousandArrows && move.Type == MoveType.Ground && (lairPk.Ability == (int)Ability.Levitate || types[0] == (int)MoveType.Flying || types[1] == (int)MoveType.Flying);
             bool fireImmune = move.Type == MoveType.Fire && lairPk.Ability == (int)Ability.FlashFire;
             bool grassImmune = move.Type == MoveType.Grass && lairPk.Ability == (int)Ability.SapSipper;
+            bool conditioned = pk.Status_Condition == (int)StatusCondition.Asleep || pk.Status_Condition == (int)StatusCondition.Paralyzed || pk.Status_Condition == (int)StatusCondition.Frozen;
             bool ignoreAbility = pk.Ability == (int)Ability.Turboblaze || pk.Ability == (int)Ability.Teravolt || pk.Ability == (int)Ability.MoldBreaker;
 
             var typeMulti = TypeDamageMultiplier(types, (int)move.Type);
@@ -560,7 +561,7 @@ namespace Ledybot
 
             bool usefulStatus = (move.MoveID == (int)Move.Toxic && lairPk.Status_Condition != (int)StatusCondition.Poisoned) || move.MoveID == (int)Move.Counter || move.MoveID == (int)Move.LifeDew ||
                 move.MoveID == (int)Move.WideGuard || (move.MoveID == (int)Move.Yawn && lairPk.Status_Condition != (int)StatusCondition.Asleep) || (move.MoveID == (int)Move.Protect);
-            if ((!ignoreAbility && (waterImmune || electricImmune || fireImmune || grassImmune || groundImmune)) || (move.Category == MoveCategory.Status && !usefulStatus) || (move.MoveID == (int)Move.DreamEater && lairPk.Status_Condition != (int)StatusCondition.Asleep))
+            if ((!ignoreAbility && (waterImmune || electricImmune || fireImmune || grassImmune || groundImmune)) || (move.Category == MoveCategory.Status && !usefulStatus) || (move.MoveID == (int)Move.DreamEater && lairPk.Status_Condition != (int)StatusCondition.Asleep) || conditioned)
                 typeMultiplier = 0.0;
 
 
