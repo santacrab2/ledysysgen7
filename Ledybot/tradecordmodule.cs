@@ -621,14 +621,15 @@ namespace Ledybot
             + ":large_blue_diamond: **!settrainer**, (**!st**)\n" + "Sets your trainer info with the bot permanently so anything you catch will have that info!\nThis is also automatically captured if you trade the bot a pokemon you caught or bred\n```Example: !st OT: Santa\nTID: 123456\nSID: 1234```\n\n" );
            discordbot.trademodule.n.Add($"***Tradecord Commands cont.***\n:large_blue_diamond: **!evolve**, (**!e**) optional item / timeofday\nEvolves your current Buddy if its able to, if it requires an item like ThunderStone type it with the command\n```example: !evolve ThunderStone```\n\n" + 
                 $":large_blue_diamond: **!items**\nDisplays your item bag\n\n" +
-            $":large_blue_diamond: **!giveitem**, (**!gi**) item\nGives an item to your buddy to hold, if its a Rare Candy your buddy will level up\n\n" +
+            $":large_blue_diamond: **!giveitem**, (**!gi**) item\nGives an item to your buddy to hold, if its a Rare Candy you can specify amount and your buddy will level up\n\n" +
             $":large_blue_diamond: **!takeitem**, (**!ti**)\n takes back the item your buddy is holding\n\n" +
-            $":large_blue_diamond: **!dropitem**, (**!di**) item\n drops 1 of the item specified from your bag\n\n" +
+            $":large_blue_diamond: **!dropitem**, (**!di**) item *optional amount*\n drops 1 or the specified amount of the item specified from your bag\n\n" +
             $":large_blue_diamond: **!gift** *@user* id#\ngifts a pokemon to another tradecord user\n\n" +
             $":large_blue_diamond: **!giftitem** *@user* item\ngifts an item to another tradecord user\n\n"+
             $":large_blue_diamond: **!gymbattle**, (**!gb**)\nLets you challenge a random gym leader to a 1v1 match with your buddy\n\n"+
             $":large_blue_diamond: **!badges**\nDisplays your badges\n\n"+
-            $":large_blue_diamond: **!gymqueue**, (**!gq**)\nDisplays the current queue for gym battles");
+            $":large_blue_diamond: **!gymqueue**, (**!gq**)\nDisplays the current queue for gym battles\n\n"+
+            $":large_blue_diamond: **!randommoves**, (**!rm**)\nChanges all of your buddies moves to a new legal random set of moves");
 
             discordbot.trademodule.embed.Fields[0].Value = discordbot.trademodule.n[0].ToString();
             discordbot.trademodule.embed.ImageUrl = "https://c.tenor.com/aVgHd6soz1wAAAAC/prinplup-piplup.gif";
@@ -1144,7 +1145,7 @@ namespace Ledybot
 
         [Command("giveitem")]
         [Alias("gi")]
-        public async Task giveitem(string itemtogive)
+        public async Task giveitem(string itemtogive, int amount = 1)
         {
             if (File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt").Contains(itemtogive))
             {
@@ -1165,18 +1166,22 @@ namespace Ledybot
                     else
                     {
                         var bag = File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt").ToList();
-                        bag.Remove(itemtogive);
-                        File.WriteAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt", bag);
-                        byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy");
-                        PKM bpk = PKMConverter.GetPKMfromBytes(g, 7);
-                        if (bpk.CurrentLevel < 100)
+                        while (amount != 0)
                         {
-                            bpk.CurrentLevel++;
-                            File.WriteAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy", bpk.DecryptedBoxData);
-                            await ReplyAsync("Your Buddy just leveled up!");
+                            bag.Remove(itemtogive);
+                            File.WriteAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt", bag);
+                            byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy");
+                            PKM bpk = PKMConverter.GetPKMfromBytes(g, 7);
+                            if (bpk.CurrentLevel < 100)
+                            {
+                                bpk.CurrentLevel++;
+                                File.WriteAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy", bpk.DecryptedBoxData);
+                                await ReplyAsync("Your Buddy just leveled up!");
+                            }
+                            else
+                                await ReplyAsync("you just wasted a rare candy lol");
+                            amount--;
                         }
-                        else
-                            await ReplyAsync("you just wasted a rare candy lol");
                     }
                 }
                 else
@@ -1210,17 +1215,27 @@ namespace Ledybot
         }
         [Command("dropitem")]
         [Alias("di")]
-        public async Task dropitem(string item)
-        {
-            if (File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt").Contains(item))
+        public async Task dropitem(string item, int amount = 1)
+        {   while (amount != 0)
             {
-                var itemlist = File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt").ToList();
-                itemlist.Remove(item);
-                File.WriteAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt", itemlist);
-                await ReplyAsync($"You dropped {item}");
+                if (File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt").Contains(item))
+                {
+                    var itemlist = File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt").ToList();
+
+
+                    itemlist.Remove(item);
+
+
+                    File.WriteAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt", itemlist);
+                    await ReplyAsync($"You dropped {item}");
+                }
+                else
+                {
+                    await ReplyAsync("You do not have that item");
+                    break;
+                }
+                amount--;
             }
-            else
-                await ReplyAsync("You do not have that item");
         }
         [Command("gift")]
         public async Task gift(string user, int giftid)

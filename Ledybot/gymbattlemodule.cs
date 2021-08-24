@@ -343,6 +343,19 @@ namespace Ledybot
             });
             await ReplyAsync(embed: gqembed.Build());
         }
+        [Command("Randommoves")]
+        [Alias("rm")]
+        public async Task randommoves()
+        {
+            if (File.Exists($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//Buddy//Buddy"))
+            {
+                var temp = PKMConverter.GetPKMfromBytes(File.ReadAllBytes($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//Buddy//Buddy"));
+                int[] ranmoves = temp.GetMoveSet(true);
+                temp.Moves = ranmoves;
+                File.WriteAllBytes($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//Buddy//Buddy", temp.DecryptedBoxData);
+            }
+            else await ReplyAsync("You have no buddy, set one with !bs id#");
+        }
         public static int[] SetMaxEVs(PKM entity)
         {
             if (entity.Format < 3)
@@ -361,7 +374,7 @@ namespace Ledybot
         {
             Brock = (int)Species.Onix,
             Misty = (int)Species.Starmie,
-            Surge = (int)Species.Raichu,
+            LtSurge = (int)Species.Raichu,
             Erika = (int)Species.Vileplume,
             Koga = (int)Species.Weezing,
             Sabrina = (int)Species.Alakazam,
@@ -426,7 +439,7 @@ namespace Ledybot
         {
             BoulderBadge = gleaderpoke.Brock,
             CascadeBadge = gleaderpoke.Misty,
-            ThunderBadge = gleaderpoke.Surge,
+            ThunderBadge = gleaderpoke.LtSurge,
             RainbowBadge = gleaderpoke.Erika,
             SoulBadge = gleaderpoke.Koga,
             MarshBadge = gleaderpoke.Sabrina,
