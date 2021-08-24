@@ -166,11 +166,11 @@ namespace Ledybot
                 opponentpoke.Stat_HPCurrent -= (int)yourmovepower;
             else opponentpoke.Stat_HPCurrent = 0;
             if (battlebuddy.Status_Condition == (int)StatusCondition.Poisoned || battlebuddy.Status_Condition == (int)StatusCondition.Burned)
-                if (battlebuddy.Stat_HPCurrent - (battlebuddy.Stat_HPMax / 16) != 0)
+                if (battlebuddy.Stat_HPCurrent - (battlebuddy.Stat_HPMax / 16) >= 0)
                     battlebuddy.Stat_HPCurrent = battlebuddy.Stat_HPCurrent - (battlebuddy.Stat_HPMax / 16);
                 else battlebuddy.Stat_HPCurrent = 0;
             if (opponentpoke.Status_Condition == (int)StatusCondition.Poisoned || opponentpoke.Status_Condition == (int)StatusCondition.Burned)
-                if (opponentpoke.Stat_HPCurrent - (opponentpoke.Stat_HPMax / 16) != 0)
+                if (opponentpoke.Stat_HPCurrent - (opponentpoke.Stat_HPMax / 16) >= 0)
                     opponentpoke.Stat_HPCurrent = opponentpoke.Stat_HPCurrent - (opponentpoke.Stat_HPMax / 16);
                 else opponentpoke.Stat_HPCurrent = 0;
 
