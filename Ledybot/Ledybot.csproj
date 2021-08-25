@@ -25,7 +25,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>306</ApplicationRevision>
+    <ApplicationRevision>309</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -80,6 +80,9 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoModPlugins">
+      <HintPath>..\..\PKHeX-Plugins8.14.21\AutoLegalityMod\bin\Release\net46\AutoModPlugins.dll</HintPath>
+    </Reference>
     <Reference Include="Discord.Addons.Interactive, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Discord.Addons.Interactive.2.0.0\lib\netstandard2.0\Discord.Addons.Interactive.dll</HintPath>
     </Reference>
@@ -103,6 +106,9 @@
     </Reference>
     <Reference Include="Json.Net, Version=1.0.33.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Json.Net.1.0.33\lib\netstandard2.0\Json.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="LibUsbDotNet.LibUsbDotNet">
+      <HintPath>..\..\PKHeX-Plugins8.14.21\AutoLegalityMod\bin\Release\net46\LibUsbDotNet.LibUsbDotNet.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
@@ -143,6 +149,16 @@
     <Reference Include="PKHeX.Core.AutoMod, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\PKHeX-Plugins8.14.21\PKHeX.Core.AutoMod\bin\Release\net46\PKHeX.Core.AutoMod.dll</HintPath>
+    </Reference>
+    <Reference Include="PKHeX.Core.Enhancements">
+      <HintPath>..\..\PKHeX-Plugins8.14.21\AutoLegalityMod\bin\Release\net46\PKHeX.Core.Enhancements.dll</HintPath>
+    </Reference>
+    <Reference Include="PKHeX.Core.Injection">
+      <HintPath>..\..\PKHeX-Plugins8.14.21\AutoLegalityMod\bin\Release\net46\PKHeX.Core.Injection.dll</HintPath>
+    </Reference>
+    <Reference Include="PKHeX.Drawing, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\PKHeX\PKHeX.Drawing\bin\Debug\net46\PKHeX.Drawing.dll</HintPath>
     </Reference>
     <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
       <HintPath>..\packages\Serilog.2.10.0\lib\net46\Serilog.dll</HintPath>
@@ -327,6 +343,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="PKHeX.Drawing.dll" />
     <EmbeddedResource Include="Weight.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
