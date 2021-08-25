@@ -268,6 +268,7 @@ namespace Ledybot
             {
 
                 var Badges = File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//Badges//Badges.txt");
+                Array.Sort(Badges);
                 foreach (string it in Badges)
                 {
                     if (it != "")
@@ -298,7 +299,7 @@ namespace Ledybot
                 discordbot.trademodule.embed.Title = $"{Context.User.Username}'s Badges";
 
                 discordbot.trademodule.embed.AddField("Badges", "hi");
-                if (File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Badges.txt").Length >= 60)
+                if (File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//Badges//Badges.txt").Length >= 60)
                 {
                     discordbot.trademodule.embed.AddField("Champion", "With 60 or more Badges you are a Champion of PokéEarth");
                 }

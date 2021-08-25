@@ -453,6 +453,7 @@ namespace Ledybot
             if (Directory.GetFiles(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//").Count() == 0)
                 await ReplyAsync("no pokemon found");
             System.Text.StringBuilder y = new System.Text.StringBuilder();
+            List<int> tempor = new List<int>();
             int h = 1;
             int k = 1;
 
@@ -468,14 +469,27 @@ namespace Ledybot
                 }
                 byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + h);
                 var tpk = PKMConverter.GetPKMfromBytes(g, 7);
-                y.Append(h + "." + (tpk.IsShiny ? "★" : "") + Ledybot.Program.PKTable.Species7[tpk.Species - 1] + " ");
+                y.Append($"{Ledybot.Program.PKTable.Species7[tpk.Species - 1]}{(tpk.IsShiny?"shiny":"")}.{h} ");
+                
                 k++;
                 h++;
             }
+            
             discordbot.trademodule.n = new List<string>();
             int q = 0;
             string yb = y.ToString();
-
+            y = new System.Text.StringBuilder();
+            string[] temporder = yb.Split(' ');
+            Array.Sort(temporder);
+           
+            foreach (var a in temporder)
+              y.Append((a.Contains("shiny") ? "★" : " ") + a.Replace("shiny", "") + " ");
+                   
+               
+                
+          
+            
+            yb = y.ToString();
             while (yb.Length > 0)
             {
                 if (yb.Length > 1000)
@@ -489,7 +503,7 @@ namespace Ledybot
                     yb = yb.Remove(0, yb.Length);
 
 
-                q++;
+                
             }
 
 
@@ -1100,13 +1114,14 @@ namespace Ledybot
             {
 
                 var items = File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt");
+                Array.Sort(items);
                 foreach (string it in items)
                 {
                     if(it != "")
                         yb.Append($"{it} ");
                 }
 
-
+                
                 int q = 0;
                 string ybc = yb.ToString();
                 while (ybc.Length > 0)
@@ -1125,7 +1140,7 @@ namespace Ledybot
                     q++;
                 }
 
-
+               
 
                 discordbot.trademodule.embed.Title = $"{Context.User.Username}'s Bag";
 
