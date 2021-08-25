@@ -1341,7 +1341,7 @@ namespace Ledybot
                             if (!File.Exists($"{Directory.GetCurrentDirectory()}//wondertrade.txt"))
                                 File.Create($"{Directory.GetCurrentDirectory()}//wondertrade.txt");
                             File.WriteAllText($"{Directory.GetCurrentDirectory()}//wondertrade.txt", $"Gen 7 Wonder trading:{Program.PKTable.Species7[pokecheck.Species-1]}");
-                            var tempsprite = SpriteUtil.GetSprite(pokecheck.Species, pokecheck.Form, pokecheck.Gender,FormArgumentUtil.GetFormArgumentMax(pokecheck.Species,pokecheck.Form,pokecheck.Generation), 0, false, pokecheck.IsShiny, pokecheck.Generation);
+                            var tempsprite = SpriteUtil.GetSprite(pokecheck.Species, pokecheck.Form, pokecheck.Gender,FormArgumentUtil.GetFormArgumentMax(pokecheck.Species,pokecheck.Form,pokecheck.Generation), 0, false, pokecheck.IsShiny, pokecheck.Generation,false,pokecheck.IsShiny);
                             tempsprite.Save($"{Directory.GetCurrentDirectory()}//wondertradesprite.png");
                             await wtchan.SendMessageAsync(embed: embed.Build());
                         }   

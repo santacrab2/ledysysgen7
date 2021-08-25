@@ -201,9 +201,9 @@ namespace Ledybot
                         _ => 0
                     };
                 }
-                if (GBrng.Next(4) == 0)
+                if (GBrng.Next(8) == 0)
                     battlebuddy.Status_Condition = 0;
-                if (GBrng.Next(4) == 0)
+                if (GBrng.Next(8) == 0)
                     opponentpoke.Status_Condition = 0;
                 battleembed = new EmbedBuilder();
                 battleembed.AddField("gym battle", $"Battle between {leaderpoke}'s {(Species)leaderpoke} and {battler.Username}'s {(Species)battlebuddy.Species}");
@@ -354,6 +354,9 @@ namespace Ledybot
                 int[] ranmoves = temp.GetMoveSet(true);
                 temp.Moves = ranmoves;
                 File.WriteAllBytes($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//Buddy//Buddy", temp.DecryptedBoxData);
+                var tempbuilder = new EmbedBuilder();
+                tempbuilder.AddField($"Your {(Species)temp.Species} moves changed to:", $"- {(Move)temp.Move1}\n- {(Move)temp.Move2}\n- {(Move)temp.Move3}\n- {(Move)temp.Move4}");
+                await ReplyAsync(embed: tempbuilder.Build());
             }
             else await ReplyAsync("You have no buddy, set one with !bs id#");
         }
