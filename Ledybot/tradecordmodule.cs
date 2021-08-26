@@ -444,7 +444,7 @@ namespace Ledybot
         }
         [Command("list")]
         [Alias("l")]
-        public async Task pokelist()
+        public async Task pokelist(string order="")
         {
             discordbot.page = 0;
             discordbot.trademodule.embed = new EmbedBuilder();
@@ -469,7 +469,10 @@ namespace Ledybot
                 }
                 byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + h);
                 var tpk = PKMConverter.GetPKMfromBytes(g, 7);
-                y.Append($"{Ledybot.Program.PKTable.Species7[tpk.Species - 1]}{(tpk.IsShiny?"shiny":"")}.{h} ");
+                if (order == "order")
+                    y.Append($"{Ledybot.Program.PKTable.Species7[tpk.Species - 1]}{(tpk.IsShiny ? "shiny" : "")}.{h} ");
+                else
+                    y.Append($"{h}.{(tpk.IsShiny ? "★" : "")}{(Species)tpk.Species} ");
                 
                 k++;
                 h++;
@@ -478,18 +481,18 @@ namespace Ledybot
             discordbot.trademodule.n = new List<string>();
             int q = 0;
             string yb = y.ToString();
-            y = new System.Text.StringBuilder();
-            string[] temporder = yb.Split(' ');
-            Array.Sort(temporder);
-           
-            foreach (var a in temporder)
-              y.Append((a.Contains("shiny") ? "★" : " ") + a.Replace("shiny", "") + " ");
-                   
-               
-                
-          
-            
-            yb = y.ToString();
+            if (order == "order")
+            {
+                y = new System.Text.StringBuilder();
+                string[] temporder = yb.Split(' ');
+                Array.Sort(temporder);
+
+
+                foreach (var a in temporder)
+                    y.Append((a.Contains("shiny") ? "★" : " ") + a.Replace("shiny", "") + " ");
+
+                yb = y.ToString();
+            }
             while (yb.Length > 0)
             {
                 if (yb.Length > 1000)
@@ -621,7 +624,7 @@ namespace Ledybot
             discordbot.trademodule.embed.ThumbnailUrl = "https://www.shinyhunters.com/images/shiny/394.gif";
             discordbot.trademodule.embed.AddField("Prinplup tradecord is compatible with: SUN / MOON / ULTRA SUN / ULTRA MOON" + "\n" + "Gen 7 GTS", "hi", false);
             discordbot.trademodule.n.Add($"***Tradecord Commands***\n:large_blue_diamond: **!catch** (***!k***)\n\n*Attempts to catch a random Pokemon*\n\n" +
-                ":large_blue_diamond: **!list** (***!l***)\n" +  "\n" + "*Displays a list of you're caught pokemon*" + "\n" + "\n" +
+                ":large_blue_diamond: **!list** (***!l***) order(optional)\n" +  "\n" + "*Displays a list of you're caught pokemon include the word order to put them in alphabetical order*" + "\n" + "\n" +
                 ":large_blue_diamond:" + "**!info #** (***!i #***)" + "\n" + "\n" + "*Replace # with the ID number of the pokemon you want to check (from list command)*" + "\n" + "\n" +
                 ":large_blue_diamond:" + "**!release #** (***!r #***)" + "\n" + "\n" + "*Replace # with the ID number of the pokemon you want to release (from list command)*" + "\n" + "\n" +
                 ":large_blue_diamond:" + "**!massrelease** (***!mr***)" + "\n" + "\n" + "*Releases all non-shiny pokemon*" + "\n" + "**!mr shiny|all|species**" + "\n" + "\n" +

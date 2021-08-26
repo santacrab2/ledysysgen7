@@ -300,7 +300,7 @@ public class discordbot
                     hd++;
                 }
             }
-
+            
             if (pk.OT_Name.ToLower() == "pkhex")
                 pk.OT_Name = trainer;
             if (set.Contains("OT:"))
@@ -348,7 +348,8 @@ public class discordbot
             {
                 pk.SetIsShiny(true);
             }
-            
+            if (new LegalityAnalysis(pk).Report().Contains("Invalid: SID should be 0"))
+                pk.SID = 0;
             
                 
 

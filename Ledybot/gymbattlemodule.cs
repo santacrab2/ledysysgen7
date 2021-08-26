@@ -79,7 +79,7 @@ namespace Ledybot
             int natue = GBrng.Next(24);
             var vals = Enum.GetValues(typeof(gleaderpoke));
             leaderpoke = (gleaderpoke)vals.GetValue(GBrng.Next(vals.Length));
-            while (File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Badges.txt").Contains($"{(badges)leaderpoke}"))
+            while (File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Badges.txt").Contains($"{(badges)leaderpoke}") || File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Badges.txt").Contains($"{(badges)leaderpoke}2"))
             {
                 leaderpoke = (gleaderpoke)vals.GetValue(GBrng.Next(vals.Length));
                 if (File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Badges.txt").Length >= 60)
@@ -306,11 +306,10 @@ namespace Ledybot
 
                 discordbot.trademodule.embed.Fields[0].Value = discordbot.trademodule.n[0].ToString();
 
-                discordbot.trademodule.embed.WithFooter($"Page {discordbot.page + 1} of {discordbot.trademodule.n.Count}");
-                IEmote[] reactions = { new Emoji("⬅️"), new Emoji("➡️") };
-                var listmsg = await Context.Channel.SendMessageAsync(embed: discordbot.trademodule.embed.Build());
+                discordbot.trademodule.embed.WithFooter($"Badge Count: {Badges.Length}");
+                await Context.Channel.SendMessageAsync(embed: discordbot.trademodule.embed.Build());
 
-                _ = Task.Run(() => listmsg.AddReactionsAsync(reactions).ConfigureAwait(false));
+              
             }
 
         }
@@ -360,6 +359,14 @@ namespace Ledybot
             }
             else await ReplyAsync("You have no buddy, set one with !bs id#");
         }
+        [Command("gc")]
+        [RequireOwner]
+        public async Task gymclear() 
+        {
+            gymbattlequeue.Dequeue();
+            await ReplyAsync("first person in line for battle has been removed");
+        }
+
         public static int[] SetMaxEVs(PKM entity)
         {
             if (entity.Format < 3)
