@@ -345,7 +345,7 @@ namespace Ledybot
                                     MainForm.combo_pkmnList.SelectedIndex += 1;
                                 else
                                     MainForm.combo_pkmnList.SelectedIndex = 0;
-                                while (discordbot.trademodule.tradevolvs.Contains(MainForm.combo_pkmnList.SelectedIndex + 1) || discordbot.trademodule.mythic.Contains(MainForm.combo_pkmnList.SelectedIndex + 1))
+                                while (discordbot.trademodule.tradevolvs.Contains(MainForm.combo_pkmnList.SelectedIndex + 1) || discordbot.trademodule.mythic.Contains(MainForm.combo_pkmnList.SelectedIndex + 1) || MainForm.combo_pkmnList.SelectedIndex == 587)
                                     MainForm.combo_pkmnList.SelectedIndex += 1;
 
                                 distribute = false;
