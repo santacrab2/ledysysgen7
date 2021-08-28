@@ -109,7 +109,7 @@ namespace Ledybot
             battlebuddy.Stat_HPCurrent = (int)(0.01 * (2 * battlebuddy.PersonalInfo.HP + battlebuddy.IV_HP + (0.25 * battlebuddy.EV_HP)) * battlebuddy.CurrentLevel) + battlebuddy.CurrentLevel + 10;
             battlebuddy.Stat_HPMax = battlebuddy.Stat_HPCurrent;
             battleembed = new EmbedBuilder();
-            battleembed.AddField("gym battle", $"Battle between {leaderpoke}'s {(Species)leaderpoke} and {battler.Username}'s {(Species)battlebuddy.Species}");
+            battleembed.AddField("gym battle", $"Battle between {leaderpoke}'s {(Species)Convert.ToInt32(leaderpoke)} and {battler.Username}'s {(Species)battlebuddy.Species}");
             battleembed.AddField("Opponent", $"{(Species)opponentpoke.Species}\n HP:{opponentpoke.Stat_HPCurrent}/{opponentpoke.Stat_HPMax}");
             battleembed.AddField($"{battler.Username}", $"{(Species)battlebuddy.Species}\n HP:{battlebuddy.Stat_HPCurrent}/{battlebuddy.Stat_HPMax}");
             battleembed.AddField($"Moves", $":one:{(Move)battlebuddy.Move1}\n:two:{(Move)battlebuddy.Move2}\n:three:{(Move)battlebuddy.Move3}\n:four:{(Move)battlebuddy.Move4}");
@@ -366,14 +366,22 @@ namespace Ledybot
                     battleembed = new EmbedBuilder();
                     battleembed.AddField("You lost!", $"{leaderpoke} just kicked your ass, try again!");
                     await battler.SendMessageAsync(embed: battleembed.Build());
-                    try { gymbattlequeue.Dequeue(); return; } catch { }
-                    try 
-                    { E4regionqueue.Dequeue();
+                    if (E4)
+                    {
+                        E4regionqueue.Dequeue();
                         E4battlequeue.Dequeue();
-                        return;
-                    } catch { }
-                    try { champbattlequeue.Dequeue(); return; } catch { }
-                    
+                        E4counter = 4;
+                    }
+                    else if (champ)
+                    {
+                        champbattlequeue.Dequeue();
+                        champcounter = 6;
+                    }
+                    else
+                    {
+                        gymbattlequeue.Dequeue();
+                    }
+                    champ = false;
                     E4 = false;
                     if (gymbattlequeue.Count != 0)
                     {
