@@ -104,6 +104,8 @@ namespace Ledybot
                 int natue = TCrng.Next(24);
                 tpk.Nature = natue;
                 tpk.SetRandomIVs();
+                var randevs = PKX.GetRandomEVs(7);
+                tpk.EVs = randevs;
                 tpk = tpk.Legalize();
 
 

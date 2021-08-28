@@ -42,14 +42,15 @@ namespace Ledybot
         public async Task gymbattlequeuer()
         {
             gymbattlequeue.Enqueue(Context.User);
-            if (gymbattlequeue.Count == 1)
+            var queuecount = champbattlequeue.Count + E4battlequeue.Count + gymbattlequeue.Count;
+            if (queuecount == 1)
             {
                 await ReplyAsync("starting your gym battle now!");
                 await gymbattle();
             }
             else
             {
-                var queuecount = champbattlequeue.Count + E4battlequeue.Count + gymbattlequeue.Count;
+                
                 await ReplyAsync($"There are {queuecount} trainers in line for a battle! Make sure you have your Private Messages turned on!");
 
             }
@@ -396,15 +397,15 @@ namespace Ledybot
             {
                 E4regionqueue.Enqueue(region);
                 E4battlequeue.Enqueue(Context.User);
-                
-                if (E4battlequeue.Count == 1)
+                var queuecount = champbattlequeue.Count + E4battlequeue.Count + gymbattlequeue.Count;
+                if (queuecount == 1)
                 {
                     await ReplyAsync("starting your E4 battle now!");
                     await E4battle();
                 }
                 else
                 {
-                    var queuecount = champbattlequeue.Count + E4battlequeue.Count + gymbattlequeue.Count;
+                    
                     await ReplyAsync($"There are {queuecount} trainers in line for a battle! Make sure you have your Private Messages turned on!");
 
                 }
@@ -504,15 +505,15 @@ namespace Ledybot
             {
                 
                 champbattlequeue.Enqueue(Context.User);
-
-                if (champbattlequeue.Count == 1)
+                var queuecount = champbattlequeue.Count + E4battlequeue.Count + gymbattlequeue.Count;
+                if (queuecount == 1)
                 {
                     await ReplyAsync("starting your Champion battle now!");
                     await championbattle();
                 }
                 else
                 {
-                    var queuecount = champbattlequeue.Count + E4battlequeue.Count + gymbattlequeue.Count;
+                    
                     await ReplyAsync($"There are {queuecount} trainers in line for a battle! Make sure you have your Private Messages turned on!");
 
                 }
@@ -729,7 +730,9 @@ namespace Ledybot
         [RequireOwner]
         public async Task gymclear() 
         {
-            gymbattlequeue.Dequeue();
+            try { gymbattlequeue.Dequeue(); } catch { }
+            try { E4regionqueue.Dequeue(); E4battlequeue.Dequeue(); } catch { }
+            try { champbattlequeue.Dequeue(); } catch { }
             await ReplyAsync("first person in line for battle has been removed");
         }
 
