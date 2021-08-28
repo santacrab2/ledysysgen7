@@ -366,12 +366,13 @@ namespace Ledybot
                     battleembed = new EmbedBuilder();
                     battleembed.AddField("You lost!", $"{leaderpoke} just kicked your ass, try again!");
                     await battler.SendMessageAsync(embed: battleembed.Build());
-                    try { gymbattlequeue.Dequeue(); } catch { }
+                    try { gymbattlequeue.Dequeue(); return; } catch { }
                     try 
                     { E4regionqueue.Dequeue();
-                        E4battlequeue.Dequeue();  
+                        E4battlequeue.Dequeue();
+                        return;
                     } catch { }
-                    try { champbattlequeue.Dequeue(); } catch { }
+                    try { champbattlequeue.Dequeue(); return; } catch { }
                     
                     E4 = false;
                     if (gymbattlequeue.Count != 0)
@@ -383,6 +384,11 @@ namespace Ledybot
                     if(E4battlequeue.Count != 0)
                     {
                         await E4battle();
+                        return;
+                    }
+                    if(champbattlequeue.Count != 0)
+                    {
+                        await championbattle();
                         return;
                     }
                 }
