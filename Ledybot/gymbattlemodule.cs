@@ -287,6 +287,7 @@ namespace Ledybot
                                 ite.WriteLine(vribbon);
                                 ite.Close();
                             }
+                            E4 = false;
                             await battler.SendMessageAsync(embed: battleembed.Build());
                             E4counter = 0;
                             E4regionqueue.Dequeue();
@@ -316,6 +317,7 @@ namespace Ledybot
                     battleembed.AddField("You lost!", $"{leaderpoke} just kicked your ass, try again!");
                     await battler.SendMessageAsync(embed: battleembed.Build());
                     gymbattlequeue.Dequeue();
+                    E4 = false;
                     if (gymbattlequeue.Count != 0)
                     {
                         await gymbattle();
