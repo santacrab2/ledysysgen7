@@ -644,6 +644,8 @@ namespace Ledybot
              $":large_blue_diamond: **!gift** *@user* id#\ngifts a pokemon to another tradecord user\n\n" +
              $":large_blue_diamond: **!giftitem** *@user* item\ngifts an item to another tradecord user\n\n");
            discordbot.trademodule.n.Add( $":large_blue_diamond: **!gymbattle**, (**!gb**)\nLets you challenge a random gym leader to a 1v1 match with your buddy\n\n"+
+               $":large_blue_diamond: **!E4battle**, (**!E4**) region\nLets you battle the Elite 4 of a specified region, after you have collected all the badges\n\n"+
+               $":large_blue_diamond: **!champbattle**,(**!champ**)\nLets you battle the champions of each region,e.g Red, Dawn etc after you have collected all the badges and ribbons\n\n"+
             $":large_blue_diamond: **!badges**\nDisplays your badges\n\n"+
             $":large_blue_diamond: **!gymqueue**, (**!gq**)\nDisplays the current queue for gym battles\n\n"+
             $":large_blue_diamond: **!randommoves**, (**!rm**)\nChanges all of your buddies moves to a new legal random set of moves");
