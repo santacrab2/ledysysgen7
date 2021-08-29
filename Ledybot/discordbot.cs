@@ -482,8 +482,9 @@ public class discordbot
             {
                 pk.SetIsShiny(true);
             }
-         
-      
+            if (new LegalityAnalysis(pk).Report().Contains("Invalid: SID should be 0"))
+                pk.SID = 0;
+
             if (!new LegalityAnalysis(pk).Valid)
             {
                 await ReplyAsync("Pokemon is illegal dumbass");
@@ -1573,23 +1574,19 @@ public class discordbot
 
         }
 
-            [Command("settrainer")]
-            [Alias("st")]
-             public async Task settrainerinfo([Remainder]string trainerinfo)
-              {
+        [Command("settrainer")]
+        [Alias("st")]
+        public async Task settrainerinfo([Remainder] string trainerinfo)
+        {
             if (!Directory.Exists($"{Directory.GetCurrentDirectory()}//trainerinfo//"))
                 Directory.CreateDirectory($"{Directory.GetCurrentDirectory()}//trainerinfo//");
-
-            if (!File.Exists($"{Directory.GetCurrentDirectory()}//trainerinfo//{Context.User.Id}.txt"))
-                {
-                
+            if (trainerinfo.Contains("OT:") || trainerinfo.Contains("SID:") || trainerinfo.Contains("TID:"))
+            {
                 File.WriteAllText($"{Directory.GetCurrentDirectory()}//trainerinfo//{Context.User.Id}.txt", trainerinfo);
                 await ReplyAsync("trainer info saved");
-                return;
-                }
-                File.WriteAllText($"{Directory.GetCurrentDirectory()}//trainerinfo//{Context.User.Id}.txt", trainerinfo);
-            await ReplyAsync("trainer info saved");
-             }
+            }
+            else await ReplyAsync("Please use OT: trainername\nTID: XXXXX\nSID: XXXX only");
+        }
         [Command("trainerinfo")]
         [Alias("ti")]
         public async Task gettrainerinfo()

@@ -260,15 +260,15 @@ namespace Ledybot
                     }
                     else if (E4)
                     {
-                        var vribbon = E4regionqueue.Peek() switch
+                        string vribbon = ((string)E4regionqueue.Peek()).ToLower() switch
                         {
-                            "Kanto" => "KantoChampionRibbon",
-                            "Johto" => "JohtoChampionRibbon",
-                            "Hoenn" => "HoennChampionRibbon",
-                            "Sinnoh" => "SinnohChampionRibbon",
-                            "Unova" => "UnovaChampionRibbon",
-                            "Kalos" => "KalosChampionRibbon",
-                            "Alola" => "AlolaChampionRibbon",
+                            "kanto" => "KantoChampionRibbon",
+                            "johto" => "JohtoChampionRibbon",
+                            "hoenn" => "HoennChampionRibbon",
+                            "sinnoh" => "SinnohChampionRibbon",
+                            "unova" => "UnovaChampionRibbon",
+                            "kalos" => "KalosChampionRibbon",
+                            "alola" => "AlolaChampionRibbon",
                             _ => null,
 
                         };
@@ -462,27 +462,27 @@ namespace Ledybot
             E4 = true;
             Random GBrng = new Random();
             int natue = GBrng.Next(24);
-            var vals = (string)E4regionqueue.Peek() switch
+            var vals = ((string)E4regionqueue.Peek()).ToLower() switch
             {
-                "Kanto" => Enum.GetValues(typeof(KantoE4)),
-                "Johto" => Enum.GetValues(typeof(JohtoE4)),
-                "Hoenn" => Enum.GetValues(typeof(HoennE4)),
-                "Sinnoh" => Enum.GetValues(typeof(SinnohE4)),
-                "Unova" => Enum.GetValues(typeof(UnovaE4)),
-                "Kalos" => Enum.GetValues(typeof(KalosE4)),
-                "Alola" => Enum.GetValues(typeof(AlolaE4)),
+                "kanto" => Enum.GetValues(typeof(KantoE4)),
+                "johto" => Enum.GetValues(typeof(JohtoE4)),
+                "hoenn" => Enum.GetValues(typeof(HoennE4)),
+                "sinnoh" => Enum.GetValues(typeof(SinnohE4)),
+                "unova" => Enum.GetValues(typeof(UnovaE4)),
+                "kalos" => Enum.GetValues(typeof(KalosE4)),
+                "alola" => Enum.GetValues(typeof(AlolaE4)),
                 _ => null,
 
             };
-            leaderpoke = (string)E4regionqueue.Peek() switch
+            leaderpoke = ((string)E4regionqueue.Peek()).ToLower() switch
             {
-                "Kanto" => (KantoE4)vals.GetValue(E4counter),
-                "Johto" => (JohtoE4)vals.GetValue(E4counter),
-                "Hoenn" => (HoennE4)vals.GetValue(E4counter),
-                "Sinnoh" => (SinnohE4)vals.GetValue(E4counter),
-                "Unova" => (UnovaE4)vals.GetValue(E4counter),
-                "Kalos" => (KalosE4)vals.GetValue(E4counter),
-                "Alola" => (AlolaE4)vals.GetValue(E4counter),
+                "kanto" => (KantoE4)vals.GetValue(E4counter),
+                "johto" => (JohtoE4)vals.GetValue(E4counter),
+                "hoenn" => (HoennE4)vals.GetValue(E4counter),
+                "sinnoh" => (SinnohE4)vals.GetValue(E4counter),
+                "unova" => (UnovaE4)vals.GetValue(E4counter),
+                "kalos" => (KalosE4)vals.GetValue(E4counter),
+                "alola" => (AlolaE4)vals.GetValue(E4counter),
                 _ => null
             };
                 
@@ -561,10 +561,7 @@ namespace Ledybot
                 E4battlequeue.Dequeue();
                 return;
             }
-            if (!Directory.Exists($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//"))
-                Directory.CreateDirectory($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//");
-            if (!File.Exists($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Ribbons.txt"))
-                File.WriteAllText($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Ribbons.txt", "\n");
+          
 
             battlebuddy = PKMConverter.GetPKMfromBytes(File.ReadAllBytes($"{Directory.GetCurrentDirectory()}//{battler.Id}//Buddy//Buddy"));
             champ = true;
@@ -706,7 +703,7 @@ namespace Ledybot
 
             if (arr.Length == 0)
             {
-                await ReplyAsync("queue is empty");
+                await ReplyAsync("gym queue is empty");
             }
             int r = 0;
             foreach (object i in arr)
@@ -718,7 +715,54 @@ namespace Ledybot
             gqembed.AddField(x =>
             {
 
-                x.Name = "Queue:";
+                x.Name = "gym Queue:";
+                x.Value = sb.ToString();
+                x.IsInline = false;
+
+
+            });
+            arr = E4battlequeue.ToArray();
+            sb = new System.Text.StringBuilder();
+
+            if (arr.Length == 0)
+            {
+                await ReplyAsync("E4 queue is empty");
+            }
+            r = 0;
+            foreach (object i in arr)
+            {
+
+                sb.AppendLine((r + 1).ToString() + ". " + arr[r].ToString());
+                r++;
+            }
+            gqembed.AddField(x =>
+            {
+
+                x.Name = "E4 Queue:";
+                x.Value = sb.ToString();
+                x.IsInline = false;
+
+
+            });
+
+            arr = champbattlequeue.ToArray();
+            sb = new System.Text.StringBuilder();
+
+            if (arr.Length == 0)
+            {
+                await ReplyAsync("Champion queue is empty");
+            }
+            r = 0;
+            foreach (object i in arr)
+            {
+
+                sb.AppendLine((r + 1).ToString() + ". " + arr[r].ToString());
+                r++;
+            }
+            gqembed.AddField(x =>
+            {
+
+                x.Name = "Champ Queue:";
                 x.Value = sb.ToString();
                 x.IsInline = false;
 
