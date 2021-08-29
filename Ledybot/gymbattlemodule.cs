@@ -286,6 +286,10 @@ namespace Ledybot
                         {
                             battleembed = new EmbedBuilder();
                             battleembed.AddField("You Won!", $"You Defeated {E4regionqueue.Peek()}'s Elite four and received a {vribbon}");
+                            if (!Directory.Exists($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//"))
+                                Directory.CreateDirectory($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//");
+                            if (!File.Exists($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Ribbons.txt"))
+                                File.WriteAllText($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Ribbons.txt", "\n");
                             if (!File.ReadAllText($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Ribbons.txt").Contains(vribbon))
                             {
                                 StreamWriter ite = File.AppendText($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Ribbons.txt");
@@ -452,10 +456,7 @@ namespace Ledybot
                 E4battlequeue.Dequeue();
                 return;
             }
-            if (!Directory.Exists($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//"))
-                Directory.CreateDirectory($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//");
-            if (!File.Exists($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Ribbons.txt"))
-                File.WriteAllText($"{Directory.GetCurrentDirectory()}//{battler.Id}//Badges//Ribbons.txt", "\n");
+          
 
             battlebuddy = PKMConverter.GetPKMfromBytes(File.ReadAllBytes($"{Directory.GetCurrentDirectory()}//{battler.Id}//Buddy//Buddy"));
             E4 = true;
@@ -684,9 +685,10 @@ namespace Ledybot
 
                         q++;
                     }
+                    discordbot.trademodule.embed.AddField("Ribbons", discordbot.trademodule.n[0].ToString());
                 }
 
-                discordbot.trademodule.embed.AddField("Ribbons", discordbot.trademodule.n[0].ToString());
+                
                     discordbot.trademodule.embed.WithFooter($"Badge Count: {Badges.Length}");
                 await Context.Channel.SendMessageAsync(embed: discordbot.trademodule.embed.Build());
 
