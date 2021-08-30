@@ -492,6 +492,9 @@ namespace Ledybot
             Properties.Settings.Default.Distribution = combo_distri.SelectedIndex;
             Properties.Settings.Default.token = token.Text;
             Properties.Settings.Default.log = log.Text;
+            Properties.Settings.Default.twuser = twuser.Text;
+            Properties.Settings.Default.twtoken = twtoken.Text;
+            Properties.Settings.Default.twchannel = twchannel.Text;
             Properties.Settings.Default.wtfolder = wtfolder.Text;
             Properties.Settings.Default.wtchannel = wtchannel.Text;
             Properties.Settings.Default.Save();
@@ -520,6 +523,9 @@ namespace Ledybot
             log.Text = Properties.Settings.Default.log;
             wtfolder.Text = Properties.Settings.Default.wtfolder;
             wtchannel.Text = Properties.Settings.Default.wtchannel;
+            twuser.Text = Properties.Settings.Default.twuser;
+            twchannel.Text = Properties.Settings.Default.twchannel;
+            twtoken.Text = Properties.Settings.Default.twtoken;
         }
 
         private void btn_BrowseInject_Click(object sender, EventArgs e)
@@ -842,6 +848,18 @@ namespace Ledybot
         {
             token.Text = token.Text;
         }
+        public void twtoken_TextChanged_1(object sender, EventArgs e)
+        {
+            twtoken.Text = twtoken.Text;
+        }
+        public void twuser_TextChanged_1(object sender, EventArgs e)
+        {
+            twuser.Text = twuser.Text;
+        }
+        public void twchannel_TextChanged_1(object sender, EventArgs e)
+        {
+            twchannel.Text = twchannel.Text;
+        }
         public void log_TextChanged_1(object sends, EventArgs e)
         {
             log.Text = log.Text;
@@ -860,6 +878,12 @@ namespace Ledybot
             piplup.MainAsync();
             ChangeStatus("connected to discord");
          }
+        private void twconnect_ClickAsync(object sender, EventArgs e)
+        {
+            TwitchBot piptwitch = new TwitchBot();
+            
+            ChangeStatus("connected to twitch");
+        }
         public static async void wondertrade_ClickAsync(object sener, EventArgs e)
         {
             GTSBot7.botstop = false;

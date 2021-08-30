@@ -294,6 +294,48 @@ namespace Ledybot.Properties {
                 this["wtchannel"] = value;
             }
         }
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("twuser")]
+        public string twuser
+        {
+            get
+            {
+                return ((string)(this["twuser"]));
+            }
+            set
+            {
+                this["twuser"] = value;
+            }
+        }
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("twtoken")]
+        public string twtoken
+        {
+            get
+            {
+                return ((string)(this["twtoken"]));
+            }
+            set
+            {
+                this["twtoken"] = value;
+            }
+        }
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("twchannel")]
+        public string twchannel
+        {
+            get
+            {
+                return ((string)(this["twchannel"]));
+            }
+            set
+            {
+                this["twchannel"] = value;
+            }
+        }
 
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

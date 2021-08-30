@@ -105,8 +105,11 @@ namespace Ledybot
             this.tb_Subreddit = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.discord = new System.Windows.Forms.TabPage();
+            this.Twitch = new System.Windows.Forms.TabPage();
             this.token = new System.Windows.Forms.TextBox();
+            this.twtoken = new System.Windows.Forms.TextBox();
             this.cordconnect = new System.Windows.Forms.Button();
+            this.twconnect = new System.Windows.Forms.Button();
             this.ofd_Injection = new System.Windows.Forms.OpenFileDialog();
             this.btn_Disconnect = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
@@ -117,7 +120,9 @@ namespace Ledybot
             combo_distri = new System.Windows.Forms.ComboBox();
             this.label15 = new System.Windows.Forms.Label();
             this.log = new System.Windows.Forms.TextBox();
+            this.twuser = new System.Windows.Forms.TextBox();
             this.wtfolder = new System.Windows.Forms.TextBox();
+            this.twchannel = new System.Windows.Forms.TextBox();
             this.wtchannel = new System.Windows.Forms.TextBox();
             wondertrade = new System.Windows.Forms.Button();
           
@@ -135,6 +140,7 @@ namespace Ledybot
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud_DefaultCount)).BeginInit();
             this.discord.SuspendLayout();
+            this.Twitch.SuspendLayout();
             this.SuspendLayout();
             // 
             // tb_IP
@@ -284,6 +290,7 @@ namespace Ledybot
             this.tc_Control.Controls.Add(this.tp_Breeding);
             this.tc_Control.Controls.Add(this.tb_Settings);
             this.tc_Control.Controls.Add(this.discord);
+            this.tc_Control.Controls.Add(this.Twitch);
             this.tc_Control.Location = new System.Drawing.Point(1, 33);
             this.tc_Control.Name = "tc_Control";
             this.tc_Control.SelectedIndex = 0;
@@ -979,10 +986,17 @@ namespace Ledybot
             this.label4.Size = new System.Drawing.Size(55, 13);
             this.label4.TabIndex = 0;
             this.label4.Text = "Subreddit:";
+
+            //
+            //twitch
+            //
+            this.Twitch.Name = "twitch";
+            this.Twitch.Text = "twitch";
+            this.Twitch.UseVisualStyleBackColor = true;
             // 
             // discord
             // 
-            
+
             this.discord.Controls.Add(this.cordconnect);
             this.discord.Location = new System.Drawing.Point(4, 22);
             this.discord.Name = "discord";
@@ -1004,6 +1018,42 @@ namespace Ledybot
             this.token.TabIndex = 6;
             this.token.TextChanged += new System.EventHandler(this.token_TextChanged_1);
             this.token.Text = "Discord Token";
+
+            //
+            //twitch token
+            //
+            this.Twitch.Controls.Add(twtoken);
+            this.twtoken.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.twtoken.Location = new System.Drawing.Point(132, 23);
+            this.twtoken.Name = "twtoken";
+            this.twtoken.Size = new System.Drawing.Size(229, 20);
+            this.twtoken.TabIndex = 6;
+            this.twtoken.TextChanged += new System.EventHandler(this.twtoken_TextChanged_1);
+            this.twtoken.Text = "Twitch Token";
+            //
+            //twitch user
+            //
+            this.Twitch.Controls.Add(twuser);
+            this.twuser.Location = new System.Drawing.Point(132, 150);
+            this.twuser.Name = "twuser";
+            this.twuser.Size = new System.Drawing.Size(229, 20);
+            this.twuser.TabIndex = 40;
+            this.twuser.TextChanged += new System.EventHandler(this.twuser_TextChanged_1);
+            this.twuser.Text = "Twitch User";
+
+            //
+            //twitch channel
+            //wonder trade folder
+            this.Twitch.Controls.Add(twchannel);
+            this.twchannel.Location = new System.Drawing.Point(132, 200);
+            this.twchannel.Name = "twchannel";
+            this.twchannel.Size = new System.Drawing.Size(229, 20);
+            this.twchannel.TabIndex = 41;
+            this.twchannel.TextChanged += new System.EventHandler(this.twchannel_TextChanged_1);
+            this.twchannel.Text = "Twitch channel";
+
+
             //
             //log
             //
@@ -1025,6 +1075,18 @@ namespace Ledybot
             this.cordconnect.Text = "Connect";
             this.cordconnect.UseVisualStyleBackColor = true;
             this.cordconnect.Click += new System.EventHandler(this.cordconnect_ClickAsync);
+
+            //t
+            //twitch connect
+            //
+            this.Twitch.Controls.Add(twconnect);
+            this.twconnect.Location = new System.Drawing.Point(141, 60);
+            this.twconnect.Name = "twconnect";
+            this.twconnect.Size = new System.Drawing.Size(75, 20);
+            this.twconnect.TabIndex = 14;
+            this.twconnect.Text = "Connect";
+            this.twconnect.UseVisualStyleBackColor = true;
+            this.twconnect.Click += new System.EventHandler(this.twconnect_ClickAsync);
 
             //distribute
             this.discord.Controls.Add(combo_distri);
@@ -1160,6 +1222,8 @@ namespace Ledybot
             ((System.ComponentModel.ISupportInitialize)(this.nud_DefaultCount)).EndInit();
             this.discord.ResumeLayout(false);
             this.discord.PerformLayout();
+            this.Twitch.ResumeLayout(false);
+            this.Twitch.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1248,13 +1312,18 @@ namespace Ledybot
         public static System.Windows.Forms.ComboBox combo_gender;
         private System.Windows.Forms.TabPage discord;
         public System.Windows.Forms.TextBox token;
+        public System.Windows.Forms.TextBox twtoken;
         public System.Windows.Forms.TextBox log;
+        public System.Windows.Forms.TextBox twuser;
         public System.Windows.Forms.TextBox wtfolder;
+        public System.Windows.Forms.TextBox twchannel;
         public System.Windows.Forms.TextBox wtchannel;
         public static System.Windows.Forms.Button wondertrade;
         public System.Windows.Forms.Button cordconnect;
+        public System.Windows.Forms.Button twconnect;
         public static System.Windows.Forms.ComboBox combo_distri;
         public System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TabPage Twitch;
         
 
     }

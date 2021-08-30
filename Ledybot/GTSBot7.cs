@@ -107,6 +107,7 @@ namespace Ledybot
         public static ISocketMessageChannel wtchan;
         public static bool wondertrade = false;
         public static int mega;
+       
         public static async Task<bool> isCorrectWindow(int expectedScreen)
         {
             await Task.Delay(o3dswaittime);
@@ -1296,7 +1297,7 @@ namespace Ledybot
                         }
                         var wtfiles = Directory.GetFiles(Program.f1.wtfolder.Text);
                         Random wtrand = new Random();
-                        
+                        var piptwitch = new TwitchBot();
                         pokecheck = discordbot.trademodule.BuildPokemon("Piplup.net (Piplup)", 7);
                         pokecheck.OT_Name = "Piplup.net";
                         byte[] wonderfodder = pokecheck.DecryptedBoxData;
@@ -1318,7 +1319,7 @@ namespace Ledybot
                         try
                         {
                             EmbedBuilder embed = new EmbedBuilder();
-                            embed.ThumbnailUrl = pokecheck.IsShiny ? $"https://play.pokemonshowdown.com/sprites/ani-shiny/{Program.PKTable.Species7[pokecheck.Species-1].ToLower().Replace(" ","")}.gif" : $"https://play.pokemonshowdown.com/sprites/ani/{Program.PKTable.Species7[pokecheck.Species-1].ToLower().Replace(" ","")}.gif";
+                            embed.ThumbnailUrl = pokecheck.IsShiny ? $"https://play.pokemonshowdown.com/sprites/ani-shiny/{Program.PKTable.Species7[pokecheck.Species - 1].ToLower().Replace(" ", "")}.gif" : $"https://play.pokemonshowdown.com/sprites/ani/{Program.PKTable.Species7[pokecheck.Species - 1].ToLower().Replace(" ", "")}.gif";
                             var newShowdown = new List<string>();
                             var showdown = ShowdownParsing.GetShowdownText(pokecheck);
                             foreach (var line in showdown.Split('\n'))
@@ -1340,34 +1341,39 @@ namespace Ledybot
                             embed.AddField("Wonder trading in 15 seconds", Format.Code(string.Join("\n", newShowdown).TrimEnd()));
                             if (!File.Exists($"{Directory.GetCurrentDirectory()}//wondertrade.txt"))
                                 File.Create($"{Directory.GetCurrentDirectory()}//wondertrade.txt");
-                            File.WriteAllText($"{Directory.GetCurrentDirectory()}//wondertrade.txt", $"Gen 7 Wonder trading:{Program.PKTable.Species7[pokecheck.Species-1]}");
-                            var tempsprite = SpriteUtil.GetSprite(pokecheck.Species, pokecheck.Form, pokecheck.Gender,FormArgumentUtil.GetFormArgumentMax(pokecheck.Species,pokecheck.Form,pokecheck.Generation), 0, false, pokecheck.IsShiny, pokecheck.Generation,false,pokecheck.IsShiny);
+                            File.WriteAllText($"{Directory.GetCurrentDirectory()}//wondertrade.txt", $"Gen 7 Wonder trading:{Program.PKTable.Species7[pokecheck.Species - 1]}");
+                            var tempsprite = SpriteUtil.GetSprite(pokecheck.Species, pokecheck.Form, pokecheck.Gender, FormArgumentUtil.GetFormArgumentMax(pokecheck.Species, pokecheck.Form, pokecheck.Generation), 0, false, pokecheck.IsShiny, pokecheck.Generation, false, pokecheck.IsShiny);
                             tempsprite.Save($"{Directory.GetCurrentDirectory()}//wondertradesprite.png");
                             await wtchan.SendMessageAsync(embed: embed.Build());
-                        }   
+                            piptwitch.StartingDistribution();
+                        }
                         catch { await Task.Delay(1); }
                         await Task.Delay(15000);
                         try
                         {
                             await wtchan.SendMessageAsync("3");
+                            
                         }
                         catch { await Task.Delay(1); }
                         await Task.Delay(1000);
                         try
                         {
                             await wtchan.SendMessageAsync("2");
+                         
                         }
                         catch { await Task.Delay(1); }
                         await Task.Delay(1000);
                         try
                         {
                             await wtchan.SendMessageAsync("1");
+                           
                         }
                         catch { await Task.Delay(1); }
                         await Task.Delay(1000);
                         try
                         {
                             await wtchan.SendMessageAsync("wonder trade now!");
+                        
                         }
                         catch { await Task.Delay(1); }
                         Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
@@ -1385,6 +1391,7 @@ namespace Ledybot
                             while (!await isCorrectWindow(val_Quit_SeekScreen))
                                 await Task.Delay(25);
                             await wtchan.SendMessageAsync("starting the next wonder trade in 42 seconds");
+                     
                             await Task.Delay(42000);
                             botState = (int)gtsbotstates.wondertrade;
                             break;
