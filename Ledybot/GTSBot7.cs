@@ -1297,14 +1297,18 @@ namespace Ledybot
                         }
                         var wtfiles = Directory.GetFiles(Program.f1.wtfolder.Text);
                         Random wtrand = new Random();
-                        var piptwitch = new TwitchBot();
+                      //  var piptwitch = new TwitchBot();
                         pokecheck = discordbot.trademodule.BuildPokemon("Piplup.net (Piplup)", 7);
                         pokecheck.OT_Name = "Piplup.net";
                         byte[] wonderfodder = pokecheck.DecryptedBoxData;
                         byte[] wondershort = PKHeX.encryptArray(wonderfodder.Take(232).ToArray());
                         var wtfile = wtfiles[wtrand.Next(wtfiles.Length)];
                         pokecheck = PKMConverter.GetPKMfromBytes(File.ReadAllBytes(wtfile));
-                       
+                       if(TwitchBot.wtqueue.Count != 0)
+                        {
+                            pokecheck = (PKM)TwitchBot.wtqueue.Peek();
+                            TwitchBot.wtqueue.Dequeue();
+                        }
                         byte[] wtreal = pokecheck.DecryptedBoxData;
                         byte[] wtrealshort = PKHeX.encryptArray(wtreal.Take(232).ToArray());
                         Program.scriptHelper.write(addr_box1slot1, wondershort, iPID);
@@ -1345,35 +1349,36 @@ namespace Ledybot
                             var tempsprite = SpriteUtil.GetSprite(pokecheck.Species, pokecheck.Form, pokecheck.Gender, FormArgumentUtil.GetFormArgumentMax(pokecheck.Species, pokecheck.Form, pokecheck.Generation), 0, false, pokecheck.IsShiny, pokecheck.Generation, false, pokecheck.IsShiny);
                             tempsprite.Save($"{Directory.GetCurrentDirectory()}//wondertradesprite.png");
                             await wtchan.SendMessageAsync(embed: embed.Build());
-                            piptwitch.StartingDistribution(pokecheck);
+                            TwitchBot.client.SendMessage(TwitchBot.Channel, $"wonder trading {(Species)pokecheck.Species} in 15 seconds");
+                          //  piptwitch.StartingDistribution(pokecheck);
                         }
                         catch { await Task.Delay(1); }
-                        await Task.Delay(15000);
+                        await Task.Delay(12000);
                         try
                         {
                             await wtchan.SendMessageAsync("3");
-                            
+                            TwitchBot.client.SendMessage(TwitchBot.Channel, "3");
                         }
                         catch { await Task.Delay(1); }
                         await Task.Delay(1000);
                         try
                         {
                             await wtchan.SendMessageAsync("2");
-                         
+                            TwitchBot.client.SendMessage(TwitchBot.Channel, "2");
                         }
                         catch { await Task.Delay(1); }
                         await Task.Delay(1000);
                         try
                         {
                             await wtchan.SendMessageAsync("1");
-                           
+                            TwitchBot.client.SendMessage(TwitchBot.Channel, "1");
                         }
                         catch { await Task.Delay(1); }
                         await Task.Delay(1000);
                         try
                         {
                             await wtchan.SendMessageAsync("wonder trade now!");
-                        
+                            TwitchBot.client.SendMessage(TwitchBot.Channel, "wonder trade now!");
                         }
                         catch { await Task.Delay(1); }
                         Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
@@ -1391,7 +1396,7 @@ namespace Ledybot
                             while (!await isCorrectWindow(val_Quit_SeekScreen))
                                 await Task.Delay(25);
                             await wtchan.SendMessageAsync("starting the next wonder trade in 42 seconds");
-                     
+                        TwitchBot.client.SendMessage(TwitchBot.Channel, "starting the next wonder trade in 42 seconds");
                             await Task.Delay(42000);
                             botState = (int)gtsbotstates.wondertrade;
                             break;
