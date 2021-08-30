@@ -1308,6 +1308,7 @@ namespace Ledybot
                         {
                             pokecheck = (PKM)TwitchBot.wtqueue.Peek();
                             TwitchBot.wtqueue.Dequeue();
+                            TwitchBot.wtuser.Dequeue();
                         }
                         byte[] wtreal = pokecheck.DecryptedBoxData;
                         byte[] wtrealshort = PKHeX.encryptArray(wtreal.Take(232).ToArray());

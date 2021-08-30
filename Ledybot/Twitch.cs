@@ -25,6 +25,7 @@ using TwitchLib.Communication.Models;
 //TwitchBot Instance/Namespace to call upon from forms
 public class TwitchBot
 {
+    public static Queue wtuser = new Queue();
     public static Queue wtqueue = new Queue();
     public static TwitchClient client;
     public static string Channel;
@@ -84,27 +85,36 @@ public class TwitchBot
         switch (command)
         {
             case "wt":
-                var files = Directory.GetFiles(Ledybot.Program.f1.wtfolder.Text);
-                
-                var converset = ConvertToShowdown(e.Command.ArgumentsAsString);
-              
-                var sav = TrainerSettings.DefaultFallback(7);
-                var comppk = new PK7();
-                comppk.ApplySetDetails(converset);
-                foreach (string file in files)
+                if (!wtuser.Contains(e.Command.ChatMessage.Username))
                 {
-                    var temppk = PKMConverter.GetPKMfromBytes(File.ReadAllBytes(file), 7);
-                    if (temppk.Species == comppk.Species && temppk.Form == comppk.Form && temppk.IsShiny == comppk.IsShiny)
-                    {
-                        wtqueue.Enqueue(temppk);
-                        client.SendMessage(Channel, "your request has been added to the queue!");
-                        queued = true;
-                    }
+                    var files = Directory.GetFiles(Ledybot.Program.f1.wtfolder.Text);
 
+                    var converset = ConvertToShowdown(e.Command.ArgumentsAsString);
+
+                    var sav = TrainerSettings.DefaultFallback(7);
+                    var comppk = new PK7();
+                    comppk.ApplySetDetails(converset);
+                    foreach (string file in files)
+                    {
+                        var temppk = PKMConverter.GetPKMfromBytes(File.ReadAllBytes(file), 7);
+                        if (temppk.Species == comppk.Species && temppk.Form == comppk.Form && temppk.IsShiny == comppk.IsShiny)
+                        {
+                            wtqueue.Enqueue(temppk);
+                            wtuser.Enqueue(e.Command.ChatMessage.Username);
+                            client.SendMessage(Channel, "your request has been added to the queue!");
+                            queued = true;
+                        }
+
+                    }
+                    if (!queued)
+                        client.SendMessage(Channel, "no file found");
+                    return;
                 }
-                if (!queued)
-                    client.SendMessage(Channel, "no file found");
-                return;
+                else
+                {
+                    client.SendMessage(TwitchBot.Channel, "you are already in queue");
+                    return;
+                }
         }
     }
 
