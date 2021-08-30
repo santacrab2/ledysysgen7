@@ -1345,7 +1345,7 @@ namespace Ledybot
                             var tempsprite = SpriteUtil.GetSprite(pokecheck.Species, pokecheck.Form, pokecheck.Gender, FormArgumentUtil.GetFormArgumentMax(pokecheck.Species, pokecheck.Form, pokecheck.Generation), 0, false, pokecheck.IsShiny, pokecheck.Generation, false, pokecheck.IsShiny);
                             tempsprite.Save($"{Directory.GetCurrentDirectory()}//wondertradesprite.png");
                             await wtchan.SendMessageAsync(embed: embed.Build());
-                            piptwitch.StartingDistribution();
+                            piptwitch.StartingDistribution(pokecheck);
                         }
                         catch { await Task.Delay(1); }
                         await Task.Delay(15000);

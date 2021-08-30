@@ -66,11 +66,11 @@ public class TwitchBot
         client.JoinChannel(e.Channel);
     }
 
-    public void StartingDistribution()
+    public void StartingDistribution(PKM pk)
     {
         Task.Run(async () =>
         {
-            client.SendMessage(Channel,"Wonder trading in 15 seconds");
+            client.SendMessage(Channel,$"Wonder trading {(Species)pk.Species} in 15 seconds");
             await Task.Delay(15_000).ConfigureAwait(false);
 
             client.SendMessage(Channel, "3...");
