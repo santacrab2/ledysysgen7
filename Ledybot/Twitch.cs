@@ -115,6 +115,36 @@ public class TwitchBot
                     client.SendMessage(TwitchBot.Channel, "you are already in queue");
                     return;
                 }
+            case "wtlist":
+                List<string> wtlists = new List<string>();
+                var wtfiles = Directory.GetFiles(Ledybot.Program.f1.wtfolder.Text);
+                var sb = new System.Text.StringBuilder();
+                foreach(string file in wtfiles)
+                {
+                    var sotemppk = PKMConverter.GetPKMfromBytes(File.ReadAllBytes(file));
+                    sb.AppendLine((sotemppk.IsShiny ? "★" : "") + (sotemppk.Form == 0 ? $"{(Species)sotemppk.Species}" : $"{(Species)sotemppk.Species}-{ShowdownParsing.GetStringFromForm(sotemppk.Form, GameInfo.Strings, sotemppk.Species, sotemppk.Format)}"));
+                }
+                var wtfilelist = sb.ToString();
+                while (wtfilelist.Length > 0)
+                {
+                    if (wtfilelist.Length > 500)
+                        wtlists.Add(wtfilelist.Substring(0, 500));
+                    else
+                        wtlists.Add(wtfilelist.Substring(0, wtfilelist.Length));
+
+                    if (wtfilelist.Length > 500)
+                        wtfilelist = wtfilelist.Remove(0, 500);
+                    else
+                        wtfilelist = wtfilelist.Remove(0, wtfilelist.Length);
+
+
+
+                }
+                foreach(string thelist in wtlists)
+                {
+                    client.SendMessage(Channel, thelist);
+                }
+                return;
         }
     }
 

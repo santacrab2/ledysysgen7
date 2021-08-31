@@ -1598,12 +1598,90 @@ public class discordbot
             }
             await ReplyAsync("no trainer info found");
         }
+        [Command("wt")]
+        public async Task wtrequests(string set)
+        {
+            bool queued = false;
+            if (!TwitchBot.wtuser.Contains(Context.User.Username))
+            {
+                var files = Directory.GetFiles(Ledybot.Program.f1.wtfolder.Text);
 
-        
+                var converset = new ShowdownSet(set);
+
+               
+                var comppk = new PK7();
+                comppk.ApplySetDetails(converset);
+                foreach (string file in files)
+                {
+                    var temppk = PKMConverter.GetPKMfromBytes(File.ReadAllBytes(file), 7);
+                    if (temppk.Species == comppk.Species && temppk.Form == comppk.Form && temppk.IsShiny == comppk.IsShiny)
+                    {
+                        TwitchBot.wtqueue.Enqueue(temppk);
+                        TwitchBot.wtuser.Enqueue(Context.User.Username);
+                        await ReplyAsync("your request has been added to the queue!");
+                        queued = true;
+                    }
+
+                }
+                if (!queued)
+                    await ReplyAsync( "no file found");
+                return;
+            }
+            else
+            {
+                await ReplyAsync("you are already in queue");
+                return;
+            }
+        }
+        [Command("wtlist")]
+        public async Task wtlist()
+        {
+            page = 0;
+            embed = new EmbedBuilder();
+            n = new List<string>();
+            var wtfiled = Directory.GetFiles(Ledybot.Program.f1.wtfolder.Text);
+            
+            var sb = new System.Text.StringBuilder();
+
+            foreach (string file in wtfiled)
+            {
+                var sotemppk = PKMConverter.GetPKMfromBytes(File.ReadAllBytes(file));
+                sb.AppendLine((sotemppk.IsShiny ? "★" : "") + (sotemppk.Form == 0 ? $"{(Species)sotemppk.Species}" : $"{(Species)sotemppk.Species}-{ShowdownParsing.GetStringFromForm(sotemppk.Form, GameInfo.Strings, sotemppk.Species, sotemppk.Format)}"));
+            }
+            var wtfilelist = sb.ToString();
+            while (wtfilelist.Length > 0)
+            {
+                if (wtfilelist.Length > 1000)
+                    n.Add(wtfilelist.Substring(0, 1000));
+                else
+                    n.Add(wtfilelist.Substring(0, wtfilelist.Length));
+
+                if (wtfilelist.Length > 1000)
+                    wtfilelist = wtfilelist.Remove(0, 1000);
+                else
+                    wtfilelist = wtfilelist.Remove(0, wtfilelist.Length);
+
+
+
+            }
+            embed.Title = $"Wonder Trade List";
+
+            embed.AddField("List", "hi");
+
+            embed.Fields[0].Value = n[0].ToString();
+
+            embed.WithFooter($"Page {page + 1} of {n.Count}");
+            IEmote[] reactions = { new Emoji("⬅️"), new Emoji("➡️") };
+            var listmsg = await Context.Channel.SendMessageAsync(embed: embed.Build());
+
+            _ = Task.Run(() => listmsg.AddReactionsAsync(reactions).ConfigureAwait(false));
         }
 
-
+        
     }
+
+
+}
 
     
 
