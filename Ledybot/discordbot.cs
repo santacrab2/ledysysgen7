@@ -1599,7 +1599,7 @@ public class discordbot
             await ReplyAsync("no trainer info found");
         }
         [Command("wt")]
-        public async Task wtrequests(string set)
+        public async Task wtrequests([Remainder]string set)
         {
             bool queued = false;
             if (!TwitchBot.wtuser.Contains(Context.User.Username))
