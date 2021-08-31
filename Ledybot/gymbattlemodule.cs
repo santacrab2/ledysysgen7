@@ -257,6 +257,11 @@ namespace Ledybot
                             await E4battle();
                             return;
                         }
+                        if(champbattlequeue.Count != 0)
+                        {
+                            await championbattle();
+                            return;
+                        }
                     }
                     else if (E4)
                     {
@@ -309,6 +314,11 @@ namespace Ledybot
                             if(E4battlequeue.Count != 0)
                             {
                                 await E4battle();
+                                return;
+                            }
+                            if(champbattlequeue.Count != 0)
+                            {
+                                await championbattle();
                                 return;
                             }
 
@@ -701,73 +711,77 @@ namespace Ledybot
             Object[] arr = gymbattlequeue.ToArray();
             var sb = new System.Text.StringBuilder();
 
-            if (arr.Length == 0)
+            if (arr.Length != 0)
             {
-                await ReplyAsync("gym queue is empty");
+               
+
+                int r = 0;
+                foreach (object i in arr)
+                {
+
+                    sb.AppendLine((r + 1).ToString() + ". " + arr[r].ToString());
+                    r++;
+                }
+                gqembed.AddField(x =>
+                {
+
+                    x.Name = "gym Queue:";
+                    x.Value = sb.ToString();
+                    x.IsInline = false;
+
+
+                });
             }
-            int r = 0;
-            foreach (object i in arr)
-            {
-
-                sb.AppendLine((r + 1).ToString() + ". " + arr[r].ToString());
-                r++;
-            }
-            gqembed.AddField(x =>
-            {
-
-                x.Name = "gym Queue:";
-                x.Value = sb.ToString();
-                x.IsInline = false;
-
-
-            });
+            else await ReplyAsync("gym queue is empty");
             arr = E4battlequeue.ToArray();
             sb = new System.Text.StringBuilder();
 
             if (arr.Length == 0)
             {
-                await ReplyAsync("E4 queue is empty");
-            }
-            r = 0;
-            foreach (object i in arr)
-            {
+                
 
-                sb.AppendLine((r + 1).ToString() + ". " + arr[r].ToString());
-                r++;
-            }
-            gqembed.AddField(x =>
-            {
+                int r = 0;
+                foreach (object i in arr)
+                {
 
-                x.Name = "E4 Queue:";
-                x.Value = sb.ToString();
-                x.IsInline = false;
+                    sb.AppendLine((r + 1).ToString() + ". " + arr[r].ToString());
+                    r++;
+                }
+                gqembed.AddField(x =>
+                {
+
+                    x.Name = "E4 Queue:";
+                    x.Value = sb.ToString();
+                    x.IsInline = false;
 
 
-            });
+                });
+            } else await ReplyAsync("E4 queue is empty");
 
             arr = champbattlequeue.ToArray();
             sb = new System.Text.StringBuilder();
 
-            if (arr.Length == 0)
+            if (arr.Length != 0)
             {
-                await ReplyAsync("Champion queue is empty");
-            }
-            r = 0;
-            foreach (object i in arr)
-            {
+                
 
-                sb.AppendLine((r + 1).ToString() + ". " + arr[r].ToString());
-                r++;
-            }
-            gqembed.AddField(x =>
-            {
+                int r = 0;
+                foreach (object i in arr)
+                {
 
-                x.Name = "Champ Queue:";
-                x.Value = sb.ToString();
-                x.IsInline = false;
+                    sb.AppendLine((r + 1).ToString() + ". " + arr[r].ToString());
+                    r++;
+                }
+                gqembed.AddField(x =>
+                {
+
+                    x.Name = "Champ Queue:";
+                    x.Value = sb.ToString();
+                    x.IsInline = false;
 
 
-            });
+                });
+            }else await ReplyAsync("Champion queue is empty");
             await ReplyAsync(embed: gqembed.Build());
         }
         [Command("Randommoves")]
