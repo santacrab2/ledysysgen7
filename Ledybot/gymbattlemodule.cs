@@ -708,12 +708,12 @@ namespace Ledybot
         public async Task que()
         {
             EmbedBuilder gqembed = new EmbedBuilder();
-            Object[] arr = gymbattlequeue.ToArray();
+            object[] arr = gymbattlequeue.ToArray();
             var sb = new System.Text.StringBuilder();
 
             if (arr.Length != 0)
             {
-               
+
 
                 int r = 0;
                 foreach (object i in arr)
@@ -736,9 +736,9 @@ namespace Ledybot
             arr = E4battlequeue.ToArray();
             sb = new System.Text.StringBuilder();
 
-            if (arr.Length == 0)
+            if (arr.Length != 0)
             {
-                
+
 
                 int r = 0;
                 foreach (object i in arr)
@@ -756,14 +756,15 @@ namespace Ledybot
 
 
                 });
-            } else await ReplyAsync("E4 queue is empty");
+            }
+            else await ReplyAsync("E4 queue is empty");
 
             arr = champbattlequeue.ToArray();
             sb = new System.Text.StringBuilder();
 
             if (arr.Length != 0)
             {
-                
+
 
                 int r = 0;
                 foreach (object i in arr)
@@ -781,7 +782,8 @@ namespace Ledybot
 
 
                 });
-            }else await ReplyAsync("Champion queue is empty");
+            }
+            else await ReplyAsync("Champion queue is empty");
             await ReplyAsync(embed: gqembed.Build());
         }
         [Command("Randommoves")]
