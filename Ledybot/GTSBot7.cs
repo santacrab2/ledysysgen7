@@ -1191,6 +1191,8 @@ namespace Ledybot
                                     botState = (int)gtsbotstates.botstart;
                                     break;
                                 }
+                                tradedpoke.ClearNickname();
+                                tradedpoke.IsNicknamed = false;
                                 byte[] writepoke = tradedpoke.DecryptedBoxData;
                                 tpfile = Path.GetTempFileName().Replace(".tmp", "." + tradedpoke.Extension);
                                 tpfile = tpfile.Replace("tmp", tradedpoke.FileNameWithoutExtension);
