@@ -1676,6 +1676,14 @@ public class discordbot
 
             _ = Task.Run(() => listmsg.AddReactionsAsync(reactions).ConfigureAwait(false));
         }
+        [Command("wthelp")]
+        [Alias("wth")]
+        public async Task wth() 
+        {
+            embed = new EmbedBuilder();
+            embed.AddField("**WonderTrade Commands", "!wt pokemon\n!wt Darkrai\nShiny: Yes\n\n!wtlist\nShows all the available pokemon to request. A Star means shiny.");
+            await ReplyAsync(embed: embed.Build());
+        }
 
         
     }

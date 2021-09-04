@@ -1352,7 +1352,7 @@ namespace Ledybot
                             var tempsprite = SpriteUtil.GetSprite(pokecheck.Species, pokecheck.Form, pokecheck.Gender, FormArgumentUtil.GetFormArgumentMax(pokecheck.Species, pokecheck.Form, pokecheck.Generation), 0, false, pokecheck.IsShiny, pokecheck.Generation, false, pokecheck.IsShiny);
                             tempsprite.Save($"{Directory.GetCurrentDirectory()}//wondertradesprite.png");
                             await wtchan.SendMessageAsync(embed: embed.Build());
-                            TwitchBot.client.SendMessage(TwitchBot.Channel, $"wonder trading {(Species)pokecheck.Species} in 15 seconds");
+                            TwitchBot.client.SendMessage(TwitchBot.Channel, $"wonder trading {(pokecheck.IsShiny?"Shiny":"")} {(Species)pokecheck.Species}{(pokecheck.Form ==0 ? "":"-"+ShowdownParsing.GetStringFromForm(pokecheck.Form,GameInfo.Strings,pokecheck.Species,pokecheck.Format))} in 15 seconds");
                           //  piptwitch.StartingDistribution(pokecheck);
                         }
                         catch { await Task.Delay(1); }
