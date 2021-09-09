@@ -268,17 +268,7 @@ namespace Ledybot
             botWorking = true;
             botStop = false;
             botNumber = 3;
-            if (GTSBot7.wtchan.Name.ToString().Contains("✅"))
-                await GTSBot7.wtchan.ModifyAsync(prop => prop.Name = GTSBot7.wtchan.Name.ToString().Replace("✅", "❌"));
-            var bcids = Ledybot.Program.f1.BotChannels.Text.Split(',');
-            foreach (string ids in bcids)
-            {
-                ulong.TryParse(ids, out var bcid);
-                var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
-                if(botchan.Name.Contains("❌"))
-                    await botchan.ModifyAsync(prop => prop.Name = botchan.Name.ToString().Replace("❌","✅"));
-
-            }
+       
 
 
             int tradeDirection = 0;
@@ -296,6 +286,17 @@ namespace Ledybot
                
 
                 GTsBot7 = new GTSBot7(pid, combo_pkmnList.SelectedIndex + 1, combo_gender.SelectedIndex, combo_levelrange.SelectedIndex, cb_Blacklist.Checked, cb_Reddit.Checked, tradeDirection, tb_waittime.Text, tb_consoleName.Text, cb_UseLedySync.Checked, tb_LedySyncIP.Text, tb_LedySyncPort.Text, game);
+                if (GTSBot7.wtchan.Name.ToString().Contains("✅"))
+                    await GTSBot7.wtchan.ModifyAsync(prop => prop.Name = GTSBot7.wtchan.Name.ToString().Replace("✅", "❌"));
+                var bcids = Ledybot.Program.f1.BotChannels.Text.Split(',');
+                foreach (string ids in bcids)
+                {
+                    ulong.TryParse(ids, out var bcid);
+                    var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
+                    if (botchan.Name.Contains("❌"))
+                        await botchan.ModifyAsync(prop => prop.Name = botchan.Name.ToString().Replace("❌", "✅"));
+
+                }
                 Task<int> Bot = GTSBot7.RunBot();
                 int result = await Bot;
                 if (botStop)

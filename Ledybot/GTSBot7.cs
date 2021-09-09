@@ -1569,8 +1569,8 @@ namespace Ledybot
                 {
                     ulong.TryParse(ids, out var bcid);
                     var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
-                    if (botchan.Name.Contains("❌"))
-                        await botchan.ModifyAsync(prop => prop.Name = botchan.Name.ToString().Replace("❌", "✅"));
+                    if (botchan.Name.Contains("✅"))
+                        await botchan.ModifyAsync(prop => prop.Name = botchan.Name.ToString().Replace("✅","❌" ));
 
                 }
                 return 8;
