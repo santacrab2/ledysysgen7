@@ -287,14 +287,14 @@ namespace Ledybot
 
                 GTsBot7 = new GTSBot7(pid, combo_pkmnList.SelectedIndex + 1, combo_gender.SelectedIndex, combo_levelrange.SelectedIndex, cb_Blacklist.Checked, cb_Reddit.Checked, tradeDirection, tb_waittime.Text, tb_consoleName.Text, cb_UseLedySync.Checked, tb_LedySyncIP.Text, tb_LedySyncPort.Text, game);
                 if (GTSBot7.wtchan.Name.ToString().Contains("✅"))
-                    await GTSBot7.wtchan.ModifyAsync(prop => prop.Name = GTSBot7.wtchan.Name.ToString().Replace("✅", "❌"));
+                    await GTSBot7.wtchan.ModifyAsync(prop => prop.Name = GTSBot7.wtchan.Name.Replace("✅", "❌"));
                 var bcids = Ledybot.Program.f1.BotChannels.Text.Split(',');
                 foreach (string ids in bcids)
                 {
                     ulong.TryParse(ids, out var bcid);
                     var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
                     if (botchan.Name.Contains("❌"))
-                        await botchan.ModifyAsync(prop => prop.Name = botchan.Name.ToString().Replace("❌", "✅"));
+                        await botchan.ModifyAsync(prop => prop.Name = botchan.Name.Replace("❌", "✅"));
 
                 }
                 Task<int> Bot = GTSBot7.RunBot();
@@ -407,21 +407,22 @@ namespace Ledybot
         {
             if (game == 1 || game == 2) // SUMO + USUM
             {
-                GTSBot7.botstop = true;
-                btn_Start.Enabled = true;
-                btn_Stop.Enabled = false;
-                botStop = true;
                 if (GTSBot7.wtchan.Name.ToString().Contains("✅"))
-                   await GTSBot7.wtchan.ModifyAsync(prop => prop.Name = GTSBot7.wtchan.Name.ToString().Replace("✅", "❌"));
+                    await GTSBot7.wtchan.ModifyAsync(prop => prop.Name = GTSBot7.wtchan.Name.Replace("✅", "❌"));
                 var bcids = Ledybot.Program.f1.BotChannels.Text.Split(',');
                 foreach (string ids in bcids)
                 {
                     ulong.TryParse(ids, out var bcid);
                     var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
                     if (botchan.Name.Contains("✅"))
-                        await botchan.ModifyAsync(prop => prop.Name = botchan.Name.ToString().Replace("✅ ","❌" ));
+                        await botchan.ModifyAsync(prop => prop.Name = botchan.Name.Replace("✅", "❌"));
 
                 }
+                GTSBot7.botstop = true;
+                btn_Start.Enabled = true;
+                btn_Stop.Enabled = false;
+                botStop = true;
+     
             }
             else if (game == 3 || game == 4) // XY + ORAS
             {
