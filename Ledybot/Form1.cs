@@ -269,7 +269,7 @@ namespace Ledybot
             botStop = false;
             botNumber = 3;
             if (GTSBot7.wtchan.Name.ToString().Contains("✅"))
-                await GTSBot7.wtchan.ModifyAsync(prop => prop.Name = prop.Name.ToString().Replace("✅", "❌"));
+                await GTSBot7.wtchan.ModifyAsync(prop => prop.Name = GTSBot7.wtchan.Name.ToString().Replace("✅", "❌"));
             var bcids = Ledybot.Program.f1.BotChannels.Text.Split(',');
             foreach (string ids in bcids)
             {
@@ -410,14 +410,14 @@ namespace Ledybot
                 btn_Stop.Enabled = false;
                 botStop = true;
                 if (GTSBot7.wtchan.Name.ToString().Contains("✅"))
-                   await GTSBot7.wtchan.ModifyAsync(prop => prop.Name = prop.Name.ToString().Replace("✅", "❌"));
+                   await GTSBot7.wtchan.ModifyAsync(prop => prop.Name = GTSBot7.wtchan.Name.ToString().Replace("✅", "❌"));
                 var bcids = Ledybot.Program.f1.BotChannels.Text.Split(',');
                 foreach (string ids in bcids)
                 {
                     ulong.TryParse(ids, out var bcid);
                     var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
-                    if (botchan.Name.Contains("❌"))
-                        await botchan.ModifyAsync(prop => prop.Name = botchan.Name.ToString().Replace("❌", "✅ "));
+                    if (botchan.Name.Contains("✅"))
+                        await botchan.ModifyAsync(prop => prop.Name = botchan.Name.ToString().Replace("✅ ","❌" ));
 
                 }
             }
