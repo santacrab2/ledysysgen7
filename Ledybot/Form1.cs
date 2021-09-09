@@ -346,6 +346,7 @@ namespace Ledybot
             }
             else if (game == 3 || game == 4) // XY + ORAS
             {
+
                 GTSBot6 = new GTSBot6(pid, combo_pkmnList.SelectedIndex + 1, combo_gender.SelectedIndex, combo_levelrange.SelectedIndex, cb_Blacklist.Checked, cb_Reddit.Checked, tradeDirection, tb_waittime.Text, tb_consoleName.Text, cb_UseLedySync.Checked, tb_LedySyncIP.Text, tb_LedySyncPort.Text, game, tb_IP.Text);
                 Task<int> Bot = GTSBot6.RunBot();
                 int result = await Bot;

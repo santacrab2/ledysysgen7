@@ -813,7 +813,7 @@ public class discordbot
         public async Task startdistribute()
         {
             await ReplyAsync("starting distribution");
-     
+            Ledybot.MainForm.combo_distri.SelectedIndex = 0;
             if (Ledybot.MainForm.btn_Start.Enabled == true)
                 Ledybot.MainForm.btn_Start_Click(null, EventArgs.Empty);
             var bcids = Ledybot.Program.f1.BotChannels.Text.Split(',');
