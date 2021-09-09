@@ -1560,7 +1560,7 @@ namespace Ledybot
                 }
 
             }
-            catch (ObjectDisposedException)
+            catch 
             {
                 if (GTSBot7.wtchan.Name.ToString().Contains("✅"))
                     await GTSBot7.wtchan.ModifyAsync(prop => prop.Name = GTSBot7.wtchan.Name.ToString().Replace("✅", "❌"));
