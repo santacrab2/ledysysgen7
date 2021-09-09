@@ -243,6 +243,7 @@ public class discordbot
         public static bool distributestart = false;
         public static List<string> n;
         
+        
 
         [Command("trade")]
         [Alias("t")]
@@ -259,7 +260,7 @@ public class discordbot
             ptsstr = ptsstr + 1;
             if (tradevolvs.Contains(ptsstr))
             {
-                await ReplyAsync("you almost just broke the bot by depositing a trade evolution, you are a fucking asshole :)");
+                await ReplyAsync("you almost just broke the bot by depositing a trade evolution");
                 return;
             }
             string[] pset = set.Split('\n');
@@ -358,7 +359,7 @@ public class discordbot
             
             if (!new LegalityAnalysis(pk).Valid)
             {
-                await ReplyAsync("Pokemon is illegal dumbass");
+                await ReplyAsync("Pokemon is illegal");
                 await ReplyAsync(LegalityFormatting.Report(new LegalityAnalysis(pk)));
                 File.Delete(temppokewait);
                 return;
@@ -393,7 +394,7 @@ public class discordbot
             
             if (tradevolvs.Contains(pts))
             {
-                await ReplyAsync("you almost just broke the bot by depositing a trade evolution, you are a fucking asshole :)");
+                await ReplyAsync("you almost just broke the bot by depositing a trade evolution");
                 return;
             }
             string[] pset = set.Split('\n');
@@ -487,7 +488,7 @@ public class discordbot
 
             if (!new LegalityAnalysis(pk).Valid)
             {
-                await ReplyAsync("Pokemon is illegal dumbass");
+                await ReplyAsync("Pokemon is illegal");
                 await ReplyAsync(LegalityFormatting.Report(new LegalityAnalysis(pk)));
                 File.Delete(temppokewait);
                 return;
@@ -527,7 +528,7 @@ public class discordbot
             string temppokewait = Path.GetTempFileName();
             if (tradevolvs.Contains(ptsstr))
             {
-                await ReplyAsync("you almost just broke the bot by depositing a trade evolution, you are a fucking asshole :)");
+                await ReplyAsync("you almost just broke the bot by depositing a trade evolution");
                 return;
             }
             //this grabs the file the user uploads to discord if they even do it.
@@ -631,7 +632,7 @@ public class discordbot
             var la2 = new LegalityAnalysis(tradeable);
             if (!la2.Valid)
             {
-                await ReplyAsync("pokemon is illegal dumbass");
+                await ReplyAsync("pokemon is illegal ");
                 File.Delete(temppokewait);
                 return;
             }
@@ -664,7 +665,7 @@ public class discordbot
             string temppokewait = Path.GetTempFileName();
             if (tradevolvs.Contains(pts))
             {
-                await ReplyAsync("you almost just broke the bot by depositing a trade evolution, you are a fucking asshole :)");
+                await ReplyAsync("you almost just broke the bot by depositing a trade evolution");
                 return;
             }
             //this grabs the file the user uploads to discord if they even do it.
@@ -768,7 +769,7 @@ public class discordbot
             var la2 = new LegalityAnalysis(tradeable);
             if (!la2.Valid)
             {
-                await ReplyAsync("pokemon is illegal dumbass");
+                await ReplyAsync("pokemon is illegal ");
                 File.Delete(temppokewait);
                 return;
             }
@@ -812,9 +813,17 @@ public class discordbot
         public async Task startdistribute()
         {
             await ReplyAsync("starting distribution");
-            Ledybot.MainForm.combo_distri.SelectedIndex = 0;
+     
             if (Ledybot.MainForm.btn_Start.Enabled == true)
                 Ledybot.MainForm.btn_Start_Click(null, EventArgs.Empty);
+            var bcids = Ledybot.Program.f1.BotChannels.Text.Split(',');
+            foreach(string ids in bcids)
+            {
+                ulong.TryParse(ids, out var bcid);
+                var botchan = (ITextChannel) discordbot._client.GetChannel(bcid);
+               await botchan.ModifyAsync(prop => prop.Name = botchan.Name.ToString().Replace("❌", "✅"));
+                
+            }
         }
    
            
@@ -877,7 +886,7 @@ public class discordbot
             embed.Color = new Color(147, 191, 230);
             embed.Title = "Prinplup Bot Help";
             embed.ThumbnailUrl = "https://www.shinyhunters.com/images/shiny/394.gif";
-            embed.AddField("Prinplup is a Gen 7 GTS Sysbot for" + "\n", "SUN / MOON / ULTRA SUN / ULTRA MOON", false);
+            embed.AddField("Prinplup is a Gen 7 GTS tradebot for" + "\n", "SUN / MOON / ULTRA SUN / ULTRA MOON", false);
             embed.AddField("⠀", "__Deposit a pokemon into the Gen 7 GTS__" + "\n" + "__Then use one of these 2 Commands to make the trade:__" + "⠀", false);
             embed.AddField(":large_blue_diamond:Attached .pk7 file" + "\n", "```" + "\n" + "!trade DepositPokemon trainerName (and attach the file and hit send)```", true);
             embed.AddField(":large_blue_diamond:Showdown set" + "\n", "```" + "\n" + "!trade trainername DepositPokemon ReceivingPokemon (and hit send)\nexample:!t Santa Caterpie Piplup\nShiny: Yes```", false);
@@ -1402,7 +1411,7 @@ public class discordbot
         public static async Task slow()
         {
             IMessageChannel chan = (IMessageChannel)channel.Peek();
-            await chan.SendMessageAsync(discordname.Peek() + " you were too slow or too stupid, one of those, so the trades been cancelled");
+            await chan.SendMessageAsync(discordname.Peek() + " I could not find your deposit on the GTS, so the trades been cancelled");
             channel.Dequeue();
             discordname.Dequeue();
             pokequeue.Dequeue();

@@ -124,8 +124,11 @@ namespace Ledybot
             this.wtfolder = new System.Windows.Forms.TextBox();
             this.twchannel = new System.Windows.Forms.TextBox();
             this.wtchannel = new System.Windows.Forms.TextBox();
+            this.BotChannels = new System.Windows.Forms.TextBox();
             wondertrade = new System.Windows.Forms.Button();
-          
+            this.label20 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
             this.tc_Control.SuspendLayout();
             this.tp_GTS.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -1053,7 +1056,14 @@ namespace Ledybot
             this.twchannel.TextChanged += new System.EventHandler(this.twchannel_TextChanged_1);
             this.twchannel.Text = "Twitch channel";
 
-
+            //log label
+            this.discord.Controls.Add(label20);
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(132, 130);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(55, 13);
+            this.label20.TabIndex = 0;
+            this.label20.Text = "Log Channel:";
             //
             //log
             //
@@ -1130,15 +1140,45 @@ namespace Ledybot
             this.wtfolder.TabIndex = 41;
             this.wtfolder.TextChanged += new System.EventHandler(this.wtfolder_TextChanged_1);
             this.wtfolder.Text = "wtfolder path";
-
+            //
+            //wt channel label
+            //
+            this.discord.Controls.Add(label21);
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(132, 230);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(55, 13);
+            this.label21.TabIndex = 38;
+            this.label21.Text = "WT Channel:";
             //wt discord countdown channel
             this.discord.Controls.Add(wtchannel);
-            this.wtchannel.Location = new System.Drawing.Point(132, 230);
+            this.wtchannel.Location = new System.Drawing.Point(132, 250);
             this.wtchannel.Name = "wtchannel";
             this.wtchannel.Size = new System.Drawing.Size(229, 20);
             this.wtchannel.TabIndex = 42;
             this.wtchannel.TextChanged += new System.EventHandler(this.wtchannel_TextChanged_1);
             this.wtchannel.Text = "Discord wtchannel ID";
+
+            //
+            //discord channel label
+            //
+            this.discord.Controls.Add(label22);
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(132, 270);
+            this.label22.Name = "label21";
+            this.label22.Size = new System.Drawing.Size(55, 13);
+            this.label22.TabIndex = 50;
+            this.label22.Text = "Bot Channels:";
+            //
+            //Discord channels to update when the bot comes online or goes offline
+            //
+            this.discord.Controls.Add(BotChannels);
+            this.BotChannels.Location = new System.Drawing.Point(132, 290);
+            this.BotChannels.Name = "botchannels";
+            this.BotChannels.Size = new System.Drawing.Size(229, 20);
+            this.BotChannels.TabIndex = 45;
+            this.BotChannels.TextChanged += new System.EventHandler(this.BotChannels_TextChanged_1);
+            this.BotChannels.Text = "Discord Bot channel IDs";
             // 
             // ofd_Injection
             // 
@@ -1318,14 +1358,16 @@ namespace Ledybot
         public System.Windows.Forms.TextBox wtfolder;
         public System.Windows.Forms.TextBox twchannel;
         public System.Windows.Forms.TextBox wtchannel;
+        public System.Windows.Forms.TextBox BotChannels;
         public static System.Windows.Forms.Button wondertrade;
         public System.Windows.Forms.Button cordconnect;
         public System.Windows.Forms.Button twconnect;
         public static System.Windows.Forms.ComboBox combo_distri;
         public System.Windows.Forms.Label label15;
         private System.Windows.Forms.TabPage Twitch;
-        
-
+        public System.Windows.Forms.Label label20;
+        public System.Windows.Forms.Label label21;
+        public System.Windows.Forms.Label label22;
     }
 }
 

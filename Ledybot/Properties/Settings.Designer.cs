@@ -336,6 +336,20 @@ namespace Ledybot.Properties {
                 this["twchannel"] = value;
             }
         }
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("BotChannels")]
+        public string Botchannels
+        {
+            get
+            {
+                return ((string)(this["BotChannels"]));
+            }
+            set
+            {
+                this["BotChannels"] = value;
+            }
+        }
 
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

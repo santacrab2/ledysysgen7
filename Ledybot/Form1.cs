@@ -10,6 +10,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Discord;
+using Discord.Commands;
+using Discord.WebSocket;
+using Discord.Rest;
 
 namespace Ledybot
 {
@@ -264,8 +268,18 @@ namespace Ledybot
             botWorking = true;
             botStop = false;
             botNumber = 3;
-            
-  
+            if (GTSBot7.wtchan.Name.ToString().Contains("✅"))
+                await GTSBot7.wtchan.ModifyAsync(prop => prop.Name = prop.Name.ToString().Replace("✅", "❌"));
+            var bcids = Ledybot.Program.f1.BotChannels.Text.Split(',');
+            foreach (string ids in bcids)
+            {
+                ulong.TryParse(ids, out var bcid);
+                var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
+                if(botchan.Name.Contains("❌"))
+                    await botchan.ModifyAsync(prop => prop.Name = botchan.Name.ToString().Replace("❌","✅"));
+
+            }
+
 
             int tradeDirection = 0;
             if (rb_frontfpo.Checked)
@@ -387,7 +401,7 @@ namespace Ledybot
             this.rt_status.Text = "Bot Status: " + szNewStatus;
         }
 
-        public static void btn_Stop_Click(object sender, EventArgs e)
+        public static async void btn_Stop_Click(object sender, EventArgs e)
         {
             if (game == 1 || game == 2) // SUMO + USUM
             {
@@ -395,8 +409,17 @@ namespace Ledybot
                 btn_Start.Enabled = true;
                 btn_Stop.Enabled = false;
                 botStop = true;
-                
+                if (GTSBot7.wtchan.Name.ToString().Contains("✅"))
+                   await GTSBot7.wtchan.ModifyAsync(prop => prop.Name = prop.Name.ToString().Replace("✅", "❌"));
+                var bcids = Ledybot.Program.f1.BotChannels.Text.Split(',');
+                foreach (string ids in bcids)
+                {
+                    ulong.TryParse(ids, out var bcid);
+                    var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
+                    if (botchan.Name.Contains("❌"))
+                        await botchan.ModifyAsync(prop => prop.Name = botchan.Name.ToString().Replace("❌", "✅ "));
 
+                }
             }
             else if (game == 3 || game == 4) // XY + ORAS
             {
@@ -497,6 +520,7 @@ namespace Ledybot
             Properties.Settings.Default.twchannel = twchannel.Text;
             Properties.Settings.Default.wtfolder = wtfolder.Text;
             Properties.Settings.Default.wtchannel = wtchannel.Text;
+            Properties.Settings.Default.Botchannels = BotChannels.Text;
             Properties.Settings.Default.Save();
         }
 
@@ -526,6 +550,7 @@ namespace Ledybot
             twuser.Text = Properties.Settings.Default.twuser;
             twchannel.Text = Properties.Settings.Default.twchannel;
             twtoken.Text = Properties.Settings.Default.twtoken;
+            BotChannels.Text = Properties.Settings.Default.Botchannels;
         }
 
         private void btn_BrowseInject_Click(object sender, EventArgs e)
@@ -871,6 +896,10 @@ namespace Ledybot
         public void wtchannel_TextChanged_1(object sender, EventArgs e)
         {
             wtchannel.Text = wtchannel.Text;
+        }
+        public void BotChannels_TextChanged_1(object sender, EventArgs e)
+        {
+            BotChannels.Text = BotChannels.Text;
         }
         private void cordconnect_ClickAsync(object sender, EventArgs e)
         {

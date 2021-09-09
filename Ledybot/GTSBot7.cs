@@ -104,7 +104,7 @@ namespace Ledybot
         public static bool distribute = false;
         public static Tuple<string, string, int, int, int, ArrayList> details;
         public static ISocketMessageChannel logchan;
-        public static ISocketMessageChannel wtchan;
+        public static ITextChannel wtchan;
         public static bool wondertrade = false;
         public static int mega;
        
@@ -158,7 +158,7 @@ namespace Ledybot
                 Ledybot.Program.f1.ChangeStatus("did not recognize your log channel or its empty");
             if (!ulong.TryParse(Program.f1.wtchannel.Text, out var wid))
                 Program.f1.ChangeStatus("did not recognize your wt channel, or its empty.");
-            wtchan = (ISocketMessageChannel)discordbot._client.GetChannel(wid);
+            wtchan = (ITextChannel)discordbot._client.GetChannel(wid);
             logchan = (ISocketMessageChannel)discordbot._client.GetChannel(cid);
             iPokemonToFindGender = iPtFGender;
             iPokemonToFindLevel = iPtFLevel;
@@ -1292,6 +1292,17 @@ namespace Ledybot
                         wondertrade = false;
                         break;
                     case (int)gtsbotstates.wondertrade:
+                        if (wtchan.Name.Contains("❌"))
+                            await wtchan.ModifyAsync(prop => prop.Name = wtchan.Name.Replace("❌", "✅"));
+                        var bcids = Ledybot.Program.f1.BotChannels.Text.Split(',');
+                        foreach (string ids in bcids)
+                        {
+                            ulong.TryParse(ids, out var bcid);
+                            var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
+                            if(botchan.Name.Contains("✅"))
+                                await botchan.ModifyAsync(prop => prop.Name = botchan.Name.ToString().Replace("✅","❌"));
+
+                        }
                         Program.f1.ChangeStatus("wonder trading");
                         if (!await isCorrectWindow(val_Quit_SeekScreen))
                         {
