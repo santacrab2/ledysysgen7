@@ -882,23 +882,25 @@ public class discordbot
         [Alias("h")]
         public async Task help()
         {
+            page = 0;
+            n = new List<string>();
             embed = new EmbedBuilder();
             embed.Color = new Color(147, 191, 230);
             embed.Title = "Prinplup Bot Help";
             embed.ThumbnailUrl = "https://www.shinyhunters.com/images/shiny/394.gif";
-            embed.AddField("Prinplup is a Gen 7 GTS tradebot for" + "\n", "SUN / MOON / ULTRA SUN / ULTRA MOON", false);
-            embed.AddField("⠀", "__Deposit a pokemon into the Gen 7 GTS__" + "\n" + "__Then use one of these 2 Commands to make the trade:__" + "⠀", false);
-            embed.AddField(":large_blue_diamond:Attached .pk7 file" + "\n", "```" + "\n" + "!trade DepositPokemon trainerName (and attach the file and hit send)```", true);
-            embed.AddField(":large_blue_diamond:Showdown set" + "\n", "```" + "\n" + "!trade trainername DepositPokemon ReceivingPokemon (and hit send)\nexample:!t Santa Caterpie Piplup\nShiny: Yes```", false);
-            embed.AddField("Deposit", "Deposit Pokemon's name must be Capitalized");
-            embed.AddField("***Do not deposit or request the following - they will not trade over GTS and may break the bot:***",
-                "*Mythical Pokemon*" + "\n" + "*Event Pokemon*" +  "\n" + "*Fusions*" + "\n" + " *Un-Tradeable Forms*" + "\n" + "*Un-Tradeable Ribbons*" + "\n" + "*Un-Tradeable Moves*" + "\n" + "⠀", false);
+            embed.AddField("Prinplup is a Gen 7 GTS tradebot for\nSUN / MOON / ULTRA SUN / ULTRA MOON", "hi", false);
+            n.Add("__Deposit a pokemon into the Gen 7 GTS__\n__Then use one of these 2 Commands to make the trade:__\n\n:large_blue_diamond:Attached .pk7 file\n```\n!trade DepositPokemon trainerName (and attach the file and hit send)```\n\n:large_blue_diamond:Showdown set\n```\n!trade trainername DepositPokemon ReceivingPokemon (and hit send)\nexample:!t Santa Caterpie Piplup\nShiny: Yes```**__Deposit Pokemon's name must be Capitalized__**");
+            n.Add("***Do not deposit or request the following - they will not trade over GTS and may break the bot:*** \n*Mythical Pokemon*\n*Event Pokemon*\n*Fusions*\n *Un-Tradeable Forms*\n*Un-Tradeable Ribbons*\n*Un-Tradeable Moves*\n *Please use quotes around your trainer name, if your trainer name has a space in it*\n```\nex: !trade \"bewear hugs\"");
+            n.Add("Pokedex Function (helps you figure out legal moves and other stats for your Pokemon)\n**!dex pokemon**\n```\nex: !dex pidgey\n*works in reverse too*\n!dex 016```");
+            n.Add("**!convert**\nMakes you a pk7 file from a showdown set```\nexample: !convert Piplup```");
+            n.Add("!settrainer, (**!st**)\nSets your trainer info with the bot permanently so anything you make will have that info!\nThis is also automatically captured if you trade the bot a pokemon you caught or bred\n```Example: !st OT: Santa\nTID: 123456\nSID: 1234```");
             embed.ImageUrl = "https://c.tenor.com/aVgHd6soz1wAAAAC/prinplup-piplup.gif";
-            embed.AddField("*Showdown sets now accept batch commands!*" + "\n" + "⠀", " *Please use quotes around your trainer name, if your trainer name has a space in it*" + "\n" + "```" + "\n" + "ex: !trade \"bewear hugs\"" + "```", false);
-            embed.AddField("Pokedex Function (helps you figure out legal moves and other stats for your Pokemon)" + "\n" + "**!dex pokemon**" + "\n", "```" + "\n" + "ex: !dex pidgey" + "\n" + "*works in reverse too*" + "\n" + "!dex 016" + "```" + "\n", true);
-            embed.AddField("!convert", "Makes you a pk7 file from a showdown set```\nexample: !convert Piplup```");
-            embed.AddField("!settrainer, (**!st**)", "Sets your trainer info with the bot permanently so anything you make will have that info!\nThis is also automatically captured if you trade the bot a pokemon you caught or bred\n```Example: !st OT: Santa\nTID: 123456\nSID: 1234```");
-            await ReplyAsync(embed: embed.Build());
+            embed.Fields[0].Value = n[0].ToString();
+            embed.WithFooter($"Page {page + 1} of {n.Count}");
+            IEmote[] reactions = { new Emoji("⬅️"), new Emoji("➡️") };
+            var listmsg = await Context.Channel.SendMessageAsync(embed: embed.Build());
+
+            _ = Task.Run(() => listmsg.AddReactionsAsync(reactions).ConfigureAwait(false));
         }
 
         [Command("hi")]
