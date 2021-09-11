@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Sockets;
+using System.Diagnostics;
 using System.Threading;
 using System.Net;
 using System.Windows.Forms;
@@ -107,7 +108,7 @@ namespace Ledybot
         public static ITextChannel wtchan;
         public static bool wondertrade = false;
         public static int mega;
-       
+        public static Stopwatch timeout = new Stopwatch();
         public static async Task<bool> isCorrectWindow(int expectedScreen)
         {
             await Task.Delay(o3dswaittime);
@@ -248,7 +249,7 @@ namespace Ledybot
                 }
                 else
                     botState = (int)gtsbotstates.botstart;
-                while (!botstop)
+                while (!botstop && timeout.ElapsedMilliseconds < 1200_000)
                 {
                     if (botState != (int)gtsbotstates.panic)
                     {
@@ -395,7 +396,7 @@ namespace Ledybot
                             }
                             break;
                         case (int)gtsbotstates.findfromstart:
-
+                            timeout.Restart();
                             correctScreen = await isCorrectWindow(val_GTSListScreen);
                             if (!correctScreen)
                             {
@@ -1147,21 +1148,7 @@ namespace Ledybot
                                 {
                                     while (await isCorrectWindow(val_duringTrade) || await isCorrectWindow(val_system))
                                     {
-                                        if (tradetime == 0)
-                                        {
-                                            var bcidss = Ledybot.Program.f1.BotChannels.Text.Split(',');
-                                            foreach (string ids in bcidss)
-                                            {
-                                                ulong.TryParse(ids, out var bcid);
-                                                var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
-                                                if (botchan.Name.Contains("✅"))
-                                                    await botchan.ModifyAsync(prop => prop.Name = botchan.Name.Replace("✅", "❌"));
-
-                                            }
-                                            return 8;
-                                        }
-                                        await Task.Delay(1_000);
-                                        tradetime--;
+                               
                                         continue;
                                     }
                                 }
@@ -1176,21 +1163,7 @@ namespace Ledybot
                                 {
                                     while (await isCorrectWindow(val_duringTrade) || await isCorrectWindow(val_system))
                                     {
-                                        if (tradetime == 0)
-                                        {
-                                            var bcidss = Ledybot.Program.f1.BotChannels.Text.Split(',');
-                                            foreach (string ids in bcidss)
-                                            {
-                                                ulong.TryParse(ids, out var bcid);
-                                                var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
-                                                if (botchan.Name.Contains("✅"))
-                                                    await botchan.ModifyAsync(prop => prop.Name = botchan.Name.Replace("✅", "❌"));
-
-                                            }
-                                            return 8;
-                                        }
-                                        await Task.Delay(1_000);
-                                        tradetime--;
+                                  
                                         continue;
                                     }
                                 }
@@ -1326,8 +1299,8 @@ namespace Ledybot
                         case (int)gtsbotstates.wondertrade:
                             if (wtchan.Name.Contains("❌"))
                                 await wtchan.ModifyAsync(prop => prop.Name = wtchan.Name.Replace("❌", "✅"));
-                            var bcids = Ledybot.Program.f1.BotChannels.Text.Split(',');
-                            foreach (string ids in bcids)
+                            var bcidss = Ledybot.Program.f1.BotChannels.Text.Split(',');
+                            foreach (string ids in bcidss)
                             {
                                 ulong.TryParse(ids, out var bcid);
                                 var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
@@ -1549,6 +1522,17 @@ namespace Ledybot
                             break;
 
                     }
+                }
+                if (GTSBot7.wtchan.Name.ToString().Contains("✅"))
+                    await GTSBot7.wtchan.ModifyAsync(prop => prop.Name = GTSBot7.wtchan.Name.ToString().Replace("✅", "❌"));
+                var bcids = Ledybot.Program.f1.BotChannels.Text.Split(',');
+                foreach (string ids in bcids)
+                {
+                    ulong.TryParse(ids, out var bcid);
+                    var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
+                    if (botchan.Name.Contains("✅"))
+                        await botchan.ModifyAsync(prop => prop.Name = botchan.Name.ToString().Replace("✅", "❌"));
+
                 }
                 return botresult;
 
