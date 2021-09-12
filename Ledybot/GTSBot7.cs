@@ -1297,7 +1297,7 @@ namespace Ledybot
                             wondertrade = false;
                             break;
                         case (int)gtsbotstates.wondertrade:
-                            timeout.Stop();
+                            timeout.Reset();
                             if (wtchan.Name.Contains("❌"))
                             {
                                 await wtchan.ModifyAsync(prop => prop.Name = wtchan.Name.Replace("❌", "✅"));
@@ -1530,6 +1530,7 @@ namespace Ledybot
 
                     }
                 }
+                timeout.Reset();
                 if (wtchan.Name.ToString().Contains("✅"))
                 {
                     await wtchan.ModifyAsync(prop => prop.Name = wtchan.Name.Replace("✅", "❌"));
