@@ -294,7 +294,12 @@ namespace Ledybot
                     ulong.TryParse(ids, out var bcid);
                     var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
                     if (botchan.Name.Contains("❌"))
+                    {
                         await botchan.ModifyAsync(prop => prop.Name = botchan.Name.Replace("❌", "✅"));
+                        var offembed = new EmbedBuilder();
+                        offembed.AddField("Prinplup Bot Announcement", "GTS Trade Bot is Online");
+                        await botchan.SendMessageAsync(embed: offembed.Build());
+                    }
 
                 }
                 Task<int> Bot = GTSBot7.RunBot();
@@ -408,14 +413,24 @@ namespace Ledybot
             if (game == 1 || game == 2) // SUMO + USUM
             {
                 if (GTSBot7.wtchan.Name.ToString().Contains("✅"))
+                {
                     await GTSBot7.wtchan.ModifyAsync(prop => prop.Name = GTSBot7.wtchan.Name.Replace("✅", "❌"));
+                    var offembed = new EmbedBuilder();
+                    offembed.AddField("Prinplup Bot Announcement", "Wonder Trade Bot is Offline");
+                    await GTSBot7.wtchan.SendMessageAsync(embed: offembed.Build());
+                }
                 var bcids = Ledybot.Program.f1.BotChannels.Text.Split(',');
                 foreach (string ids in bcids)
                 {
                     ulong.TryParse(ids, out var bcid);
                     var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
                     if (botchan.Name.Contains("✅"))
+                    {
                         await botchan.ModifyAsync(prop => prop.Name = botchan.Name.Replace("✅", "❌"));
+                        var offembed = new EmbedBuilder();
+                        offembed.AddField("Prinplup Bot Announcement", "GTS Trade Bot is Offline");
+                        await botchan.SendMessageAsync(embed: offembed.Build());
+                    }
 
                 }
                 GTSBot7.botstop = true;
