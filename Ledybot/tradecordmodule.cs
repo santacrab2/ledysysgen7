@@ -1313,6 +1313,67 @@ namespace Ledybot
             
                
         }
+        [Command("users7")]
+        [RequireOwner]
+        public async Task userlist()
+        {
+            var usermsg = new System.Text.StringBuilder();
+           var userfolders = Directory.GetDirectories($"{Directory.GetCurrentDirectory()}//");
+            foreach(string i in userfolders)
+            {
+               var newi= i.Replace($"{Directory.GetCurrentDirectory()}//", "");
+                    if(newi.All(char.IsDigit))
+                        usermsg.AppendLine($"<@{newi}> - {newi}");
+               
+            }
+            await ReplyAsync(usermsg.ToString());
+        }
+        [Command("deluser7")]
+        [RequireOwner]
+        public async Task deletetradecorduser(string userid)
+        {
+            if (Directory.Exists($"{Directory.GetCurrentDirectory()}//{userid}"))
+            {
+                if (Directory.Exists($"{Directory.GetCurrentDirectory()}//{userid}//Badges//"))
+                {
+                    var badgefiles = Directory.GetFiles($"{Directory.GetCurrentDirectory()}//{userid}//Badges//");
+                    foreach(string a in badgefiles)
+                        File.Delete(a);
+                    Directory.Delete($"{Directory.GetCurrentDirectory()}//{userid}//Badges//");
+                }
+                if (Directory.Exists($"{Directory.GetCurrentDirectory()}//{userid}//Buddy//"))
+                {
+                    var buddyfiles = Directory.GetFiles($"{Directory.GetCurrentDirectory()}//{userid}//Buddy//");
+                    foreach (string b in buddyfiles)
+                        File.Delete(b);
+                    Directory.Delete($"{Directory.GetCurrentDirectory()}//{userid}//Buddy//");
+                }
+                if (Directory.Exists($"{Directory.GetCurrentDirectory()}//{userid}//items//"))
+                {
+                    var itemfiles = Directory.GetFiles($"{Directory.GetCurrentDirectory()}//{userid}//items//");
+                    foreach (string c in itemfiles)
+                        File.Delete(c);
+                    Directory.Delete($"{Directory.GetCurrentDirectory()}//{userid}//items//");
+                }
+                var catchfiles = Directory.GetFiles($"{Directory.GetCurrentDirectory()}//{userid}//");
+                foreach (string d in catchfiles)
+                    File.Delete(d);
+                Directory.Delete($"{Directory.GetCurrentDirectory()}//{userid}//");
+                await ReplyAsync("user's tradecord info deleted");
+            }
+
+            if (File.Exists($"{Directory.GetCurrentDirectory()}//dexs//{userid}.txt"))
+            {
+                File.Delete($"{Directory.GetCurrentDirectory()}//dexs//{userid}.txt");
+                await ReplyAsync("user's tradecord dex deleted");
+            }
+            if (File.Exists($"{Directory.GetCurrentDirectory()}//trainerinfo//{userid}.txt"))
+            {
+                File.Delete($"{Directory.GetCurrentDirectory()}//trainerinfo//{userid}.txt");
+                await ReplyAsync("user's trainer info deleted");
+            }
+            
+        }
         public enum TCItems
         {
             

@@ -1530,7 +1530,7 @@ namespace Ledybot
 
                     }
                 }
-                timeout.Reset();
+                
                 if (wtchan.Name.ToString().Contains("✅"))
                 {
                     await wtchan.ModifyAsync(prop => prop.Name = wtchan.Name.Replace("✅", "❌"));
@@ -1553,7 +1553,8 @@ namespace Ledybot
                     }
 
                 }
-                return botresult;
+                timeout.Reset();
+                return 8;
 
                 if (serverEndPointSync != null)
                 {
