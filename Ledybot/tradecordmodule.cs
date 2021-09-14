@@ -292,6 +292,12 @@ namespace Ledybot
         [Alias("tc")]
         public async Task tradecordtrade(string trainer, int pts, int idnumb, [Remainder] string trainerinfo = "")
         {
+            var correctchannelcheck = Ledybot.Program.f1.BotChannels.ToString().Split(',');
+            if (!correctchannelcheck.Contains(Context.Channel.Id.ToString()))
+            {
+                await ReplyAsync("You can not use this command in this channel");
+                return;
+            }
             string[] tset = trainerinfo.Split('\n');
             string temppokewait = Path.GetTempFileName();
             if (!File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb))
@@ -364,6 +370,12 @@ namespace Ledybot
         [Alias("tc")]
         public async Task tradecordstrtrade(string trainer, string pts, int idnumb, [Remainder] string trainerinfo = "")
         {
+            var correctchannelcheck = Ledybot.Program.f1.BotChannels.ToString().Split(',');
+            if (!correctchannelcheck.Contains(Context.Channel.Id.ToString()))
+            {
+                await ReplyAsync("You can not use this command in this channel");
+                return;
+            }
             int ptsstr = Array.IndexOf(Ledybot.Program.PKTable.Species6, pts);
             if (ptsstr == -1)
             {

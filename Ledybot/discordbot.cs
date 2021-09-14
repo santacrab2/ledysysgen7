@@ -250,7 +250,12 @@ public class discordbot
       
         public async Task stradestringdepo(string trainer, string pts, [Remainder] string set)
         {
-            
+            var correctchannelcheck = Ledybot.Program.f1.BotChannels.ToString().Split(',');
+            if (!correctchannelcheck.Contains(Context.Channel.Id.ToString()))
+            {
+                await ReplyAsync("You can not use this command in this channel");
+                return;
+            }
             int ptsstr = Array.IndexOf(Ledybot.Program.PKTable.Species7, pts);
             if(ptsstr == -1)
             {
@@ -391,7 +396,12 @@ public class discordbot
      
         public async Task stradenotidpts(string trainer, int pts,[Remainder] string set)
         {
-            
+            var correctchannelcheck = Ledybot.Program.f1.BotChannels.ToString().Split(',');
+            if (!correctchannelcheck.Contains(Context.Channel.Id.ToString()))
+            {
+                await ReplyAsync("You can not use this command in this channel");
+                return;
+            }
             if (tradevolvs.Contains(pts))
             {
                 await ReplyAsync("you almost just broke the bot by depositing a trade evolution");
@@ -517,7 +527,12 @@ public class discordbot
       
         public async Task pstrtrade([Summary("poke to search")] string pts, [Remainder] string trainer)
         {
-            
+            var correctchannelcheck = Ledybot.Program.f1.BotChannels.ToString().Split(',');
+            if (!correctchannelcheck.Contains(Context.Channel.Id.ToString()))
+            {
+                await ReplyAsync("You can not use this command in this channel");
+                return;
+            }
             int ptsstr = Array.IndexOf(Ledybot.Program.PKTable.Species7, pts);
             if (ptsstr == -1)
             {
@@ -661,7 +676,12 @@ public class discordbot
       
         public async Task ptrade([Summary("poke to search")] int pts, [Remainder] string trainer)
         {
-            
+            var correctchannelcheck = Ledybot.Program.f1.BotChannels.ToString().Split(',');
+            if (!correctchannelcheck.Contains(Context.Channel.Id.ToString()))
+            {
+                await ReplyAsync("You can not use this command in this channel");
+                return;
+            }
             string temppokewait = Path.GetTempFileName();
             if (tradevolvs.Contains(pts))
             {
