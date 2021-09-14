@@ -292,7 +292,7 @@ namespace Ledybot
         [Alias("tc")]
         public async Task tradecordtrade(string trainer, int pts, int idnumb, [Remainder] string trainerinfo = "")
         {
-            var correctchannelcheck = Ledybot.Program.f1.BotChannels.ToString().Split(',');
+            var correctchannelcheck = Ledybot.Program.f1.BotChannels.Text.Split(',');
             if (!correctchannelcheck.Contains(Context.Channel.Id.ToString()))
             {
                 await ReplyAsync("You can not use this command in this channel");
@@ -370,7 +370,7 @@ namespace Ledybot
         [Alias("tc")]
         public async Task tradecordstrtrade(string trainer, string pts, int idnumb, [Remainder] string trainerinfo = "")
         {
-            var correctchannelcheck = Ledybot.Program.f1.BotChannels.ToString().Split(',');
+            var correctchannelcheck = Ledybot.Program.f1.BotChannels.Text.Split(',');
             if (!correctchannelcheck.Contains(Context.Channel.Id.ToString()))
             {
                 await ReplyAsync("You can not use this command in this channel");

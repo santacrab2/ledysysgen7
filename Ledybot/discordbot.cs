@@ -250,7 +250,7 @@ public class discordbot
       
         public async Task stradestringdepo(string trainer, string pts, [Remainder] string set)
         {
-            var correctchannelcheck = Ledybot.Program.f1.BotChannels.ToString().Split(',');
+            var correctchannelcheck = Ledybot.Program.f1.BotChannels.Text.Split(',');
             if (!correctchannelcheck.Contains(Context.Channel.Id.ToString()))
             {
                 await ReplyAsync("You can not use this command in this channel");
@@ -396,7 +396,7 @@ public class discordbot
      
         public async Task stradenotidpts(string trainer, int pts,[Remainder] string set)
         {
-            var correctchannelcheck = Ledybot.Program.f1.BotChannels.ToString().Split(',');
+            var correctchannelcheck = Ledybot.Program.f1.BotChannels.Text.Split(',');
             if (!correctchannelcheck.Contains(Context.Channel.Id.ToString()))
             {
                 await ReplyAsync("You can not use this command in this channel");
@@ -527,7 +527,7 @@ public class discordbot
       
         public async Task pstrtrade([Summary("poke to search")] string pts, [Remainder] string trainer)
         {
-            var correctchannelcheck = Ledybot.Program.f1.BotChannels.ToString().Split(',');
+            var correctchannelcheck = Ledybot.Program.f1.BotChannels.Text.Split(',');
             if (!correctchannelcheck.Contains(Context.Channel.Id.ToString()))
             {
                 await ReplyAsync("You can not use this command in this channel");
@@ -676,7 +676,7 @@ public class discordbot
       
         public async Task ptrade([Summary("poke to search")] int pts, [Remainder] string trainer)
         {
-            var correctchannelcheck = Ledybot.Program.f1.BotChannels.ToString().Split(',');
+            var correctchannelcheck = Ledybot.Program.f1.BotChannels.Text.Split(',');
             if (!correctchannelcheck.Contains(Context.Channel.Id.ToString()))
             {
                 await ReplyAsync("You can not use this command in this channel");
