@@ -1143,10 +1143,10 @@ namespace Ledybot
 
                                 await Task.Delay(commandtime + delaytime);
                                 await Task.Delay(5000);
-                                var tradetime = 1200;
+                               
                                 if (await isCorrectWindow(val_duringTrade) || await isCorrectWindow(val_system))
                                 {
-                                    while (await isCorrectWindow(val_duringTrade) || await isCorrectWindow(val_system))
+                                    while ((await isCorrectWindow(val_duringTrade) || await isCorrectWindow(val_system)) && timeout.ElapsedMilliseconds < 1200_000)
                                     {
                                
                                         continue;
@@ -1161,12 +1161,40 @@ namespace Ledybot
                                 }
                                 if (await isCorrectWindow(val_duringTrade) || await isCorrectWindow(val_system))
                                 {
-                                    while (await isCorrectWindow(val_duringTrade) || await isCorrectWindow(val_system))
+                                    while ((await isCorrectWindow(val_duringTrade) || await isCorrectWindow(val_system)) && timeout.ElapsedMilliseconds < 1200_000)
                                     {
                                   
                                         continue;
                                     }
                                 }
+                                if (timeout.ElapsedMilliseconds >= 1200_000)
+                                {
+                                    if (wtchan.Name.ToString().Contains("✅"))
+                                    {
+                                        await wtchan.ModifyAsync(prop => prop.Name = wtchan.Name.Replace("✅", "❌"));
+                                        var offembed = new EmbedBuilder();
+                                        offembed.AddField("Prinplup Bot Announcement", "Wonder Trade Bot is Offline");
+                                        await wtchan.SendMessageAsync(embed: offembed.Build());
+
+                                    }
+                                    var bcidses = Ledybot.Program.f1.BotChannels.Text.Split(',');
+                                    foreach (string ids in bcidses)
+                                    {
+                                        ulong.TryParse(ids, out var bcid);
+                                        var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
+                                        if (botchan.Name.Contains("✅"))
+                                        {
+                                            await botchan.ModifyAsync(prop => prop.Name = botchan.Name.ToString().Replace("✅", "❌"));
+                                            var offembed = new EmbedBuilder();
+                                            offembed.AddField("Prinplup Bot Announcement", "GTS Trade Bot is Offline");
+                                            await botchan.SendMessageAsync(embed: offembed.Build());
+                                        }
+
+                                    }
+                                    timeout.Reset();
+                                    return 8;
+                                }
+                                   
                                 //during the trade spam a/b to get back to the start screen in case of "this pokemon has been traded"
                                 while (!await isCorrectWindow(val_Quit_SeekScreen))
                                 {
