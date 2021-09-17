@@ -29,6 +29,7 @@ public class TwitchBot
     public static Queue wtqueue = new Queue();
     public static TwitchClient client;
     public static string Channel;
+    public static discordbot.trademodule disbot = new discordbot.trademodule();
 
 
     public TwitchBot()
@@ -84,6 +85,13 @@ public class TwitchBot
         var command = e.Command.CommandText;
         switch (command)
         {
+            case "t":
+                var commandformat = e.Command.ArgumentsAsString.Split(',');
+                twitchtrade(e,commandformat[0], commandformat[1], commandformat[2]);
+                return;
+              
+                    
+                
             case "wt":
                 if (!wtuser.Contains(e.Command.ChatMessage.Username))
                 {
@@ -148,6 +156,234 @@ public class TwitchBot
         }
     }
 
+    public async Task twitchtrade(OnChatCommandReceivedArgs t,string trainer, string pts, string set)
+    {
+        int ptsstr = Array.IndexOf(Ledybot.Program.PKTable.Species7, pts);
+        if (ptsstr == -1)
+        {
+            client.SendMessage(Channel,"did not recognize your deposit pokemon");
+            return;
+        }
+        ptsstr = ptsstr + 1;
+        if (discordbot.trademodule.tradevolvs.Contains(ptsstr))
+        {
+            client.SendMessage(Channel,"you almost just broke the bot by depositing a trade evolution");
+            return;
+        }
+        string[] pset = set.Split(' ');
+        var l = Legal.ZCrystalDictionary;
+        string temppokewait = Path.GetTempFileName();
+
+        PKM pk = BuildPokemon(set, 7);
+        if (File.Exists($"{Directory.GetCurrentDirectory()}//trainerinfo//{t.Command.ChatMessage.UserId}.txt"))
+        {
+            string[] trsplit = File.ReadAllText($"{Directory.GetCurrentDirectory()}//trainerinfo//{t.Command.ChatMessage.UserId}.txt").Split('\n');
+            int q = 0;
+            foreach (string b in trsplit)
+            {
+                if (trsplit[q].Contains("OT:"))
+                    pk.OT_Name = trsplit[q].Replace("OT: ", "");
+                q++;
+            }
+            int h = 0;
+            foreach (string v in trsplit)
+            {
+                if (trsplit[h].Contains("TID:"))
+                {
+                    int trid7 = Convert.ToInt32(trsplit[h].Replace("TID: ", ""));
+                    pk.TrainerID7 = trid7;
+
+                }
+                h++;
+            }
+            int hd = 0;
+            foreach (string v in trsplit)
+            {
+                if (trsplit[hd].Contains("SID:"))
+                {
+                    int trsid7 = Convert.ToInt32(trsplit[hd].Replace("SID: ", ""));
+                    pk.TrainerSID7 = trsid7;
+
+                }
+                hd++;
+            }
+        }
+
+        if (pk.OT_Name.ToLower() == "pkhex")
+            pk.OT_Name = trainer;
+        if (set.Contains("OT:"))
+        {
+            int q = 0;
+            foreach (string b in pset)
+            {
+                if (pset[q].Contains("OT:"))
+                    pk.OT_Name = pset[q].Replace("OT: ", "");
+                q++;
+            }
+        }
+        if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("ot name too long"))
+            pk.OT_Name = "Pip";
+        if (set.Contains("TID:"))
+        {
+
+            int h = 0;
+            foreach (string v in pset)
+            {
+                if (pset[h].Contains("TID:"))
+                {
+                    int trid7 = Convert.ToInt32(pset[h].Replace("TID: ", ""));
+                    pk.TrainerID7 = trid7;
+
+                }
+                h++;
+            }
+        }
+        if (set.Contains("SID:"))
+        {
+            int h = 0;
+            foreach (string v in pset)
+            {
+                if (pset[h].Contains("SID:"))
+                {
+                    int trsid7 = Convert.ToInt32(pset[h].Replace("SID: ", ""));
+                    pk.TrainerSID7 = trsid7;
+
+                }
+                h++;
+            }
+        }
+        if (set.ToLower().Contains("shiny: yes"))
+        {
+            pk.SetIsShiny(true);
+        }
+        if (new LegalityAnalysis(pk).Report().Contains("Invalid: SID should be 0"))
+            pk.SID = 0;
+
+
+
+
+
+
+        if (!new LegalityAnalysis(pk).Valid)
+        {
+            client.SendMessage(Channel,"Pokemon is illegal");
+            client.SendMessage(Channel,LegalityFormatting.Report(new LegalityAnalysis(pk)));
+            File.Delete(temppokewait);
+            return;
+
+        }
+        client.SendMessage(Channel,"yay its legal good job!");
+
+        byte[] g = pk.DecryptedBoxData;
+        System.IO.File.WriteAllBytes(temppokewait, g);
+        discordbot.trademodule.pokequeue.Enqueue(temppokewait);
+        discordbot.trademodule.username.Enqueue(t.Command.ChatMessage.UserId);
+        discordbot.trademodule.trainername.Enqueue(trainer);
+        discordbot.trademodule.pokemonfile.Enqueue(pk);
+        discordbot.trademodule.channel.Enqueue(Channel);
+        discordbot.trademodule.poketosearch.Enqueue(ptsstr);
+        discordbot.trademodule.discordname.Enqueue(t.Command.ChatMessage.Username);
+
+        client.SendMessage(Channel,"added " + t.Command.ChatMessage.Username + " to queue");
+        await checkstarttrade();
+
+
+    }
+    public static PKM BuildPokemon(string Set, int Generation)
+    {
+        try
+        {
+            // Disable Easter Eggs
+            Legalizer.EnableEasterEggs = false;
+            APILegality.SetAllLegalRibbons = false;
+            APILegality.SetMatchingBalls = true;
+            APILegality.ForceSpecifiedBall = true;
+            APILegality.UseXOROSHIRO = true;
+            APILegality.UseTrainerData = true;
+            APILegality.AllowTrainerOverride = true;
+            APILegality.AllowBatchCommands = true;
+            APILegality.PrioritizeGame = true;
+            APILegality.Timeout = 30;
+            APILegality.PrioritizeGameVersion = GameVersion.USUM;
+            // Reload Database & Ribbon Index
+
+
+
+
+
+            // Convert the given Text into a Showdown Set
+            ShowdownSet set = ConvertToShowdown(Set);
+            IBattleTemplate re = new RegenTemplate(set, 7);
+            // Generate a Blank Savefile
+
+
+            var sav = TrainerSettings.DefaultFallback(7);
+            PK7 tru = new PK7();
+            // Generates a PKM from Showdown Set
+            var pk = sav.GetLegalFromTemplate(tru, re, out _);
+            PKMConverter.SetPrimaryTrainer(sav);
+
+            PKMConverter.AllowIncompatibleConversion = true;
+            pk = PKMConverter.ConvertToType(pk, typeof(PK7), out _);
+            var sug = EncounterSuggestion.GetSuggestedMetInfo(pk);
+            pk.Met_Location = sug.Location;
+            pk.Met_Level = sug.LevelMin;
+
+
+            pk = pk.Legalize();
+
+
+
+            // In case its illegal, return null
+            if (!new LegalityAnalysis(pk).Valid)
+            {
+                pk.SetEggMetData(GameVersion.US, GameVersion.US);
+                pk.Met_Location = 78;
+                pk.Met_Level = 1;
+                pk = pk.Legalize();
+                return pk;
+            }
+
+
+
+            // Return PKM
+            return pk;
+        }
+        catch
+        {
+            // Text isn't a Showdown Set
+            return null;
+        }
+    }
+    public async Task checkstarttrade()
+    {
+
+        if (discordbot.trademodule.pokequeue.Count == 1)
+            client.SendMessage(Channel,"finishing an ad trade, be right with you!");
+        else
+            client.SendMessage(Channel,"There are " + discordbot.trademodule.pokequeue.Count + " trainers in the queue");
+
+    }
+    public static async Task slow()
+    {
+        client.SendMessage(Channel,discordbot.trademodule.discordname.Peek() + " I could not find your deposit on the GTS, so the trades been cancelled");
+        discordbot.trademodule.channel.Dequeue();
+        discordbot.trademodule.discordname.Dequeue();
+        discordbot.trademodule.pokequeue.Dequeue();
+        discordbot.trademodule.username.Dequeue();
+        discordbot.trademodule.pokemonfile.Dequeue();
+        discordbot.trademodule.trainername.Dequeue();
+    }
+    public static async Task notrade()
+    {
+        client.SendMessage(Channel,discordbot.trademodule.discordname.Peek() + " something went wrong with your trade, please try again. if you get this message two times in a row, please ping Santacrab2");
+        discordbot.trademodule.channel.Dequeue();
+        discordbot.trademodule.discordname.Dequeue();
+        discordbot.trademodule.pokequeue.Dequeue();
+        discordbot.trademodule.username.Dequeue();
+        discordbot.trademodule.pokemonfile.Dequeue();
+        discordbot.trademodule.trainername.Dequeue();
+    }
     public static ShowdownSet? ConvertToShowdown(string setstring)
     {
         // LiveStreams remove new lines, so we are left with a single line set

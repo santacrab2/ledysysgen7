@@ -273,9 +273,12 @@ namespace Ledybot
                             }
                             if (distribute == false)
                             {
-                                IMessageChannel chan = (IMessageChannel)discordbot.trademodule.channel.Peek();
-
-                                await chan.SendMessageAsync("<@" + discordbot.trademodule.username.Peek() + ">" + " searching for you now. Deposit your pokemon if you haven't already.");
+                                try
+                                {
+                                    IMessageChannel chan = (IMessageChannel)discordbot.trademodule.channel.Peek();
+                                
+                                    await chan.SendMessageAsync("<@" + discordbot.trademodule.username.Peek() + ">" + " searching for you now. Deposit your pokemon if you haven't already.");
+                                }catch { TwitchBot.client.SendMessage(TwitchBot.Channel, discordbot.trademodule.discordname.Peek() + " searching for you now. Deposit your pokemon if you haven't already."); }
                             }
                             if ((int)discordbot.trademodule.poketosearch.Peek() == 4321)
                             {
@@ -334,7 +337,7 @@ namespace Ledybot
                                 if (distribute == false)
                                 {
                                     await logchan.SendMessageAsync($"{discordbot.trademodule.discordname.Peek()} did not complete their trade");
-                                    await discordbot.trademodule.slow();
+                                    try { await discordbot.trademodule.slow(); } catch { await TwitchBot.slow(); }
                                     botState = (int)gtsbotstates.botstart;
                                     break;
                                 }
@@ -1220,7 +1223,7 @@ namespace Ledybot
                                         foundLastPage = false;
                                         botresult = 8;
                                         distribute = false;
-                                        await discordbot.trademodule.notrade();
+                                        try { await discordbot.trademodule.notrade(); } catch { await TwitchBot.notrade(); }
                                         botState = (int)gtsbotstates.botstart;
                                         break;
                                     }
@@ -1248,9 +1251,12 @@ namespace Ledybot
 
                                 if (discordbot.trademodule.retpoke.Count != 0)
                                 {
-
-                                    IMessageChannel t = (IMessageChannel)discordbot.trademodule.channel.Peek();
-                                    await t.SendFileAsync((string)discordbot.trademodule.retpoke.Peek(), discordbot.trademodule.discordname.Peek() + " here is the pokemon you traded me ");
+                                    try
+                                    {
+                                        IMessageChannel t = (IMessageChannel)discordbot.trademodule.channel.Peek();
+                                        await t.SendFileAsync((string)discordbot.trademodule.retpoke.Peek(), discordbot.trademodule.discordname.Peek() + " here is the pokemon you traded me ");
+                                       
+                                    }catch { TwitchBot.client.SendMessage(TwitchBot.Channel, $"{discordbot.trademodule.discordname.Dequeue()} Your trade has been completed"); };
                                     discordbot.trademodule.channel.Dequeue();
                                     discordbot.trademodule.retpoke.Dequeue();
                                     discordbot.trademodule.discordname.Dequeue();
@@ -1258,6 +1264,7 @@ namespace Ledybot
                                         File.Delete(Ledybot.GTSBot7.tpfile);
                                     else
                                         File.Delete(Ledybot.GTSBot6.tpfile);
+
                                 }
 
 

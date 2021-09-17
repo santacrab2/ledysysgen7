@@ -1708,8 +1708,37 @@ public class discordbot
             embed.AddField("**WonderTrade Commands", "!wt pokemon\n!wt Darkrai\nShiny: Yes\n\n!wtlist\nShows all the available pokemon to request. A Star means shiny.");
             await ReplyAsync(embed: embed.Build());
         }
+        [Command("wondertradequeue")]
+        [Alias("wtq")]
+        public async Task wtque()
+        {
+            Object[] arr = TwitchBot.wtuser.ToArray();
+            var sb = new System.Text.StringBuilder();
+            embed = new EmbedBuilder();
+            if (arr.Length == 0)
+            {
+                await ReplyAsync("queue is empty");
+            }
+            int r = 0;
+            foreach (object i in arr)
+            {
 
-        
+                sb.AppendLine((r + 1).ToString() + ". " + arr[r].ToString());
+                r++;
+            }
+            embed.AddField(x =>
+            {
+
+                x.Name = "WT Queue:";
+                x.Value = sb.ToString();
+                x.IsInline = false;
+
+
+            });
+            await ReplyAsync(embed: embed.Build());
+        }
+
+
     }
 
 
