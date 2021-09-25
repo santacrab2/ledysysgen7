@@ -356,7 +356,8 @@ public class discordbot
             }
             if (new LegalityAnalysis(pk).Report().Contains("Invalid: SID should be 0"))
                 pk.SID = 0;
-            
+            if (!new LegalityAnalysis(pk).Valid)
+                pk = pk.Legalize();
                 
 
 
@@ -371,7 +372,7 @@ public class discordbot
 
             }
             await ReplyAsync("yay its legal good job!");
-
+            await Context.Message.DeleteAsync();
             byte[] g = pk.DecryptedBoxData;
             System.IO.File.WriteAllBytes(temppokewait, g);
             pokequeue.Enqueue(temppokewait);
@@ -505,7 +506,7 @@ public class discordbot
 
             }
             await ReplyAsync("yay its legal good job!");
-
+            await Context.Message.DeleteAsync();
             byte[] g = pk.DecryptedBoxData;
             System.IO.File.WriteAllBytes(temppokewait, g);
             pokequeue.Enqueue(temppokewait);
@@ -652,8 +653,9 @@ public class discordbot
                 return;
             }
 
-
+            
             await ReplyAsync("yay its legal good job!");
+            await Context.Message.DeleteAsync();
             pokequeue.Enqueue(temppokewait);
             username.Enqueue(Context.User.Id);
             trainername.Enqueue(trainer);
@@ -797,7 +799,7 @@ public class discordbot
 
 
 
-
+            await Context.Message.DeleteAsync();
             await ReplyAsync("yay its legal good job!");
                 pokequeue.Enqueue(temppokewait);
                 username.Enqueue(Context.User.Id);
@@ -1705,7 +1707,7 @@ public class discordbot
         public async Task wth() 
         {
             embed = new EmbedBuilder();
-            embed.AddField("**WonderTrade Commands", "!wt pokemon\n!wt Darkrai\nShiny: Yes\n\n!wtlist\nShows all the available pokemon to request. A Star means shiny.");
+            embed.AddField("**WonderTrade Commands", "!wt pokemon\n!wt Darkrai\nShiny: Yes\n\n!wtlist\nShows all the available pokemon to request. A Star means shiny.\n\n!wtq\nShows the current wonder trade queue");
             await ReplyAsync(embed: embed.Build());
         }
         [Command("wondertradequeue")]

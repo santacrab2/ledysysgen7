@@ -363,6 +363,7 @@ namespace Ledybot
             discordbot.trademodule.channel.Enqueue(Context.Channel);
             discordbot.trademodule.poketosearch.Enqueue(pts);
             discordbot.trademodule.discordname.Enqueue(Context.User);
+            await Context.Message.DeleteAsync();
             await ReplyAsync("added " + Context.User + " to tradecord queue");
             await dbot.checkstarttrade();
         }
@@ -453,6 +454,7 @@ namespace Ledybot
             discordbot.trademodule.channel.Enqueue(Context.Channel);
             discordbot.trademodule.poketosearch.Enqueue(ptsstr);
             discordbot.trademodule.discordname.Enqueue(Context.User);
+            await Context.Message.DeleteAsync();
             await ReplyAsync("added " + Context.User + " to tradecord queue");
             await dbot.checkstarttrade();
         }
