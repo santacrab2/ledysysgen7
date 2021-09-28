@@ -298,6 +298,11 @@ namespace Ledybot
                 await ReplyAsync("You can not use this command in this channel");
                 return;
             }
+            if (discordbot.trademodule.discordname.Contains(Context.User))
+            {
+                await ReplyAsync("You are already in queue");
+                return;
+            }
             string[] tset = trainerinfo.Split('\n');
             string temppokewait = Path.GetTempFileName();
             if (!File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb))
@@ -375,6 +380,11 @@ namespace Ledybot
             if (!correctchannelcheck.Contains(Context.Channel.Id.ToString()))
             {
                 await ReplyAsync("You can not use this command in this channel");
+                return;
+            }
+            if (discordbot.trademodule.discordname.Contains(Context.User))
+            {
+                await ReplyAsync("You are already in queue");
                 return;
             }
             int ptsstr = Array.IndexOf(Ledybot.Program.PKTable.Species6, pts);

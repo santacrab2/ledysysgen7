@@ -256,6 +256,11 @@ public class discordbot
                 await ReplyAsync("You can not use this command in this channel");
                 return;
             }
+            if (discordname.Contains(Context.User))
+            {
+                await ReplyAsync("You are already in queue");
+                return;
+            }
             int ptsstr = Array.IndexOf(Ledybot.Program.PKTable.Species7, pts);
             if(ptsstr == -1)
             {
@@ -403,6 +408,11 @@ public class discordbot
                 await ReplyAsync("You can not use this command in this channel");
                 return;
             }
+            if (discordname.Contains(Context.User))
+            {
+                await ReplyAsync("You are already in queue");
+                return;
+            }
             if (tradevolvs.Contains(pts))
             {
                 await ReplyAsync("you almost just broke the bot by depositing a trade evolution");
@@ -532,6 +542,11 @@ public class discordbot
             if (!correctchannelcheck.Contains(Context.Channel.Id.ToString()))
             {
                 await ReplyAsync("You can not use this command in this channel");
+                return;
+            }
+            if (discordname.Contains(Context.User))
+            {
+                await ReplyAsync("you are already in queue");
                 return;
             }
             int ptsstr = Array.IndexOf(Ledybot.Program.PKTable.Species7, pts);
@@ -682,6 +697,11 @@ public class discordbot
             if (!correctchannelcheck.Contains(Context.Channel.Id.ToString()))
             {
                 await ReplyAsync("You can not use this command in this channel");
+                return;
+            }
+            if (discordname.Contains(Context.User))
+            {
+                await ReplyAsync("you are already in queue");
                 return;
             }
             string temppokewait = Path.GetTempFileName();
