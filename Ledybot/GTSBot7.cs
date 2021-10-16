@@ -594,7 +594,7 @@ namespace Ledybot
                                                 {
 
                                                     pokecheck = discordbot.trademodule.BuildPokemon(Ledybot.Program.PKTable.Species7[dexnumber - 1], 7);
-                                                    if (pokecheck.Species == 29 || pokecheck.Species == 32)
+                                                    if (pokecheck.Species == 29 || pokecheck.Species == 32 || szTrainerName.ToLower() == "funkygamer26")
                                                     {
                                                         addr_PageEntry = BitConverter.ToUInt32(block, 0);
                                                         continue;
