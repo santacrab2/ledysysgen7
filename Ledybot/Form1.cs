@@ -298,7 +298,7 @@ namespace Ledybot
                     {
                         await botchan.ModifyAsync(prop => prop.Name = botchan.Name.Replace("❌", "✅"));
                         var offembed = new EmbedBuilder();
-                        offembed.AddField("Prinplup Bot Announcement", "GTS Trade Bot is Online");
+                        offembed.AddField($"{discordbot._client.CurrentUser.Username} Bot Announcement", "GTS Trade Bot is Online");
                         await botchan.SendMessageAsync(embed: offembed.Build());
                     }
 
@@ -417,7 +417,7 @@ namespace Ledybot
                 {
                     await GTSBot7.wtchan.ModifyAsync(prop => prop.Name = GTSBot7.wtchan.Name.Replace("✅", "❌"));
                     var offembed = new EmbedBuilder();
-                    offembed.AddField("Prinplup Bot Announcement", "Wonder Trade Bot is Offline");
+                    offembed.AddField($"{discordbot._client.CurrentUser.Username} Bot Announcement", "Wonder Trade Bot is Offline");
                     await GTSBot7.wtchan.SendMessageAsync(embed: offembed.Build());
                 }
                 var bcids = Ledybot.Program.f1.BotChannels.Text.Split(',');
@@ -429,7 +429,7 @@ namespace Ledybot
                     {
                         await botchan.ModifyAsync(prop => prop.Name = botchan.Name.Replace("✅", "❌"));
                         var offembed = new EmbedBuilder();
-                        offembed.AddField("Prinplup Bot Announcement", "GTS Trade Bot is Offline");
+                        offembed.AddField($"{discordbot._client.CurrentUser.Username} Bot Announcement", "GTS Trade Bot is Offline");
                         await botchan.SendMessageAsync(embed: offembed.Build());
                     }
 

@@ -845,7 +845,7 @@ public class discordbot
         {
            
                 if (pokequeue.Count == 1)
-                    await ReplyAsync("finishing an ad trade, be right with you!");
+                    await ReplyAsync("finishing an ad or wonder trade, be right with you!");
                 else
                     await ReplyAsync("There are " + pokequeue.Count + " trainers in the queue");
             
@@ -921,7 +921,7 @@ public class discordbot
             n = new List<string>();
             embed = new EmbedBuilder();
             embed.Color = new Color(147, 191, 230);
-            embed.Title = "Prinplup Bot Help";
+            embed.Title = $"{_client.CurrentUser.Username} Bot Help";
             embed.ThumbnailUrl = "https://www.shinyhunters.com/images/shiny/394.gif";
             embed.AddField("Prinplup is a Gen 7 GTS tradebot for\nSUN / MOON / ULTRA SUN / ULTRA MOON", "hi", false);
             n.Add("__Deposit a pokemon into the Gen 7 GTS__\n__Then use one of these 2 Commands to make the trade:__\n\n:large_blue_diamond:Attached .pk7 file\n```\n!trade DepositPokemon trainerName (and attach the file and hit send)```\n\n:large_blue_diamond:Showdown set\n```\n!trade trainername DepositPokemon ReceivingPokemon (and hit send)\nexample:!t Santa Caterpie Piplup\nShiny: Yes```**__Deposit Pokemon's name must be Capitalized__**");
