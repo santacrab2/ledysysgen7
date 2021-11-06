@@ -1356,15 +1356,18 @@ namespace Ledybot
                                 offembed.AddField("Prinplup Bot Announcement", "Wondertrade Bot is Online");
                                 await wtchan.SendMessageAsync(embed: offembed.Build());
                             }
-                            var bcidss = Ledybot.Program.f1.BotChannels.Text.Split(',');
-                            foreach (string ids in bcidss)
+                            if (MainForm.wondertrade.Enabled == false)
                             {
-                                ulong.TryParse(ids, out var bcid);
-                                var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
-                                if (botchan.Name.Contains("✅"))
-                                    await botchan.ModifyAsync(prop => prop.Name = botchan.Name.ToString().Replace("✅", "❌"));
+                                var bcidss = Ledybot.Program.f1.BotChannels.Text.Split(',');
+                                foreach (string ids in bcidss)
+                                {
+                                    ulong.TryParse(ids, out var bcid);
+                                    var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
+                                    if (botchan.Name.Contains("✅"))
+                                        await botchan.ModifyAsync(prop => prop.Name = botchan.Name.ToString().Replace("✅", "❌"));
 
 
+                                }
                             }
                             Program.f1.ChangeStatus("wonder trading");
                             if (!await isCorrectWindow(val_Quit_SeekScreen))
