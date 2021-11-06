@@ -66,6 +66,7 @@ namespace Ledybot
             getCountries();
             btn_Disconnect.Enabled = false;
             combo_pkmnList.Items.AddRange(Program.PKTable.Species7);
+            combo_pkmnList.Items.Add("WonderTrades");
         }
 
         public void startAutoDisconnect()

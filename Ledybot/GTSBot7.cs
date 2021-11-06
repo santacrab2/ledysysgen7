@@ -283,7 +283,23 @@ namespace Ledybot
                             if ((int)discordbot.trademodule.poketosearch.Peek() == 4321)
                             {
                                 iPokemonToFind = MainForm.combo_pkmnList.SelectedIndex + 1;
+                                if(iPokemonToFind == 808)
+                                {
+                                    Program.helper.quickbuton(Program.PKTable.keyB, commandtime);
+                                    await Task.Delay(1000);
+                                    Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
+                                    await Task.Delay(5000);
+                                    Program.helper.quicktouch(180, 70, commandtime);
+                                    await Task.Delay(5000);
+                                    Program.helper.quicktouch(180, 160, commandtime);
+                                    await Task.Delay(1000);
+                                    botState = (int)gtsbotstates.wondertrade;
+                                    discordbot.trademodule.poketosearch.Dequeue();
+                                    discordbot.trademodule.trainername.Dequeue();
+                                    break;
+                                }
                                 discordbot.trademodule.poketosearch.Dequeue();
+                               
                             }
                             else
                             {
@@ -1456,9 +1472,25 @@ namespace Ledybot
                             }
                             while (!await isCorrectWindow(val_Quit_SeekScreen))
                                 await Task.Delay(25);
-                            await wtchan.SendMessageAsync("starting the next wonder trade in 42 seconds");
-                            TwitchBot.client.SendMessage(TwitchBot.Channel, "starting the next wonder trade in 42 seconds");
+                            try
+                            {
+                                await wtchan.SendMessageAsync("starting the next wonder trade in 42 seconds");
+                                TwitchBot.client.SendMessage(TwitchBot.Channel, "starting the next wonder trade in 42 seconds");
+                            }
+                            catch { await Task.Delay(1); }
                             await Task.Delay(42000);
+                            if (MainForm.wondertrade.Enabled == true && discordbot.trademodule.pokequeue.Count != 0)
+                            {
+                                Program.helper.quickbuton(Program.PKTable.keyB, commandtime);
+                                await Task.Delay(5000);
+                                Program.helper.quicktouch(180, 70, commandtime);
+                                await Task.Delay(5000);
+                                Program.helper.quicktouch(180, 115, commandtime);
+                                await Task.Delay(10000);
+                                distribute = false;
+                                botState = (int)gtsbotstates.botstart;
+                                break;
+                            }
                             botState = (int)gtsbotstates.wondertrade;
                             break;
 
