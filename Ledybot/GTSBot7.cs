@@ -367,8 +367,8 @@ namespace Ledybot
                                         MainForm.combo_pkmnList.SelectedIndex += 1;
                                     else
                                         MainForm.combo_pkmnList.SelectedIndex = 0;
-                                    while (discordbot.trademodule.tradevolvs.Contains(MainForm.combo_pkmnList.SelectedIndex + 1) || discordbot.trademodule.mythic.Contains(MainForm.combo_pkmnList.SelectedIndex + 1) || MainForm.combo_pkmnList.SelectedIndex == 587)
-                                        MainForm.combo_pkmnList.SelectedIndex += 1;
+                                   // while (discordbot.trademodule.tradevolvs.Contains(MainForm.combo_pkmnList.SelectedIndex + 1) || discordbot.trademodule.mythic.Contains(MainForm.combo_pkmnList.SelectedIndex + 1) || MainForm.combo_pkmnList.SelectedIndex == 587)
+                                    //    MainForm.combo_pkmnList.SelectedIndex += 1;
 
                                     distribute = false;
                                     botState = (int)gtsbotstates.botstart;
@@ -1167,7 +1167,8 @@ namespace Ledybot
                                 {
                                     while ((await isCorrectWindow(val_duringTrade) || await isCorrectWindow(val_system)) && timeout.ElapsedMilliseconds < 1200_000)
                                     {
-                               
+                                        Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
+                                        await Task.Delay(1000);
                                         continue;
                                     }
                                 }
@@ -1182,7 +1183,9 @@ namespace Ledybot
                                 {
                                     while ((await isCorrectWindow(val_duringTrade) || await isCorrectWindow(val_system)) && timeout.ElapsedMilliseconds < 1200_000)
                                     {
-                                  
+                                        Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
+                                        await Task.Delay(1000);
+
                                         continue;
                                     }
                                 }
@@ -1462,7 +1465,11 @@ namespace Ledybot
                                 }
                             }
                             while (!await isCorrectWindow(val_Quit_SeekScreen))
+                            {
+                                Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
+                                await Task.Delay(1000);
                                 await Task.Delay(25);
+                            }
                             try
                             {
                                 await wtchan.SendMessageAsync("starting the next wonder trade in 42 seconds");
@@ -1472,6 +1479,10 @@ namespace Ledybot
                             await Task.Delay(42000);
                             if (MainForm.wondertrade.Enabled == true && discordbot.trademodule.pokequeue.Count != 0)
                             {
+                                try { await wtchan.SendMessageAsync("switching to GTS mode, wonder trades will return soon");
+                                    TwitchBot.client.SendMessage(TwitchBot.Channel, "switching to GTS mode, wonder trades will return soon");  }
+                                catch { await Task.Delay(1); }
+
                                 Program.helper.quickbuton(Program.PKTable.keyB, commandtime);
                                 await Task.Delay(5000);
                                 Program.helper.quicktouch(180, 70, commandtime);

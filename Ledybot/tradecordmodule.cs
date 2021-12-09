@@ -154,7 +154,7 @@ namespace Ledybot
                     tpk.SetIsShiny(false);
                 if (!new LegalityAnalysis(tpk).Valid)
                 {
-                    tradecordcatch();
+                    await tradecordcatch();
                     return;
                 }
                 if (tpk.IsShiny)

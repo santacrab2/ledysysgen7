@@ -145,8 +145,9 @@ public class discordbot
                     newShowdown[index] = "Shiny: Square\r";
                 else newShowdown[index] = "Shiny: Star\r";
             }
-
-            newShowdown.InsertRange(1, new string[] { $"OT: {pokme.OT_Name}", $"TID: {pokme.TrainerID7}", $"SID: {pokme.TrainerSID7}", $"OTGender: {(Gender)pokme.OT_Gender}", $"Language: {(LanguageID)pokme.Language}" });
+            var SID = string.Format("{0:0000}", pokme.TrainerSID7);
+            var TID = string.Format("{0:000000}", pokme.TrainerID7);
+            newShowdown.InsertRange(1, new string[] { $"OT: {pokme.OT_Name}", $"TID: {TID}", $"SID: {SID}", $"OTGender: {(Gender)pokme.OT_Gender}", $"Language: {(LanguageID)pokme.Language}" });
            await msg.Channel.SendMessageAsync(Format.Code(string.Join("\n", newShowdown).TrimEnd()));
         }
 
@@ -238,7 +239,7 @@ public class discordbot
         public static Queue discordname = new Queue();
         public static string distribute = "false";
         public static string trainer;
-        public static int[] tradevolvs = { 525, 75, 533, 93, 64, 67, 708, 710, 61, 79, 95, 123, 117, 137, 366, 112, 125, 126, 233, 356, 684, 682, 349 };
+       // public static int[] tradevolvs = { 525, 75, 533, 93, 64, 67, 708, 710, 61, 79, 95, 123, 117, 137, 366, 112, 125, 126, 233, 356, 684, 682, 349 };
         public static int[] mythic = { 151, 251, 385, 386, 490, 491, 492, 493, 494, 646, 647, 648, 649, 719, 720, 721, 801, 802, 807 };
         public static bool distributestart = false;
         public static List<string> n;
@@ -268,11 +269,11 @@ public class discordbot
                 return;
             }
             ptsstr = ptsstr + 1;
-            if (tradevolvs.Contains(ptsstr))
-            {
-                await ReplyAsync("you almost just broke the bot by depositing a trade evolution");
-                return;
-            }
+          //  if (tradevolvs.Contains(ptsstr))
+           // {
+         //       await ReplyAsync("you almost just broke the bot by depositing a trade evolution");
+          //      return;
+          //  }
             string[] pset = set.Split('\n');
             var l = Legal.ZCrystalDictionary;
             string temppokewait = Path.GetTempFileName();
@@ -413,11 +414,11 @@ public class discordbot
                 await ReplyAsync("You are already in queue");
                 return;
             }
-            if (tradevolvs.Contains(pts))
-            {
-                await ReplyAsync("you almost just broke the bot by depositing a trade evolution");
-                return;
-            }
+           // if (tradevolvs.Contains(pts))
+         //   {
+          //      await ReplyAsync("you almost just broke the bot by depositing a trade evolution");
+           //     return;
+          //  }
             string[] pset = set.Split('\n');
             var l = Legal.ZCrystalDictionary;
             string temppokewait = Path.GetTempFileName();
@@ -557,11 +558,11 @@ public class discordbot
             }
             ptsstr = ptsstr + 1;
             string temppokewait = Path.GetTempFileName();
-            if (tradevolvs.Contains(ptsstr))
-            {
-                await ReplyAsync("you almost just broke the bot by depositing a trade evolution");
-                return;
-            }
+          //  if (tradevolvs.Contains(ptsstr))
+           // {
+          //      await ReplyAsync("you almost just broke the bot by depositing a trade evolution");
+          //      return;
+       //     }
             //this grabs the file the user uploads to discord if they even do it.
             pokm = Context.Message.Attachments.FirstOrDefault();
             if (pokm == default)
@@ -705,11 +706,11 @@ public class discordbot
                 return;
             }
             string temppokewait = Path.GetTempFileName();
-            if (tradevolvs.Contains(pts))
-            {
-                await ReplyAsync("you almost just broke the bot by depositing a trade evolution");
-                return;
-            }
+          //  if (tradevolvs.Contains(pts))
+        //    {
+        //        await ReplyAsync("you almost just broke the bot by depositing a trade evolution");
+           //     return;
+          //  }
             //this grabs the file the user uploads to discord if they even do it.
             pokm = Context.Message.Attachments.FirstOrDefault();
             if (pokm == default)

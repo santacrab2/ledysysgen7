@@ -165,11 +165,11 @@ public class TwitchBot
             return;
         }
         ptsstr = ptsstr + 1;
-        if (discordbot.trademodule.tradevolvs.Contains(ptsstr))
-        {
-            client.SendMessage(Channel,"you almost just broke the bot by depositing a trade evolution");
-            return;
-        }
+       // if (discordbot.trademodule.tradevolvs.Contains(ptsstr))
+     //   {
+     //       client.SendMessage(Channel,"you almost just broke the bot by depositing a trade evolution");
+    //        return;
+    //    }
         string[] pset = set.Split(' ');
         var l = Legal.ZCrystalDictionary;
         string temppokewait = Path.GetTempFileName();
