@@ -372,7 +372,10 @@ public class discordbot
             if (!new LegalityAnalysis(pk).Valid)
             {
                 await ReplyAsync("Pokemon is illegal");
-                await ReplyAsync(LegalityFormatting.Report(new LegalityAnalysis(pk)));
+                ShowdownSet Set = new(set);
+                var sav = TrainerSettings.DefaultFallback(7);
+                PK7 tru = new PK7();
+                await ReplyAsync(Set.SetAnalysis(sav,pk));
                 File.Delete(temppokewait);
                 return;
 
@@ -507,11 +510,13 @@ public class discordbot
             }
             if (new LegalityAnalysis(pk).Report().Contains("Invalid: SID should be 0"))
                 pk.SID = 0;
-
             if (!new LegalityAnalysis(pk).Valid)
             {
                 await ReplyAsync("Pokemon is illegal");
-                await ReplyAsync(LegalityFormatting.Report(new LegalityAnalysis(pk)));
+                ShowdownSet Set = new(set);
+                var sav = TrainerSettings.DefaultFallback(7);
+                PK7 tru = new PK7();
+                await ReplyAsync(Set.SetAnalysis(sav, pk));
                 File.Delete(temppokewait);
                 return;
 
@@ -665,6 +670,7 @@ public class discordbot
             if (!la2.Valid)
             {
                 await ReplyAsync("pokemon is illegal ");
+                await ReplyAsync(la2.Report());
                 File.Delete(temppokewait);
                 return;
             }
@@ -813,6 +819,7 @@ public class discordbot
             if (!la2.Valid)
             {
                 await ReplyAsync("pokemon is illegal ");
+                await ReplyAsync(la2.Report());
                 File.Delete(temppokewait);
                 return;
             }

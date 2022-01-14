@@ -287,7 +287,7 @@ namespace Ledybot
                
 
                 GTsBot7 = new GTSBot7(pid, combo_pkmnList.SelectedIndex + 1, combo_gender.SelectedIndex, combo_levelrange.SelectedIndex, cb_Blacklist.Checked, cb_Reddit.Checked, tradeDirection, tb_waittime.Text, tb_consoleName.Text, cb_UseLedySync.Checked, tb_LedySyncIP.Text, tb_LedySyncPort.Text, game);
-                if (GTSBot7.wtchan.Name.ToString().Contains("✅"))
+                if (GTSBot7.wtchan.Name.ToString().Contains("❌"))
                 {
                     var offembed = new EmbedBuilder();
                     offembed.AddField($"{discordbot._client.CurrentUser.Username} Bot Announcement", "Wonder Trade Bot is Online");
@@ -306,7 +306,7 @@ namespace Ledybot
                         await botchan.ModifyAsync(prop => prop.Name = botchan.Name.Replace("❌", "✅"));
                         var offembed = new EmbedBuilder();
                         offembed.AddField($"{discordbot._client.CurrentUser.Username} Bot Announcement", "GTS Trade Bot is Online");
-                        await botchan.SendMessageAsync(embed: offembed.Build());
+                        await botchan.SendMessageAsync("<@&898900914348372058>",embed: offembed.Build());
                     }
 
                 }

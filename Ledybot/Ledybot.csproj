@@ -144,17 +144,19 @@
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PKHeX.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\PKHeX.Core.21.8.6\lib\net46\PKHeX.Core.dll</HintPath>
+      <HintPath>..\packages\PKHeX.Core.22.1.1\lib\net46\PKHeX.Core.dll</HintPath>
     </Reference>
     <Reference Include="PKHeX.Core.AutoMod, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\PKHeX-Plugins8.14.21\PKHeX.Core.AutoMod\bin\Release\net46\PKHeX.Core.AutoMod.dll</HintPath>
+      <HintPath>.\PKHeX.Core.AutoMod.dll</HintPath>
     </Reference>
-    <Reference Include="PKHeX.Core.Enhancements">
-      <HintPath>..\..\PKHeX-Plugins8.14.21\AutoLegalityMod\bin\Release\net46\PKHeX.Core.Enhancements.dll</HintPath>
+    <Reference Include="PKHeX.Core.Enhancements, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\PKHeX.Core.Enhancements.dll</HintPath>
     </Reference>
-    <Reference Include="PKHeX.Core.Injection">
-      <HintPath>..\..\PKHeX-Plugins8.14.21\AutoLegalityMod\bin\Release\net46\PKHeX.Core.Injection.dll</HintPath>
+    <Reference Include="PKHeX.Core.Injection, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\PKHeX.Core.Injection.dll</HintPath>
     </Reference>
     <Reference Include="PKHeX.Drawing, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
