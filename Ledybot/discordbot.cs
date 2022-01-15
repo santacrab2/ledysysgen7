@@ -669,13 +669,15 @@ public class discordbot
             var la2 = new LegalityAnalysis(tradeable);
             if (!la2.Valid)
             {
+                var sav = TrainerSettings.DefaultFallback(7);
+                ShowdownSet Set = new(tradeable);
                 await ReplyAsync("pokemon is illegal ");
-                await ReplyAsync(la2.Report());
+                await ReplyAsync(Set.SetAnalysis(sav, tradeable));
                 File.Delete(temppokewait);
                 return;
             }
 
-            
+
             await ReplyAsync("yay its legal good job!");
             await Context.Message.DeleteAsync();
             pokequeue.Enqueue(temppokewait);
@@ -818,8 +820,10 @@ public class discordbot
             var la2 = new LegalityAnalysis(tradeable);
             if (!la2.Valid)
             {
+                var sav = TrainerSettings.DefaultFallback(7);
+                ShowdownSet Set = new(tradeable);
                 await ReplyAsync("pokemon is illegal ");
-                await ReplyAsync(la2.Report());
+                await ReplyAsync(Set.SetAnalysis(sav,tradeable));
                 File.Delete(temppokewait);
                 return;
             }
