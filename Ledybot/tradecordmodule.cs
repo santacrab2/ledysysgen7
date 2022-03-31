@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
+using Discord.Interactions;
 using Discord.WebSocket;
 using Discord.Rest;
 using PKHeX.Core;
@@ -18,14 +19,15 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Ledybot
 {
-   public class tradecordmodule : ModuleBase<SocketCommandContext>
+    [Discord.Interactions.Group("tradecord","play tradecord")]
+   public class tradecordmodule : InteractionModuleBase<SocketInteractionContext>
     {
         public static int[] tradevolvs = { 525, 75, 533, 93, 64, 67, 708, 710, 61, 79, 95, 123, 117, 137, 366, 112, 125, 126, 233, 356, 684, 682, 349 };
         discordbot.trademodule dbot = new discordbot.trademodule();
         public static int[] mythic = { 151, 251, 385, 386, 490, 491, 492, 493, 494, 646, 647, 648, 649, 719, 720, 721, 801, 802, 807 };
         
-        [Command("catch")]
-        [Alias("k")]
+        [SlashCommand("catch","attempt to catch a random pokemon")]
+      
         public async Task tradecordcatch()
         {
 
@@ -59,7 +61,7 @@ namespace Ledybot
                     
                     discordbot.trademodule.embed.AddField("" + Context.User.Username, "you failed to catch a " + Ledybot.Program.PKTable.Species7[missrng] + " in a " + Ledybot.Program.PKTable.Balls7[ballrng]);
                 }
-                await ReplyAsync(embed: discordbot.trademodule.embed.Build());
+                await RespondAsync(embed: discordbot.trademodule.embed.Build());
                 return;
             }
             try
@@ -279,131 +281,48 @@ namespace Ledybot
                     }
 
                 }
-                await ReplyAsync(embed: discordbot.trademodule.embed.Build());
+                await RespondAsync(embed: discordbot.trademodule.embed.Build());
             }
             catch
             {
-                await ReplyAsync("something went wrong with this catch, try again!");
+                await RespondAsync("something went wrong with this catch, try again!",ephemeral:true);
                 return;
 
             }
         }
-        [Command("tradecord")]
-        [Alias("tc")]
-        public async Task tradecordtrade(string trainer, int pts, int idnumb, [Remainder] string trainerinfo = "")
+       
+        [SlashCommand("trade","sends a tradecord mon to your game")]
+
+        public async Task tradecordstrtrade([Discord.Interactions.Summary("YourTrainerName", "your in game name")] string trainer, [Discord.Interactions.Summary("DepositPokemon", "Please Capitalize like Piplup")] string pts, [Discord.Interactions.Summary("BoxIdNumber", "the number next to your pokemon")] int idnumb, string trainerinfo = "")
         {
             var correctchannelcheck = Ledybot.Program.f1.BotChannels.Text.Split(',');
             if (!correctchannelcheck.Contains(Context.Channel.Id.ToString()))
             {
-                await ReplyAsync("You can not use this command in this channel");
+                await RespondAsync("You can not use this command in this channel",ephemeral:true);
                 return;
             }
             if (discordbot.trademodule.discordname.Contains(Context.User))
             {
-                await ReplyAsync("You are already in queue");
-                return;
-            }
-            string[] tset = trainerinfo.Split('\n');
-            string temppokewait = Path.GetTempFileName();
-            if (!File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb))
-            {
-                await ReplyAsync("no pokemon assigned that id number");
-                return;
-            }
-            byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb);
-            var tpk = PKMConverter.GetPKMfromBytes(g, 7);
-            if (trainerinfo.Contains("OT:"))
-            {
-                int q = 0;
-                foreach (string b in tset)
-                {
-                    if (tset[q].Contains("OT:"))
-                        tpk.OT_Name = tset[q].Replace("OT: ", "");
-                    q++;
-                }
-            }
-            if (trainerinfo.Contains("TID:"))
-            {
-                int h = 0;
-                foreach (string v in tset)
-                {
-                    if (tset[h].Contains("TID:"))
-                    {
-                        int trid7 = Convert.ToInt32(tset[h].Replace("TID: ", ""));
-                        tpk.TrainerID7 = trid7;
-
-                    }
-                    h++;
-                }
-            }
-            if (trainerinfo.Contains("SID:"))
-            {
-                int h = 0;
-                foreach (string v in tset)
-                {
-                    if (tset[h].Contains("SID:"))
-                    {
-                        int trsid7 = Convert.ToInt32(tset[h].Replace("SID: ", ""));
-                        tpk.TrainerSID7 = trsid7;
-
-                    }
-                    h++;
-                }
-            }
-            if (trainerinfo.Contains("OTGender: male"))
-            {
-                tpk.OT_Gender = 0;
-            }
-
-            if (trainerinfo.Contains("OTGender: Female"))
-            {
-                tpk.OT_Gender = 1;
-            }
-            byte[] pc = tpk.DecryptedBoxData;
-            File.WriteAllBytes(temppokewait, pc);
-            discordbot.trademodule.pokequeue.Enqueue(temppokewait);
-            discordbot.trademodule.username.Enqueue(Context.User.Id);
-            discordbot.trademodule.trainername.Enqueue(trainer);
-            discordbot.trademodule.pokemonfile.Enqueue(tpk);
-            discordbot.trademodule.channel.Enqueue(Context.Channel);
-            discordbot.trademodule.poketosearch.Enqueue(pts);
-            discordbot.trademodule.discordname.Enqueue(Context.User);
-            await Context.Message.DeleteAsync();
-            await ReplyAsync("added " + Context.User + " to tradecord queue");
-            await dbot.checkstarttrade();
-        }
-        [Command("tradecord")]
-        [Alias("tc")]
-        public async Task tradecordstrtrade(string trainer, string pts, int idnumb, [Remainder] string trainerinfo = "")
-        {
-            var correctchannelcheck = Ledybot.Program.f1.BotChannels.Text.Split(',');
-            if (!correctchannelcheck.Contains(Context.Channel.Id.ToString()))
-            {
-                await ReplyAsync("You can not use this command in this channel");
-                return;
-            }
-            if (discordbot.trademodule.discordname.Contains(Context.User))
-            {
-                await ReplyAsync("You are already in queue");
+                await RespondAsync("You are already in queue",ephemeral:true);
                 return;
             }
             int ptsstr = Array.IndexOf(Ledybot.Program.PKTable.Species6, pts);
             if (ptsstr == -1)
             {
-                await ReplyAsync("did not recognize your deposit pokemon");
+                await RespondAsync("did not recognize your deposit pokemon",ephemeral:true);
                 return;
             }
             ptsstr = ptsstr + 1;
             if (tradevolvs.Contains(ptsstr))
             {
-                await ReplyAsync("you almost just broke the bot by depositing a trade evolution, you are a fucking asshole :)");
+                await RespondAsync("you almost just broke the bot by depositing a trade evolution",ephemeral:true);
                 return;
             }
             string[] tset = trainerinfo.Split('\n');
             string temppokewait = Path.GetTempFileName();
             if (!File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb))
             {
-                await ReplyAsync("no pokemon assigned that id number");
+                await RespondAsync("no pokemon assigned that id number",ephemeral:true);
                 return;
             }
             byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb);
@@ -464,20 +383,20 @@ namespace Ledybot
             discordbot.trademodule.channel.Enqueue(Context.Channel);
             discordbot.trademodule.poketosearch.Enqueue(ptsstr);
             discordbot.trademodule.discordname.Enqueue(Context.User);
-            await Context.Message.DeleteAsync();
+      
             await ReplyAsync("added " + Context.User + " to tradecord queue");
             await dbot.checkstarttrade();
         }
-        [Command("list")]
-        [Alias("l")]
-        public async Task pokelist(string order="")
+        [SlashCommand("list", "shows your tradecord box")]
+
+        public async Task pokelist(bool AlphabeticalOrder = false)
         {
             discordbot.page = 0;
             discordbot.trademodule.embed = new EmbedBuilder();
             if (!Directory.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id))
-                await ReplyAsync("no pokemon found");
+                await RespondAsync("no pokemon found",ephemeral:true);
             if (Directory.GetFiles(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//").Count() == 0)
-                await ReplyAsync("no pokemon found");
+                await RespondAsync("no pokemon found", ephemeral: true);
             System.Text.StringBuilder y = new System.Text.StringBuilder();
             List<int> tempor = new List<int>();
             int h = 1;
@@ -495,7 +414,7 @@ namespace Ledybot
                 }
                 byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + h);
                 var tpk = PKMConverter.GetPKMfromBytes(g, 7);
-                if (order == "order")
+                if (AlphabeticalOrder)
                     y.Append($"{Ledybot.Program.PKTable.Species7[tpk.Species - 1]}{(tpk.IsShiny ? "shiny" : "")}.{h} ");
                 else
                     y.Append($"{h}.{(tpk.IsShiny ? "★" : "")}{(Species)tpk.Species} ");
@@ -507,7 +426,7 @@ namespace Ledybot
             discordbot.trademodule.n = new List<string>();
             int q = 0;
             string yb = y.ToString();
-            if (order == "order")
+            if (AlphabeticalOrder)
             {
                 y = new System.Text.StringBuilder();
                 string[] temporder = yb.Split(' ');
@@ -545,6 +464,7 @@ namespace Ledybot
 
             discordbot.trademodule.embed.WithFooter($"Page {discordbot.page + 1} of {discordbot.trademodule.n.Count}");
             IEmote[] reactions = { new Emoji("⬅️"), new Emoji("➡️") };
+            await RespondAsync("box");
             var listmsg = await Context.Channel.SendMessageAsync(embed: discordbot.trademodule.embed.Build());
 
             _ = Task.Run(() => listmsg.AddReactionsAsync(reactions).ConfigureAwait(false));
@@ -555,23 +475,23 @@ namespace Ledybot
 
 
         }
-        [Command("release")]
-        [Alias("r")]
-        public async Task pokerelease(int idnumb)
+        [SlashCommand("release","releases a single pokemon")]
+     
+        public async Task pokerelease([Discord.Interactions.Summary("BoxIdNumber", "the number next to your pokemon")] int idnumb)
         {
             if (File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb))
             {
                 byte[] g = File.ReadAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb);
                 var tpk = PKMConverter.GetPKMfromBytes(g, 7);
-                await ReplyAsync(Ledybot.Program.PKTable.Species7[tpk.Species - 1] + " has been released");
+                await RespondAsync(Ledybot.Program.PKTable.Species7[tpk.Species - 1] + " has been released",ephemeral:true);
                 File.Delete(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb);
                 return;
             }
-            await ReplyAsync("no pokemon with that id number found");
+            await RespondAsync("no pokemon with that id number found",ephemeral:true);
         }
-        [Command("massrelease")]
-        [Alias("mr")]
-        public async Task massrelease(string shiny = "")
+        [SlashCommand("massrelease","releases a bunch of pokemon at once")]
+
+        public async Task massrelease([Discord.Interactions.Summary(description: "Options:Shiny,Pokemon,All")] string Option = "")
         {
 
             string[] files = Directory.GetFiles(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//");
@@ -581,32 +501,32 @@ namespace Ledybot
                 byte[] g = File.ReadAllBytes(file);
                 var tpk = PKMConverter.GetPKMfromBytes(g, 6);
                 var pokespec = (Species)tpk.Species;
-                if (!tpk.IsShiny && shiny == "")
+                if (!tpk.IsShiny && Option == "")
                 {
                     File.Delete(file);
                 }
-                else if (shiny == "shiny" && tpk.IsShiny)
+                else if (Option == "shiny" && tpk.IsShiny)
                     File.Delete(file);
-                else if (shiny == pokespec.ToString())
+                else if (Option == pokespec.ToString())
                     File.Delete(file);
-                else if (shiny == "all")
+                else if (Option == "all")
                     File.Delete(file);
 
 
             }
 
-            if (shiny == "")
-                await ReplyAsync("all non shiny pokemon have been released");
-            if (shiny.ToLower() == "shiny")
-                await ReplyAsync("all shiny pokemon have been released");
-            if (GameInfo.Strings.specieslist.Contains(shiny))
-                await ReplyAsync($"all {shiny} have been released");
-            if (shiny == "all")
-                await ReplyAsync("all Pokemon have been released");
+            if (Option == "")
+                await RespondAsync("all non shiny pokemon have been released",ephemeral:true);
+            if (Option.ToLower() == "shiny")
+                await RespondAsync("all shiny pokemon have been released",ephemeral:true);
+            if (GameInfo.Strings.specieslist.Contains(Option))
+                await RespondAsync($"all {Option} have been released",ephemeral:true);
+            if (Option == "all")
+                await RespondAsync("all Pokemon have been released",ephemeral:true);
         }
-        [Command("info")]
-        [Alias("i")]
-        public async Task info(int idnumb)
+        [SlashCommand("info","shows info about a pokemon in your box")]
+
+        public async Task info([Discord.Interactions.Summary("BoxIdNumber", "the number next to your pokemon")] int idnumb)
         {
             if (File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb))
             {
@@ -633,13 +553,13 @@ namespace Ledybot
 
                 newShowdown.InsertRange(1, new string[] { $"OT: {tpk.OT_Name}", $"TID: {tpk.TrainerID7}", $"SID: {tpk.TrainerSID7}", $"OTGender: {(Gender)tpk.OT_Gender}", $"Language: {(LanguageID)tpk.Language}" });
                 discordbot.trademodule.embed.AddField($"{Context.User}'s {Ledybot.Program.PKTable.Species7[tpk.Species - 1]}'s info", Format.Code(string.Join("\n", newShowdown).TrimEnd()));
-                await ReplyAsync(embed: discordbot.trademodule.embed.Build());
+                await RespondAsync(embed: discordbot.trademodule.embed.Build(),ephemeral:true);
                 return;
             }
-            await ReplyAsync("no pokemon with this id number was found");
+            await RespondAsync("no pokemon with this id number was found",ephemeral:true);
         }
-        [Command("cordhelp")]
-        [Alias("ch")]
+        [SlashCommand("cordhelp","a guide for tradecord")]
+
         public async Task HelpTC()
         {
             discordbot.page = 0;
@@ -680,14 +600,15 @@ namespace Ledybot
             discordbot.trademodule.embed.ImageUrl = "https://c.tenor.com/aVgHd6soz1wAAAAC/prinplup-piplup.gif";
             discordbot.trademodule.embed.WithFooter($"Page {discordbot.page + 1} of {discordbot.trademodule.n.Count}");
             IEmote[] reactions = { new Emoji("⬅️"), new Emoji("➡️") };
+            await RespondAsync("guide");
             var listmsg = await Context.Channel.SendMessageAsync(embed: discordbot.trademodule.embed.Build());
 
             _ = Task.Run(() => listmsg.AddReactionsAsync(reactions).ConfigureAwait(false));
             
         }
-        [Command("nickname")]
-        [Alias("n")]
-        public async Task nick(int idnumb, string nicky)
+        [SlashCommand("nickname","nicknames your buddy pokemon")]
+       
+        public async Task nick([Discord.Interactions.Summary("BoxIdNumber", "the number next to your pokemon")] int idnumb, string nickname)
 
         {
 
@@ -698,21 +619,21 @@ namespace Ledybot
                 var tpk = PKMConverter.GetPKMfromBytes(g, 7);
                 discordbot.trademodule.embed = new EmbedBuilder();
                 discordbot.trademodule.embed.WithColor(147, 191, 230);
-                tpk.SetNickname(nicky);
+                tpk.SetNickname(nickname);
                 File.WriteAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb, tpk.DecryptedBoxData);
                 discordbot.trademodule.embed.AddField($"{Ledybot.Program.PKTable.Species7[tpk.Species - 1]}'s info", ShowdownParsing.GetShowdownText(tpk) + "\n" + "Ball: " + Ledybot.Program.PKTable.Balls7[tpk.Ball - 1]);
-                await ReplyAsync(embed: discordbot.trademodule.embed.Build());
+                await RespondAsync(embed: discordbot.trademodule.embed.Build(),ephemeral:true);
             }
             else
             {
                 EmbedBuilder embeda = new EmbedBuilder();
                 embeda.WithColor(147, 191, 230);
                 embeda.WithTitle("No Pokemon with matching ID # found");
-                await ReplyAsync(embed: embeda.Build());
+                await RespondAsync(embed: embeda.Build(),ephemeral:true);
             }
         }
-        [Command("tradecorddex")]
-        [Alias("tdex")]
+        [SlashCommand("tradecorddex","shows your pokedex progress")]
+       
         public async Task TCdex()
         {
             if (File.Exists(Directory.GetCurrentDirectory() + "//" + "//dexs//" + Context.User.Id + ".txt"))
@@ -723,21 +644,21 @@ namespace Ledybot
                 discordbot.trademodule.embed.AddField("You've caught: ", count.ToString() + "/807");
                 if (count == 807)
                     discordbot.trademodule.embed.AddField("Master", "You've caught em all! You're a Pokemon Master!");
-                await ReplyAsync(embed: discordbot.trademodule.embed.Build());
+                await RespondAsync(embed: discordbot.trademodule.embed.Build());
                 return;
             }
-            await ReplyAsync("no user found, catch some pokemon with !k");
+            await RespondAsync("no user found, catch some pokemon with /tradecord catch",ephemeral:true);
 
         }
-        [Command("tdexmissing")]
-        [Alias("tdm")]
+        [SlashCommand("tdexmissing","shows your missing pokedex entries")]
+
         public async Task TCdexmissing()
         {
             discordbot.page = 0;
             discordbot.trademodule.embed = new EmbedBuilder();
             if (!File.Exists($"{Directory.GetCurrentDirectory()}////dexs//{Context.User.Id}.txt"))
             {
-                await ReplyAsync("no user found, catch some pokemon with !k");
+                await RespondAsync("no user found, catch some pokemon with /tradecord catch",ephemeral:true);
                 return;
             }
             var tdextxt = File.ReadAllLines($"{Directory.GetCurrentDirectory()}//dexs//{Context.User.Id}.txt");
@@ -790,6 +711,7 @@ namespace Ledybot
 
             discordbot.trademodule.embed.WithFooter($"Page {discordbot.page + 1} of {discordbot.trademodule.n.Count}");
             IEmote[] reactions = { new Emoji("⬅️"), new Emoji("➡️") };
+            await RespondAsync("missing");
             var listmsg = await Context.Channel.SendMessageAsync(embed: discordbot.trademodule.embed.Build());
 
             _ = Task.Run(() => listmsg.AddReactionsAsync(reactions).ConfigureAwait(false));
@@ -797,8 +719,8 @@ namespace Ledybot
 
 
         }
-        [Command("Buddy")]
-        [Alias("buddy", "b", "B")]
+        [SlashCommand("buddy","shows your buddy pokemon's info")]
+       
         public async Task Buddy()
         {
             if (File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy"))
@@ -828,22 +750,22 @@ namespace Ledybot
                 newShowdown.InsertRange(1, new string[] { $"OT: {tpk.OT_Name}", $"TID: {tpk.TrainerID7}", $"SID: {tpk.TrainerSID7}", $"OTGender: {(Gender)tpk.OT_Gender}", $"Language: {(LanguageID)tpk.Language}" });
                 discordbot.trademodule.embed.AddField($"{Ledybot.Program.PKTable.Species7[tpk.Species - 1]}'s info", Format.Code(string.Join("\n", newShowdown).TrimEnd()));
                 discordbot.trademodule.embed.ThumbnailUrl = tpk.IsShiny ? "https://play.pokemonshowdown.com/sprites/ani-shiny/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif" : "https://play.pokemonshowdown.com/sprites/ani/" + Ledybot.Program.PKTable.Species7[tpk.Species - 1].ToLower() + ".gif";
-                await ReplyAsync(embed: discordbot.trademodule.embed.Build());
+                await RespondAsync(embed: discordbot.trademodule.embed.Build(),ephemeral:true);
                 return;
             }
             else
             {
                 discordbot.trademodule.embed = new EmbedBuilder();
                 discordbot.trademodule.embed.Color = new Color(88, 163, 73);
-                discordbot.trademodule.embed.Title = Context.User.ToString() + " has no assigned Buddy, use !bs id# to assign a pokemon as your buddy";
-                await ReplyAsync(embed: discordbot.trademodule.embed.Build());
+                discordbot.trademodule.embed.Title = Context.User.ToString() + " has no assigned Buddy, use /tradecord buddyset to assign a pokemon as your buddy";
+                await RespondAsync(embed: discordbot.trademodule.embed.Build(),ephemeral:true);
                 return;
             }
         }
 
-        [Command("BuddySet")]
-        [Alias("bs", "BS", "sb")]
-        public async Task SetBuddy(int idnumb)
+        [SlashCommand("buddyset","sets your buddy pokemon")]
+      
+        public async Task SetBuddy([Discord.Interactions.Summary("BoxIdNumber", "the number next to your pokemon")] int idnumb)
         {
             if (File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + idnumb))
             {
@@ -904,19 +826,19 @@ namespace Ledybot
                 }
 
 
-                await ReplyAsync(embed: discordbot.trademodule.embed.Build());
+                await RespondAsync(embed: discordbot.trademodule.embed.Build(),ephemeral:true);
 
 
             }
 
         }
-        [Command("evolve")]
-        [Alias("evo", "e")]
-        public async Task evolve([Remainder]string useitem = "")
+        [SlashCommand("evolve","evolves your buddy pokemon")]
+       
+        public async Task evolve([Discord.Interactions.Summary(description:"evolution item to use")]string useitem = "")
         {
             if(!File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt").Contains(useitem) && useitem != "" && useitem.ToLower() != "night" && useitem.ToLower() != "day" && useitem.ToLower() != "dusk")
             {
-                await ReplyAsync("You do not have that item");
+                await RespondAsync("You do not have that item",ephemeral:true);
                 return;
             }    
             if (File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy"))
@@ -938,7 +860,7 @@ namespace Ledybot
                     bool hasEvo = evos.Count() > 0;
                     if (!hasEvo)
                     {
-                        await ReplyAsync("Your buddy cannot evolve.");
+                        await RespondAsync("Your buddy cannot evolve.",ephemeral:true);
                         return;
                     }
                     
@@ -1073,7 +995,7 @@ namespace Ledybot
                 int tid = bpk.TrainerID7;
                 int sid = bpk.TrainerSID7;
                 try { bpk = bpk.Legalize(); }
-                catch { await ReplyAsync("Your buddy can not evolve for some reason"); return; }
+                catch { await RespondAsync("Your buddy can not evolve for some reason",ephemeral:true); return; }
                 if (!new LegalityAnalysis(bpk).Valid)
                     bpk.Species = ogspecies;
                 bpk.OT_Name = ot;
@@ -1124,17 +1046,17 @@ namespace Ledybot
                         de.WriteLine(bpk.Species);
                         de.Close();
                     }
-                    await ReplyAsync(embed: discordbot.trademodule.embed.Build());
+                    await RespondAsync(embed: discordbot.trademodule.embed.Build(),ephemeral:true);
                 }
                 else
-                    await ReplyAsync("Your buddy can not evolve for some reason or another");
+                    await RespondAsync("Your buddy can not evolve for some reason or another",ephemeral:true);
                 File.WriteAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy", bpk.DecryptedBoxData);
 
 
             }
         }
-        [Command("items")]
-        [Alias("bag")]
+        [SlashCommand("items","shows your item inventory")]
+        
         public async Task viewbag()
         {
             discordbot.page = 0;
@@ -1181,16 +1103,17 @@ namespace Ledybot
 
                 discordbot.trademodule.embed.WithFooter($"Page {discordbot.page + 1} of {discordbot.trademodule.n.Count}");
                 IEmote[] reactions = { new Emoji("⬅️"), new Emoji("➡️") };
+                await RespondAsync("items");
                 var listmsg = await Context.Channel.SendMessageAsync(embed: discordbot.trademodule.embed.Build());
 
                 _ = Task.Run(() => listmsg.AddReactionsAsync(reactions).ConfigureAwait(false));
             }
             else
-                await ReplyAsync("no items found");
+                await RespondAsync("no items found",ephemeral:true);
         }
 
-        [Command("giveitem")]
-        [Alias("gi")]
+        [SlashCommand("giveitem","gives an item to your buddy pokemon")]
+      
         public async Task giveitem(string itemtogive, int amount = 1)
         {
             if (File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//items//items.txt").Contains(itemtogive))
@@ -1207,7 +1130,7 @@ namespace Ledybot
                         PKM bpk = PKMConverter.GetPKMfromBytes(g, 7);
                         bpk.HeldItem = (int)newheld;
                         File.WriteAllBytes(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy", bpk.DecryptedBoxData);
-                        await ReplyAsync($"{GameInfo.Strings.Species[bpk.Species]} is now holding a {itemtogive}");
+                        await RespondAsync($"{GameInfo.Strings.Species[bpk.Species]} is now holding a {itemtogive}",ephemeral:true);
                     }
                     else
                     {
@@ -1228,16 +1151,17 @@ namespace Ledybot
                                 await ReplyAsync("you just wasted a rare candy lol");
                             amount--;
                         }
+                        await RespondAsync("item");
                     }
                 }
                 else
-                    await ReplyAsync("no buddy set");
+                    await RespondAsync("no buddy set",ephemeral:true);
             }
             else
-                await ReplyAsync("you do not have that item");
+                await RespondAsync("you do not have that item",ephemeral:true);
         }
-        [Command("takeitem")]
-        [Alias("ti")]
+        [SlashCommand("takeitem","takes an item from your buddy")]
+
         public async Task takeitem()
         {
             if (File.Exists(Directory.GetCurrentDirectory() + "//" + Context.User.Id + "//" + "Buddy" + "//" + "Buddy"))
@@ -1251,16 +1175,16 @@ namespace Ledybot
                     ite.Close();
                     bpk.HeldItem = 0;
                     File.WriteAllBytes($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//Buddy//Buddy", bpk.DecryptedBoxData);
-                    await ReplyAsync($"You took {(TCItems)bpk.HeldItem} from your Buddy {GameInfo.Strings.Species[bpk.Species]}");
+                    await RespondAsync($"You took {(TCItems)bpk.HeldItem} from your Buddy {GameInfo.Strings.Species[bpk.Species]}",ephemeral:true);
                 }
                 else
-                    await ReplyAsync("Your buddy is not holding an item");
+                    await RespondAsync("Your buddy is not holding an item",ephemeral:true);
             }
             else
-                await ReplyAsync("You do not have a buddy set");
+                await RespondAsync("You do not have a buddy set",ephemeral:true);
         }
-        [Command("dropitem")]
-        [Alias("di")]
+        [SlashCommand("dropitem","drops an item from your inventory")]
+      
         public async Task dropitem(string item, int amount = 1)
         {   while (amount != 0)
             {
@@ -1282,11 +1206,12 @@ namespace Ledybot
                 }
                 amount--;
             }
+            await RespondAsync("item");
         }
-        [Command("gift")]
-        public async Task gift(string user, int giftid)
+        [SlashCommand("gift","gifts a pokemon to another user")]
+        public async Task gift(SocketUser user, int giftid)
         {
-            var receiver = Context.Message.MentionedUsers.ElementAt(0);
+            var receiver = user;
             if (Directory.Exists($"{ Directory.GetCurrentDirectory()}//{receiver.Id}//"))
             {
                 if (File.Exists($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//{giftid}"))
@@ -1303,18 +1228,18 @@ namespace Ledybot
                         de.WriteLine(temp.Species);
                         de.Close();
                     }
-                    await ReplyAsync($"{receiver.Username} has been given a {(Species)temp.Species} from {Context.User.Username}");
+                    await RespondAsync($"{receiver.Username} has been given a {(Species)temp.Species} from {Context.User.Username}");
                 }
                 else
-                    await ReplyAsync("No pokemon with this id# found");
+                    await RespondAsync("No pokemon with this id# found",ephemeral:true);
             }
             else
-                await ReplyAsync($"{receiver.Username} has not started playing tradecord, tell them to!");
+                await RespondAsync($"{receiver.Username} has not started playing tradecord, tell them to!",ephemeral:true);
         }
-        [Command("giftitem")]
-        public async Task giftitem(string user, string giftid)
+        [SlashCommand("giftitem","gives an item to another player")]
+        public async Task giftitem(SocketUser user, string giftid)
         {
-            var receiver = Context.Message.MentionedUsers.ElementAt(0);
+            var receiver = user;
             if (!Directory.Exists($"{ Directory.GetCurrentDirectory()}//{receiver.Id}//items"))
                 Directory.CreateDirectory($"{ Directory.GetCurrentDirectory()}//{receiver.Id}//items");
       
@@ -1328,76 +1253,16 @@ namespace Ledybot
                         StreamWriter receiversfile = File.AppendText($"{Directory.GetCurrentDirectory()}//{receiver.Id}//items//items.txt");
                         receiversfile.WriteLine(giftid);
                         receiversfile.Close();
-                    await ReplyAsync($"{receiver.Username} has been gifted {giftid} by {Context.User.Username}");
+                    await RespondAsync($"{receiver.Username} has been gifted {giftid} by {Context.User.Username}");
                     }
-                    else await ReplyAsync("You do not have this item");
+                    else await RespondAsync("You do not have this item",ephemeral:true);
                 }
-                else await ReplyAsync("You do not have any items to gift");
+                else await RespondAsync("You do not have any items to gift",ephemeral:true);
            
             
                
         }
-        [Command("users7")]
-        [RequireOwner]
-        public async Task userlist()
-        {
-            var usermsg = new System.Text.StringBuilder();
-           var userfolders = Directory.GetDirectories($"{Directory.GetCurrentDirectory()}//");
-            foreach(string i in userfolders)
-            {
-               var newi= i.Replace($"{Directory.GetCurrentDirectory()}//", "");
-                    if(newi.All(char.IsDigit))
-                        usermsg.AppendLine($"<@{newi}> - {newi}");
-               
-            }
-            await ReplyAsync(usermsg.ToString());
-        }
-        [Command("deluser7")]
-        [RequireOwner]
-        public async Task deletetradecorduser(string userid)
-        {
-            if (Directory.Exists($"{Directory.GetCurrentDirectory()}//{userid}"))
-            {
-                if (Directory.Exists($"{Directory.GetCurrentDirectory()}//{userid}//Badges//"))
-                {
-                    var badgefiles = Directory.GetFiles($"{Directory.GetCurrentDirectory()}//{userid}//Badges//");
-                    foreach(string a in badgefiles)
-                        File.Delete(a);
-                    Directory.Delete($"{Directory.GetCurrentDirectory()}//{userid}//Badges//");
-                }
-                if (Directory.Exists($"{Directory.GetCurrentDirectory()}//{userid}//Buddy//"))
-                {
-                    var buddyfiles = Directory.GetFiles($"{Directory.GetCurrentDirectory()}//{userid}//Buddy//");
-                    foreach (string b in buddyfiles)
-                        File.Delete(b);
-                    Directory.Delete($"{Directory.GetCurrentDirectory()}//{userid}//Buddy//");
-                }
-                if (Directory.Exists($"{Directory.GetCurrentDirectory()}//{userid}//items//"))
-                {
-                    var itemfiles = Directory.GetFiles($"{Directory.GetCurrentDirectory()}//{userid}//items//");
-                    foreach (string c in itemfiles)
-                        File.Delete(c);
-                    Directory.Delete($"{Directory.GetCurrentDirectory()}//{userid}//items//");
-                }
-                var catchfiles = Directory.GetFiles($"{Directory.GetCurrentDirectory()}//{userid}//");
-                foreach (string d in catchfiles)
-                    File.Delete(d);
-                Directory.Delete($"{Directory.GetCurrentDirectory()}//{userid}//");
-                await ReplyAsync("user's tradecord info deleted");
-            }
-
-            if (File.Exists($"{Directory.GetCurrentDirectory()}//dexs//{userid}.txt"))
-            {
-                File.Delete($"{Directory.GetCurrentDirectory()}//dexs//{userid}.txt");
-                await ReplyAsync("user's tradecord dex deleted");
-            }
-            if (File.Exists($"{Directory.GetCurrentDirectory()}//trainerinfo//{userid}.txt"))
-            {
-                File.Delete($"{Directory.GetCurrentDirectory()}//trainerinfo//{userid}.txt");
-                await ReplyAsync("user's trainer info deleted");
-            }
-            
-        }
+       
         public enum TCItems
         {
             

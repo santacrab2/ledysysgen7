@@ -1105,7 +1105,7 @@ namespace Ledybot
                                     pokecheck.StatNature = pokecheck.Nature;
                                     pokecheck.EVs = new int[] { 0, 0, 0, 0, 0, 0 };
                                     pokecheck.Markings = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
-                                    pokecheck.ClearRecordFlags();
+                                    
                                     var la = new LegalityAnalysis(pokecheck);
                                     if (la.Report().ToLower().Contains("illegal move")) {
                                         pokecheck.ClearRelearnMoves();
@@ -1206,6 +1206,8 @@ namespace Ledybot
                                         var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
                                         if (botchan.Name.Contains("✅"))
                                         {
+                                             var role = botchan.Guild.EveryoneRole;
+                        await botchan.AddPermissionOverwriteAsync(role, new OverwritePermissions(sendMessages: PermValue.Deny));
                                             await botchan.ModifyAsync(prop => prop.Name = botchan.Name.ToString().Replace("✅", "❌"));
                                             var offembed = new EmbedBuilder();
                                             offembed.AddField($"{discordbot._client.CurrentUser.Username} Bot Announcement", "GTS Trade Bot is Offline");
@@ -1351,7 +1353,7 @@ namespace Ledybot
                             wondertrade = false;
                             break;
                         case (int)gtsbotstates.wondertrade:
-                            timeout.Reset();
+                            timeout.Restart();
                             if (wtchan.Name.Contains("❌"))
                             {
                                 await wtchan.ModifyAsync(prop => prop.Name = wtchan.Name.Replace("❌", "✅"));
@@ -1462,14 +1464,56 @@ namespace Ledybot
                                 {
                                     Program.helper.quickbuton(Program.PKTable.keyB, commandtime);
                                     await Task.Delay(1000);
+                                    if (timeout.ElapsedMilliseconds > 600_000)
+                                    {
+                                        await wtchan.ModifyAsync(prop => prop.Name = wtchan.Name.Replace("✅", "❌"));
+                                        var offembed = new EmbedBuilder();
+                                        offembed.AddField($"{discordbot._client.CurrentUser.Username} Bot Announcement", "Wonder Trade Bot is Offline");
+                                        await wtchan.SendMessageAsync(embed: offembed.Build());
+
+                                        ulong.TryParse(Program.f1.BotChannels.Text, out var bcid);
+                                        var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
+                                        var role = botchan.Guild.EveryoneRole;
+                                        await botchan.AddPermissionOverwriteAsync(role, new OverwritePermissions(sendMessages: PermValue.Deny));
+                                        await botchan.ModifyAsync(prop => prop.Name = botchan.Name.Replace("✅", "❌"));
+                                        var offembed2 = new EmbedBuilder();
+                                        offembed2.AddField($"{discordbot._client.CurrentUser.Username} Bot Announcement", "GTS Trade Bot is Offline");
+                                        await botchan.SendMessageAsync(embed: offembed2.Build());
+                                        break;
+                                    }
+
                                 }
                             }
-                            while (!await isCorrectWindow(val_Quit_SeekScreen))
+                            while (!await isCorrectWindow(val_Quit_SeekScreen) && timeout.ElapsedMilliseconds < 600_000)
                             {
-                                Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
-                                await Task.Delay(1000);
+                                if(timeout.ElapsedMilliseconds> 600_000)
+                                {
+                                    await wtchan.ModifyAsync(prop => prop.Name = wtchan.Name.Replace("✅", "❌"));
+                                    var offembed = new EmbedBuilder();
+                                    offembed.AddField($"{discordbot._client.CurrentUser.Username} Bot Announcement", "Wonder Trade Bot is Offline");
+                                    await wtchan.SendMessageAsync(embed: offembed.Build());
+                                    
+                                    ulong.TryParse(Program.f1.BotChannels.Text, out var bcid);
+                                    var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
+                                    var role = botchan.Guild.EveryoneRole;
+                                    await botchan.AddPermissionOverwriteAsync(role, new OverwritePermissions(sendMessages: PermValue.Deny));
+                                    await botchan.ModifyAsync(prop => prop.Name = botchan.Name.Replace("✅", "❌"));
+                                    var offembed2 = new EmbedBuilder();
+                                    offembed2.AddField($"{discordbot._client.CurrentUser.Username} Bot Announcement", "GTS Trade Bot is Offline");
+                                    await botchan.SendMessageAsync(embed: offembed2.Build());
+                                    break;
+                                }
                                 await Task.Delay(25);
+                                
+                             
+
                             }
+                            if (timeout.ElapsedMilliseconds > 600_000)
+                            {
+                                botState =(int) gtsbotstates.botexit;
+                                break;
+                            }
+                                
                             try
                             {
                                 await wtchan.SendMessageAsync("starting the next wonder trade in 42 seconds");
@@ -1615,6 +1659,8 @@ namespace Ledybot
                     var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
                     if (botchan.Name.Contains("✅"))
                     {
+                        var role = botchan.Guild.EveryoneRole;
+                        await botchan.AddPermissionOverwriteAsync(role, new OverwritePermissions(sendMessages: PermValue.Deny));
                         await botchan.ModifyAsync(prop => prop.Name = botchan.Name.ToString().Replace("✅", "❌"));
                         var offembed = new EmbedBuilder();
                         offembed.AddField($"{discordbot._client.CurrentUser.Username} Bot Announcement", "GTS Trade Bot is Offline");
@@ -1651,6 +1697,8 @@ namespace Ledybot
                     var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
                     if (botchan.Name.Contains("✅"))
                     {
+                        var role = botchan.Guild.EveryoneRole;
+                        await botchan.AddPermissionOverwriteAsync(role, new OverwritePermissions(sendMessages: PermValue.Deny));
                         await botchan.ModifyAsync(prop => prop.Name = botchan.Name.ToString().Replace("✅", "❌"));
                         var offembed = new EmbedBuilder();
                         offembed.AddField($"{discordbot._client.CurrentUser.Username} Bot Announcement", "GTS Trade Bot is Offline");

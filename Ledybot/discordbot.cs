@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
+using Discord.Interactions;
 using Discord.WebSocket;
 using Discord.Rest;
 using PKHeX.Core;
@@ -17,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 public class discordbot 
 {
+    public static Discord.Interactions.IResult result;
     public static int selectedmove = -1;
     public static int page = 0;
     public static IUserMessage msg;
@@ -39,10 +41,11 @@ public class discordbot
     {
         _client = new DiscordSocketClient();
         _client.Log += Log;
+        _client.Ready += ready;
         _commands = new CommandService();
         var token = Ledybot.Program.f1.token.Text;
         //var token = File.ReadAllText("token.txt");
-      
+        
         await _client.LoginAsync(TokenType.Bot, token);
         await _client.StartAsync();
         CommandHandler ch = new CommandHandler(_client, _commands);
@@ -50,6 +53,49 @@ public class discordbot
    
         // Block this task until the program is closed.
         await Task.Delay(-1);
+
+    }
+    private async Task ready()
+    {
+        var _interactionService = new InteractionService(_client);
+        await _interactionService.AddModulesAsync(Assembly.GetEntryAssembly(), null);
+        await _interactionService.RegisterCommandsToGuildAsync(872587205787394119);
+        _client.InteractionCreated += async interaction =>
+        {
+
+            var ctx = new SocketInteractionContext(_client, interaction);
+            result = await _interactionService.ExecuteCommandAsync(ctx, null);
+        };
+        _client.SlashCommandExecuted += slashtask;
+    }
+    public Task slashtask(SocketSlashCommand arg1)
+    {
+
+        if (!result.IsSuccess)
+        {
+            switch (result.Error)
+            {
+                case InteractionCommandError.UnmetPrecondition:
+                    // implement
+                    break;
+                case InteractionCommandError.UnknownCommand:
+                    // implement
+                    break;
+                case InteractionCommandError.BadArgs:
+                    // implement
+                    break;
+                case InteractionCommandError.Exception:
+                    // implement
+                    break;
+                case InteractionCommandError.Unsuccessful:
+                    // implement
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return Task.CompletedTask;
 
     }
     public static Task Log(LogMessage msg)
@@ -151,7 +197,7 @@ public class discordbot
            await msg.Channel.SendMessageAsync(Format.Code(string.Join("\n", newShowdown).TrimEnd()));
         }
 
-        public static async Task HandleReactionAsync(Cacheable<IUserMessage, ulong> cachedMsg, ISocketMessageChannel _, SocketReaction reaction)
+        public static async Task HandleReactionAsync(Cacheable<IUserMessage, ulong> cachedMsg, Cacheable<IMessageChannel,ulong>cc, SocketReaction reaction)
         {
             selectedmove = -1;
            
@@ -220,7 +266,7 @@ public class discordbot
         return await webClient.DownloadDataTaskAsync(url);
     }
 
-    public class trademodule : ModuleBase<SocketCommandContext>
+    public class trademodule : InteractionModuleBase<SocketInteractionContext>
     {
         public static EmbedBuilder embed = new EmbedBuilder();
         
@@ -238,615 +284,321 @@ public class discordbot
         public static Queue poketosearch = new Queue();
         public static Queue discordname = new Queue();
         public static string distribute = "false";
-        public static string trainer;
+  
        // public static int[] tradevolvs = { 525, 75, 533, 93, 64, 67, 708, 710, 61, 79, 95, 123, 117, 137, 366, 112, 125, 126, 233, 356, 684, 682, 349 };
         public static int[] mythic = { 151, 251, 385, 386, 490, 491, 492, 493, 494, 646, 647, 648, 649, 719, 720, 721, 801, 802, 807 };
         public static bool distributestart = false;
         public static List<string> n;
-        
-        
 
-        [Command("trade")]
-        [Alias("t")]
-      
-        public async Task stradestringdepo(string trainer, string pts, [Remainder] string set)
+
+
+        [SlashCommand("trade", "Receive the pokemon you want with the stats you want from the bot.")]
+
+
+        public async Task stradedstr([Discord.Interactions.Summary(description: "your in game name")] string YourTrainerName, [Discord.Interactions.Summary(description: "Capitalize the Name like Piplup")] string DepositPokemon, [Discord.Interactions.Summary(description: "Put Showdown Text Here")] string ReceivingPokemon = "", Attachment Pk7 = default)
         {
-            var correctchannelcheck = Ledybot.Program.f1.BotChannels.Text.Split(',');
-            if (!correctchannelcheck.Contains(Context.Channel.Id.ToString()))
+            if (ReceivingPokemon != "")
             {
-                await ReplyAsync("You can not use this command in this channel");
-                return;
-            }
-            if (discordname.Contains(Context.User))
-            {
-                await ReplyAsync("You are already in queue");
-                return;
-            }
-            int ptsstr = Array.IndexOf(Ledybot.Program.PKTable.Species7, pts);
-            if(ptsstr == -1)
-            {
-                await ReplyAsync("did not recognize your deposit pokemon");
-                return;
-            }
-            ptsstr = ptsstr + 1;
-          //  if (tradevolvs.Contains(ptsstr))
-           // {
-         //       await ReplyAsync("you almost just broke the bot by depositing a trade evolution");
-          //      return;
-          //  }
-            string[] pset = set.Split('\n');
-            var l = Legal.ZCrystalDictionary;
-            string temppokewait = Path.GetTempFileName();
-           
-            PKM pk = BuildPokemon(set, 7);
-            if (File.Exists($"{Directory.GetCurrentDirectory()}//trainerinfo//{Context.User.Id}.txt"))
-            {
-                string[] trsplit = File.ReadAllText($"{Directory.GetCurrentDirectory()}//trainerinfo//{Context.User.Id}.txt").Split('\n');
-                int q = 0;
-                foreach (string b in trsplit)
+                var correctchannelcheck = Ledybot.Program.f1.BotChannels.Text.Split(',');
+                if (!correctchannelcheck.Contains(Context.Channel.Id.ToString()))
                 {
-                    if (trsplit[q].Contains("OT:"))
-                        pk.OT_Name = trsplit[q].Replace("OT: ", "");
-                    q++;
+                    await RespondAsync("You can not use this command in this channel",ephemeral:true);
+                    return;
                 }
-                int h = 0;
-                foreach (string v in trsplit)
+                if (discordname.Contains(Context.User))
                 {
-                    if (trsplit[h].Contains("TID:"))
+                    await RespondAsync("You are already in queue",ephemeral:true);
+                    return;
+                }
+                int ptsstr = Array.IndexOf(Ledybot.Program.PKTable.Species7, DepositPokemon);
+                if (ptsstr == -1)
+                {
+                    await RespondAsync("did not recognize your deposit pokemon",ephemeral:true);
+                    return;
+                }
+                ptsstr = ptsstr + 1;
+                //  if (tradevolvs.Contains(ptsstr))
+                // {
+                //       await ReplyAsync("you almost just broke the bot by depositing a trade evolution");
+                //      return;
+                //  }
+                string[] pset = ReceivingPokemon.Split('\n');
+                var l = Legal.ZCrystalDictionary;
+                string temppokewait = Path.GetTempFileName();
+
+                PKM pk = BuildPokemon(ReceivingPokemon, 7);
+                if (File.Exists($"{Directory.GetCurrentDirectory()}//trainerinfo//{Context.User.Id}.txt"))
+                {
+                    string[] trsplit = File.ReadAllText($"{Directory.GetCurrentDirectory()}//trainerinfo//{Context.User.Id}.txt").Split('\n');
+                    int q = 0;
+                    foreach (string b in trsplit)
                     {
-                        int trid7 = Convert.ToInt32(trsplit[h].Replace("TID: ", ""));
-                        pk.TrainerID7 = trid7;
-
+                        if (trsplit[q].Contains("OT:"))
+                            pk.OT_Name = trsplit[q].Replace("OT: ", "");
+                        q++;
                     }
-                    h++;
-                }
-                int hd = 0;
-                foreach (string v in trsplit)
-                {
-                    if (trsplit[hd].Contains("SID:"))
+                    int h = 0;
+                    foreach (string v in trsplit)
                     {
-                        int trsid7 = Convert.ToInt32(trsplit[hd].Replace("SID: ", ""));
-                        pk.TrainerSID7 = trsid7;
+                        if (trsplit[h].Contains("TID:"))
+                        {
+                            int trid7 = Convert.ToInt32(trsplit[h].Replace("TID: ", ""));
+                            pk.TrainerID7 = trid7;
 
+                        }
+                        h++;
                     }
-                    hd++;
-                }
-            }
-            
-            if (pk.OT_Name.ToLower() == "pkhex")
-                pk.OT_Name = trainer;
-            if (set.Contains("OT:"))
-            {
-                int q = 0;
-                foreach (string b in pset)
-                {
-                    if (pset[q].Contains("OT:"))
-                        pk.OT_Name = pset[q].Replace("OT: ", "");
-                    q++;
-                }
-            }
-            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("ot name too long"))
-                pk.OT_Name = "Pip";
-            if (set.Contains("TID:"))
-            {
-
-                int h = 0;
-                foreach (string v in pset)
-                {
-                    if (pset[h].Contains("TID:"))
+                    int hd = 0;
+                    foreach (string v in trsplit)
                     {
-                        int trid7 = Convert.ToInt32(pset[h].Replace("TID: ", ""));
-                        pk.TrainerID7 = trid7;
+                        if (trsplit[hd].Contains("SID:"))
+                        {
+                            int trsid7 = Convert.ToInt32(trsplit[hd].Replace("SID: ", ""));
+                            pk.TrainerSID7 = trsid7;
 
+                        }
+                        hd++;
                     }
-                    h++;
                 }
-            }
-            if (set.Contains("SID:"))
-            {
-                int h = 0;
-                foreach (string v in pset)
+
+                if (pk.OT_Name.ToLower() == "pkhex")
+                    pk.OT_Name = YourTrainerName;
+                if (ReceivingPokemon.Contains("OT:"))
                 {
-                    if (pset[h].Contains("SID:"))
+                    int q = 0;
+                    foreach (string b in pset)
                     {
-                        int trsid7 = Convert.ToInt32(pset[h].Replace("SID: ", ""));
-                        pk.TrainerSID7 = trsid7;
-
+                        if (pset[q].Contains("OT:"))
+                            pk.OT_Name = pset[q].Replace("OT: ", "");
+                        q++;
                     }
-                    h++;
                 }
-            }
-            if (set.ToLower().Contains("shiny: yes"))
-            {
-                pk.SetIsShiny(true);
-            }
-            if (new LegalityAnalysis(pk).Report().Contains("Invalid: SID should be 0"))
-                pk.SID = 0;
-            if (!new LegalityAnalysis(pk).Valid)
-                pk = pk.Legalize();
-                
-
-
-                
-            
-            if (!new LegalityAnalysis(pk).Valid)
-            {
-                await ReplyAsync("Pokemon is illegal");
-                ShowdownSet Set = new(set);
-                var sav = TrainerSettings.DefaultFallback(7);
-                PK7 tru = new PK7();
-                await ReplyAsync(Set.SetAnalysis(sav,pk));
-                File.Delete(temppokewait);
-                return;
-
-            }
-            await ReplyAsync("yay its legal good job!");
-            await Context.Message.DeleteAsync();
-            byte[] g = pk.DecryptedBoxData;
-            System.IO.File.WriteAllBytes(temppokewait, g);
-            pokequeue.Enqueue(temppokewait);
-            username.Enqueue(Context.User.Id);
-            trainername.Enqueue(trainer);
-            pokemonfile.Enqueue(pk);
-            channel.Enqueue(Context.Channel);
-            poketosearch.Enqueue(ptsstr);
-            discordname.Enqueue(Context.User);
-           
-            await ReplyAsync("added " + Context.User + " to queue");
-            await checkstarttrade();
-
-
-        }
-
-        
-
-
-        [Command("trade")]
-        [Alias("t")]
-     
-        public async Task stradenotidpts(string trainer, int pts,[Remainder] string set)
-        {
-            var correctchannelcheck = Ledybot.Program.f1.BotChannels.Text.Split(',');
-            if (!correctchannelcheck.Contains(Context.Channel.Id.ToString()))
-            {
-                await ReplyAsync("You can not use this command in this channel");
-                return;
-            }
-            if (discordname.Contains(Context.User))
-            {
-                await ReplyAsync("You are already in queue");
-                return;
-            }
-           // if (tradevolvs.Contains(pts))
-         //   {
-          //      await ReplyAsync("you almost just broke the bot by depositing a trade evolution");
-           //     return;
-          //  }
-            string[] pset = set.Split('\n');
-            var l = Legal.ZCrystalDictionary;
-            string temppokewait = Path.GetTempFileName();
-
-            PKM pk = BuildPokemon(set, 7);
-            if (File.Exists($"{Directory.GetCurrentDirectory()}//trainerinfo//{Context.User.Id}.txt"))
-            {
-                string[] trsplit = File.ReadAllText($"{Directory.GetCurrentDirectory()}//trainerinfo//{Context.User.Id}.txt").Split('\n');
-                int q = 0;
-                foreach (string b in trsplit)
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("ot name too long"))
+                    pk.OT_Name = "Pip";
+                if (ReceivingPokemon.Contains("TID:"))
                 {
-                    if (trsplit[q].Contains("OT:"))
-                        pk.OT_Name = trsplit[q].Replace("OT: ", "");
-                    q++;
-                }
-                int h = 0;
-                foreach (string v in trsplit)
-                {
-                    if (trsplit[h].Contains("TID:"))
+
+                    int h = 0;
+                    foreach (string v in pset)
                     {
-                        int trid7 = Convert.ToInt32(trsplit[h].Replace("TID: ", ""));
-                        pk.TrainerID7 = trid7;
+                        if (pset[h].Contains("TID:"))
+                        {
+                            int trid7 = Convert.ToInt32(pset[h].Replace("TID: ", ""));
+                            pk.TrainerID7 = trid7;
 
+                        }
+                        h++;
                     }
-                    h++;
                 }
-                int hd = 0;
-                foreach (string v in trsplit)
+                if (ReceivingPokemon.Contains("SID:"))
                 {
-                    if (trsplit[hd].Contains("SID:"))
+                    int h = 0;
+                    foreach (string v in pset)
                     {
-                        int trsid7 = Convert.ToInt32(trsplit[hd].Replace("SID: ", ""));
-                        pk.TrainerSID7 = trsid7;
+                        if (pset[h].Contains("SID:"))
+                        {
+                            int trsid7 = Convert.ToInt32(pset[h].Replace("SID: ", ""));
+                            pk.TrainerSID7 = trsid7;
 
+                        }
+                        h++;
                     }
-                    hd++;
                 }
-            }
-
-            if (pk.OT_Name.ToLower() == "pkhex")
-                pk.OT_Name = trainer;
-            if (set.Contains("OT:"))
-            {
-                int q = 0;
-                foreach (string b in pset)
+                if (ReceivingPokemon.ToLower().Contains("shiny: yes"))
                 {
-                    if (pset[q].Contains("OT:"))
-                        pk.OT_Name = pset[q].Replace("OT: ", "");
-                    q++;
+                    pk.SetIsShiny(true);
                 }
-            }
-            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("ot name too long"))
-                pk.OT_Name = "Pip";
-            if (set.Contains("TID:"))
-            {
+                if (new LegalityAnalysis(pk).Report().Contains("Invalid: SID should be 0"))
+                    pk.SID = 0;
+                if (!new LegalityAnalysis(pk).Valid)
+                    pk = pk.Legalize();
 
-                int h = 0;
-                foreach (string v in pset)
+
+
+
+
+                if (!new LegalityAnalysis(pk).Valid)
                 {
-                    if (pset[h].Contains("TID:"))
-                    {
-                        int trid7 = Convert.ToInt32(pset[h].Replace("TID: ", ""));
-                        pk.TrainerID7 = trid7;
-
-                    }
-                    h++;
-                }
-            }
-            if (set.Contains("SID:"))
-            {
-                int h = 0;
-                foreach (string v in pset)
-                {
-                    if (pset[h].Contains("SID:"))
-                    {
-                        int trsid7 = Convert.ToInt32(pset[h].Replace("SID: ", ""));
-                        pk.TrainerSID7 = trsid7;
-
-                    }
-                    h++;
-                }
-            }
-            if (set.ToLower().Contains("shiny: yes"))
-            {
-                pk.SetIsShiny(true);
-            }
-            if (new LegalityAnalysis(pk).Report().Contains("Invalid: SID should be 0"))
-                pk.SID = 0;
-            if (!new LegalityAnalysis(pk).Valid)
-            {
-                await ReplyAsync("Pokemon is illegal");
-                ShowdownSet Set = new(set);
-                var sav = TrainerSettings.DefaultFallback(7);
-                PK7 tru = new PK7();
-                await ReplyAsync(Set.SetAnalysis(sav, pk));
-                File.Delete(temppokewait);
-                return;
-
-            }
-            await ReplyAsync("yay its legal good job!");
-            await Context.Message.DeleteAsync();
-            byte[] g = pk.DecryptedBoxData;
-            System.IO.File.WriteAllBytes(temppokewait, g);
-            pokequeue.Enqueue(temppokewait);
-            username.Enqueue(Context.User.Id);
-            trainername.Enqueue(trainer);
-            pokemonfile.Enqueue(pk);
-            channel.Enqueue(Context.Channel);
-            poketosearch.Enqueue(pts);
-            discordname.Enqueue(Context.User);
-           
-            await ReplyAsync("added " + Context.User + " to queue");
-            await checkstarttrade();
-
-
-        }
-
-        [Command("trade")]
-        [Alias("t")]
-      
-        public async Task pstrtrade([Summary("poke to search")] string pts, [Remainder] string trainer)
-        {
-            var correctchannelcheck = Ledybot.Program.f1.BotChannels.Text.Split(',');
-            if (!correctchannelcheck.Contains(Context.Channel.Id.ToString()))
-            {
-                await ReplyAsync("You can not use this command in this channel");
-                return;
-            }
-            if (discordname.Contains(Context.User))
-            {
-                await ReplyAsync("you are already in queue");
-                return;
-            }
-            int ptsstr = Array.IndexOf(Ledybot.Program.PKTable.Species7, pts);
-            if (ptsstr == -1)
-            {
-                await ReplyAsync("Deposit pokemon not recognized");
-                return;
-            }
-            ptsstr = ptsstr + 1;
-            string temppokewait = Path.GetTempFileName();
-          //  if (tradevolvs.Contains(ptsstr))
-           // {
-          //      await ReplyAsync("you almost just broke the bot by depositing a trade evolution");
-          //      return;
-       //     }
-            //this grabs the file the user uploads to discord if they even do it.
-            pokm = Context.Message.Attachments.FirstOrDefault();
-            if (pokm == default)
-            {
-                await ReplyAsync("no attachment provided wtf are you doing?");
-                File.Delete(temppokewait);
-                return;
-            }
-            //this cleans up the filename the user submitted and checks that its a pk6 or 7
-            att = Format.Sanitize(pokm.Filename);
-            if (!att.Contains(".pk7"))
-            {
-                await ReplyAsync("no pk7 provided");
-                File.Delete(temppokewait);
-                return;
-            }
-
-            await ReplyAsync("file accepted..now to check if you know what you are doing with pkhex");
-            await webClient.DownloadFileTaskAsync(pokm.Url, temppokewait);
-
-            buffer = await DownloadFromUrlAsync(pokm.Url);
-            tradeable = PKMConverter.GetPKMfromBytes(buffer, 7);
-
-            var la = new PKHeX.Core.LegalityAnalysis(tradeable);
-
-            var l = Legal.ZCrystalDictionary;
-            if (!la.Valid)
-            {
-                await ReplyAsync("pokemon is illegal...checking/fixing egg moves");
-                var egg = MoveSetApplicator.GetSuggestedRelearnMoves(la);
-                tradeable.SetRelearnMoves(egg);
-                byte[] y = tradeable.DecryptedBoxData;
-                System.IO.File.WriteAllBytes(temppokewait, y);
-
-
-            }
-
-
-            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(tradeable)).Contains("Invalid Move"))
-            {
-
-                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(tradeable)).Contains("Invalid Move 1: Invalid Move"))
-                {
-                    await ReplyAsync("invalid move 1, removing move");
-                    tradeable.Move1 = 0;
+                    await ReplyAsync("Pokemon is illegal");
+                    ShowdownSet Set = new(ReceivingPokemon);
+                    var sav = TrainerSettings.DefaultFallback(7);
+                    PK7 tru = new PK7();
+                    await RespondAsync(Set.SetAnalysis(sav, pk));
+                    File.Delete(temppokewait);
+                    return;
 
                 }
-                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(tradeable)).Contains("Invalid Move 2: Invalid Move"))
-                {
+                await ReplyAsync("yay its legal good job!");
 
-
-                    await ReplyAsync("invalid move 2, removing move");
-                    tradeable.Move2 = 0;
-
-
-                }
-                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(tradeable)).Contains("Invalid Move 3: Invalid Move"))
-                {
-
-                    await ReplyAsync("invalid move 3, removing move");
-                    tradeable.Move3 = 0;
-
-
-                }
-                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(tradeable)).Contains("Invalid Move 4: Invalid Move"))
-                {
-                    await ReplyAsync("invalid move 4, removing move");
-                    tradeable.Move4 = 0;
-                }
-                tradeable.FixMoves();
-                tradeable.FixMoves();
-                tradeable.FixMoves();
-
-            }
-            if (tradeable.Move1 == 0 && tradeable.Move2 == 0 && tradeable.Move3 == 0 && tradeable.Move4 == 0)
-            {
-                await ReplyAsync("all moves removed, giving new moves");
-                var move = new LegalityAnalysis(tradeable).GetSuggestedCurrentMoves();
-                tradeable.Moves = move;
-            }
-            if (tradeable.Move1 == 0)
-            { tradeable.Move1_PP = 0; }
-            if (tradeable.Move2 == 0)
-            { tradeable.Move2_PP = 0; }
-            if (tradeable.Move3 == 0)
-            { tradeable.Move3_PP = 0; }
-            if (tradeable.Move4 == 0)
-            { tradeable.Move4_PP = 0; }
-
-            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(tradeable)).ToLower().Contains("invalid: static encounter shiny mismatch"))
-            {
-                await ReplyAsync("pokemon is shiny locked...changing to non-shiny");
-                tradeable.SetIsShiny(false);
-
-            }
-
-            byte[] yre = tradeable.DecryptedBoxData;
-            System.IO.File.WriteAllBytes(temppokewait, yre);
-            var la2 = new LegalityAnalysis(tradeable);
-            if (!la2.Valid)
-            {
-                var sav = TrainerSettings.DefaultFallback(7);
-                ShowdownSet Set = new(tradeable);
-                await ReplyAsync("pokemon is illegal ");
-                await ReplyAsync(Set.SetAnalysis(sav, tradeable));
-                File.Delete(temppokewait);
-                return;
-            }
-
-
-            await ReplyAsync("yay its legal good job!");
-            await Context.Message.DeleteAsync();
-            pokequeue.Enqueue(temppokewait);
-            username.Enqueue(Context.User.Id);
-            trainername.Enqueue(trainer);
-            pokemonfile.Enqueue(tradeable);
-            poketosearch.Enqueue(ptsstr);
-            channel.Enqueue(Context.Channel);
-            discordname.Enqueue(Context.User);
-           
-            await ReplyAsync("added " + Context.User + " to queue");
-            await checkstarttrade();
-
-
-
-        }
-
-
-
-        [Command("trade")]
-        [Alias("t")]
-      
-        public async Task ptrade([Summary("poke to search")] int pts, [Remainder] string trainer)
-        {
-            var correctchannelcheck = Ledybot.Program.f1.BotChannels.Text.Split(',');
-            if (!correctchannelcheck.Contains(Context.Channel.Id.ToString()))
-            {
-                await ReplyAsync("You can not use this command in this channel");
-                return;
-            }
-            if (discordname.Contains(Context.User))
-            {
-                await ReplyAsync("you are already in queue");
-                return;
-            }
-            string temppokewait = Path.GetTempFileName();
-          //  if (tradevolvs.Contains(pts))
-        //    {
-        //        await ReplyAsync("you almost just broke the bot by depositing a trade evolution");
-           //     return;
-          //  }
-            //this grabs the file the user uploads to discord if they even do it.
-            pokm = Context.Message.Attachments.FirstOrDefault();
-            if (pokm == default)
-            {
-                await ReplyAsync("no attachment provided wtf are you doing?");
-                File.Delete(temppokewait);
-                return;
-            }
-            //this cleans up the filename the user submitted and checks that its a pk6 or 7
-            att = Format.Sanitize(pokm.Filename);
-            if (!att.Contains(".pk7"))
-            {
-                await ReplyAsync("no pk7 provided");
-                File.Delete(temppokewait);
-                return;
-            }
-
-            await ReplyAsync("file accepted..now to check if you know what you are doing with pkhex");
-            await webClient.DownloadFileTaskAsync(pokm.Url, temppokewait);
-
-            buffer = await DownloadFromUrlAsync(pokm.Url);
-            tradeable = PKMConverter.GetPKMfromBytes(buffer, 7);
-
-            var la = new PKHeX.Core.LegalityAnalysis(tradeable);
-
-            var l = Legal.ZCrystalDictionary;
-            if (!la.Valid)
-            {
-                await ReplyAsync("pokemon is illegal...checking/fixing egg moves");
-                var egg = MoveSetApplicator.GetSuggestedRelearnMoves(la);
-                tradeable.SetRelearnMoves(egg);
-                byte[] y = tradeable.DecryptedBoxData;
-                System.IO.File.WriteAllBytes(temppokewait, y);
-
-
-            }
-
-
-            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(tradeable)).Contains("Invalid Move"))
-            {
-
-                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(tradeable)).Contains("Invalid Move 1: Invalid Move"))
-                {
-                    await ReplyAsync("invalid move 1, removing move");
-                    tradeable.Move1 = 0;
-
-                }
-                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(tradeable)).Contains("Invalid Move 2: Invalid Move"))
-                {
-
-
-                    await ReplyAsync("invalid move 2, removing move");
-                    tradeable.Move2 = 0;
-
-
-                }
-                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(tradeable)).Contains("Invalid Move 3: Invalid Move"))
-                {
-
-                    await ReplyAsync("invalid move 3, removing move");
-                    tradeable.Move3 = 0;
-
-
-                }
-                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(tradeable)).Contains("Invalid Move 4: Invalid Move"))
-                {
-                    await ReplyAsync("invalid move 4, removing move");
-                    tradeable.Move4 = 0;
-                }
-                tradeable.FixMoves();
-                tradeable.FixMoves();
-                tradeable.FixMoves();
-
-            }
-            if (tradeable.Move1 == 0 && tradeable.Move2 == 0 && tradeable.Move3 == 0 && tradeable.Move4 == 0)
-            {
-                await ReplyAsync("all moves removed, giving new moves");
-                var move = new LegalityAnalysis(tradeable).GetSuggestedCurrentMoves();
-                tradeable.Moves = move;
-            }
-            if (tradeable.Move1 == 0)
-            { tradeable.Move1_PP = 0; }
-            if (tradeable.Move2 == 0)
-            { tradeable.Move2_PP = 0; }
-            if (tradeable.Move3 == 0)
-            { tradeable.Move3_PP = 0; }
-            if (tradeable.Move4 == 0)
-            { tradeable.Move4_PP = 0; }
-
-            if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(tradeable)).ToLower().Contains("invalid: static encounter shiny mismatch"))
-            {
-                await ReplyAsync("pokemon is shiny locked...changing to non-shiny");
-                tradeable.SetIsShiny(false);
-
-            }
-
-            byte[] yre = tradeable.DecryptedBoxData;
-            System.IO.File.WriteAllBytes(temppokewait, yre);
-            var la2 = new LegalityAnalysis(tradeable);
-            if (!la2.Valid)
-            {
-                var sav = TrainerSettings.DefaultFallback(7);
-                ShowdownSet Set = new(tradeable);
-                await ReplyAsync("pokemon is illegal ");
-                await ReplyAsync(Set.SetAnalysis(sav,tradeable));
-                File.Delete(temppokewait);
-                return;
-            }
-
-
-
-
-            await Context.Message.DeleteAsync();
-            await ReplyAsync("yay its legal good job!");
+                byte[] g = pk.DecryptedBoxData;
+                System.IO.File.WriteAllBytes(temppokewait, g);
                 pokequeue.Enqueue(temppokewait);
                 username.Enqueue(Context.User.Id);
-                trainername.Enqueue(trainer);
-                pokemonfile.Enqueue(tradeable);
-                poketosearch.Enqueue(pts);
+                trainername.Enqueue(YourTrainerName);
+                pokemonfile.Enqueue(pk);
                 channel.Enqueue(Context.Channel);
+                poketosearch.Enqueue(ptsstr);
                 discordname.Enqueue(Context.User);
-           
+
                 await ReplyAsync("added " + Context.User + " to queue");
                 await checkstarttrade();
+            }
+            if(Pk7 != default) {
+                var correctchannelcheck = Ledybot.Program.f1.BotChannels.Text.Split(',');
+                if (!correctchannelcheck.Contains(Context.Channel.Id.ToString()))
+                {
+                    await RespondAsync("You can not use this command in this channel",ephemeral:true);
+                    return;
+                }
+                if (discordname.Contains(Context.User))
+                {
+                    await RespondAsync("you are already in queue",ephemeral:true);
+                    return;
+                }
+                int ptsstr = Array.IndexOf(Ledybot.Program.PKTable.Species7, DepositPokemon);
+                if (ptsstr == -1)
+                {
+                    await RespondAsync("Deposit pokemon not recognized",ephemeral:true);
+                    return;
+                }
+                ptsstr = ptsstr + 1;
+                string temppokewait = Path.GetTempFileName();
+                //  if (tradevolvs.Contains(ptsstr))
+                // {
+                //      await ReplyAsync("you almost just broke the bot by depositing a trade evolution");
+                //      return;
+                //     }
+                //this grabs the file the user uploads to discord if they even do it.
+                pokm = Pk7;
+                if (pokm == default)
+                {
+                    await RespondAsync("no attachment provided wtf are you doing?",ephemeral:true);
+                    File.Delete(temppokewait);
+                    return;
+                }
+                //this cleans up the filename the user submitted and checks that its a pk6 or 7
+                att = Format.Sanitize(pokm.Filename);
+                if (!att.Contains(".pk7"))
+                {
+                    await RespondAsync("no pk7 provided",ephemeral:true);
+                    File.Delete(temppokewait);
+                    return;
+                }
 
-            
+                await ReplyAsync("file accepted..now to check if you know what you are doing with pkhex");
+                await webClient.DownloadFileTaskAsync(pokm.Url, temppokewait);
+
+                buffer = await DownloadFromUrlAsync(pokm.Url);
+                tradeable = PKMConverter.GetPKMfromBytes(buffer, 7);
+
+                var la = new PKHeX.Core.LegalityAnalysis(tradeable);
+
+                var l = Legal.ZCrystalDictionary;
+                if (!la.Valid)
+                {
+                    await ReplyAsync("pokemon is illegal...checking/fixing egg moves");
+                    var egg = MoveSetApplicator.GetSuggestedRelearnMoves(la);
+                    tradeable.SetRelearnMoves(egg);
+                    byte[] y = tradeable.DecryptedBoxData;
+                    System.IO.File.WriteAllBytes(temppokewait, y);
+
+
+                }
+
+
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(tradeable)).Contains("Invalid Move"))
+                {
+
+                    if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(tradeable)).Contains("Invalid Move 1: Invalid Move"))
+                    {
+                        await ReplyAsync("invalid move 1, removing move");
+                        tradeable.Move1 = 0;
+
+                    }
+                    if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(tradeable)).Contains("Invalid Move 2: Invalid Move"))
+                    {
+
+
+                        await ReplyAsync("invalid move 2, removing move");
+                        tradeable.Move2 = 0;
+
+
+                    }
+                    if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(tradeable)).Contains("Invalid Move 3: Invalid Move"))
+                    {
+
+                        await ReplyAsync("invalid move 3, removing move");
+                        tradeable.Move3 = 0;
+
+
+                    }
+                    if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(tradeable)).Contains("Invalid Move 4: Invalid Move"))
+                    {
+                        await ReplyAsync("invalid move 4, removing move");
+                        tradeable.Move4 = 0;
+                    }
+                    tradeable.FixMoves();
+                    tradeable.FixMoves();
+                    tradeable.FixMoves();
+
+                }
+                if (tradeable.Move1 == 0 && tradeable.Move2 == 0 && tradeable.Move3 == 0 && tradeable.Move4 == 0)
+                {
+                    await ReplyAsync("all moves removed, giving new moves");
+                    var move = new LegalityAnalysis(tradeable).GetSuggestedCurrentMoves();
+                    tradeable.Moves = move;
+                }
+                if (tradeable.Move1 == 0)
+                { tradeable.Move1_PP = 0; }
+                if (tradeable.Move2 == 0)
+                { tradeable.Move2_PP = 0; }
+                if (tradeable.Move3 == 0)
+                { tradeable.Move3_PP = 0; }
+                if (tradeable.Move4 == 0)
+                { tradeable.Move4_PP = 0; }
+
+                if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(tradeable)).ToLower().Contains("invalid: static encounter shiny mismatch"))
+                {
+                    await ReplyAsync("pokemon is shiny locked...changing to non-shiny");
+                    tradeable.SetIsShiny(false);
+
+                }
+
+                byte[] yre = tradeable.DecryptedBoxData;
+                System.IO.File.WriteAllBytes(temppokewait, yre);
+                var la2 = new LegalityAnalysis(tradeable);
+                if (!la2.Valid)
+                {
+                    var sav = TrainerSettings.DefaultFallback(7);
+                    ShowdownSet Set = new(tradeable);
+                    await ReplyAsync("pokemon is illegal ");
+                    await RespondAsync(Set.SetAnalysis(sav, tradeable));
+                    File.Delete(temppokewait);
+                    return;
+                }
+
+
+                await ReplyAsync("yay its legal good job!");
+
+                pokequeue.Enqueue(temppokewait);
+                username.Enqueue(Context.User.Id);
+                trainername.Enqueue(YourTrainerName);
+                pokemonfile.Enqueue(tradeable);
+                poketosearch.Enqueue(ptsstr);
+                channel.Enqueue(Context.Channel);
+                discordname.Enqueue(Context.User);
+
+                await ReplyAsync("added " + Context.User + " to queue");
+                await checkstarttrade();
+            }
 
         }
+
+        
+
+
+
+       
 
         
 
@@ -857,76 +609,17 @@ public class discordbot
         {
            
                 if (pokequeue.Count == 1)
-                    await ReplyAsync("finishing an ad or wonder trade, be right with you!");
+                    await RespondAsync("finishing an ad or wonder trade, be right with you!",ephemeral:true);
                 else
-                    await ReplyAsync("There are " + pokequeue.Count + " trainers in the queue");
+                    await RespondAsync("There are " + pokequeue.Count + " trainers in the queue", ephemeral: true);
             
         }
-        [Command("start")]
-        [RequireOwner]
-        public async Task startdistribute()
-        {
-            await ReplyAsync("starting distribution");
-            Ledybot.MainForm.combo_distri.SelectedIndex = 0;
-            if (Ledybot.MainForm.btn_Start.Enabled == true)
-                Ledybot.MainForm.btn_Start_Click(null, EventArgs.Empty);
-    
-        }
-   
-           
-            
 
-        
-        [Command("stop")]
-        [RequireOwner]
-        public async Task stop()
-        {
 
-            await ReplyAsync("stopping distribution");
-            Ledybot.MainForm.combo_distri.SelectedIndex = 1;
-            if (Ledybot.MainForm.btn_Start.Enabled == false)
-                Ledybot.MainForm.btn_Stop_Click(null, EventArgs.Empty);
-        }
+       
 
-        [Command("queueclear")]
-        [Alias("rq")]
-        [RequireOwner]
-        public async Task queueclear()
-        {
-         
-                pokequeue.Dequeue();
-                username.Dequeue();
-                pokemonfile.Dequeue();
-                trainername.Dequeue();
-                channel.Dequeue();
-                discordname.Dequeue();
-           
-                await ReplyAsync("the first person in line has been removed");
-              
-            
-     
-
-        }
-
-        [Command("clear")]
-        [RequireOwner]
-        public async Task clqueue()
-        {
-            
-                pokequeue.Clear();
-                username.Clear();
-                pokemonfile.Clear();
-                trainername.Clear();
-                channel.Clear();
-                discordname.Clear();
-                poketosearch.Clear();
-                await ReplyAsync("the entire queue has been cleared");
-                
-         
-        }
-
-        [Command("help")]
-        [Alias("h")]
+        [SlashCommand("help","a guide for using the bot")]
+      
         public async Task help()
         {
             page = 0;
@@ -937,7 +630,7 @@ public class discordbot
             embed.ThumbnailUrl = "https://www.shinyhunters.com/images/shiny/394.gif";
             embed.AddField("Prinplup is a Gen 7 GTS tradebot for\nSUN / MOON / ULTRA SUN / ULTRA MOON", "hi", false);
             n.Add("__Deposit a pokemon into the Gen 7 GTS__\n__Then use one of these 2 Commands to make the trade:__\n\n:large_blue_diamond:Attached .pk7 file\n```\n!trade DepositPokemon trainerName (and attach the file and hit send)```\n\n:large_blue_diamond:Showdown set\n```\n!trade trainername DepositPokemon ReceivingPokemon (and hit send)\nexample:!t Santa Caterpie Piplup\nShiny: Yes```**__Deposit Pokemon's name must be Capitalized__**");
-            n.Add("***Do not deposit or request the following - they will not trade over GTS and may break the bot:*** \n*Mythical Pokemon*\n*Event Pokemon*\n*Fusions*\n *Un-Tradeable Forms*\n*Un-Tradeable Ribbons*\n*Un-Tradeable Moves*\n *Please use quotes around your trainer name, if your trainer name has a space in it*\n```\nex: !trade \"bewear hugs\"");
+            n.Add("***Do not deposit or request the following - they will not trade over GTS:*** \n*Mythical Pokemon*\n*Event Pokemon*\n*Fusions*\n *Un-Tradeable Forms*\n*Un-Tradeable Ribbons*\n*Un-Tradeable Moves*\n**If you need a mythical or event from this generation use the wondertrade bot. !wth**\n *Please use quotes around your trainer name, if your trainer name has a space in it*\n```\nex: !trade \"bewear hugs\"");
             n.Add("Pokedex Function (helps you figure out legal moves and other stats for your Pokemon)\n**!dex pokemon**\n```\nex: !dex pidgey\n*works in reverse too*\n!dex 016```");
             n.Add("**!convert**\nMakes you a pk7 file from a showdown set```\nexample: !convert Piplup```");
             n.Add("!settrainer, (**!st**)\nSets your trainer info with the bot permanently so anything you make will have that info!\nThis is also automatically captured if you trade the bot a pokemon you caught or bred\n```Example: !st OT: Santa\nTID: 123456\nSID: 1234```");
@@ -945,23 +638,25 @@ public class discordbot
             embed.Fields[0].Value = n[0].ToString();
             embed.WithFooter($"Page {page + 1} of {n.Count}");
             IEmote[] reactions = { new Emoji("⬅️"), new Emoji("➡️") };
+            await RespondAsync("help");
             var listmsg = await Context.Channel.SendMessageAsync(embed: embed.Build());
 
             _ = Task.Run(() => listmsg.AddReactionsAsync(reactions).ConfigureAwait(false));
+
         }
 
-        [Command("hi")]
+        [SlashCommand("hi","says hi to the bot")]
         public async Task hi()
         {
-            await ReplyAsync(":middle_finger:");
+            await RespondAsync(":middle_finger:",ephemeral:true);
         }
-        [Command("fuckyou")]
+        [SlashCommand("fuckyou","says fuck you to the bot")]
         public async Task fuckyou()
         {
-            await ReplyAsync(":kissing_heart:");
+            await RespondAsync(":kissing_heart:",ephemeral:true);
         }
-        [Command("Queue")]
-        [Alias("q")]
+        [SlashCommand("queue","shows the current queue")]
+       
         public async Task que()
         {
             Object[] arr = discordname.ToArray();
@@ -969,7 +664,7 @@ public class discordbot
             embed = new EmbedBuilder();
             if(arr.Length ==0)
             {
-              await  ReplyAsync("queue is empty");
+              await  RespondAsync("queue is empty",ephemeral:true);
             }
             int r = 0;
             foreach (object i in arr)
@@ -987,10 +682,10 @@ public class discordbot
                 
                 
             });
-            await ReplyAsync( embed: embed.Build());
+            await RespondAsync( embed: embed.Build(),ephemeral:true);
         }
-        [Command("dex")]
-        public async Task dex([Remainder]string pokemon)
+        [SlashCommand("dex","shows pokedex info for a specified pokemon")]
+        public async Task dex(string pokemon = "random")
 
         {
            if(pokemon.ToLower() == "random")
@@ -1009,7 +704,7 @@ public class discordbot
                 embed = new EmbedBuilder();
                 embed.Color = new Color(147, 191, 230);
                 embed.Title = "This bot only supports Generation 1-7, dex# 1-807 ";
-                await ReplyAsync(embed: embed.Build());
+                await RespondAsync(embed: embed.Build(),ephemeral:true);
                 return;
             }
 
@@ -1214,14 +909,14 @@ public class discordbot
                     {
                        
                         x.Text = "Dex entry: " + entry;
-                        await ReplyAsync(embed: embed.Build());
+                        await RespondAsync(embed: embed.Build(),ephemeral:true);
                         
                     }
                 }
             }
         }
 
-        [Command("dex")]
+      
         public async Task dex2(int national)
 
         {
@@ -1439,7 +1134,7 @@ public class discordbot
                     {
                        
                         x.Text = "Dex entry: " + entry;
-                        await ReplyAsync(embed: embed.Build());
+                        await RespondAsync(embed: embed.Build(),ephemeral:true);
 
                     }
                 }
@@ -1507,7 +1202,7 @@ public class discordbot
                
 
                 // Convert the given Text into a Showdown Set
-                ShowdownSet set = new ShowdownSet(Set);
+                ShowdownSet set = ConvertToShowdown(Set);
                 IBattleTemplate re = new RegenTemplate(set, 7);
                 // Generate a Blank Savefile
 
@@ -1553,20 +1248,20 @@ public class discordbot
        
 
        
-        [Command("convert")]
-        public async Task convert([Remainder] string set)
+        [SlashCommand("convert", "makes a pk7 file from showdown text")]
+        public async Task convert(string ShowdownSet)
         {
             try
             {
-                string[] pset = set.Split('\n');
-                PKM pk = BuildPokemon(set, 7);
+                string[] pset = ShowdownSet.Split('\n');
+                PKM pk = BuildPokemon(ShowdownSet, 7);
                 string temppokewait = Path.GetTempFileName().Replace(".tmp", $"{GameInfo.Strings.Species[pk.Species]}.{pk.Extension}").Replace("tmp", "");
 
                 
 
 
 
-                if (set.Contains("OT:"))
+                if (ShowdownSet.Contains("OT:"))
                 {
                     int q = 0;
                     foreach (string b in pset)
@@ -1578,7 +1273,7 @@ public class discordbot
                 }
                 if (LegalityFormatting.GetLegalityReport(new LegalityAnalysis(pk)).ToLower().Contains("ot name too long"))
                     pk.OT_Name = "Pip";
-                if (set.Contains("TID:"))
+                if (ShowdownSet.Contains("TID:"))
                 {
 
                     int h = 0;
@@ -1593,7 +1288,7 @@ public class discordbot
                         h++;
                     }
                 }
-                if (set.Contains("SID:"))
+                if (ShowdownSet.Contains("SID:"))
                 {
                     int h = 0;
                     foreach (string v in pset)
@@ -1607,7 +1302,7 @@ public class discordbot
                         h++;
                     }
                 }
-                if (set.ToLower().Contains("shiny: yes"))
+                if (ShowdownSet.ToLower().Contains("shiny: yes"))
                 {
                     pk.SetIsShiny(true);
                 }
@@ -1621,50 +1316,50 @@ public class discordbot
                 
                     byte[] yre = pk.DecryptedBoxData;
                     File.WriteAllBytes(temppokewait, yre);
-                   await Context.Channel.SendFileAsync(temppokewait, "Here is your legalized pk file");
+                   await RespondWithFileAsync(temppokewait, text:"Here is your legalized pk file");
                     File.Delete(temppokewait);
                 return;
                 
             }
             catch
-            { await Context.Channel.SendMessageAsync("I wasn't able to make a file from that set");
+            { await RespondAsync("I wasn't able to make a file from that set",ephemeral:true);
                  }
 
         }
 
-        [Command("settrainer")]
-        [Alias("st")]
-        public async Task settrainerinfo([Remainder] string trainerinfo)
+        [SlashCommand("settrainer","changes your trainer info stored with the bot")]
+  
+        public async Task settrainerinfo(string trainerinfo)
         {
             if (!Directory.Exists($"{Directory.GetCurrentDirectory()}//trainerinfo//"))
                 Directory.CreateDirectory($"{Directory.GetCurrentDirectory()}//trainerinfo//");
             if (trainerinfo.Contains("OT:") || trainerinfo.Contains("SID:") || trainerinfo.Contains("TID:"))
             {
                 File.WriteAllText($"{Directory.GetCurrentDirectory()}//trainerinfo//{Context.User.Id}.txt", trainerinfo);
-                await ReplyAsync("trainer info saved");
+                await RespondAsync("trainer info saved",ephemeral:true);
             }
-            else await ReplyAsync("Please use OT: trainername\nTID: XXXXX\nSID: XXXX only");
+            else await RespondAsync("Please use OT: trainername\nTID: XXXXX\nSID: XXXX only",ephemeral:true);
         }
-        [Command("trainerinfo")]
-        [Alias("ti")]
+        [SlashCommand("trainerinfo","shows your trainer info saved with the bot")]
+       
         public async Task gettrainerinfo()
         {
             if (File.Exists($"{Directory.GetCurrentDirectory()}//trainerinfo//{Context.User.Id}.txt"))
             {
-                await ReplyAsync(File.ReadAllText($"{Directory.GetCurrentDirectory()}//trainerinfo//{Context.User.Id}.txt"));
+                await RespondAsync(File.ReadAllText($"{Directory.GetCurrentDirectory()}//trainerinfo//{Context.User.Id}.txt"),ephemeral:true);
                 return;
             }
-            await ReplyAsync("no trainer info found");
+            await RespondAsync("no trainer info found",ephemeral:true);
         }
-        [Command("wt")]
-        public async Task wtrequests([Remainder]string set)
+        [SlashCommand("wt","request a pokemon for the wonder trade bot")]
+        public async Task wtrequests(string WTRequest)
         {
             bool queued = false;
             if (!TwitchBot.wtuser.Contains(Context.User.Username))
             {
                 var files = Directory.GetFiles(Ledybot.Program.f1.wtfolder.Text);
 
-                var converset = new ShowdownSet(set);
+                var converset = ConvertToShowdown(WTRequest);
 
                
                 var comppk = new PK7();
@@ -1676,22 +1371,22 @@ public class discordbot
                     {
                         TwitchBot.wtqueue.Enqueue(temppk);
                         TwitchBot.wtuser.Enqueue(Context.User.Username);
-                        await ReplyAsync("your request has been added to the queue!");
+                        await RespondAsync("your request has been added to the queue!",ephemeral:true);
                         queued = true;
                     }
 
                 }
                 if (!queued)
-                    await ReplyAsync( "no file found");
+                    await RespondAsync( "no file found",ephemeral:true);
                 return;
             }
             else
             {
-                await ReplyAsync("you are already in queue");
+                await RespondAsync("you are already in queue",ephemeral:true);
                 return;
             }
         }
-        [Command("wtlist")]
+        [SlashCommand("wtlist","shows available pokemon for wonder trade")]
         public async Task wtlist()
         {
             page = 0;
@@ -1730,20 +1425,21 @@ public class discordbot
 
             embed.WithFooter($"Page {page + 1} of {n.Count}");
             IEmote[] reactions = { new Emoji("⬅️"), new Emoji("➡️") };
+            await RespondAsync("list");
             var listmsg = await Context.Channel.SendMessageAsync(embed: embed.Build());
 
             _ = Task.Run(() => listmsg.AddReactionsAsync(reactions).ConfigureAwait(false));
         }
-        [Command("wthelp")]
-        [Alias("wth")]
+        [SlashCommand("wthelp","a guide for wonder trade mode")]
+   
         public async Task wth() 
         {
             embed = new EmbedBuilder();
-            embed.AddField("**WonderTrade Commands", "!wt pokemon\n!wt Darkrai\nShiny: Yes\n\n!wtlist\nShows all the available pokemon to request. A Star means shiny.\n\n!wtq\nShows the current wonder trade queue");
-            await ReplyAsync(embed: embed.Build());
+            embed.AddField("WonderTrade Commands", "!wt pokemon\n!wt Darkrai\nShiny: Yes\n\n!wtlist\nShows all the available pokemon to request. A Star means shiny.\n\n!wtq\nShows the current wonder trade queue");
+            await RespondAsync(embed: embed.Build(),ephemeral:true);
         }
-        [Command("wondertradequeue")]
-        [Alias("wtq")]
+        [SlashCommand("wondertradequeue","shows the wonder trade queue")]
+       
         public async Task wtque()
         {
             Object[] arr = TwitchBot.wtuser.ToArray();
@@ -1751,7 +1447,7 @@ public class discordbot
             embed = new EmbedBuilder();
             if (arr.Length == 0)
             {
-                await ReplyAsync("queue is empty");
+                await RespondAsync("queue is empty",ephemeral:true);
             }
             int r = 0;
             foreach (object i in arr)
@@ -1769,8 +1465,42 @@ public class discordbot
 
 
             });
-            await ReplyAsync(embed: embed.Build());
+            await RespondAsync(embed: embed.Build(),ephemeral:true);
         }
+        public static ShowdownSet? ConvertToShowdown(string setstring)
+        {
+            // LiveStreams remove new lines, so we are left with a single line set
+            var restorenick = string.Empty;
+
+            var nickIndex = setstring.LastIndexOf(')');
+            if (nickIndex > -1)
+            {
+                restorenick = setstring.Substring(0, nickIndex + 1);
+                if (restorenick.TrimStart().StartsWith("("))
+                    return null;
+                setstring = setstring.Substring(nickIndex + 1);
+            }
+
+            foreach (string i in splittables)
+            {
+                if (setstring.Contains(i))
+                    setstring = setstring.Replace(i, $"\r\n{i}");
+            }
+
+            var finalset = restorenick + setstring;
+            return new ShowdownSet(finalset);
+        }
+
+        private static readonly string[] splittables =
+        {
+            "Ability:", "EVs:", "IVs:", "Shiny:", "Gigantamax:", "Ball:", "- ", "Level:",
+            "Happiness:", "Language:", "OT:", "OTGender:", "TID:", "SID:",
+            "Adamant Nature", "Bashful Nature", "Brave Nature", "Bold Nature", "Calm Nature",
+            "Careful Nature", "Docile Nature", "Gentle Nature", "Hardy Nature", "Hasty Nature",
+            "Impish Nature", "Jolly Nature", "Lax Nature", "Lonely Nature", "Mild Nature",
+            "Modest Nature", "Naive Nature", "Naughty Nature", "Quiet Nature", "Quirky Nature",
+            "Rash Nature", "Relaxed Nature", "Sassy Nature", "Serious Nature", "Timid Nature"
+        };
 
 
     }

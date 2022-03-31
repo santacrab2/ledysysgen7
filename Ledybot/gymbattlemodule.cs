@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Net;
 using Discord.Commands;
+using Discord.Interactions;
 using Discord.WebSocket;
 using Discord.Rest;
 using PKHeX.Core;
@@ -19,7 +20,8 @@ using Newtonsoft.Json;
 
 namespace Ledybot
 {
-    public class gymbattlemodule : ModuleBase<SocketCommandContext>
+    [Discord.Interactions.Group("gymbattles","do battle with your buddy")]
+    public class gymbattlemodule : InteractionModuleBase<SocketInteractionContext>
     {
         public static MoveInfo.MoveInfoRoot MoveRoot = new();
         public static PKM battlebuddy;
@@ -37,21 +39,21 @@ namespace Ledybot
         public static bool champ = false;
         public static int E4counter = 4;
         public static int champcounter = 6;
-        [Command("gymbattle")]
-        [Alias("gb")]
+        [SlashCommand("gymbattle","starts a gym battle with a random leader")]
+       
         public async Task gymbattlequeuer()
         {
             gymbattlequeue.Enqueue(Context.User);
             var queuecount = champbattlequeue.Count + E4battlequeue.Count + gymbattlequeue.Count;
             if (queuecount == 1)
             {
-                await ReplyAsync("starting your gym battle now!");
+                await RespondAsync("starting your gym battle now!",ephemeral:true);
                 await gymbattle();
             }
             else
             {
                 
-                await ReplyAsync($"There are {queuecount} trainers in line for a battle! Make sure you have your Private Messages turned on!");
+                await RespondAsync($"There are {queuecount} trainers in line for a battle! Make sure you have your Private Messages turned on!",ephemeral:true);
 
             }
 
@@ -417,8 +419,8 @@ namespace Ledybot
             }
         }
 
-        [Command("E4battle")]
-        [Alias("E4")]
+        [SlashCommand("e4battle","starts E4 battle, must have all region badges")]
+   
         public async Task E4battlequeuer(string region)
         {
             if (File.ReadAllLines($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//Badges//Badges.txt").Length >= 60)
@@ -428,17 +430,17 @@ namespace Ledybot
                 var queuecount = champbattlequeue.Count + E4battlequeue.Count + gymbattlequeue.Count;
                 if (queuecount == 1)
                 {
-                    await ReplyAsync("starting your E4 battle now!");
+                    await RespondAsync("starting your E4 battle now!",ephemeral:true);
                     await E4battle();
                 }
                 else
                 {
                     
-                    await ReplyAsync($"There are {queuecount} trainers in line for a battle! Make sure you have your Private Messages turned on!");
+                    await RespondAsync($"There are {queuecount} trainers in line for a battle! Make sure you have your Private Messages turned on!",ephemeral:true);
 
                 }
             }
-            else await ReplyAsync("You do not have enough badges to face the elite four.");
+            else await RespondAsync("You do not have enough badges to face the elite four.",ephemeral:true);
 
         }
         public static async Task E4battle()
@@ -521,8 +523,8 @@ namespace Ledybot
             await battlemsg.AddReactionsAsync(reactions).ConfigureAwait(false);
         }
 
-        [Command("champbattle")]
-        [Alias("champ")]
+        [SlashCommand("champbattle","starts champ battle, must beat all E4s")]
+   
         public async Task championbattlequeuer()
         {
             
@@ -533,17 +535,17 @@ namespace Ledybot
                 var queuecount = champbattlequeue.Count + E4battlequeue.Count + gymbattlequeue.Count;
                 if (queuecount == 1)
                 {
-                    await ReplyAsync("starting your Champion battle now!");
+                    await RespondAsync("starting your Champion battle now!",ephemeral:true);
                     await championbattle();
                 }
                 else
                 {
                     
-                    await ReplyAsync($"There are {queuecount} trainers in line for a battle! Make sure you have your Private Messages turned on!");
+                    await RespondAsync($"There are {queuecount} trainers in line for a battle! Make sure you have your Private Messages turned on!",ephemeral:true);
 
                 }
             }
-            else await ReplyAsync("You do not have enough badges/Ribbons to face the Champions.");
+            else await RespondAsync("You do not have enough badges/Ribbons to face the Champions.",ephemeral:true);
 
         }
         public static async Task championbattle()
@@ -605,14 +607,14 @@ namespace Ledybot
             battlemsg = await battler.SendMessageAsync(embed: battleembed.Build());
             await battlemsg.AddReactionsAsync(reactions).ConfigureAwait(false);
         }
-        [Command("badges")]
+        [SlashCommand("badges","shows your badges")]
         public async Task viewbadges()
         {
             string[] Ribbons;
             discordbot.page = 0;
             if (!File.Exists($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//Badges//Badges.txt"))
             {
-                await ReplyAsync("you do not have any badges, type !gymbattle to do a gym battle with your buddy");
+                await RespondAsync("you do not have any badges, type !gymbattle to do a gym battle with your buddy",ephemeral:true);
                 return;
             }
             discordbot.trademodule.embed = new EmbedBuilder();
@@ -697,14 +699,14 @@ namespace Ledybot
 
                 
                     discordbot.trademodule.embed.WithFooter($"Badge Count: {Badges.Length}");
-                await Context.Channel.SendMessageAsync(embed: discordbot.trademodule.embed.Build());
+                await RespondAsync(embed: discordbot.trademodule.embed.Build());
 
               
             }
 
         }
-        [Command("gymqueue")]
-        [Alias("gq")]
+        [SlashCommand("gymqueue","shows the gym queue")]
+
         public async Task que()
         {
             EmbedBuilder gqembed = new EmbedBuilder();
@@ -785,9 +787,10 @@ namespace Ledybot
             }
             else await ReplyAsync("Champion queue is empty");
             await ReplyAsync(embed: gqembed.Build());
+            await RespondAsync("queue");
         }
-        [Command("Randommoves")]
-        [Alias("rm")]
+        [SlashCommand("randommoves","gives your buddy 4 random moves")]
+
         public async Task randommoves()
         {
             if (File.Exists($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//Buddy//Buddy"))
@@ -798,18 +801,18 @@ namespace Ledybot
                 File.WriteAllBytes($"{Directory.GetCurrentDirectory()}//{Context.User.Id}//Buddy//Buddy", temp.DecryptedBoxData);
                 var tempbuilder = new EmbedBuilder();
                 tempbuilder.AddField($"Your {(Species)temp.Species} moves changed to:", $"- {(Move)temp.Move1}\n- {(Move)temp.Move2}\n- {(Move)temp.Move3}\n- {(Move)temp.Move4}");
-                await ReplyAsync(embed: tempbuilder.Build());
+                await RespondAsync(embed: tempbuilder.Build(),ephemeral:true);
             }
-            else await ReplyAsync("You have no buddy, set one with !bs id#");
+            else await RespondAsync("You have no buddy, set one with /buddyset",ephemeral:true);
         }
-        [Command("gc")]
-        [RequireOwner]
+        [SlashCommand("gc","owner only")]
+        [Discord.Interactions.RequireOwner]
         public async Task gymclear() 
         {
             try { gymbattlequeue.Dequeue(); } catch { }
             try { E4regionqueue.Dequeue(); E4battlequeue.Dequeue(); } catch { }
             try { champbattlequeue.Dequeue(); } catch { }
-            await ReplyAsync("first person in line for battle has been removed");
+            await RespondAsync("first person in line for battle has been removed",ephemeral:true);
         }
 
         public static int[] SetMaxEVs(PKM entity)
