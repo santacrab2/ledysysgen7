@@ -159,8 +159,8 @@ namespace Ledybot
                 Ledybot.Program.f1.ChangeStatus("did not recognize your log channel or its empty");
             if (!ulong.TryParse(Program.f1.wtchannel.Text, out var wid))
                 Program.f1.ChangeStatus("did not recognize your wt channel, or its empty.");
-            wtchan = (ITextChannel)discordbot._client.GetChannel(wid);
-            logchan = (ISocketMessageChannel)discordbot._client.GetChannel(cid);
+            wtchan = (ITextChannel)discordbot._client.GetChannelAsync(wid).Result;
+            logchan = (ISocketMessageChannel)discordbot._client.GetChannelAsync(cid).Result;
             iPokemonToFindGender = iPtFGender;
             iPokemonToFindLevel = iPtFLevel;
             iPID = iP;
@@ -1203,7 +1203,7 @@ namespace Ledybot
                                     foreach (string ids in bcidses)
                                     {
                                         ulong.TryParse(ids, out var bcid);
-                                        var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
+                                        var botchan = (ITextChannel)discordbot._client.GetChannelAsync(bcid).Result;
                                         if (botchan.Name.Contains("✅"))
                                         {
                                              var role = botchan.Guild.EveryoneRole;
@@ -1215,6 +1215,8 @@ namespace Ledybot
                                         }
 
                                     }
+                                    var cordchan4 = (ITextChannel)discordbot._client.GetChannelAsync(873613944273641503).Result;
+                                    await cordchan4.ModifyAsync(x => x.Name = cordchan4.Name.Replace("✅", "❌"));
                                     timeout.Reset();
                                     return 8;
                                 }
@@ -1472,13 +1474,15 @@ namespace Ledybot
                                         await wtchan.SendMessageAsync(embed: offembed.Build());
 
                                         ulong.TryParse(Program.f1.BotChannels.Text, out var bcid);
-                                        var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
+                                        var botchan = (ITextChannel)discordbot._client.GetChannelAsync(bcid).Result;
                                         var role = botchan.Guild.EveryoneRole;
                                         await botchan.AddPermissionOverwriteAsync(role, new OverwritePermissions(sendMessages: PermValue.Deny));
                                         await botchan.ModifyAsync(prop => prop.Name = botchan.Name.Replace("✅", "❌"));
                                         var offembed2 = new EmbedBuilder();
                                         offembed2.AddField($"{discordbot._client.CurrentUser.Username} Bot Announcement", "GTS Trade Bot is Offline");
                                         await botchan.SendMessageAsync(embed: offembed2.Build());
+                                        var cordchan3 = (ITextChannel)discordbot._client.GetChannelAsync(873613944273641503).Result;
+                                        await cordchan3.ModifyAsync(x => x.Name = cordchan3.Name.Replace("✅", "❌"));
                                         break;
                                     }
 
@@ -1494,13 +1498,15 @@ namespace Ledybot
                                     await wtchan.SendMessageAsync(embed: offembed.Build());
                                     
                                     ulong.TryParse(Program.f1.BotChannels.Text, out var bcid);
-                                    var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
+                                    var botchan = (ITextChannel)discordbot._client.GetChannelAsync(bcid).Result;
                                     var role = botchan.Guild.EveryoneRole;
                                     await botchan.AddPermissionOverwriteAsync(role, new OverwritePermissions(sendMessages: PermValue.Deny));
                                     await botchan.ModifyAsync(prop => prop.Name = botchan.Name.Replace("✅", "❌"));
                                     var offembed2 = new EmbedBuilder();
                                     offembed2.AddField($"{discordbot._client.CurrentUser.Username} Bot Announcement", "GTS Trade Bot is Offline");
                                     await botchan.SendMessageAsync(embed: offembed2.Build());
+                                    var cordchan2 = (ITextChannel)discordbot._client.GetChannelAsync(873613944273641503).Result;
+                                    await cordchan2.ModifyAsync(x => x.Name = cordchan2.Name.Replace("✅", "❌"));
                                     break;
                                 }
                                 await Task.Delay(25);
@@ -1656,7 +1662,7 @@ namespace Ledybot
                 foreach (string ids in bcids)
                 {
                     ulong.TryParse(ids, out var bcid);
-                    var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
+                    var botchan = (ITextChannel)discordbot._client.GetChannelAsync(bcid).Result;
                     if (botchan.Name.Contains("✅"))
                     {
                         var role = botchan.Guild.EveryoneRole;
@@ -1668,6 +1674,8 @@ namespace Ledybot
                     }
 
                 }
+                var cordchan = (ITextChannel)discordbot._client.GetChannelAsync(873613944273641503).Result;
+                await cordchan.ModifyAsync(x => x.Name = cordchan.Name.Replace("✅", "❌"));
                 timeout.Reset();
                 return 8;
 
@@ -1694,7 +1702,7 @@ namespace Ledybot
                 foreach (string ids in bcids)
                 {
                     ulong.TryParse(ids, out var bcid);
-                    var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
+                    var botchan = (ITextChannel)discordbot._client.GetChannelAsync(bcid).Result;
                     if (botchan.Name.Contains("✅"))
                     {
                         var role = botchan.Guild.EveryoneRole;
@@ -1706,6 +1714,8 @@ namespace Ledybot
                     }
 
                 }
+                var cordchan = (ITextChannel)discordbot._client.GetChannelAsync(873613944273641503).Result;
+                await cordchan.ModifyAsync(x => x.Name = cordchan.Name.Replace("✅", "❌"));
                 return 8;
             }
         }

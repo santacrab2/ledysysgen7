@@ -419,16 +419,16 @@ public class discordbot
 
                 if (!new LegalityAnalysis(pk).Valid)
                 {
-                    await ReplyAsync("Pokemon is illegal");
+                    await RespondAsync("Pokemon is illegal",ephemeral:true);
                     ShowdownSet Set = new(ReceivingPokemon);
                     var sav = TrainerSettings.DefaultFallback(7);
                     PK7 tru = new PK7();
-                    await RespondAsync(Set.SetAnalysis(sav, pk));
+                    await FollowupAsync(Set.SetAnalysis(sav, pk),ephemeral:true);
                     File.Delete(temppokewait);
                     return;
 
                 }
-                await ReplyAsync("yay its legal good job!");
+                await RespondAsync("yay its legal good job!");
 
                 byte[] g = pk.DecryptedBoxData;
                 System.IO.File.WriteAllBytes(temppokewait, g);
@@ -440,7 +440,7 @@ public class discordbot
                 poketosearch.Enqueue(ptsstr);
                 discordname.Enqueue(Context.User);
 
-                await ReplyAsync("added " + Context.User + " to queue");
+                await FollowupAsync("added " + Context.User + " to queue");
                 await checkstarttrade();
             }
             if(Pk7 != default) {
@@ -485,7 +485,7 @@ public class discordbot
                     return;
                 }
 
-                await ReplyAsync("file accepted..now to check if you know what you are doing with pkhex");
+                await RespondAsync("file accepted..now to check if you know what you are doing with pkhex");
                 await webClient.DownloadFileTaskAsync(pokm.Url, temppokewait);
 
                 buffer = await DownloadFromUrlAsync(pokm.Url);
@@ -496,7 +496,7 @@ public class discordbot
                 var l = Legal.ZCrystalDictionary;
                 if (!la.Valid)
                 {
-                    await ReplyAsync("pokemon is illegal...checking/fixing egg moves");
+                
                     var egg = MoveSetApplicator.GetSuggestedRelearnMoves(la);
                     tradeable.SetRelearnMoves(egg);
                     byte[] y = tradeable.DecryptedBoxData;
@@ -571,14 +571,14 @@ public class discordbot
                 {
                     var sav = TrainerSettings.DefaultFallback(7);
                     ShowdownSet Set = new(tradeable);
-                    await ReplyAsync("pokemon is illegal ");
-                    await RespondAsync(Set.SetAnalysis(sav, tradeable));
+                    await FollowupAsync("pokemon is illegal ",ephemeral:true);
+                    await FollowupAsync(Set.SetAnalysis(sav, tradeable),ephemeral:true);
                     File.Delete(temppokewait);
                     return;
                 }
 
 
-                await ReplyAsync("yay its legal good job!");
+                await FollowupAsync("yay its legal good job!");
 
                 pokequeue.Enqueue(temppokewait);
                 username.Enqueue(Context.User.Id);
@@ -588,7 +588,7 @@ public class discordbot
                 channel.Enqueue(Context.Channel);
                 discordname.Enqueue(Context.User);
 
-                await ReplyAsync("added " + Context.User + " to queue");
+                await FollowupAsync("added " + Context.User + " to queue");
                 await checkstarttrade();
             }
 
@@ -609,9 +609,9 @@ public class discordbot
         {
            
                 if (pokequeue.Count == 1)
-                    await RespondAsync("finishing an ad or wonder trade, be right with you!",ephemeral:true);
+                    await FollowupAsync("finishing an ad or wonder trade, be right with you!",ephemeral:true);
                 else
-                    await RespondAsync("There are " + pokequeue.Count + " trainers in the queue", ephemeral: true);
+                    await FollowupAsync("There are " + pokequeue.Count + " trainers in the queue", ephemeral: true);
             
         }
 

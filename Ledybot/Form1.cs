@@ -298,7 +298,7 @@ namespace Ledybot
                 foreach (string ids in bcids)
                 {
                     ulong.TryParse(ids, out var bcid);
-                    var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
+                    var botchan = (ITextChannel)discordbot._client.GetChannelAsync(bcid).Result;
                     if (botchan.Name.Contains("❌"))
                     {
                         var role = botchan.Guild.EveryoneRole;
@@ -310,6 +310,8 @@ namespace Ledybot
                     }
 
                 }
+                var cordchan = (ITextChannel)discordbot._client.GetChannelAsync(873613944273641503).Result;
+                await cordchan.ModifyAsync(x => x.Name = cordchan.Name.Replace("❌", "✅"));
                 Task<int> Bot = GTSBot7.RunBot();
                 int result = await Bot;
                 if (botStop)
@@ -431,7 +433,7 @@ namespace Ledybot
                 foreach (string ids in bcids)
                 {
                     ulong.TryParse(ids, out var bcid);
-                    var botchan = (ITextChannel)discordbot._client.GetChannel(bcid);
+                    var botchan = (ITextChannel)discordbot._client.GetChannelAsync(bcid).Result;
                     if (botchan.Name.Contains("✅"))
                     {
                         var role = botchan.Guild.EveryoneRole;
@@ -443,6 +445,8 @@ namespace Ledybot
                     }
 
                 }
+                var cordchan = (ITextChannel)discordbot._client.GetChannelAsync(873613944273641503).Result;
+                await cordchan.ModifyAsync(x => x.Name = cordchan.Name.Replace("✅","❌"));
                 GTSBot7.botstop = true;
                 btn_Start.Enabled = true;
                 btn_Stop.Enabled = false;

@@ -19,7 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Ledybot
 {
-    [Discord.Interactions.Group("tradecord","play tradecord")]
+    [Discord.Interactions.Group("pokecord","play pokecord")]
    public class tradecordmodule : InteractionModuleBase<SocketInteractionContext>
     {
         public static int[] tradevolvs = { 525, 75, 533, 93, 64, 67, 708, 710, 61, 79, 95, 123, 117, 137, 366, 112, 125, 126, 233, 356, 684, 682, 349 };
