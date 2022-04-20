@@ -1167,7 +1167,9 @@ namespace Ledybot
                                 {
                                     while ((await isCorrectWindow(val_duringTrade) || await isCorrectWindow(val_system)) && timeout.ElapsedMilliseconds < 1200_000)
                                     {
+                                        Program.f1.ChangeStatus("handling trade evolution");
                                         Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
+                                        Program.helper.quicktouch(180, 180, commandtime);
                                         await Task.Delay(1000);
                                         continue;
                                     }
@@ -1183,8 +1185,9 @@ namespace Ledybot
                                 {
                                     while ((await isCorrectWindow(val_duringTrade) || await isCorrectWindow(val_system)) && timeout.ElapsedMilliseconds < 1200_000)
                                     {
+                                        Program.f1.ChangeStatus("handling trade evolution");
                                         Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
-                                        await Task.Delay(1000);
+                                        Program.helper.quicktouch(180, 180, commandtime);
 
                                         continue;
                                     }
@@ -1224,11 +1227,10 @@ namespace Ledybot
                                 //during the trade spam a/b to get back to the start screen in case of "this pokemon has been traded"
                                 while (!await isCorrectWindow(val_Quit_SeekScreen))
                                 {
-
-                                    Program.helper.quickbuton(Program.PKTable.keyB, commandtime);
-                                    await Task.Delay(commandtime + delaytime);
-                                    await Task.Delay(1000);
-                                    continue;
+                                    Program.f1.ChangeStatus("handling trade evolution");
+                                    Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
+                                    await Task.Delay(500);
+                             
                                 }
                                 if (distribute == false)
                                 {
