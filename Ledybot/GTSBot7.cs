@@ -631,7 +631,7 @@ namespace Ledybot
                                                     pokecheck.SetRandomIVs();
                                                     Random megastone = new Random();
 
-                                                    pokecheck.HeldItem = megastone.Next(656, 683);
+                                                    pokecheck.HeldItem = 1;
                                                     pokecheck = pokecheck.Legalize();
                                                     pokecheck.OT_Name = "Piplup.net";
 
