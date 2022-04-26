@@ -238,6 +238,7 @@ namespace Ledybot
 
         public static async Task<int> RunBot()
         {
+           
             try {
                 byte[] pokemonIndex = new byte[2];
                 byte pokemonGender = 0x0;
@@ -366,7 +367,7 @@ namespace Ledybot
                                     if (MainForm.combo_pkmnList.SelectedIndex < 805)
                                         MainForm.combo_pkmnList.SelectedIndex += 1;
                                     else
-                                        MainForm.combo_pkmnList.SelectedIndex = 0;
+                                        MainForm.combo_pkmnList.SelectedIndex = 807;
                                    // while (discordbot.trademodule.tradevolvs.Contains(MainForm.combo_pkmnList.SelectedIndex + 1) || discordbot.trademodule.mythic.Contains(MainForm.combo_pkmnList.SelectedIndex + 1) || MainForm.combo_pkmnList.SelectedIndex == 587)
                                     //    MainForm.combo_pkmnList.SelectedIndex += 1;
 
@@ -1227,9 +1228,13 @@ namespace Ledybot
                                 //during the trade spam a/b to get back to the start screen in case of "this pokemon has been traded"
                                 while (!await isCorrectWindow(val_Quit_SeekScreen))
                                 {
+                                    var quicktimer = new Stopwatch();
+                                    quicktimer.Restart();
                                     Program.f1.ChangeStatus("handling trade evolution");
                                     Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
                                     await Task.Delay(500);
+                                    if (quicktimer.ElapsedMilliseconds > 180000)
+                                        break;
                              
                                 }
                                 if (distribute == false)

@@ -2996,6 +2996,8 @@ namespace Ledybot
         public uint keyY = 0x7FF;
         public uint keyR = 0xEFF;
         public uint keyL = 0xDFF;
+        public uint keyhomepress = 0xDFB;
+        public uint keyhomerelease = 0xDFA;
         public uint keySTART = 0xFF7;
         public uint keySELECT = 0xFFB;
         public uint DpadUP = 0xFBF;
