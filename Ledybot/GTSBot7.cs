@@ -1163,7 +1163,8 @@ namespace Ledybot
 
                                 await Task.Delay(commandtime + delaytime);
                                 await Task.Delay(5000);
-                               
+                                var quicktimer = new Stopwatch();
+                                quicktimer.Restart();
                                 if (await isCorrectWindow(val_duringTrade) || await isCorrectWindow(val_system))
                                 {
                                     while ((await isCorrectWindow(val_duringTrade) || await isCorrectWindow(val_system)) && timeout.ElapsedMilliseconds < 1200_000)
@@ -1172,6 +1173,8 @@ namespace Ledybot
                                         Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
                                         Program.helper.quicktouch(180, 180, commandtime);
                                         await Task.Delay(1000);
+                                        if (quicktimer.ElapsedMilliseconds > 180000)
+                                            break;
                                         continue;
                                     }
                                 }
@@ -1189,7 +1192,8 @@ namespace Ledybot
                                         Program.f1.ChangeStatus("handling trade evolution");
                                         Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
                                         Program.helper.quicktouch(180, 180, commandtime);
-
+                                        if (quicktimer.ElapsedMilliseconds > 180000)
+                                            break;
                                         continue;
                                     }
                                 }
@@ -1228,8 +1232,7 @@ namespace Ledybot
                                 //during the trade spam a/b to get back to the start screen in case of "this pokemon has been traded"
                                 while (!await isCorrectWindow(val_Quit_SeekScreen))
                                 {
-                                    var quicktimer = new Stopwatch();
-                                    quicktimer.Restart();
+                                    
                                     Program.f1.ChangeStatus("handling trade evolution");
                                     Program.helper.quickbuton(Program.PKTable.keyA, commandtime);
                                     await Task.Delay(500);
