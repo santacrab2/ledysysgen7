@@ -109,7 +109,7 @@ namespace Ledybot
         public static bool wondertrade = false;
         public static int mega;
         public static Stopwatch timeout = new Stopwatch();
-        public static List<string> patheticpiecesofshit = new List<string> { "funkygamer26", "chloegarcia", "volcano.\"do\"", "33012888" };
+        public static List<string> patheticpiecesofshit = new List<string> { "funkygamer26", "chloegarcia", "volcano.“do”", "33012888" };
         public static async Task<bool> isCorrectWindow(int expectedScreen)
         {
             await Task.Delay(o3dswaittime);
