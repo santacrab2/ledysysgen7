@@ -109,6 +109,7 @@ namespace Ledybot
         public static bool wondertrade = false;
         public static int mega;
         public static Stopwatch timeout = new Stopwatch();
+        public static List<string> patheticpiecesofshit = new List<string> { "funkygamer26", "chloegarcia", "volcano.\"do\"", "33012888" };
         public static async Task<bool> isCorrectWindow(int expectedScreen)
         {
             await Task.Delay(o3dswaittime);
@@ -340,7 +341,7 @@ namespace Ledybot
                             botState = (int)gtsbotstates.pressSeek;
                             break;
                         case (int)gtsbotstates.pressSeek:
-                            if (stupid == 5)
+                            if (stupid == 3)
                             {
                                 startIndex = 0;
                                 tradeIndex = -1;
@@ -422,7 +423,7 @@ namespace Ledybot
                             {
                                 if (Program.helper.lastRead == val_emptyGTSpage)
                                 {
-                                    stupid = 5;
+                                    stupid = 3;
                                     while (!await isCorrectWindow(val_Quit_SeekScreen))
                                     {
                                         Program.helper.quickbuton(Program.PKTable.keyB, commandtime);
@@ -611,7 +612,7 @@ namespace Ledybot
                                                 {
 
                                                     pokecheck = discordbot.trademodule.BuildPokemon(Ledybot.Program.PKTable.Species7[dexnumber - 1], 7);
-                                                    if (pokecheck.Species == 29 || pokecheck.Species == 32 || szTrainerName.ToLower() == "funkygamer26")
+                                                    if (pokecheck.Species == 29 || pokecheck.Species == 32 || patheticpiecesofshit.Contains(szTrainerName.ToLower()))
                                                     {
                                                         addr_PageEntry = BitConverter.ToUInt32(block, 0);
                                                         continue;
